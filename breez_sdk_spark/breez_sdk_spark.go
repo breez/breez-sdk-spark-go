@@ -437,11 +437,29 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_check_lightning_address_available()
+		})
+		if checksum != 31624 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_check_lightning_address_available: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_deposit()
 		})
 		if checksum != 43529 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_deposit: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_delete_lightning_address()
+		})
+		if checksum != 44132 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_delete_lightning_address: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -460,6 +478,15 @@ func uniffiCheckChecksums() {
 		if checksum != 6771 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_get_info: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_get_lightning_address()
+		})
+		if checksum != 36552 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_get_lightning_address: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -536,11 +563,29 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_recover_lightning_address()
+		})
+		if checksum != 43367 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_recover_lightning_address: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_refund_deposit()
 		})
 		if checksum != 33646 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_refund_deposit: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_register_lightning_address()
+		})
+		if checksum != 530 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_register_lightning_address: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -617,9 +662,18 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_storage_delete_cached_item()
+		})
+		if checksum != 6883 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_delete_cached_item: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_get_cached_item()
 		})
-		if checksum != 11423 {
+		if checksum != 30248 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_get_cached_item: UniFFI API checksum mismatch")
 		}
@@ -628,7 +682,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_set_cached_item()
 		})
-		if checksum != 17965 {
+		if checksum != 7970 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_set_cached_item: UniFFI API checksum mismatch")
 		}
@@ -637,7 +691,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_list_payments()
 		})
-		if checksum != 55103 {
+		if checksum != 35678 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_list_payments: UniFFI API checksum mismatch")
 		}
@@ -646,7 +700,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_insert_payment()
 		})
-		if checksum != 35649 {
+		if checksum != 28075 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_insert_payment: UniFFI API checksum mismatch")
 		}
@@ -655,7 +709,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_set_payment_metadata()
 		})
-		if checksum != 780 {
+		if checksum != 45500 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_set_payment_metadata: UniFFI API checksum mismatch")
 		}
@@ -664,7 +718,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_get_payment_by_id()
 		})
-		if checksum != 32084 {
+		if checksum != 35394 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_get_payment_by_id: UniFFI API checksum mismatch")
 		}
@@ -673,7 +727,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_add_deposit()
 		})
-		if checksum != 31647 {
+		if checksum != 55082 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_add_deposit: UniFFI API checksum mismatch")
 		}
@@ -682,7 +736,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_delete_deposit()
 		})
-		if checksum != 19211 {
+		if checksum != 13111 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_delete_deposit: UniFFI API checksum mismatch")
 		}
@@ -691,7 +745,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_list_deposits()
 		})
-		if checksum != 11262 {
+		if checksum != 22806 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_list_deposits: UniFFI API checksum mismatch")
 		}
@@ -700,7 +754,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_update_deposit()
 		})
-		if checksum != 58400 {
+		if checksum != 48478 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_update_deposit: UniFFI API checksum mismatch")
 		}
@@ -1342,7 +1396,9 @@ type BreezSdkInterface interface {
 	//
 	// A unique identifier for the listener, which can be used to remove it later
 	AddEventListener(listener EventListener) string
+	CheckLightningAddressAvailable(req CheckLightningAddressRequest) (bool, error)
 	ClaimDeposit(request ClaimDepositRequest) (ClaimDepositResponse, error)
+	DeleteLightningAddress() error
 	// Stops the SDK's background tasks
 	//
 	// This method stops the background tasks started by the `start()` method.
@@ -1354,6 +1410,7 @@ type BreezSdkInterface interface {
 	Disconnect() error
 	// Returns the balance of the wallet in satoshis
 	GetInfo(request GetInfoRequest) (GetInfoResponse, error)
+	GetLightningAddress() (*LightningAddressInfo, error)
 	GetPayment(request GetPaymentRequest) (GetPaymentResponse, error)
 	// Lists payments from the storage with pagination
 	//
@@ -1376,7 +1433,10 @@ type BreezSdkInterface interface {
 	PrepareLnurlPay(request PrepareLnurlPayRequest) (PrepareLnurlPayResponse, error)
 	PrepareSendPayment(request PrepareSendPaymentRequest) (PrepareSendPaymentResponse, error)
 	ReceivePayment(request ReceivePaymentRequest) (ReceivePaymentResponse, error)
+	// Attempts to recover a lightning address from the lnurl server.
+	RecoverLightningAddress() (*LightningAddressInfo, error)
 	RefundDeposit(request RefundDepositRequest) (RefundDepositResponse, error)
+	RegisterLightningAddress(request RegisterLightningAddressRequest) (LightningAddressInfo, error)
 	// Removes a previously registered event listener
 	//
 	// # Arguments
@@ -1419,6 +1479,35 @@ func (_self *BreezSdk) AddEventListener(listener EventListener) string {
 	}))
 }
 
+func (_self *BreezSdk) CheckLightningAddressAvailable(req CheckLightningAddressRequest) (bool, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.int8_t {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_i8(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.int8_t) bool {
+			return FfiConverterBoolINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_check_lightning_address_available(
+			_pointer, FfiConverterCheckLightningAddressRequestINSTANCE.Lower(req)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_i8(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_i8(handle)
+		},
+	)
+
+	return res, err
+}
+
 func (_self *BreezSdk) ClaimDeposit(request ClaimDepositRequest) (ClaimDepositResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -1448,6 +1537,33 @@ func (_self *BreezSdk) ClaimDeposit(request ClaimDepositRequest) (ClaimDepositRe
 	)
 
 	return res, err
+}
+
+func (_self *BreezSdk) DeleteLightningAddress() error {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_delete_lightning_address(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	return err
 }
 
 // Stops the SDK's background tasks
@@ -1488,6 +1604,37 @@ func (_self *BreezSdk) GetInfo(request GetInfoRequest) (GetInfoResponse, error) 
 		},
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_get_info(
 			_pointer, FfiConverterGetInfoRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+func (_self *BreezSdk) GetLightningAddress() (*LightningAddressInfo, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) *LightningAddressInfo {
+			return FfiConverterOptionalLightningAddressInfoINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_get_lightning_address(
+			_pointer),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -1742,6 +1889,38 @@ func (_self *BreezSdk) ReceivePayment(request ReceivePaymentRequest) (ReceivePay
 	return res, err
 }
 
+// Attempts to recover a lightning address from the lnurl server.
+func (_self *BreezSdk) RecoverLightningAddress() (*LightningAddressInfo, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) *LightningAddressInfo {
+			return FfiConverterOptionalLightningAddressInfoINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_recover_lightning_address(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
 func (_self *BreezSdk) RefundDeposit(request RefundDepositRequest) (RefundDepositResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -1760,6 +1939,37 @@ func (_self *BreezSdk) RefundDeposit(request RefundDepositRequest) (RefundDeposi
 		},
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_refund_deposit(
 			_pointer, FfiConverterRefundDepositRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+func (_self *BreezSdk) RegisterLightningAddress(request RegisterLightningAddressRequest) (LightningAddressInfo, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) LightningAddressInfo {
+			return FfiConverterLightningAddressInfoINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_register_lightning_address(
+			_pointer, FfiConverterRegisterLightningAddressRequestINSTANCE.Lower(request)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -2116,6 +2326,7 @@ func (_ FfiDestroyerSdkBuilder) Destroy(value *SdkBuilder) {
 
 // Trait for persistent storage
 type Storage interface {
+	DeleteCachedItem(key string) error
 	GetCachedItem(key string) (*string, error)
 	SetCachedItem(key string, value string) error
 	// Lists payments with pagination
@@ -2201,6 +2412,33 @@ type Storage interface {
 // Trait for persistent storage
 type StorageImpl struct {
 	ffiObject FfiObject
+}
+
+func (_self *StorageImpl) DeleteCachedItem(key string) error {
+	_pointer := _self.ffiObject.incrementPointer("Storage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[StorageError](
+		FfiConverterStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_storage_delete_cached_item(
+			_pointer, FfiConverterStringINSTANCE.Lower(key)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	return err
 }
 
 func (_self *StorageImpl) GetCachedItem(key string) (*string, error) {
@@ -2615,7 +2853,68 @@ func (_ FfiDestroyerStorage) Destroy(value Storage) {
 }
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0(uniffiHandle C.uint64_t, key C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0(uniffiHandle C.uint64_t, key C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.DeleteCachedItem(
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: key,
+				}),
+			)
+
+		if err != nil {
+			var actualError *StorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1(uniffiHandle C.uint64_t, key C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -2677,8 +2976,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1(uniffiHandle C.uint64_t, key C.RustBuffer, value C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2(uniffiHandle C.uint64_t, key C.RustBuffer, value C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -2741,8 +3040,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2(uniffiHandle C.uint64_t, offset C.RustBuffer, limit C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3(uniffiHandle C.uint64_t, offset C.RustBuffer, limit C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -2807,8 +3106,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3(uniffiHandle C.uint64_t, payment C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4(uniffiHandle C.uint64_t, payment C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -2868,8 +3167,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4(uniffiHandle C.uint64_t, paymentId C.RustBuffer, metadata C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5(uniffiHandle C.uint64_t, paymentId C.RustBuffer, metadata C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -2932,8 +3231,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5(uniffiHandle C.uint64_t, id C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6(uniffiHandle C.uint64_t, id C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -2995,8 +3294,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, amountSats C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, amountSats C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -3058,8 +3357,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -3120,8 +3419,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -3179,8 +3478,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, payload C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, payload C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -3245,16 +3544,17 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uniffiHandle C.
 }
 
 var UniffiVTableCallbackInterfaceStorageINSTANCE = C.UniffiVTableCallbackInterfaceStorage{
-	getCachedItem:      (C.UniffiCallbackInterfaceStorageMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0),
-	setCachedItem:      (C.UniffiCallbackInterfaceStorageMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1),
-	listPayments:       (C.UniffiCallbackInterfaceStorageMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2),
-	insertPayment:      (C.UniffiCallbackInterfaceStorageMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3),
-	setPaymentMetadata: (C.UniffiCallbackInterfaceStorageMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4),
-	getPaymentById:     (C.UniffiCallbackInterfaceStorageMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5),
-	addDeposit:         (C.UniffiCallbackInterfaceStorageMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6),
-	deleteDeposit:      (C.UniffiCallbackInterfaceStorageMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7),
-	listDeposits:       (C.UniffiCallbackInterfaceStorageMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8),
-	updateDeposit:      (C.UniffiCallbackInterfaceStorageMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9),
+	deleteCachedItem:   (C.UniffiCallbackInterfaceStorageMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0),
+	getCachedItem:      (C.UniffiCallbackInterfaceStorageMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1),
+	setCachedItem:      (C.UniffiCallbackInterfaceStorageMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2),
+	listPayments:       (C.UniffiCallbackInterfaceStorageMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3),
+	insertPayment:      (C.UniffiCallbackInterfaceStorageMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4),
+	setPaymentMetadata: (C.UniffiCallbackInterfaceStorageMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5),
+	getPaymentById:     (C.UniffiCallbackInterfaceStorageMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6),
+	addDeposit:         (C.UniffiCallbackInterfaceStorageMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7),
+	deleteDeposit:      (C.UniffiCallbackInterfaceStorageMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8),
+	listDeposits:       (C.UniffiCallbackInterfaceStorageMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9),
+	updateDeposit:      (C.UniffiCallbackInterfaceStorageMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree),
 }
@@ -3266,6 +3566,42 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree(handle C.uint64_t)
 
 func (c FfiConverterStorage) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_storage(&UniffiVTableCallbackInterfaceStorageINSTANCE)
+}
+
+type CheckLightningAddressRequest struct {
+	Username string
+}
+
+func (r *CheckLightningAddressRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Username)
+}
+
+type FfiConverterCheckLightningAddressRequest struct{}
+
+var FfiConverterCheckLightningAddressRequestINSTANCE = FfiConverterCheckLightningAddressRequest{}
+
+func (c FfiConverterCheckLightningAddressRequest) Lift(rb RustBufferI) CheckLightningAddressRequest {
+	return LiftFromRustBuffer[CheckLightningAddressRequest](c, rb)
+}
+
+func (c FfiConverterCheckLightningAddressRequest) Read(reader io.Reader) CheckLightningAddressRequest {
+	return CheckLightningAddressRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterCheckLightningAddressRequest) Lower(value CheckLightningAddressRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[CheckLightningAddressRequest](c, value)
+}
+
+func (c FfiConverterCheckLightningAddressRequest) Write(writer io.Writer, value CheckLightningAddressRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Username)
+}
+
+type FfiDestroyerCheckLightningAddressRequest struct{}
+
+func (_ FfiDestroyerCheckLightningAddressRequest) Destroy(value CheckLightningAddressRequest) {
+	value.Destroy()
 }
 
 type ClaimDepositRequest struct {
@@ -3353,6 +3689,8 @@ type Config struct {
 	Network            Network
 	SyncIntervalSecs   uint32
 	MaxDepositClaimFee *Fee
+	// The domain used for receiving through lnurl-pay and lightning address.
+	LnurlDomain *string
 }
 
 func (r *Config) Destroy() {
@@ -3360,6 +3698,7 @@ func (r *Config) Destroy() {
 	FfiDestroyerNetwork{}.Destroy(r.Network)
 	FfiDestroyerUint32{}.Destroy(r.SyncIntervalSecs)
 	FfiDestroyerOptionalFee{}.Destroy(r.MaxDepositClaimFee)
+	FfiDestroyerOptionalString{}.Destroy(r.LnurlDomain)
 }
 
 type FfiConverterConfig struct{}
@@ -3376,6 +3715,7 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterNetworkINSTANCE.Read(reader),
 		FfiConverterUint32INSTANCE.Read(reader),
 		FfiConverterOptionalFeeINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
@@ -3388,6 +3728,7 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterNetworkINSTANCE.Write(writer, value.Network)
 	FfiConverterUint32INSTANCE.Write(writer, value.SyncIntervalSecs)
 	FfiConverterOptionalFeeINSTANCE.Write(writer, value.MaxDepositClaimFee)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.LnurlDomain)
 }
 
 type FfiDestroyerConfig struct{}
@@ -3675,6 +4016,54 @@ func (c FfiConverterGetPaymentResponse) Write(writer io.Writer, value GetPayment
 type FfiDestroyerGetPaymentResponse struct{}
 
 func (_ FfiDestroyerGetPaymentResponse) Destroy(value GetPaymentResponse) {
+	value.Destroy()
+}
+
+type LightningAddressInfo struct {
+	Description      string
+	LightningAddress string
+	Lnurl            string
+	Username         string
+}
+
+func (r *LightningAddressInfo) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Description)
+	FfiDestroyerString{}.Destroy(r.LightningAddress)
+	FfiDestroyerString{}.Destroy(r.Lnurl)
+	FfiDestroyerString{}.Destroy(r.Username)
+}
+
+type FfiConverterLightningAddressInfo struct{}
+
+var FfiConverterLightningAddressInfoINSTANCE = FfiConverterLightningAddressInfo{}
+
+func (c FfiConverterLightningAddressInfo) Lift(rb RustBufferI) LightningAddressInfo {
+	return LiftFromRustBuffer[LightningAddressInfo](c, rb)
+}
+
+func (c FfiConverterLightningAddressInfo) Read(reader io.Reader) LightningAddressInfo {
+	return LightningAddressInfo{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterLightningAddressInfo) Lower(value LightningAddressInfo) C.RustBuffer {
+	return LowerIntoRustBuffer[LightningAddressInfo](c, value)
+}
+
+func (c FfiConverterLightningAddressInfo) Write(writer io.Writer, value LightningAddressInfo) {
+	FfiConverterStringINSTANCE.Write(writer, value.Description)
+	FfiConverterStringINSTANCE.Write(writer, value.LightningAddress)
+	FfiConverterStringINSTANCE.Write(writer, value.Lnurl)
+	FfiConverterStringINSTANCE.Write(writer, value.Username)
+}
+
+type FfiDestroyerLightningAddressInfo struct{}
+
+func (_ FfiDestroyerLightningAddressInfo) Destroy(value LightningAddressInfo) {
 	value.Destroy()
 }
 
@@ -4455,6 +4844,46 @@ func (c FfiConverterRefundDepositResponse) Write(writer io.Writer, value RefundD
 type FfiDestroyerRefundDepositResponse struct{}
 
 func (_ FfiDestroyerRefundDepositResponse) Destroy(value RefundDepositResponse) {
+	value.Destroy()
+}
+
+type RegisterLightningAddressRequest struct {
+	Username    string
+	Description string
+}
+
+func (r *RegisterLightningAddressRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Username)
+	FfiDestroyerString{}.Destroy(r.Description)
+}
+
+type FfiConverterRegisterLightningAddressRequest struct{}
+
+var FfiConverterRegisterLightningAddressRequestINSTANCE = FfiConverterRegisterLightningAddressRequest{}
+
+func (c FfiConverterRegisterLightningAddressRequest) Lift(rb RustBufferI) RegisterLightningAddressRequest {
+	return LiftFromRustBuffer[RegisterLightningAddressRequest](c, rb)
+}
+
+func (c FfiConverterRegisterLightningAddressRequest) Read(reader io.Reader) RegisterLightningAddressRequest {
+	return RegisterLightningAddressRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterRegisterLightningAddressRequest) Lower(value RegisterLightningAddressRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[RegisterLightningAddressRequest](c, value)
+}
+
+func (c FfiConverterRegisterLightningAddressRequest) Write(writer io.Writer, value RegisterLightningAddressRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Username)
+	FfiConverterStringINSTANCE.Write(writer, value.Description)
+}
+
+type FfiDestroyerRegisterLightningAddressRequest struct{}
+
+func (_ FfiDestroyerRegisterLightningAddressRequest) Destroy(value RegisterLightningAddressRequest) {
 	value.Destroy()
 }
 
@@ -6796,6 +7225,43 @@ type FfiDestroyerOptionalCredentials struct{}
 func (_ FfiDestroyerOptionalCredentials) Destroy(value *Credentials) {
 	if value != nil {
 		FfiDestroyerCredentials{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalLightningAddressInfo struct{}
+
+var FfiConverterOptionalLightningAddressInfoINSTANCE = FfiConverterOptionalLightningAddressInfo{}
+
+func (c FfiConverterOptionalLightningAddressInfo) Lift(rb RustBufferI) *LightningAddressInfo {
+	return LiftFromRustBuffer[*LightningAddressInfo](c, rb)
+}
+
+func (_ FfiConverterOptionalLightningAddressInfo) Read(reader io.Reader) *LightningAddressInfo {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterLightningAddressInfoINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalLightningAddressInfo) Lower(value *LightningAddressInfo) C.RustBuffer {
+	return LowerIntoRustBuffer[*LightningAddressInfo](c, value)
+}
+
+func (_ FfiConverterOptionalLightningAddressInfo) Write(writer io.Writer, value *LightningAddressInfo) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterLightningAddressInfoINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalLightningAddressInfo struct{}
+
+func (_ FfiDestroyerOptionalLightningAddressInfo) Destroy(value *LightningAddressInfo) {
+	if value != nil {
+		FfiDestroyerLightningAddressInfo{}.Destroy(*value)
 	}
 }
 

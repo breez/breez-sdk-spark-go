@@ -406,11 +406,26 @@ static void call_UniffiCallbackInterfaceRestClientMethod1(
 
 
 #endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_REST_CLIENT_METHOD2
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_REST_CLIENT_METHOD2
+typedef void (*UniffiCallbackInterfaceRestClientMethod2)(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, RustBuffer body, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceRestClientMethod2(
+				UniffiCallbackInterfaceRestClientMethod2 cb, uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, RustBuffer body, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, url, headers, body, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
 #ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_REST_CLIENT
 #define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_REST_CLIENT
 typedef struct UniffiVTableCallbackInterfaceRestClient {
     UniffiCallbackInterfaceRestClientMethod0 get;
     UniffiCallbackInterfaceRestClientMethod1 post;
+    UniffiCallbackInterfaceRestClientMethod2 delete;
     UniffiCallbackInterfaceFree uniffiFree;
 } UniffiVTableCallbackInterfaceRestClient;
 
@@ -438,6 +453,11 @@ uint64_t uniffi_breez_sdk_common_fn_method_restclient_get(void* ptr, RustBuffer 
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_METHOD_RESTCLIENT_POST
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_METHOD_RESTCLIENT_POST
 uint64_t uniffi_breez_sdk_common_fn_method_restclient_post(void* ptr, RustBuffer url, RustBuffer headers, RustBuffer body
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_METHOD_RESTCLIENT_DELETE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_METHOD_RESTCLIENT_DELETE
+uint64_t uniffi_breez_sdk_common_fn_method_restclient_delete(void* ptr, RustBuffer url, RustBuffer headers, RustBuffer body
 );
 #endif
 #ifndef UNIFFI_FFIDEF_FFI_BREEZ_SDK_COMMON_RUSTBUFFER_ALLOC
@@ -732,6 +752,12 @@ uint16_t uniffi_breez_sdk_common_checksum_method_restclient_post(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_CHECKSUM_METHOD_RESTCLIENT_DELETE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_CHECKSUM_METHOD_RESTCLIENT_DELETE
+uint16_t uniffi_breez_sdk_common_checksum_method_restclient_delete(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_FFI_BREEZ_SDK_COMMON_UNIFFI_CONTRACT_VERSION
 #define UNIFFI_FFIDEF_FFI_BREEZ_SDK_COMMON_UNIFFI_CONTRACT_VERSION
 uint32_t ffi_breez_sdk_common_uniffi_contract_version(void
@@ -741,6 +767,7 @@ uint32_t ffi_breez_sdk_common_uniffi_contract_version(void
 
  void breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod0(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod1(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, RustBuffer body, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, RustBuffer body, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientFree(uint64_t handle);
 
 void breez_sdk_common_uniffiFutureContinuationCallback(uint64_t, int8_t);

@@ -368,6 +368,15 @@ func uniffiCheckChecksums() {
 			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_post: UniFFI API checksum mismatch")
 		}
 	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_restclient_delete()
+		})
+		if checksum != 56210 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_delete: UniFFI API checksum mismatch")
+		}
+	}
 }
 
 type FfiConverterUint16 struct{}
@@ -622,6 +631,12 @@ type RestClient interface {
 	// - `headers`: the optional POST headers
 	// - `body`: the optional POST body
 	Post(url string, headers *map[string]string, body *string) (RestResponse, error)
+	// Makes a DELETE request, and logs on DEBUG.
+	// ### Arguments
+	// - `url`: the URL on which DELETE will be called
+	// - `headers`: the optional DELETE headers
+	// - `body`: the optional DELETE body
+	Delete(url string, headers *map[string]string, body *string) (RestResponse, error)
 }
 type RestClientImpl struct {
 	ffiObject FfiObject
@@ -684,6 +699,42 @@ func (_self *RestClientImpl) Post(url string, headers *map[string]string, body *
 			return FfiConverterRestResponseINSTANCE.Lift(ffi)
 		},
 		C.uniffi_breez_sdk_common_fn_method_restclient_post(
+			_pointer, FfiConverterStringINSTANCE.Lower(url), FfiConverterOptionalMapStringStringINSTANCE.Lower(headers), FfiConverterOptionalStringINSTANCE.Lower(body)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Makes a DELETE request, and logs on DEBUG.
+// ### Arguments
+// - `url`: the URL on which DELETE will be called
+// - `headers`: the optional DELETE headers
+// - `body`: the optional DELETE body
+func (_self *RestClientImpl) Delete(url string, headers *map[string]string, body *string) (RestResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("RestClient")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[ServiceConnectivityError](
+		FfiConverterServiceConnectivityErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_common_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) RestResponse {
+			return FfiConverterRestResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_common_fn_method_restclient_delete(
 			_pointer, FfiConverterStringINSTANCE.Lower(url), FfiConverterOptionalMapStringStringINSTANCE.Lower(headers), FfiConverterOptionalStringINSTANCE.Lower(body)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -934,9 +985,79 @@ func breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod1(uniffiHandl
 	}()
 }
 
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2
+func breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2(uniffiHandle C.uint64_t, url C.RustBuffer, headers C.RustBuffer, body C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterRestClientINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.Delete(
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: url,
+				}),
+				FfiConverterOptionalMapStringStringINSTANCE.Lift(GoRustBuffer{
+					inner: headers,
+				}),
+				FfiConverterOptionalStringINSTANCE.Lift(GoRustBuffer{
+					inner: body,
+				}),
+			)
+
+		if err != nil {
+			var actualError *ServiceConnectivityError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterServiceConnectivityErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterRestResponseINSTANCE.Lower(res)
+	}()
+}
+
 var UniffiVTableCallbackInterfaceRestClientINSTANCE = C.UniffiVTableCallbackInterfaceRestClient{
-	get:  (C.UniffiCallbackInterfaceRestClientMethod0)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod0),
-	post: (C.UniffiCallbackInterfaceRestClientMethod1)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod1),
+	get:    (C.UniffiCallbackInterfaceRestClientMethod0)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod0),
+	post:   (C.UniffiCallbackInterfaceRestClientMethod1)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod1),
+	delete: (C.UniffiCallbackInterfaceRestClientMethod2)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientFree),
 }
