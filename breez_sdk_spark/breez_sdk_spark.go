@@ -376,7 +376,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_default_storage()
 		})
-		if checksum != 46285 {
+		if checksum != 30804 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_default_storage: UniFFI API checksum mismatch")
 		}
@@ -7331,15 +7331,29 @@ func DefaultConfig(network Network) Config {
 }
 
 func DefaultStorage(dataDir string) (Storage, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
-		return C.uniffi_breez_sdk_spark_fn_func_default_storage(FfiConverterStringINSTANCE.Lower(dataDir), _uniffiStatus)
-	})
-	if _uniffiErr != nil {
-		var _uniffiDefaultValue Storage
-		return _uniffiDefaultValue, _uniffiErr
-	} else {
-		return FfiConverterStorageINSTANCE.Lift(_uniffiRV), nil
-	}
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) unsafe.Pointer {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_pointer(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi unsafe.Pointer) Storage {
+			return FfiConverterStorageINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_func_default_storage(FfiConverterStringINSTANCE.Lower(dataDir)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_pointer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_pointer(handle)
+		},
+	)
+
+	return res, err
 }
 
 func InitLogging(logDir *string, appLogger *Logger, logFilter *string) error {

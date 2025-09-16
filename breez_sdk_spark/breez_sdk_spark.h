@@ -878,7 +878,7 @@ RustBuffer uniffi_breez_sdk_spark_fn_func_default_config(RustBuffer network, Rus
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_STORAGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_STORAGE
-void* uniffi_breez_sdk_spark_fn_func_default_storage(RustBuffer data_dir, RustCallStatus *out_status
+uint64_t uniffi_breez_sdk_spark_fn_func_default_storage(RustBuffer data_dir
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_INIT_LOGGING

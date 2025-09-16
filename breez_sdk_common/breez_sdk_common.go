@@ -1922,7 +1922,7 @@ type LnurlPayRequestDetails struct {
 	// Value indicating whether the recipient supports Nostr Zaps through NIP-57.
 	//
 	// See <https://github.com/nostr-protocol/nips/blob/master/57.md>
-	AllowsNostr bool
+	AllowsNostr *bool
 	// Optional recipient's lnurl provider's Nostr pubkey for NIP-57. If it exists it should be a
 	// valid BIP 340 public key in hex.
 	//
@@ -1940,7 +1940,7 @@ func (r *LnurlPayRequestDetails) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Domain)
 	FfiDestroyerString{}.Destroy(r.Url)
 	FfiDestroyerOptionalString{}.Destroy(r.Address)
-	FfiDestroyerBool{}.Destroy(r.AllowsNostr)
+	FfiDestroyerOptionalBool{}.Destroy(r.AllowsNostr)
 	FfiDestroyerOptionalString{}.Destroy(r.NostrPubkey)
 }
 
@@ -1962,7 +1962,7 @@ func (c FfiConverterLnurlPayRequestDetails) Read(reader io.Reader) LnurlPayReque
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
@@ -1980,7 +1980,7 @@ func (c FfiConverterLnurlPayRequestDetails) Write(writer io.Writer, value LnurlP
 	FfiConverterStringINSTANCE.Write(writer, value.Domain)
 	FfiConverterStringINSTANCE.Write(writer, value.Url)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Address)
-	FfiConverterBoolINSTANCE.Write(writer, value.AllowsNostr)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.AllowsNostr)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrPubkey)
 }
 
