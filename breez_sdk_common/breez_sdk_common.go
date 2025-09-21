@@ -352,29 +352,29 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_common_checksum_method_restclient_get()
+			return C.uniffi_breez_sdk_common_checksum_method_restclient_get_request()
 		})
-		if checksum != 32450 {
+		if checksum != 1702 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_get: UniFFI API checksum mismatch")
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_get_request: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_common_checksum_method_restclient_post()
+			return C.uniffi_breez_sdk_common_checksum_method_restclient_post_request()
 		})
-		if checksum != 14213 {
+		if checksum != 38998 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_post: UniFFI API checksum mismatch")
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_post_request: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_common_checksum_method_restclient_delete()
+			return C.uniffi_breez_sdk_common_checksum_method_restclient_delete_request()
 		})
-		if checksum != 56210 {
+		if checksum != 26893 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_delete: UniFFI API checksum mismatch")
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_delete_request: UniFFI API checksum mismatch")
 		}
 	}
 }
@@ -624,19 +624,19 @@ type RestClient interface {
 	// ### Arguments
 	// - `url`: the URL on which GET will be called
 	// - `headers`: optional headers that will be set on the request
-	Get(url string, headers *map[string]string) (RestResponse, error)
+	GetRequest(url string, headers *map[string]string) (RestResponse, error)
 	// Makes a POST request, and logs on DEBUG.
 	// ### Arguments
 	// - `url`: the URL on which POST will be called
 	// - `headers`: the optional POST headers
 	// - `body`: the optional POST body
-	Post(url string, headers *map[string]string, body *string) (RestResponse, error)
+	PostRequest(url string, headers *map[string]string, body *string) (RestResponse, error)
 	// Makes a DELETE request, and logs on DEBUG.
 	// ### Arguments
 	// - `url`: the URL on which DELETE will be called
 	// - `headers`: the optional DELETE headers
 	// - `body`: the optional DELETE body
-	Delete(url string, headers *map[string]string, body *string) (RestResponse, error)
+	DeleteRequest(url string, headers *map[string]string, body *string) (RestResponse, error)
 }
 type RestClientImpl struct {
 	ffiObject FfiObject
@@ -646,7 +646,7 @@ type RestClientImpl struct {
 // ### Arguments
 // - `url`: the URL on which GET will be called
 // - `headers`: optional headers that will be set on the request
-func (_self *RestClientImpl) Get(url string, headers *map[string]string) (RestResponse, error) {
+func (_self *RestClientImpl) GetRequest(url string, headers *map[string]string) (RestResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("RestClient")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[ServiceConnectivityError](
@@ -662,7 +662,7 @@ func (_self *RestClientImpl) Get(url string, headers *map[string]string) (RestRe
 		func(ffi RustBufferI) RestResponse {
 			return FfiConverterRestResponseINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_common_fn_method_restclient_get(
+		C.uniffi_breez_sdk_common_fn_method_restclient_get_request(
 			_pointer, FfiConverterStringINSTANCE.Lower(url), FfiConverterOptionalMapStringStringINSTANCE.Lower(headers)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -682,7 +682,7 @@ func (_self *RestClientImpl) Get(url string, headers *map[string]string) (RestRe
 // - `url`: the URL on which POST will be called
 // - `headers`: the optional POST headers
 // - `body`: the optional POST body
-func (_self *RestClientImpl) Post(url string, headers *map[string]string, body *string) (RestResponse, error) {
+func (_self *RestClientImpl) PostRequest(url string, headers *map[string]string, body *string) (RestResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("RestClient")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[ServiceConnectivityError](
@@ -698,7 +698,7 @@ func (_self *RestClientImpl) Post(url string, headers *map[string]string, body *
 		func(ffi RustBufferI) RestResponse {
 			return FfiConverterRestResponseINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_common_fn_method_restclient_post(
+		C.uniffi_breez_sdk_common_fn_method_restclient_post_request(
 			_pointer, FfiConverterStringINSTANCE.Lower(url), FfiConverterOptionalMapStringStringINSTANCE.Lower(headers), FfiConverterOptionalStringINSTANCE.Lower(body)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -718,7 +718,7 @@ func (_self *RestClientImpl) Post(url string, headers *map[string]string, body *
 // - `url`: the URL on which DELETE will be called
 // - `headers`: the optional DELETE headers
 // - `body`: the optional DELETE body
-func (_self *RestClientImpl) Delete(url string, headers *map[string]string, body *string) (RestResponse, error) {
+func (_self *RestClientImpl) DeleteRequest(url string, headers *map[string]string, body *string) (RestResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("RestClient")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[ServiceConnectivityError](
@@ -734,7 +734,7 @@ func (_self *RestClientImpl) Delete(url string, headers *map[string]string, body
 		func(ffi RustBufferI) RestResponse {
 			return FfiConverterRestResponseINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_common_fn_method_restclient_delete(
+		C.uniffi_breez_sdk_common_fn_method_restclient_delete_request(
 			_pointer, FfiConverterStringINSTANCE.Lower(url), FfiConverterOptionalMapStringStringINSTANCE.Lower(headers), FfiConverterOptionalStringINSTANCE.Lower(body)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -885,7 +885,7 @@ func breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod0(uniffiHandl
 		}()
 
 		res, err :=
-			uniffiObj.Get(
+			uniffiObj.GetRequest(
 				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
 					inner: url,
 				}),
@@ -951,7 +951,7 @@ func breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod1(uniffiHandl
 		}()
 
 		res, err :=
-			uniffiObj.Post(
+			uniffiObj.PostRequest(
 				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
 					inner: url,
 				}),
@@ -1020,7 +1020,7 @@ func breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2(uniffiHandl
 		}()
 
 		res, err :=
-			uniffiObj.Delete(
+			uniffiObj.DeleteRequest(
 				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
 					inner: url,
 				}),
@@ -1055,9 +1055,9 @@ func breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2(uniffiHandl
 }
 
 var UniffiVTableCallbackInterfaceRestClientINSTANCE = C.UniffiVTableCallbackInterfaceRestClient{
-	get:    (C.UniffiCallbackInterfaceRestClientMethod0)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod0),
-	post:   (C.UniffiCallbackInterfaceRestClientMethod1)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod1),
-	delete: (C.UniffiCallbackInterfaceRestClientMethod2)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2),
+	getRequest:    (C.UniffiCallbackInterfaceRestClientMethod0)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod0),
+	postRequest:   (C.UniffiCallbackInterfaceRestClientMethod1)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod1),
+	deleteRequest: (C.UniffiCallbackInterfaceRestClientMethod2)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientFree),
 }

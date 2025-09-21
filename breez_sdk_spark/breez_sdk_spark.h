@@ -743,7 +743,7 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_lnurl_pay(void* ptr, RustBuff
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_POLL_LIGHTNING_SEND_PAYMENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_POLL_LIGHTNING_SEND_PAYMENT
-void uniffi_breez_sdk_spark_fn_method_breezsdk_poll_lightning_send_payment(void* ptr, RustBuffer payment_id, RustCallStatus *out_status
+void uniffi_breez_sdk_spark_fn_method_breezsdk_poll_lightning_send_payment(void* ptr, RustBuffer payment, RustBuffer ssp_id, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PREPARE_LNURL_PAY
@@ -819,6 +819,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_build(void* ptr
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_CHAIN_SERVICE
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_chain_service(void* ptr, void* chain_service
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_KEY_SET
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_KEY_SET
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_key_set(void* ptr, RustBuffer key_set_type, int8_t use_address_index
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_LNURL_CLIENT
@@ -923,7 +928,7 @@ RustBuffer uniffi_breez_sdk_spark_fn_func_default_config(RustBuffer network, Rus
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_STORAGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_STORAGE
-uint64_t uniffi_breez_sdk_spark_fn_func_default_storage(RustBuffer data_dir
+void* uniffi_breez_sdk_spark_fn_func_default_storage(RustBuffer data_dir, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_INIT_LOGGING
@@ -1405,6 +1410,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_build(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_CHAIN_SERVICE
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_chain_service(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_KEY_SET
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_KEY_SET
+uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set(void
     
 );
 #endif

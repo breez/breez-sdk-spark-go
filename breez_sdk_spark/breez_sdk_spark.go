@@ -376,7 +376,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_default_storage()
 		})
-		if checksum != 30804 {
+		if checksum != 46285 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_default_storage: UniFFI API checksum mismatch")
 		}
@@ -529,7 +529,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_poll_lightning_send_payment()
 		})
-		if checksum != 5478 {
+		if checksum != 57601 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_poll_lightning_send_payment: UniFFI API checksum mismatch")
 		}
@@ -640,6 +640,15 @@ func uniffiCheckChecksums() {
 		if checksum != 2848 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_chain_service: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set()
+		})
+		if checksum != 55523 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1429,7 +1438,7 @@ type BreezSdkInterface interface {
 	ListPayments(request ListPaymentsRequest) (ListPaymentsResponse, error)
 	ListUnclaimedDeposits(request ListUnclaimedDepositsRequest) (ListUnclaimedDepositsResponse, error)
 	LnurlPay(request LnurlPayRequest) (LnurlPayResponse, error)
-	PollLightningSendPayment(paymentId string)
+	PollLightningSendPayment(payment Payment, sspId string)
 	PrepareLnurlPay(request PrepareLnurlPayRequest) (PrepareLnurlPayResponse, error)
 	PrepareSendPayment(request PrepareSendPaymentRequest) (PrepareSendPaymentResponse, error)
 	ReceivePayment(request ReceivePaymentRequest) (ReceivePaymentResponse, error)
@@ -1786,12 +1795,12 @@ func (_self *BreezSdk) LnurlPay(request LnurlPayRequest) (LnurlPayResponse, erro
 	return res, err
 }
 
-func (_self *BreezSdk) PollLightningSendPayment(paymentId string) {
+func (_self *BreezSdk) PollLightningSendPayment(payment Payment, sspId string) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
 	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_poll_lightning_send_payment(
-			_pointer, FfiConverterStringINSTANCE.Lower(paymentId), _uniffiStatus)
+			_pointer, FfiConverterPaymentINSTANCE.Lower(payment), FfiConverterStringINSTANCE.Lower(sspId), _uniffiStatus)
 		return false
 	})
 }
@@ -2137,6 +2146,11 @@ type SdkBuilderInterface interface {
 	// Arguments:
 	// - `chain_service`: The chain service to be used.
 	WithChainService(chainService BitcoinChainService)
+	// Sets the key set type to be used by the SDK.
+	// Arguments:
+	// - `key_set_type`: The key set type which determines the derivation path.
+	// - `use_address_index`: Controls the structure of the BIP derivation path.
+	WithKeySet(keySetType KeySetType, useAddressIndex bool)
 	WithLnurlClient(lnurlClient breez_sdk_common.RestClient)
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
@@ -2208,6 +2222,36 @@ func (_self *SdkBuilder) WithChainService(chainService BitcoinChainService) {
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_chain_service(
 			_pointer, FfiConverterBitcoinChainServiceINSTANCE.Lower(chainService)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets the key set type to be used by the SDK.
+// Arguments:
+// - `key_set_type`: The key set type which determines the derivation path.
+// - `use_address_index`: Controls the structure of the BIP derivation path.
+func (_self *SdkBuilder) WithKeySet(keySetType KeySetType, useAddressIndex bool) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_key_set(
+			_pointer, FfiConverterKeySetTypeINSTANCE.Lower(keySetType), FfiConverterBoolINSTANCE.Lower(useAddressIndex)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -3691,6 +3735,10 @@ type Config struct {
 	MaxDepositClaimFee *Fee
 	// The domain used for receiving through lnurl-pay and lightning address.
 	LnurlDomain *string
+	// When this is set to `true` we will prefer to use spark payments over
+	// lightning when sending and receiving. This has the benefit of lower fees
+	// but is at the cost of privacy.
+	PreferSparkOverLightning bool
 }
 
 func (r *Config) Destroy() {
@@ -3699,6 +3747,7 @@ func (r *Config) Destroy() {
 	FfiDestroyerUint32{}.Destroy(r.SyncIntervalSecs)
 	FfiDestroyerOptionalFee{}.Destroy(r.MaxDepositClaimFee)
 	FfiDestroyerOptionalString{}.Destroy(r.LnurlDomain)
+	FfiDestroyerBool{}.Destroy(r.PreferSparkOverLightning)
 }
 
 type FfiConverterConfig struct{}
@@ -3716,6 +3765,7 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterUint32INSTANCE.Read(reader),
 		FfiConverterOptionalFeeINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterBoolINSTANCE.Read(reader),
 	}
 }
 
@@ -3729,6 +3779,7 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterUint32INSTANCE.Write(writer, value.SyncIntervalSecs)
 	FfiConverterOptionalFeeINSTANCE.Write(writer, value.MaxDepositClaimFee)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.LnurlDomain)
+	FfiConverterBoolINSTANCE.Write(writer, value.PreferSparkOverLightning)
 }
 
 type FfiDestroyerConfig struct{}
@@ -5552,6 +5603,41 @@ func (_ FfiDestroyerFee) Destroy(value Fee) {
 	value.Destroy()
 }
 
+type KeySetType uint
+
+const (
+	KeySetTypeDefault       KeySetType = 1
+	KeySetTypeTaproot       KeySetType = 2
+	KeySetTypeNativeSegwit  KeySetType = 3
+	KeySetTypeWrappedSegwit KeySetType = 4
+	KeySetTypeLegacy        KeySetType = 5
+)
+
+type FfiConverterKeySetType struct{}
+
+var FfiConverterKeySetTypeINSTANCE = FfiConverterKeySetType{}
+
+func (c FfiConverterKeySetType) Lift(rb RustBufferI) KeySetType {
+	return LiftFromRustBuffer[KeySetType](c, rb)
+}
+
+func (c FfiConverterKeySetType) Lower(value KeySetType) C.RustBuffer {
+	return LowerIntoRustBuffer[KeySetType](c, value)
+}
+func (FfiConverterKeySetType) Read(reader io.Reader) KeySetType {
+	id := readInt32(reader)
+	return KeySetType(id)
+}
+
+func (FfiConverterKeySetType) Write(writer io.Writer, value KeySetType) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerKeySetType struct{}
+
+func (_ FfiDestroyerKeySetType) Destroy(value KeySetType) {
+}
+
 type Network uint
 
 const (
@@ -6434,6 +6520,14 @@ func (e SdkEventPaymentSucceeded) Destroy() {
 	FfiDestroyerPayment{}.Destroy(e.Payment)
 }
 
+type SdkEventPaymentFailed struct {
+	Payment Payment
+}
+
+func (e SdkEventPaymentFailed) Destroy() {
+	FfiDestroyerPayment{}.Destroy(e.Payment)
+}
+
 type FfiConverterSdkEvent struct{}
 
 var FfiConverterSdkEventINSTANCE = FfiConverterSdkEvent{}
@@ -6462,6 +6556,10 @@ func (FfiConverterSdkEvent) Read(reader io.Reader) SdkEvent {
 		return SdkEventPaymentSucceeded{
 			FfiConverterPaymentINSTANCE.Read(reader),
 		}
+	case 5:
+		return SdkEventPaymentFailed{
+			FfiConverterPaymentINSTANCE.Read(reader),
+		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterSdkEvent.Read()", id))
 	}
@@ -6479,6 +6577,9 @@ func (FfiConverterSdkEvent) Write(writer io.Writer, value SdkEvent) {
 		FfiConverterSequenceDepositInfoINSTANCE.Write(writer, variant_value.ClaimedDeposits)
 	case SdkEventPaymentSucceeded:
 		writeInt32(writer, 4)
+		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
+	case SdkEventPaymentFailed:
+		writeInt32(writer, 5)
 		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
 	default:
 		_ = variant_value
@@ -7797,29 +7898,15 @@ func DefaultConfig(network Network) Config {
 }
 
 func DefaultStorage(dataDir string) (Storage, error) {
-	res, err := uniffiRustCallAsync[SdkError](
-		FfiConverterSdkErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) unsafe.Pointer {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_pointer(handle, status)
-			return res
-		},
-		// liftFn
-		func(ffi unsafe.Pointer) Storage {
-			return FfiConverterStorageINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_func_default_storage(FfiConverterStringINSTANCE.Lower(dataDir)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_pointer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_pointer(handle)
-		},
-	)
-
-	return res, err
+	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_default_storage(FfiConverterStringINSTANCE.Lower(dataDir), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue Storage
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterStorageINSTANCE.Lift(_uniffiRV), nil
+	}
 }
 
 func InitLogging(logDir *string, appLogger *Logger, logFilter *string) error {
