@@ -378,6 +378,34 @@ static void call_UniffiForeignFutureCompleteVoid(
 
 
 #endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_FIAT_SERVICE_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_FIAT_SERVICE_METHOD0
+typedef void (*UniffiCallbackInterfaceFiatServiceMethod0)(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceFiatServiceMethod0(
+				UniffiCallbackInterfaceFiatServiceMethod0 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_FIAT_SERVICE_METHOD1
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_FIAT_SERVICE_METHOD1
+typedef void (*UniffiCallbackInterfaceFiatServiceMethod1)(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceFiatServiceMethod1(
+				UniffiCallbackInterfaceFiatServiceMethod1 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_REST_CLIENT_METHOD0
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_REST_CLIENT_METHOD0
 typedef void (*UniffiCallbackInterfaceRestClientMethod0)(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
@@ -420,6 +448,15 @@ static void call_UniffiCallbackInterfaceRestClientMethod2(
 
 
 #endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_FIAT_SERVICE
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_FIAT_SERVICE
+typedef struct UniffiVTableCallbackInterfaceFiatService {
+    UniffiCallbackInterfaceFiatServiceMethod0 fetchFiatCurrencies;
+    UniffiCallbackInterfaceFiatServiceMethod1 fetchFiatRates;
+    UniffiCallbackInterfaceFree uniffiFree;
+} UniffiVTableCallbackInterfaceFiatService;
+
+#endif
 #ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_REST_CLIENT
 #define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_REST_CLIENT
 typedef struct UniffiVTableCallbackInterfaceRestClient {
@@ -429,6 +466,31 @@ typedef struct UniffiVTableCallbackInterfaceRestClient {
     UniffiCallbackInterfaceFree uniffiFree;
 } UniffiVTableCallbackInterfaceRestClient;
 
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_CLONE_FIATSERVICE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_CLONE_FIATSERVICE
+void* uniffi_breez_sdk_common_fn_clone_fiatservice(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_FREE_FIATSERVICE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_FREE_FIATSERVICE
+void uniffi_breez_sdk_common_fn_free_fiatservice(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_INIT_CALLBACK_VTABLE_FIATSERVICE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_INIT_CALLBACK_VTABLE_FIATSERVICE
+void uniffi_breez_sdk_common_fn_init_callback_vtable_fiatservice(UniffiVTableCallbackInterfaceFiatService* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_METHOD_FIATSERVICE_FETCH_FIAT_CURRENCIES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_METHOD_FIATSERVICE_FETCH_FIAT_CURRENCIES
+uint64_t uniffi_breez_sdk_common_fn_method_fiatservice_fetch_fiat_currencies(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_METHOD_FIATSERVICE_FETCH_FIAT_RATES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_METHOD_FIATSERVICE_FETCH_FIAT_RATES
+uint64_t uniffi_breez_sdk_common_fn_method_fiatservice_fetch_fiat_rates(void* ptr
+);
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_CLONE_RESTCLIENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_FN_CLONE_RESTCLIENT
@@ -740,6 +802,18 @@ void ffi_breez_sdk_common_rust_future_free_void(uint64_t handle
 void ffi_breez_sdk_common_rust_future_complete_void(uint64_t handle, RustCallStatus *out_status
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_CHECKSUM_METHOD_FIATSERVICE_FETCH_FIAT_CURRENCIES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_CHECKSUM_METHOD_FIATSERVICE_FETCH_FIAT_CURRENCIES
+uint16_t uniffi_breez_sdk_common_checksum_method_fiatservice_fetch_fiat_currencies(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_CHECKSUM_METHOD_FIATSERVICE_FETCH_FIAT_RATES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_CHECKSUM_METHOD_FIATSERVICE_FETCH_FIAT_RATES
+uint16_t uniffi_breez_sdk_common_checksum_method_fiatservice_fetch_fiat_rates(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_CHECKSUM_METHOD_RESTCLIENT_GET_REQUEST
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_COMMON_CHECKSUM_METHOD_RESTCLIENT_GET_REQUEST
 uint16_t uniffi_breez_sdk_common_checksum_method_restclient_get_request(void
@@ -765,6 +839,9 @@ uint32_t ffi_breez_sdk_common_uniffi_contract_version(void
 );
 #endif
 
+ void breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceMethod0(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceMethod1(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceFree(uint64_t handle);
  void breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod0(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod1(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, RustBuffer body, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod2(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, RustBuffer body, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);

@@ -335,6 +335,7 @@ func readFloat64(reader io.Reader) float64 {
 
 func init() {
 
+	FfiConverterFiatServiceINSTANCE.register()
 	FfiConverterRestClientINSTANCE.register()
 	uniffiCheckChecksums()
 }
@@ -349,6 +350,24 @@ func uniffiCheckChecksums() {
 	if bindingsContractVersion != int(scaffoldingContractVersion) {
 		// If this happens try cleaning and rebuilding your project
 		panic("breez_sdk_common: UniFFI contract version mismatch")
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_fiatservice_fetch_fiat_currencies()
+		})
+		if checksum != 63089 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_fiatservice_fetch_fiat_currencies: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_fiatservice_fetch_fiat_rates()
+		})
+		if checksum != 48636 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_fiatservice_fetch_fiat_rates: UniFFI API checksum mismatch")
+		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
@@ -619,6 +638,318 @@ func (ffiObject *FfiObject) freeRustArcPtr() {
 	})
 }
 
+// Trait covering fiat-related functionality
+type FiatService interface {
+	// List all supported fiat currencies for which there is a known exchange rate.
+	FetchFiatCurrencies() ([]FiatCurrency, error)
+	// Get the live rates from the server.
+	FetchFiatRates() ([]Rate, error)
+}
+
+// Trait covering fiat-related functionality
+type FiatServiceImpl struct {
+	ffiObject FfiObject
+}
+
+// List all supported fiat currencies for which there is a known exchange rate.
+func (_self *FiatServiceImpl) FetchFiatCurrencies() ([]FiatCurrency, error) {
+	_pointer := _self.ffiObject.incrementPointer("FiatService")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[ServiceConnectivityError](
+		FfiConverterServiceConnectivityErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_common_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []FiatCurrency {
+			return FfiConverterSequenceFiatCurrencyINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_common_fn_method_fiatservice_fetch_fiat_currencies(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Get the live rates from the server.
+func (_self *FiatServiceImpl) FetchFiatRates() ([]Rate, error) {
+	_pointer := _self.ffiObject.incrementPointer("FiatService")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[ServiceConnectivityError](
+		FfiConverterServiceConnectivityErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_common_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []Rate {
+			return FfiConverterSequenceRateINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_common_fn_method_fiatservice_fetch_fiat_rates(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+func (object *FiatServiceImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterFiatService struct {
+	handleMap *concurrentHandleMap[FiatService]
+}
+
+var FfiConverterFiatServiceINSTANCE = FfiConverterFiatService{
+	handleMap: newConcurrentHandleMap[FiatService](),
+}
+
+func (c FfiConverterFiatService) Lift(pointer unsafe.Pointer) FiatService {
+	result := &FiatServiceImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_common_fn_clone_fiatservice(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_common_fn_free_fiatservice(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*FiatServiceImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterFiatService) Read(reader io.Reader) FiatService {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterFiatService) Lower(value FiatService) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterFiatService) Write(writer io.Writer, value FiatService) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerFiatService struct{}
+
+func (_ FfiDestroyerFiatService) Destroy(value FiatService) {
+	if val, ok := value.(*FiatServiceImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *FiatServiceImpl")
+	}
+}
+
+type uniffiCallbackResult C.int8_t
+
+const (
+	uniffiIdxCallbackFree               uniffiCallbackResult = 0
+	uniffiCallbackResultSuccess         uniffiCallbackResult = 0
+	uniffiCallbackResultError           uniffiCallbackResult = 1
+	uniffiCallbackUnexpectedResultError uniffiCallbackResult = 2
+	uniffiCallbackCancelled             uniffiCallbackResult = 3
+)
+
+type concurrentHandleMap[T any] struct {
+	handles       map[uint64]T
+	currentHandle uint64
+	lock          sync.RWMutex
+}
+
+func newConcurrentHandleMap[T any]() *concurrentHandleMap[T] {
+	return &concurrentHandleMap[T]{
+		handles: map[uint64]T{},
+	}
+}
+
+func (cm *concurrentHandleMap[T]) insert(obj T) uint64 {
+	cm.lock.Lock()
+	defer cm.lock.Unlock()
+
+	cm.currentHandle = cm.currentHandle + 1
+	cm.handles[cm.currentHandle] = obj
+	return cm.currentHandle
+}
+
+func (cm *concurrentHandleMap[T]) remove(handle uint64) {
+	cm.lock.Lock()
+	defer cm.lock.Unlock()
+
+	delete(cm.handles, handle)
+}
+
+func (cm *concurrentHandleMap[T]) tryGet(handle uint64) (T, bool) {
+	cm.lock.RLock()
+	defer cm.lock.RUnlock()
+
+	val, ok := cm.handles[handle]
+	return val, ok
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceMethod0
+func breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceMethod0(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterFiatServiceINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.FetchFiatCurrencies()
+
+		if err != nil {
+			var actualError *ServiceConnectivityError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterServiceConnectivityErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterSequenceFiatCurrencyINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceMethod1
+func breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceMethod1(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterFiatServiceINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.FetchFiatRates()
+
+		if err != nil {
+			var actualError *ServiceConnectivityError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterServiceConnectivityErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterSequenceRateINSTANCE.Lower(res)
+	}()
+}
+
+var UniffiVTableCallbackInterfaceFiatServiceINSTANCE = C.UniffiVTableCallbackInterfaceFiatService{
+	fetchFiatCurrencies: (C.UniffiCallbackInterfaceFiatServiceMethod0)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceMethod0),
+	fetchFiatRates:      (C.UniffiCallbackInterfaceFiatServiceMethod1)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceMethod1),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceFree),
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceFree
+func breez_sdk_common_cgo_dispatchCallbackInterfaceFiatServiceFree(handle C.uint64_t) {
+	FfiConverterFiatServiceINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterFiatService) register() {
+	C.uniffi_breez_sdk_common_fn_init_callback_vtable_fiatservice(&UniffiVTableCallbackInterfaceFiatServiceINSTANCE)
+}
+
 type RestClient interface {
 	// Makes a GET request and logs on DEBUG.
 	// ### Arguments
@@ -802,52 +1133,6 @@ func (_ FfiDestroyerRestClient) Destroy(value RestClient) {
 	} else {
 		panic("Expected *RestClientImpl")
 	}
-}
-
-type uniffiCallbackResult C.int8_t
-
-const (
-	uniffiIdxCallbackFree               uniffiCallbackResult = 0
-	uniffiCallbackResultSuccess         uniffiCallbackResult = 0
-	uniffiCallbackResultError           uniffiCallbackResult = 1
-	uniffiCallbackUnexpectedResultError uniffiCallbackResult = 2
-	uniffiCallbackCancelled             uniffiCallbackResult = 3
-)
-
-type concurrentHandleMap[T any] struct {
-	handles       map[uint64]T
-	currentHandle uint64
-	lock          sync.RWMutex
-}
-
-func newConcurrentHandleMap[T any]() *concurrentHandleMap[T] {
-	return &concurrentHandleMap[T]{
-		handles: map[uint64]T{},
-	}
-}
-
-func (cm *concurrentHandleMap[T]) insert(obj T) uint64 {
-	cm.lock.Lock()
-	defer cm.lock.Unlock()
-
-	cm.currentHandle = cm.currentHandle + 1
-	cm.handles[cm.currentHandle] = obj
-	return cm.currentHandle
-}
-
-func (cm *concurrentHandleMap[T]) remove(handle uint64) {
-	cm.lock.Lock()
-	defer cm.lock.Unlock()
-
-	delete(cm.handles, handle)
-}
-
-func (cm *concurrentHandleMap[T]) tryGet(handle uint64) (T, bool) {
-	cm.lock.RLock()
-	defer cm.lock.RUnlock()
-
-	val, ok := cm.handles[handle]
-	return val, ok
 }
 
 //export breez_sdk_common_cgo_dispatchCallbackInterfaceRestClientMethod0
@@ -4498,6 +4783,49 @@ func (FfiDestroyerSequenceBolt12OfferBlindedPath) Destroy(sequence []Bolt12Offer
 	}
 }
 
+type FfiConverterSequenceFiatCurrency struct{}
+
+var FfiConverterSequenceFiatCurrencyINSTANCE = FfiConverterSequenceFiatCurrency{}
+
+func (c FfiConverterSequenceFiatCurrency) Lift(rb RustBufferI) []FiatCurrency {
+	return LiftFromRustBuffer[[]FiatCurrency](c, rb)
+}
+
+func (c FfiConverterSequenceFiatCurrency) Read(reader io.Reader) []FiatCurrency {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]FiatCurrency, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterFiatCurrencyINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceFiatCurrency) Lower(value []FiatCurrency) C.RustBuffer {
+	return LowerIntoRustBuffer[[]FiatCurrency](c, value)
+}
+
+func (c FfiConverterSequenceFiatCurrency) Write(writer io.Writer, value []FiatCurrency) {
+	if len(value) > math.MaxInt32 {
+		panic("[]FiatCurrency is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterFiatCurrencyINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceFiatCurrency struct{}
+
+func (FfiDestroyerSequenceFiatCurrency) Destroy(sequence []FiatCurrency) {
+	for _, value := range sequence {
+		FfiDestroyerFiatCurrency{}.Destroy(value)
+	}
+}
+
 type FfiConverterSequenceLocaleOverrides struct{}
 
 var FfiConverterSequenceLocaleOverridesINSTANCE = FfiConverterSequenceLocaleOverrides{}
@@ -4581,6 +4909,49 @@ type FfiDestroyerSequenceLocalizedName struct{}
 func (FfiDestroyerSequenceLocalizedName) Destroy(sequence []LocalizedName) {
 	for _, value := range sequence {
 		FfiDestroyerLocalizedName{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceRate struct{}
+
+var FfiConverterSequenceRateINSTANCE = FfiConverterSequenceRate{}
+
+func (c FfiConverterSequenceRate) Lift(rb RustBufferI) []Rate {
+	return LiftFromRustBuffer[[]Rate](c, rb)
+}
+
+func (c FfiConverterSequenceRate) Read(reader io.Reader) []Rate {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]Rate, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterRateINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceRate) Lower(value []Rate) C.RustBuffer {
+	return LowerIntoRustBuffer[[]Rate](c, value)
+}
+
+func (c FfiConverterSequenceRate) Write(writer io.Writer, value []Rate) {
+	if len(value) > math.MaxInt32 {
+		panic("[]Rate is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterRateINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceRate struct{}
+
+func (FfiDestroyerSequenceRate) Destroy(sequence []Rate) {
+	for _, value := range sequence {
+		FfiDestroyerRate{}.Destroy(value)
 	}
 }
 

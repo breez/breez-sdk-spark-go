@@ -500,6 +500,24 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_list_fiat_currencies()
+		})
+		if checksum != 63366 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_list_fiat_currencies: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_list_fiat_rates()
+		})
+		if checksum != 5904 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_list_fiat_rates: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_list_payments()
 		})
 		if checksum != 16156 {
@@ -644,6 +662,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_fiat_service()
+		})
+		if checksum != 41113 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_fiat_service: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set()
 		})
 		if checksum != 55523 {
@@ -772,7 +799,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_constructor_sdkbuilder_new()
 		})
-		if checksum != 52744 {
+		if checksum != 53882 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_constructor_sdkbuilder_new: UniFFI API checksum mismatch")
 		}
@@ -925,6 +952,50 @@ func (FfiConverterString) Write(writer io.Writer, value string) {
 type FfiDestroyerString struct{}
 
 func (FfiDestroyerString) Destroy(_ string) {}
+
+type FfiConverterBytes struct{}
+
+var FfiConverterBytesINSTANCE = FfiConverterBytes{}
+
+func (c FfiConverterBytes) Lower(value []byte) C.RustBuffer {
+	return LowerIntoRustBuffer[[]byte](c, value)
+}
+
+func (c FfiConverterBytes) Write(writer io.Writer, value []byte) {
+	if len(value) > math.MaxInt32 {
+		panic("[]byte is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	write_length, err := writer.Write(value)
+	if err != nil {
+		panic(err)
+	}
+	if write_length != len(value) {
+		panic(fmt.Errorf("bad write length when writing []byte, expected %d, written %d", len(value), write_length))
+	}
+}
+
+func (c FfiConverterBytes) Lift(rb RustBufferI) []byte {
+	return LiftFromRustBuffer[[]byte](c, rb)
+}
+
+func (c FfiConverterBytes) Read(reader io.Reader) []byte {
+	length := readInt32(reader)
+	buffer := make([]byte, length)
+	read_length, err := reader.Read(buffer)
+	if err != nil && err != io.EOF {
+		panic(err)
+	}
+	if read_length != int(length) {
+		panic(fmt.Errorf("bad read length when reading []byte, expected %d, read %d", length, read_length))
+	}
+	return buffer
+}
+
+type FfiDestroyerBytes struct{}
+
+func (FfiDestroyerBytes) Destroy(_ []byte) {}
 
 // Below is an implementation of synchronization requirements outlined in the link.
 // https://github.com/mozilla/uniffi-rs/blob/0dc031132d9493ca812c3af6e7dd60ad2ea95bf0/uniffi_bindgen/src/bindings/kotlin/templates/ObjectRuntime.kt#L31
@@ -1421,6 +1492,11 @@ type BreezSdkInterface interface {
 	GetInfo(request GetInfoRequest) (GetInfoResponse, error)
 	GetLightningAddress() (*LightningAddressInfo, error)
 	GetPayment(request GetPaymentRequest) (GetPaymentResponse, error)
+	// List fiat currencies for which there is a known exchange rate,
+	// sorted by the canonical name of the currency.
+	ListFiatCurrencies() (ListFiatCurrenciesResponse, error)
+	// List the latest rates of fiat currencies, sorted by name.
+	ListFiatRates() (ListFiatRatesResponse, error)
 	// Lists payments from the storage with pagination
 	//
 	// This method provides direct access to the payment history stored in the database.
@@ -1675,6 +1751,71 @@ func (_self *BreezSdk) GetPayment(request GetPaymentRequest) (GetPaymentResponse
 		},
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_get_payment(
 			_pointer, FfiConverterGetPaymentRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// List fiat currencies for which there is a known exchange rate,
+// sorted by the canonical name of the currency.
+func (_self *BreezSdk) ListFiatCurrencies() (ListFiatCurrenciesResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ListFiatCurrenciesResponse {
+			return FfiConverterListFiatCurrenciesResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_list_fiat_currencies(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// List the latest rates of fiat currencies, sorted by name.
+func (_self *BreezSdk) ListFiatRates() (ListFiatRatesResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ListFiatRatesResponse {
+			return FfiConverterListFiatRatesResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_list_fiat_rates(
+			_pointer),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -2146,6 +2287,10 @@ type SdkBuilderInterface interface {
 	// Arguments:
 	// - `chain_service`: The chain service to be used.
 	WithChainService(chainService BitcoinChainService)
+	// Sets the fiat service to be used by the SDK.
+	// Arguments:
+	// - `fiat_service`: The fiat service to be used.
+	WithFiatService(fiatService breez_sdk_common.FiatService)
 	// Sets the key set type to be used by the SDK.
 	// Arguments:
 	// - `key_set_type`: The key set type which determines the derivation path.
@@ -2167,11 +2312,11 @@ type SdkBuilder struct {
 // Creates a new `SdkBuilder` with the provided configuration.
 // Arguments:
 // - `config`: The configuration to be used.
-// - `mnemonic`: The mnemonic phrase for the wallet.
+// - `seed`: The seed for wallet generation.
 // - `storage`: The storage backend to be used.
-func NewSdkBuilder(config Config, mnemonic string, storage Storage) *SdkBuilder {
+func NewSdkBuilder(config Config, seed Seed, storage Storage) *SdkBuilder {
 	return FfiConverterSdkBuilderINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
-		return C.uniffi_breez_sdk_spark_fn_constructor_sdkbuilder_new(FfiConverterConfigINSTANCE.Lower(config), FfiConverterStringINSTANCE.Lower(mnemonic), FfiConverterStorageINSTANCE.Lower(storage), _uniffiStatus)
+		return C.uniffi_breez_sdk_spark_fn_constructor_sdkbuilder_new(FfiConverterConfigINSTANCE.Lower(config), FfiConverterSeedINSTANCE.Lower(seed), FfiConverterStorageINSTANCE.Lower(storage), _uniffiStatus)
 	}))
 }
 
@@ -2222,6 +2367,35 @@ func (_self *SdkBuilder) WithChainService(chainService BitcoinChainService) {
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_chain_service(
 			_pointer, FfiConverterBitcoinChainServiceINSTANCE.Lower(chainService)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets the fiat service to be used by the SDK.
+// Arguments:
+// - `fiat_service`: The fiat service to be used.
+func (_self *SdkBuilder) WithFiatService(fiatService breez_sdk_common.FiatService) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_fiat_service(
+			_pointer, breez_sdk_common.FfiConverterFiatServiceINSTANCE.Lower(fiatService)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -3790,13 +3964,13 @@ func (_ FfiDestroyerConfig) Destroy(value Config) {
 
 type ConnectRequest struct {
 	Config     Config
-	Mnemonic   string
+	Seed       Seed
 	StorageDir string
 }
 
 func (r *ConnectRequest) Destroy() {
 	FfiDestroyerConfig{}.Destroy(r.Config)
-	FfiDestroyerString{}.Destroy(r.Mnemonic)
+	FfiDestroyerSeed{}.Destroy(r.Seed)
 	FfiDestroyerString{}.Destroy(r.StorageDir)
 }
 
@@ -3811,7 +3985,7 @@ func (c FfiConverterConnectRequest) Lift(rb RustBufferI) ConnectRequest {
 func (c FfiConverterConnectRequest) Read(reader io.Reader) ConnectRequest {
 	return ConnectRequest{
 		FfiConverterConfigINSTANCE.Read(reader),
-		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterSeedINSTANCE.Read(reader),
 		FfiConverterStringINSTANCE.Read(reader),
 	}
 }
@@ -3822,7 +3996,7 @@ func (c FfiConverterConnectRequest) Lower(value ConnectRequest) C.RustBuffer {
 
 func (c FfiConverterConnectRequest) Write(writer io.Writer, value ConnectRequest) {
 	FfiConverterConfigINSTANCE.Write(writer, value.Config)
-	FfiConverterStringINSTANCE.Write(writer, value.Mnemonic)
+	FfiConverterSeedINSTANCE.Write(writer, value.Seed)
 	FfiConverterStringINSTANCE.Write(writer, value.StorageDir)
 }
 
@@ -4115,6 +4289,82 @@ func (c FfiConverterLightningAddressInfo) Write(writer io.Writer, value Lightnin
 type FfiDestroyerLightningAddressInfo struct{}
 
 func (_ FfiDestroyerLightningAddressInfo) Destroy(value LightningAddressInfo) {
+	value.Destroy()
+}
+
+// Response from listing fiat currencies
+type ListFiatCurrenciesResponse struct {
+	// The list of fiat currencies
+	Currencies []breez_sdk_common.FiatCurrency
+}
+
+func (r *ListFiatCurrenciesResponse) Destroy() {
+	FfiDestroyerSequenceFiatCurrency{}.Destroy(r.Currencies)
+}
+
+type FfiConverterListFiatCurrenciesResponse struct{}
+
+var FfiConverterListFiatCurrenciesResponseINSTANCE = FfiConverterListFiatCurrenciesResponse{}
+
+func (c FfiConverterListFiatCurrenciesResponse) Lift(rb RustBufferI) ListFiatCurrenciesResponse {
+	return LiftFromRustBuffer[ListFiatCurrenciesResponse](c, rb)
+}
+
+func (c FfiConverterListFiatCurrenciesResponse) Read(reader io.Reader) ListFiatCurrenciesResponse {
+	return ListFiatCurrenciesResponse{
+		FfiConverterSequenceFiatCurrencyINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterListFiatCurrenciesResponse) Lower(value ListFiatCurrenciesResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[ListFiatCurrenciesResponse](c, value)
+}
+
+func (c FfiConverterListFiatCurrenciesResponse) Write(writer io.Writer, value ListFiatCurrenciesResponse) {
+	FfiConverterSequenceFiatCurrencyINSTANCE.Write(writer, value.Currencies)
+}
+
+type FfiDestroyerListFiatCurrenciesResponse struct{}
+
+func (_ FfiDestroyerListFiatCurrenciesResponse) Destroy(value ListFiatCurrenciesResponse) {
+	value.Destroy()
+}
+
+// Response from listing fiat rates
+type ListFiatRatesResponse struct {
+	// The list of fiat rates
+	Rates []breez_sdk_common.Rate
+}
+
+func (r *ListFiatRatesResponse) Destroy() {
+	FfiDestroyerSequenceRate{}.Destroy(r.Rates)
+}
+
+type FfiConverterListFiatRatesResponse struct{}
+
+var FfiConverterListFiatRatesResponseINSTANCE = FfiConverterListFiatRatesResponse{}
+
+func (c FfiConverterListFiatRatesResponse) Lift(rb RustBufferI) ListFiatRatesResponse {
+	return LiftFromRustBuffer[ListFiatRatesResponse](c, rb)
+}
+
+func (c FfiConverterListFiatRatesResponse) Read(reader io.Reader) ListFiatRatesResponse {
+	return ListFiatRatesResponse{
+		FfiConverterSequenceRateINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterListFiatRatesResponse) Lower(value ListFiatRatesResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[ListFiatRatesResponse](c, value)
+}
+
+func (c FfiConverterListFiatRatesResponse) Write(writer io.Writer, value ListFiatRatesResponse) {
+	FfiConverterSequenceRateINSTANCE.Write(writer, value.Rates)
+}
+
+type FfiDestroyerListFiatRatesResponse struct{}
+
+func (_ FfiDestroyerListFiatRatesResponse) Destroy(value ListFiatRatesResponse) {
 	value.Destroy()
 }
 
@@ -6593,6 +6843,81 @@ func (_ FfiDestroyerSdkEvent) Destroy(value SdkEvent) {
 	value.Destroy()
 }
 
+// Represents the seed for wallet generation, either as a mnemonic phrase with an optional
+// passphrase or as raw entropy bytes.
+type Seed interface {
+	Destroy()
+}
+
+// A BIP-39 mnemonic phrase with an optional passphrase.
+type SeedMnemonic struct {
+	Mnemonic   string
+	Passphrase *string
+}
+
+func (e SeedMnemonic) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Mnemonic)
+	FfiDestroyerOptionalString{}.Destroy(e.Passphrase)
+}
+
+// Raw entropy bytes.
+type SeedEntropy struct {
+	Field0 []byte
+}
+
+func (e SeedEntropy) Destroy() {
+	FfiDestroyerBytes{}.Destroy(e.Field0)
+}
+
+type FfiConverterSeed struct{}
+
+var FfiConverterSeedINSTANCE = FfiConverterSeed{}
+
+func (c FfiConverterSeed) Lift(rb RustBufferI) Seed {
+	return LiftFromRustBuffer[Seed](c, rb)
+}
+
+func (c FfiConverterSeed) Lower(value Seed) C.RustBuffer {
+	return LowerIntoRustBuffer[Seed](c, value)
+}
+func (FfiConverterSeed) Read(reader io.Reader) Seed {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return SeedMnemonic{
+			FfiConverterStringINSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
+		}
+	case 2:
+		return SeedEntropy{
+			FfiConverterBytesINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterSeed.Read()", id))
+	}
+}
+
+func (FfiConverterSeed) Write(writer io.Writer, value Seed) {
+	switch variant_value := value.(type) {
+	case SeedMnemonic:
+		writeInt32(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Mnemonic)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.Passphrase)
+	case SeedEntropy:
+		writeInt32(writer, 2)
+		FfiConverterBytesINSTANCE.Write(writer, variant_value.Field0)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterSeed.Write", value))
+	}
+}
+
+type FfiDestroyerSeed struct{}
+
+func (_ FfiDestroyerSeed) Destroy(value Seed) {
+	value.Destroy()
+}
+
 type SendPaymentMethod interface {
 	Destroy()
 }
@@ -6702,11 +7027,11 @@ func (e SendPaymentOptionsBitcoinAddress) Destroy() {
 }
 
 type SendPaymentOptionsBolt11Invoice struct {
-	UseSpark bool
+	PreferSpark bool
 }
 
 func (e SendPaymentOptionsBolt11Invoice) Destroy() {
-	FfiDestroyerBool{}.Destroy(e.UseSpark)
+	FfiDestroyerBool{}.Destroy(e.PreferSpark)
 }
 
 type FfiConverterSendPaymentOptions struct{}
@@ -6743,7 +7068,7 @@ func (FfiConverterSendPaymentOptions) Write(writer io.Writer, value SendPaymentO
 		FfiConverterOnchainConfirmationSpeedINSTANCE.Write(writer, variant_value.ConfirmationSpeed)
 	case SendPaymentOptionsBolt11Invoice:
 		writeInt32(writer, 2)
-		FfiConverterBoolINSTANCE.Write(writer, variant_value.UseSpark)
+		FfiConverterBoolINSTANCE.Write(writer, variant_value.PreferSpark)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterSendPaymentOptions.Write", value))
@@ -7788,6 +8113,92 @@ type FfiDestroyerSequenceUtxo struct{}
 func (FfiDestroyerSequenceUtxo) Destroy(sequence []Utxo) {
 	for _, value := range sequence {
 		FfiDestroyerUtxo{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceFiatCurrency struct{}
+
+var FfiConverterSequenceFiatCurrencyINSTANCE = FfiConverterSequenceFiatCurrency{}
+
+func (c FfiConverterSequenceFiatCurrency) Lift(rb RustBufferI) []breez_sdk_common.FiatCurrency {
+	return LiftFromRustBuffer[[]breez_sdk_common.FiatCurrency](c, rb)
+}
+
+func (c FfiConverterSequenceFiatCurrency) Read(reader io.Reader) []breez_sdk_common.FiatCurrency {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]breez_sdk_common.FiatCurrency, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, breez_sdk_common.FfiConverterFiatCurrencyINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceFiatCurrency) Lower(value []breez_sdk_common.FiatCurrency) C.RustBuffer {
+	return LowerIntoRustBuffer[[]breez_sdk_common.FiatCurrency](c, value)
+}
+
+func (c FfiConverterSequenceFiatCurrency) Write(writer io.Writer, value []breez_sdk_common.FiatCurrency) {
+	if len(value) > math.MaxInt32 {
+		panic("[]breez_sdk_common.FiatCurrency is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		breez_sdk_common.FfiConverterFiatCurrencyINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceFiatCurrency struct{}
+
+func (FfiDestroyerSequenceFiatCurrency) Destroy(sequence []breez_sdk_common.FiatCurrency) {
+	for _, value := range sequence {
+		breez_sdk_common.FfiDestroyerFiatCurrency{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceRate struct{}
+
+var FfiConverterSequenceRateINSTANCE = FfiConverterSequenceRate{}
+
+func (c FfiConverterSequenceRate) Lift(rb RustBufferI) []breez_sdk_common.Rate {
+	return LiftFromRustBuffer[[]breez_sdk_common.Rate](c, rb)
+}
+
+func (c FfiConverterSequenceRate) Read(reader io.Reader) []breez_sdk_common.Rate {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]breez_sdk_common.Rate, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, breez_sdk_common.FfiConverterRateINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceRate) Lower(value []breez_sdk_common.Rate) C.RustBuffer {
+	return LowerIntoRustBuffer[[]breez_sdk_common.Rate](c, value)
+}
+
+func (c FfiConverterSequenceRate) Write(writer io.Writer, value []breez_sdk_common.Rate) {
+	if len(value) > math.MaxInt32 {
+		panic("[]breez_sdk_common.Rate is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		breez_sdk_common.FfiConverterRateINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceRate struct{}
+
+func (FfiDestroyerSequenceRate) Destroy(sequence []breez_sdk_common.Rate) {
+	for _, value := range sequence {
+		breez_sdk_common.FfiDestroyerRate{}.Destroy(value)
 	}
 }
 

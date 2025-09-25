@@ -726,6 +726,16 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_get_lightning_address(void* p
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_get_payment(void* ptr, RustBuffer request
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LIST_FIAT_CURRENCIES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LIST_FIAT_CURRENCIES
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_list_fiat_currencies(void* ptr
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LIST_FIAT_RATES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LIST_FIAT_RATES
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_list_fiat_rates(void* ptr
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LIST_PAYMENTS
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LIST_PAYMENTS
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_list_payments(void* ptr, RustBuffer request
@@ -808,7 +818,7 @@ void uniffi_breez_sdk_spark_fn_free_sdkbuilder(void* ptr, RustCallStatus *out_st
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CONSTRUCTOR_SDKBUILDER_NEW
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CONSTRUCTOR_SDKBUILDER_NEW
-void* uniffi_breez_sdk_spark_fn_constructor_sdkbuilder_new(RustBuffer config, RustBuffer mnemonic, void* storage, RustCallStatus *out_status
+void* uniffi_breez_sdk_spark_fn_constructor_sdkbuilder_new(RustBuffer config, RustBuffer seed, void* storage, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_BUILD
@@ -819,6 +829,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_build(void* ptr
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_CHAIN_SERVICE
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_chain_service(void* ptr, void* chain_service
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_FIAT_SERVICE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_FIAT_SERVICE
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_fiat_service(void* ptr, void* fiat_service
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_KEY_SET
@@ -1317,6 +1332,18 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_get_payment(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LIST_FIAT_CURRENCIES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LIST_FIAT_CURRENCIES
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_list_fiat_currencies(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LIST_FIAT_RATES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LIST_FIAT_RATES
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_list_fiat_rates(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LIST_PAYMENTS
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LIST_PAYMENTS
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_list_payments(void
@@ -1410,6 +1437,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_build(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_CHAIN_SERVICE
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_chain_service(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_FIAT_SERVICE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_FIAT_SERVICE
+uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_fiat_service(void
     
 );
 #endif
