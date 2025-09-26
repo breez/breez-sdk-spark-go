@@ -4765,11 +4765,13 @@ func (_ FfiDestroyerPayment) Destroy(value Payment) {
 
 // Metadata associated with a payment that cannot be extracted from the Spark operator.
 type PaymentMetadata struct {
-	LnurlPayInfo *LnurlPayInfo
+	LnurlPayInfo     *LnurlPayInfo
+	LnurlDescription *string
 }
 
 func (r *PaymentMetadata) Destroy() {
 	FfiDestroyerOptionalLnurlPayInfo{}.Destroy(r.LnurlPayInfo)
+	FfiDestroyerOptionalString{}.Destroy(r.LnurlDescription)
 }
 
 type FfiConverterPaymentMetadata struct{}
@@ -4783,6 +4785,7 @@ func (c FfiConverterPaymentMetadata) Lift(rb RustBufferI) PaymentMetadata {
 func (c FfiConverterPaymentMetadata) Read(reader io.Reader) PaymentMetadata {
 	return PaymentMetadata{
 		FfiConverterOptionalLnurlPayInfoINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
@@ -4792,6 +4795,7 @@ func (c FfiConverterPaymentMetadata) Lower(value PaymentMetadata) C.RustBuffer {
 
 func (c FfiConverterPaymentMetadata) Write(writer io.Writer, value PaymentMetadata) {
 	FfiConverterOptionalLnurlPayInfoINSTANCE.Write(writer, value.LnurlPayInfo)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.LnurlDescription)
 }
 
 type FfiDestroyerPaymentMetadata struct{}
@@ -5150,12 +5154,12 @@ func (_ FfiDestroyerRefundDepositResponse) Destroy(value RefundDepositResponse) 
 
 type RegisterLightningAddressRequest struct {
 	Username    string
-	Description string
+	Description *string
 }
 
 func (r *RegisterLightningAddressRequest) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Username)
-	FfiDestroyerString{}.Destroy(r.Description)
+	FfiDestroyerOptionalString{}.Destroy(r.Description)
 }
 
 type FfiConverterRegisterLightningAddressRequest struct{}
@@ -5169,7 +5173,7 @@ func (c FfiConverterRegisterLightningAddressRequest) Lift(rb RustBufferI) Regist
 func (c FfiConverterRegisterLightningAddressRequest) Read(reader io.Reader) RegisterLightningAddressRequest {
 	return RegisterLightningAddressRequest{
 		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
@@ -5179,7 +5183,7 @@ func (c FfiConverterRegisterLightningAddressRequest) Lower(value RegisterLightni
 
 func (c FfiConverterRegisterLightningAddressRequest) Write(writer io.Writer, value RegisterLightningAddressRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.Username)
-	FfiConverterStringINSTANCE.Write(writer, value.Description)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Description)
 }
 
 type FfiDestroyerRegisterLightningAddressRequest struct{}
