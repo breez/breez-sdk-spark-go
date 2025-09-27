@@ -436,12 +436,26 @@ static void call_UniffiCallbackInterfaceBitcoinChainServiceMethod1(
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_BITCOIN_CHAIN_SERVICE_METHOD2
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_BITCOIN_CHAIN_SERVICE_METHOD2
-typedef void (*UniffiCallbackInterfaceBitcoinChainServiceMethod2)(uint64_t uniffi_handle, RustBuffer tx, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceBitcoinChainServiceMethod2)(uint64_t uniffi_handle, RustBuffer txid, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceBitcoinChainServiceMethod2(
-				UniffiCallbackInterfaceBitcoinChainServiceMethod2 cb, uint64_t uniffi_handle, RustBuffer tx, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceBitcoinChainServiceMethod2 cb, uint64_t uniffi_handle, RustBuffer txid, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, txid, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_BITCOIN_CHAIN_SERVICE_METHOD3
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_BITCOIN_CHAIN_SERVICE_METHOD3
+typedef void (*UniffiCallbackInterfaceBitcoinChainServiceMethod3)(uint64_t uniffi_handle, RustBuffer tx, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceBitcoinChainServiceMethod3(
+				UniffiCallbackInterfaceBitcoinChainServiceMethod3 cb, uint64_t uniffi_handle, RustBuffer tx, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, tx, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
@@ -622,8 +636,9 @@ typedef struct UniffiVTableCallbackInterfaceLogger {
 #define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_BITCOIN_CHAIN_SERVICE
 typedef struct UniffiVTableCallbackInterfaceBitcoinChainService {
     UniffiCallbackInterfaceBitcoinChainServiceMethod0 getAddressUtxos;
-    UniffiCallbackInterfaceBitcoinChainServiceMethod1 getTransactionHex;
-    UniffiCallbackInterfaceBitcoinChainServiceMethod2 broadcastTransaction;
+    UniffiCallbackInterfaceBitcoinChainServiceMethod1 getTransactionStatus;
+    UniffiCallbackInterfaceBitcoinChainServiceMethod2 getTransactionHex;
+    UniffiCallbackInterfaceBitcoinChainServiceMethod3 broadcastTransaction;
     UniffiCallbackInterfaceFree uniffiFree;
 } UniffiVTableCallbackInterfaceBitcoinChainService;
 
@@ -664,6 +679,11 @@ void uniffi_breez_sdk_spark_fn_init_callback_vtable_bitcoinchainservice(UniffiVT
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BITCOINCHAINSERVICE_GET_ADDRESS_UTXOS
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BITCOINCHAINSERVICE_GET_ADDRESS_UTXOS
 uint64_t uniffi_breez_sdk_spark_fn_method_bitcoinchainservice_get_address_utxos(void* ptr, RustBuffer address
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BITCOINCHAINSERVICE_GET_TRANSACTION_STATUS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BITCOINCHAINSERVICE_GET_TRANSACTION_STATUS
+uint64_t uniffi_breez_sdk_spark_fn_method_bitcoinchainservice_get_transaction_status(void* ptr, RustBuffer txid
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BITCOINCHAINSERVICE_GET_TRANSACTION_HEX
@@ -1272,6 +1292,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_get_address_
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BITCOINCHAINSERVICE_GET_TRANSACTION_STATUS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BITCOINCHAINSERVICE_GET_TRANSACTION_STATUS
+uint16_t uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_get_transaction_status(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BITCOINCHAINSERVICE_GET_TRANSACTION_HEX
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BITCOINCHAINSERVICE_GET_TRANSACTION_HEX
 uint16_t uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_get_transaction_hex(void
@@ -1557,7 +1583,8 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
 
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod0(uint64_t uniffi_handle, RustBuffer address, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod1(uint64_t uniffi_handle, RustBuffer txid, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2(uint64_t uniffi_handle, RustBuffer tx, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2(uint64_t uniffi_handle, RustBuffer txid, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod3(uint64_t uniffi_handle, RustBuffer tx, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceFree(uint64_t handle);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);

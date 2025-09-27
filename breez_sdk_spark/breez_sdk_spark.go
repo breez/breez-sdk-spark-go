@@ -410,9 +410,18 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_get_transaction_status()
+		})
+		if checksum != 23018 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_get_transaction_status: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_get_transaction_hex()
 		})
-		if checksum != 19571 {
+		if checksum != 59376 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_get_transaction_hex: UniFFI API checksum mismatch")
 		}
@@ -421,7 +430,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_broadcast_transaction()
 		})
-		if checksum != 61083 {
+		if checksum != 65179 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_broadcast_transaction: UniFFI API checksum mismatch")
 		}
@@ -1062,6 +1071,7 @@ func (ffiObject *FfiObject) freeRustArcPtr() {
 
 type BitcoinChainService interface {
 	GetAddressUtxos(address string) ([]Utxo, error)
+	GetTransactionStatus(txid string) (TxStatus, error)
 	GetTransactionHex(txid string) (string, error)
 	BroadcastTransaction(tx string) error
 }
@@ -1087,6 +1097,37 @@ func (_self *BitcoinChainServiceImpl) GetAddressUtxos(address string) ([]Utxo, e
 		},
 		C.uniffi_breez_sdk_spark_fn_method_bitcoinchainservice_get_address_utxos(
 			_pointer, FfiConverterStringINSTANCE.Lower(address)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+func (_self *BitcoinChainServiceImpl) GetTransactionStatus(txid string) (TxStatus, error) {
+	_pointer := _self.ffiObject.incrementPointer("BitcoinChainService")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[ChainServiceError](
+		FfiConverterChainServiceErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) TxStatus {
+			return FfiConverterTxStatusINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_bitcoinchainservice_get_transaction_status(
+			_pointer, FfiConverterStringINSTANCE.Lower(txid)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -1357,6 +1398,69 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod1(uni
 		}()
 
 		res, err :=
+			uniffiObj.GetTransactionStatus(
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: txid,
+				}),
+			)
+
+		if err != nil {
+			var actualError *ChainServiceError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterChainServiceErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterTxStatusINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2(uniffiHandle C.uint64_t, txid C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterBitcoinChainServiceINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
 			uniffiObj.GetTransactionHex(
 				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
 					inner: txid,
@@ -1385,8 +1489,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod1(uni
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2(uniffiHandle C.uint64_t, tx C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod3
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod3(uniffiHandle C.uint64_t, tx C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterBitcoinChainServiceINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -1448,8 +1552,9 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2(uni
 
 var UniffiVTableCallbackInterfaceBitcoinChainServiceINSTANCE = C.UniffiVTableCallbackInterfaceBitcoinChainService{
 	getAddressUtxos:      (C.UniffiCallbackInterfaceBitcoinChainServiceMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod0),
-	getTransactionHex:    (C.UniffiCallbackInterfaceBitcoinChainServiceMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod1),
-	broadcastTransaction: (C.UniffiCallbackInterfaceBitcoinChainServiceMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2),
+	getTransactionStatus: (C.UniffiCallbackInterfaceBitcoinChainServiceMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod1),
+	getTransactionHex:    (C.UniffiCallbackInterfaceBitcoinChainServiceMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2),
+	broadcastTransaction: (C.UniffiCallbackInterfaceBitcoinChainServiceMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod3),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceFree),
 }
