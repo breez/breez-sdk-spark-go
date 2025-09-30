@@ -858,7 +858,7 @@ uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_fiat_service(void* ptr
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_KEY_SET
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_KEY_SET
-uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_key_set(void* ptr, RustBuffer key_set_type, int8_t use_address_index
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_key_set(void* ptr, RustBuffer key_set_type, int8_t use_address_index, RustBuffer account_number
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_LNURL_CLIENT

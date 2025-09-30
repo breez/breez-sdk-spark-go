@@ -682,7 +682,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set()
 		})
-		if checksum != 55523 {
+		if checksum != 42926 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set: UniFFI API checksum mismatch")
 		}
@@ -2400,7 +2400,7 @@ type SdkBuilderInterface interface {
 	// Arguments:
 	// - `key_set_type`: The key set type which determines the derivation path.
 	// - `use_address_index`: Controls the structure of the BIP derivation path.
-	WithKeySet(keySetType KeySetType, useAddressIndex bool)
+	WithKeySet(keySetType KeySetType, useAddressIndex bool, accountNumber *uint32)
 	WithLnurlClient(lnurlClient breez_sdk_common.RestClient)
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
@@ -2517,7 +2517,7 @@ func (_self *SdkBuilder) WithFiatService(fiatService breez_sdk_common.FiatServic
 // Arguments:
 // - `key_set_type`: The key set type which determines the derivation path.
 // - `use_address_index`: Controls the structure of the BIP derivation path.
-func (_self *SdkBuilder) WithKeySet(keySetType KeySetType, useAddressIndex bool) {
+func (_self *SdkBuilder) WithKeySet(keySetType KeySetType, useAddressIndex bool, accountNumber *uint32) {
 	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
 	defer _self.ffiObject.decrementPointer()
 	uniffiRustCallAsync[error](
@@ -2530,7 +2530,7 @@ func (_self *SdkBuilder) WithKeySet(keySetType KeySetType, useAddressIndex bool)
 		// liftFn
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_key_set(
-			_pointer, FfiConverterKeySetTypeINSTANCE.Lower(keySetType), FfiConverterBoolINSTANCE.Lower(useAddressIndex)),
+			_pointer, FfiConverterKeySetTypeINSTANCE.Lower(keySetType), FfiConverterBoolINSTANCE.Lower(useAddressIndex), FfiConverterOptionalUint32INSTANCE.Lower(accountNumber)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
