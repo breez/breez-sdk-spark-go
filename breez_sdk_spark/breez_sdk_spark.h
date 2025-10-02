@@ -380,14 +380,14 @@ static void call_UniffiForeignFutureCompleteVoid(
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_EVENT_LISTENER_METHOD0
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_EVENT_LISTENER_METHOD0
-typedef void (*UniffiCallbackInterfaceEventListenerMethod0)(uint64_t uniffi_handle, RustBuffer event, void* uniffi_out_return, RustCallStatus* callStatus );
+typedef void (*UniffiCallbackInterfaceEventListenerMethod0)(uint64_t uniffi_handle, RustBuffer event, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceEventListenerMethod0(
-				UniffiCallbackInterfaceEventListenerMethod0 cb, uint64_t uniffi_handle, RustBuffer event, void* uniffi_out_return, RustCallStatus* callStatus )
+				UniffiCallbackInterfaceEventListenerMethod0 cb, uint64_t uniffi_handle, RustBuffer event, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, event, uniffi_out_return, callStatus );
+	return cb(uniffi_handle, event, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
@@ -708,7 +708,7 @@ void uniffi_breez_sdk_spark_fn_free_breezsdk(void* ptr, RustCallStatus *out_stat
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_ADD_EVENT_LISTENER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_ADD_EVENT_LISTENER
-RustBuffer uniffi_breez_sdk_spark_fn_method_breezsdk_add_event_listener(void* ptr, uint64_t listener, RustCallStatus *out_status
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_add_event_listener(void* ptr, uint64_t listener
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_CHECK_LIGHTNING_ADDRESS_AVAILABLE
@@ -808,7 +808,7 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_register_lightning_address(vo
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_REMOVE_EVENT_LISTENER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_REMOVE_EVENT_LISTENER
-int8_t uniffi_breez_sdk_spark_fn_method_breezsdk_remove_event_listener(void* ptr, RustBuffer id, RustCallStatus *out_status
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_remove_event_listener(void* ptr, RustBuffer id
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_PAYMENT
@@ -823,7 +823,7 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_send_payment_internal(void* p
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SYNC_WALLET
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SYNC_WALLET
-RustBuffer uniffi_breez_sdk_spark_fn_method_breezsdk_sync_wallet(void* ptr, RustBuffer request, RustCallStatus *out_status
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_sync_wallet(void* ptr, RustBuffer request
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SDKBUILDER
@@ -1598,7 +1598,7 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, RustBuffer payload, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree(uint64_t handle);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerMethod0(uint64_t uniffi_handle, RustBuffer event, void* uniffi_out_return, RustCallStatus* callStatus );
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerMethod0(uint64_t uniffi_handle, RustBuffer event, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerFree(uint64_t handle);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceLoggerMethod0(uint64_t uniffi_handle, RustBuffer l, void* uniffi_out_return, RustCallStatus* callStatus );
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceLoggerFree(uint64_t handle);

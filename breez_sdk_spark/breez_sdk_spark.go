@@ -439,7 +439,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_add_event_listener()
 		})
-		if checksum != 61844 {
+		if checksum != 37737 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_add_event_listener: UniFFI API checksum mismatch")
 		}
@@ -619,7 +619,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_remove_event_listener()
 		})
-		if checksum != 60980 {
+		if checksum != 41066 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_remove_event_listener: UniFFI API checksum mismatch")
 		}
@@ -646,7 +646,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_sync_wallet()
 		})
-		if checksum != 36066 {
+		if checksum != 30368 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_sync_wallet: UniFFI API checksum mismatch")
 		}
@@ -817,7 +817,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_eventlistener_on_event()
 		})
-		if checksum != 10824 {
+		if checksum != 24807 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_eventlistener_on_event: UniFFI API checksum mismatch")
 		}
@@ -1661,12 +1661,32 @@ type BreezSdk struct {
 func (_self *BreezSdk) AddEventListener(listener EventListener) string {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
-	return FfiConverterStringINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
-		return GoRustBuffer{
-			inner: C.uniffi_breez_sdk_spark_fn_method_breezsdk_add_event_listener(
-				_pointer, FfiConverterCallbackInterfaceEventListenerINSTANCE.Lower(listener), _uniffiStatus),
-		}
-	}))
+	res, _ := uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) string {
+			return FfiConverterStringINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_add_event_listener(
+			_pointer, FfiConverterCallbackInterfaceEventListenerINSTANCE.Lower(listener)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res
 }
 
 func (_self *BreezSdk) CheckLightningAddressAvailable(req CheckLightningAddressRequest) (bool, error) {
@@ -2250,10 +2270,30 @@ func (_self *BreezSdk) RegisterLightningAddress(request RegisterLightningAddress
 func (_self *BreezSdk) RemoveEventListener(id string) bool {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
-	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
-		return C.uniffi_breez_sdk_spark_fn_method_breezsdk_remove_event_listener(
-			_pointer, FfiConverterStringINSTANCE.Lower(id), _uniffiStatus)
-	}))
+	res, _ := uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.int8_t {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_i8(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.int8_t) bool {
+			return FfiConverterBoolINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_remove_event_listener(
+			_pointer, FfiConverterStringINSTANCE.Lower(id)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_i8(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_i8(handle)
+		},
+	)
+
+	return res
 }
 
 func (_self *BreezSdk) SendPayment(request SendPaymentRequest) (SendPaymentResponse, error) {
@@ -2322,18 +2362,32 @@ func (_self *BreezSdk) SendPaymentInternal(request SendPaymentRequest, suppressP
 func (_self *BreezSdk) SyncWallet(request SyncWalletRequest) (SyncWalletResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
-		return GoRustBuffer{
-			inner: C.uniffi_breez_sdk_spark_fn_method_breezsdk_sync_wallet(
-				_pointer, FfiConverterSyncWalletRequestINSTANCE.Lower(request), _uniffiStatus),
-		}
-	})
-	if _uniffiErr != nil {
-		var _uniffiDefaultValue SyncWalletResponse
-		return _uniffiDefaultValue, _uniffiErr
-	} else {
-		return FfiConverterSyncWalletResponseINSTANCE.Lift(_uniffiRV), nil
-	}
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) SyncWalletResponse {
+			return FfiConverterSyncWalletResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_sync_wallet(
+			_pointer, FfiConverterSyncWalletRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
 }
 func (object *BreezSdk) Destroy() {
 	runtime.SetFinalizer(object, nil)
@@ -4209,9 +4263,11 @@ func (_ FfiDestroyerDepositInfo) Destroy(value DepositInfo) {
 
 // Request to get the balance of the wallet
 type GetInfoRequest struct {
+	EnsureSynced *bool
 }
 
 func (r *GetInfoRequest) Destroy() {
+	FfiDestroyerOptionalBool{}.Destroy(r.EnsureSynced)
 }
 
 type FfiConverterGetInfoRequest struct{}
@@ -4223,7 +4279,9 @@ func (c FfiConverterGetInfoRequest) Lift(rb RustBufferI) GetInfoRequest {
 }
 
 func (c FfiConverterGetInfoRequest) Read(reader io.Reader) GetInfoRequest {
-	return GetInfoRequest{}
+	return GetInfoRequest{
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
+	}
 }
 
 func (c FfiConverterGetInfoRequest) Lower(value GetInfoRequest) C.RustBuffer {
@@ -4231,6 +4289,7 @@ func (c FfiConverterGetInfoRequest) Lower(value GetInfoRequest) C.RustBuffer {
 }
 
 func (c FfiConverterGetInfoRequest) Write(writer io.Writer, value GetInfoRequest) {
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.EnsureSynced)
 }
 
 type FfiDestroyerGetInfoRequest struct{}
@@ -7481,19 +7540,44 @@ type FfiDestroyerCallbackInterfaceEventListener struct{}
 func (FfiDestroyerCallbackInterfaceEventListener) Destroy(value EventListener) {}
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerMethod0
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerMethod0(uniffiHandle C.uint64_t, event C.RustBuffer, uniffiOutReturn *C.void, callStatus *C.RustCallStatus) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerMethod0(uniffiHandle C.uint64_t, event C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterCallbackInterfaceEventListenerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
 
-	uniffiObj.OnEvent(
-		FfiConverterSdkEventINSTANCE.Lift(GoRustBuffer{
-			inner: event,
-		}),
-	)
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
 
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		uniffiObj.OnEvent(
+			FfiConverterSdkEventINSTANCE.Lift(GoRustBuffer{
+				inner: event,
+			}),
+		)
+
+	}()
 }
 
 var UniffiVTableCallbackInterfaceEventListenerINSTANCE = C.UniffiVTableCallbackInterfaceEventListener{
