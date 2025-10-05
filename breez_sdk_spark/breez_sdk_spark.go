@@ -475,7 +475,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_disconnect()
 		})
-		if checksum != 30986 {
+		if checksum != 330 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_disconnect: UniFFI API checksum mismatch")
 		}
@@ -626,6 +626,24 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_send_bitcoin_address()
+		})
+		if checksum != 5926 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_send_bitcoin_address: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_send_bolt11_invoice()
+		})
+		if checksum != 21785 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_send_bolt11_invoice: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_send_payment()
 		})
 		if checksum != 54349 {
@@ -644,11 +662,29 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_send_spark_address()
+		})
+		if checksum != 63147 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_send_spark_address: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_sync_wallet()
 		})
 		if checksum != 30368 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_sync_wallet: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_wait_for_payment()
+		})
+		if checksum != 64922 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_wait_for_payment: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -770,9 +806,18 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_storage_get_payment_by_invoice()
+		})
+		if checksum != 57075 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_get_payment_by_invoice: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_add_deposit()
 		})
-		if checksum != 55082 {
+		if checksum != 60240 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_add_deposit: UniFFI API checksum mismatch")
 		}
@@ -781,7 +826,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_delete_deposit()
 		})
-		if checksum != 13111 {
+		if checksum != 60586 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_delete_deposit: UniFFI API checksum mismatch")
 		}
@@ -790,7 +835,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_list_deposits()
 		})
-		if checksum != 22806 {
+		if checksum != 54118 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_list_deposits: UniFFI API checksum mismatch")
 		}
@@ -799,7 +844,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_update_deposit()
 		})
-		if checksum != 48478 {
+		if checksum != 39803 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_update_deposit: UniFFI API checksum mismatch")
 		}
@@ -1637,10 +1682,14 @@ type BreezSdkInterface interface {
 	//
 	// `true` if the listener was found and removed, `false` otherwise
 	RemoveEventListener(id string) bool
+	SendBitcoinAddress(address breez_sdk_common.BitcoinAddressDetails, feeQuote SendOnchainFeeQuote, request SendPaymentRequest) (SendPaymentResponse, error)
+	SendBolt11Invoice(invoiceDetails breez_sdk_common.Bolt11InvoiceDetails, sparkTransferFeeSats *uint64, lightningFeeSats uint64, request SendPaymentRequest) (SendPaymentResponse, error)
 	SendPayment(request SendPaymentRequest) (SendPaymentResponse, error)
 	SendPaymentInternal(request SendPaymentRequest, suppressPaymentEvent bool) (SendPaymentResponse, error)
+	SendSparkAddress(address string, request SendPaymentRequest) (SendPaymentResponse, error)
 	// Synchronizes the wallet with the Spark network
 	SyncWallet(request SyncWalletRequest) (SyncWalletResponse, error)
+	WaitForPayment(request WaitForPaymentRequest) (WaitForPaymentResponse, error)
 }
 
 // `BreezSDK` is a wrapper around `SparkSDK` that provides a more structured API
@@ -1787,12 +1836,28 @@ func (_self *BreezSdk) DeleteLightningAddress() error {
 func (_self *BreezSdk) Disconnect() error {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
-	_, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) bool {
+	_, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_disconnect(
-			_pointer, _uniffiStatus)
-		return false
-	})
-	return _uniffiErr.AsError()
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	return err
 }
 
 // Returns the balance of the wallet in satoshis
@@ -2296,6 +2361,68 @@ func (_self *BreezSdk) RemoveEventListener(id string) bool {
 	return res
 }
 
+func (_self *BreezSdk) SendBitcoinAddress(address breez_sdk_common.BitcoinAddressDetails, feeQuote SendOnchainFeeQuote, request SendPaymentRequest) (SendPaymentResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) SendPaymentResponse {
+			return FfiConverterSendPaymentResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_send_bitcoin_address(
+			_pointer, RustBufferFromExternal(breez_sdk_common.FfiConverterBitcoinAddressDetailsINSTANCE.Lower(address)), FfiConverterSendOnchainFeeQuoteINSTANCE.Lower(feeQuote), FfiConverterSendPaymentRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+func (_self *BreezSdk) SendBolt11Invoice(invoiceDetails breez_sdk_common.Bolt11InvoiceDetails, sparkTransferFeeSats *uint64, lightningFeeSats uint64, request SendPaymentRequest) (SendPaymentResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) SendPaymentResponse {
+			return FfiConverterSendPaymentResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_send_bolt11_invoice(
+			_pointer, RustBufferFromExternal(breez_sdk_common.FfiConverterBolt11InvoiceDetailsINSTANCE.Lower(invoiceDetails)), FfiConverterOptionalUint64INSTANCE.Lower(sparkTransferFeeSats), FfiConverterUint64INSTANCE.Lower(lightningFeeSats), FfiConverterSendPaymentRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
 func (_self *BreezSdk) SendPayment(request SendPaymentRequest) (SendPaymentResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -2358,6 +2485,37 @@ func (_self *BreezSdk) SendPaymentInternal(request SendPaymentRequest, suppressP
 	return res, err
 }
 
+func (_self *BreezSdk) SendSparkAddress(address string, request SendPaymentRequest) (SendPaymentResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) SendPaymentResponse {
+			return FfiConverterSendPaymentResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_send_spark_address(
+			_pointer, FfiConverterStringINSTANCE.Lower(address), FfiConverterSendPaymentRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
 // Synchronizes the wallet with the Spark network
 func (_self *BreezSdk) SyncWallet(request SyncWalletRequest) (SyncWalletResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
@@ -2377,6 +2535,37 @@ func (_self *BreezSdk) SyncWallet(request SyncWalletRequest) (SyncWalletResponse
 		},
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_sync_wallet(
 			_pointer, FfiConverterSyncWalletRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+func (_self *BreezSdk) WaitForPayment(request WaitForPaymentRequest) (WaitForPaymentResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) WaitForPaymentResponse {
+			return FfiConverterWaitForPaymentResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_wait_for_payment(
+			_pointer, FfiConverterWaitForPaymentRequestINSTANCE.Lower(request)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -2747,6 +2936,14 @@ type Storage interface {
 	//
 	// The payment if found or None if not found
 	GetPaymentById(id string) (Payment, error)
+	// Gets a payment by its invoice
+	// # Arguments
+	//
+	// * `invoice` - The invoice of the payment to retrieve
+	// # Returns
+	//
+	// The payment if found or None if not found
+	GetPaymentByInvoice(invoice string) (*Payment, error)
 	// Add a deposit to storage
 	// # Arguments
 	//
@@ -3016,6 +3213,44 @@ func (_self *StorageImpl) GetPaymentById(id string) (Payment, error) {
 		},
 		C.uniffi_breez_sdk_spark_fn_method_storage_get_payment_by_id(
 			_pointer, FfiConverterStringINSTANCE.Lower(id)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Gets a payment by its invoice
+// # Arguments
+//
+// * `invoice` - The invoice of the payment to retrieve
+// # Returns
+//
+// The payment if found or None if not found
+func (_self *StorageImpl) GetPaymentByInvoice(invoice string) (*Payment, error) {
+	_pointer := _self.ffiObject.incrementPointer("Storage")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[StorageError](
+		FfiConverterStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) *Payment {
+			return FfiConverterOptionalPaymentINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_storage_get_payment_by_invoice(
+			_pointer, FfiConverterStringINSTANCE.Lower(invoice)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -3672,7 +3907,70 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6(uniffiHandle C.
 }
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, amountSats C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7(uniffiHandle C.uint64_t, invoice C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.GetPaymentByInvoice(
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: invoice,
+				}),
+			)
+
+		if err != nil {
+			var actualError *StorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterOptionalPaymentINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, amountSats C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -3734,8 +4032,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -3796,8 +4094,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -3855,8 +4153,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uniffiHandle C.
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, payload C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod11
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod11(uniffiHandle C.uint64_t, txid C.RustBuffer, vout C.uint32_t, payload C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -3921,17 +4219,18 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10(uniffiHandle C
 }
 
 var UniffiVTableCallbackInterfaceStorageINSTANCE = C.UniffiVTableCallbackInterfaceStorage{
-	deleteCachedItem:   (C.UniffiCallbackInterfaceStorageMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0),
-	getCachedItem:      (C.UniffiCallbackInterfaceStorageMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1),
-	setCachedItem:      (C.UniffiCallbackInterfaceStorageMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2),
-	listPayments:       (C.UniffiCallbackInterfaceStorageMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3),
-	insertPayment:      (C.UniffiCallbackInterfaceStorageMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4),
-	setPaymentMetadata: (C.UniffiCallbackInterfaceStorageMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5),
-	getPaymentById:     (C.UniffiCallbackInterfaceStorageMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6),
-	addDeposit:         (C.UniffiCallbackInterfaceStorageMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7),
-	deleteDeposit:      (C.UniffiCallbackInterfaceStorageMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8),
-	listDeposits:       (C.UniffiCallbackInterfaceStorageMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9),
-	updateDeposit:      (C.UniffiCallbackInterfaceStorageMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10),
+	deleteCachedItem:    (C.UniffiCallbackInterfaceStorageMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0),
+	getCachedItem:       (C.UniffiCallbackInterfaceStorageMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1),
+	setCachedItem:       (C.UniffiCallbackInterfaceStorageMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2),
+	listPayments:        (C.UniffiCallbackInterfaceStorageMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3),
+	insertPayment:       (C.UniffiCallbackInterfaceStorageMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4),
+	setPaymentMetadata:  (C.UniffiCallbackInterfaceStorageMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5),
+	getPaymentById:      (C.UniffiCallbackInterfaceStorageMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6),
+	getPaymentByInvoice: (C.UniffiCallbackInterfaceStorageMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7),
+	addDeposit:          (C.UniffiCallbackInterfaceStorageMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8),
+	deleteDeposit:       (C.UniffiCallbackInterfaceStorageMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9),
+	listDeposits:        (C.UniffiCallbackInterfaceStorageMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10),
+	updateDeposit:       (C.UniffiCallbackInterfaceStorageMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod11),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree),
 }
@@ -5680,6 +5979,78 @@ func (_ FfiDestroyerUtxo) Destroy(value Utxo) {
 	value.Destroy()
 }
 
+type WaitForPaymentRequest struct {
+	Identifier WaitForPaymentIdentifier
+}
+
+func (r *WaitForPaymentRequest) Destroy() {
+	FfiDestroyerWaitForPaymentIdentifier{}.Destroy(r.Identifier)
+}
+
+type FfiConverterWaitForPaymentRequest struct{}
+
+var FfiConverterWaitForPaymentRequestINSTANCE = FfiConverterWaitForPaymentRequest{}
+
+func (c FfiConverterWaitForPaymentRequest) Lift(rb RustBufferI) WaitForPaymentRequest {
+	return LiftFromRustBuffer[WaitForPaymentRequest](c, rb)
+}
+
+func (c FfiConverterWaitForPaymentRequest) Read(reader io.Reader) WaitForPaymentRequest {
+	return WaitForPaymentRequest{
+		FfiConverterWaitForPaymentIdentifierINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterWaitForPaymentRequest) Lower(value WaitForPaymentRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[WaitForPaymentRequest](c, value)
+}
+
+func (c FfiConverterWaitForPaymentRequest) Write(writer io.Writer, value WaitForPaymentRequest) {
+	FfiConverterWaitForPaymentIdentifierINSTANCE.Write(writer, value.Identifier)
+}
+
+type FfiDestroyerWaitForPaymentRequest struct{}
+
+func (_ FfiDestroyerWaitForPaymentRequest) Destroy(value WaitForPaymentRequest) {
+	value.Destroy()
+}
+
+type WaitForPaymentResponse struct {
+	Payment Payment
+}
+
+func (r *WaitForPaymentResponse) Destroy() {
+	FfiDestroyerPayment{}.Destroy(r.Payment)
+}
+
+type FfiConverterWaitForPaymentResponse struct{}
+
+var FfiConverterWaitForPaymentResponseINSTANCE = FfiConverterWaitForPaymentResponse{}
+
+func (c FfiConverterWaitForPaymentResponse) Lift(rb RustBufferI) WaitForPaymentResponse {
+	return LiftFromRustBuffer[WaitForPaymentResponse](c, rb)
+}
+
+func (c FfiConverterWaitForPaymentResponse) Read(reader io.Reader) WaitForPaymentResponse {
+	return WaitForPaymentResponse{
+		FfiConverterPaymentINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterWaitForPaymentResponse) Lower(value WaitForPaymentResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[WaitForPaymentResponse](c, value)
+}
+
+func (c FfiConverterWaitForPaymentResponse) Write(writer io.Writer, value WaitForPaymentResponse) {
+	FfiConverterPaymentINSTANCE.Write(writer, value.Payment)
+}
+
+type FfiDestroyerWaitForPaymentResponse struct{}
+
+func (_ FfiDestroyerWaitForPaymentResponse) Destroy(value WaitForPaymentResponse) {
+	value.Destroy()
+}
+
 type ChainServiceError struct {
 	err error
 }
@@ -7195,11 +7566,13 @@ func (e SendPaymentOptionsBitcoinAddress) Destroy() {
 }
 
 type SendPaymentOptionsBolt11Invoice struct {
-	PreferSpark bool
+	PreferSpark           bool
+	CompletionTimeoutSecs *uint32
 }
 
 func (e SendPaymentOptionsBolt11Invoice) Destroy() {
 	FfiDestroyerBool{}.Destroy(e.PreferSpark)
+	FfiDestroyerOptionalUint32{}.Destroy(e.CompletionTimeoutSecs)
 }
 
 type FfiConverterSendPaymentOptions struct{}
@@ -7223,6 +7596,7 @@ func (FfiConverterSendPaymentOptions) Read(reader io.Reader) SendPaymentOptions 
 	case 2:
 		return SendPaymentOptionsBolt11Invoice{
 			FfiConverterBoolINSTANCE.Read(reader),
+			FfiConverterOptionalUint32INSTANCE.Read(reader),
 		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterSendPaymentOptions.Read()", id))
@@ -7237,6 +7611,7 @@ func (FfiConverterSendPaymentOptions) Write(writer io.Writer, value SendPaymentO
 	case SendPaymentOptionsBolt11Invoice:
 		writeInt32(writer, 2)
 		FfiConverterBoolINSTANCE.Write(writer, variant_value.PreferSpark)
+		FfiConverterOptionalUint32INSTANCE.Write(writer, variant_value.CompletionTimeoutSecs)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterSendPaymentOptions.Write", value))
@@ -7497,6 +7872,72 @@ func (FfiConverterUpdateDepositPayload) Write(writer io.Writer, value UpdateDepo
 type FfiDestroyerUpdateDepositPayload struct{}
 
 func (_ FfiDestroyerUpdateDepositPayload) Destroy(value UpdateDepositPayload) {
+	value.Destroy()
+}
+
+type WaitForPaymentIdentifier interface {
+	Destroy()
+}
+type WaitForPaymentIdentifierPaymentId struct {
+	Field0 string
+}
+
+func (e WaitForPaymentIdentifierPaymentId) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+type WaitForPaymentIdentifierPaymentRequest struct {
+	Field0 string
+}
+
+func (e WaitForPaymentIdentifierPaymentRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+type FfiConverterWaitForPaymentIdentifier struct{}
+
+var FfiConverterWaitForPaymentIdentifierINSTANCE = FfiConverterWaitForPaymentIdentifier{}
+
+func (c FfiConverterWaitForPaymentIdentifier) Lift(rb RustBufferI) WaitForPaymentIdentifier {
+	return LiftFromRustBuffer[WaitForPaymentIdentifier](c, rb)
+}
+
+func (c FfiConverterWaitForPaymentIdentifier) Lower(value WaitForPaymentIdentifier) C.RustBuffer {
+	return LowerIntoRustBuffer[WaitForPaymentIdentifier](c, value)
+}
+func (FfiConverterWaitForPaymentIdentifier) Read(reader io.Reader) WaitForPaymentIdentifier {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return WaitForPaymentIdentifierPaymentId{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 2:
+		return WaitForPaymentIdentifierPaymentRequest{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterWaitForPaymentIdentifier.Read()", id))
+	}
+}
+
+func (FfiConverterWaitForPaymentIdentifier) Write(writer io.Writer, value WaitForPaymentIdentifier) {
+	switch variant_value := value.(type) {
+	case WaitForPaymentIdentifierPaymentId:
+		writeInt32(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Field0)
+	case WaitForPaymentIdentifierPaymentRequest:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Field0)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterWaitForPaymentIdentifier.Write", value))
+	}
+}
+
+type FfiDestroyerWaitForPaymentIdentifier struct{}
+
+func (_ FfiDestroyerWaitForPaymentIdentifier) Destroy(value WaitForPaymentIdentifier) {
 	value.Destroy()
 }
 
@@ -7918,6 +8359,43 @@ type FfiDestroyerOptionalLnurlPayInfo struct{}
 func (_ FfiDestroyerOptionalLnurlPayInfo) Destroy(value *LnurlPayInfo) {
 	if value != nil {
 		FfiDestroyerLnurlPayInfo{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalPayment struct{}
+
+var FfiConverterOptionalPaymentINSTANCE = FfiConverterOptionalPayment{}
+
+func (c FfiConverterOptionalPayment) Lift(rb RustBufferI) *Payment {
+	return LiftFromRustBuffer[*Payment](c, rb)
+}
+
+func (_ FfiConverterOptionalPayment) Read(reader io.Reader) *Payment {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterPaymentINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalPayment) Lower(value *Payment) C.RustBuffer {
+	return LowerIntoRustBuffer[*Payment](c, value)
+}
+
+func (_ FfiConverterOptionalPayment) Write(writer io.Writer, value *Payment) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterPaymentINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalPayment struct{}
+
+func (_ FfiDestroyerOptionalPayment) Destroy(value *Payment) {
+	if value != nil {
+		FfiDestroyerPayment{}.Destroy(*value)
 	}
 }
 
