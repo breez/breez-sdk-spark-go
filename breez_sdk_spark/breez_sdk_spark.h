@@ -506,14 +506,14 @@ static void call_UniffiCallbackInterfaceStorageMethod2(
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD3
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD3
-typedef void (*UniffiCallbackInterfaceStorageMethod3)(uint64_t uniffi_handle, RustBuffer offset, RustBuffer limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod3)(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod3(
-				UniffiCallbackInterfaceStorageMethod3 cb, uint64_t uniffi_handle, RustBuffer offset, RustBuffer limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod3 cb, uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, offset, limit, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, request, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
@@ -761,6 +761,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_get_lightning_address(void* p
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_get_payment(void* ptr, RustBuffer request
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_GET_TOKENS_METADATA
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_GET_TOKENS_METADATA
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_get_tokens_metadata(void* ptr, RustBuffer request
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LIST_FIAT_CURRENCIES
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LIST_FIAT_CURRENCIES
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_list_fiat_currencies(void* ptr
@@ -786,11 +791,6 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_list_unclaimed_deposits(void*
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_lnurl_pay(void* ptr, RustBuffer request
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_POLL_LIGHTNING_SEND_PAYMENT
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_POLL_LIGHTNING_SEND_PAYMENT
-void uniffi_breez_sdk_spark_fn_method_breezsdk_poll_lightning_send_payment(void* ptr, RustBuffer payment, RustBuffer ssp_id, RustCallStatus *out_status
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PREPARE_LNURL_PAY
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PREPARE_LNURL_PAY
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_prepare_lnurl_pay(void* ptr, RustBuffer request
@@ -804,11 +804,6 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_prepare_send_payment(void* pt
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_RECEIVE_PAYMENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_RECEIVE_PAYMENT
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_receive_payment(void* ptr, RustBuffer request
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_RECOVER_LIGHTNING_ADDRESS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_RECOVER_LIGHTNING_ADDRESS
-uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_recover_lightning_address(void* ptr
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_REFUND_DEPOSIT
@@ -826,29 +821,9 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_register_lightning_address(vo
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_remove_event_listener(void* ptr, RustBuffer id
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_BITCOIN_ADDRESS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_BITCOIN_ADDRESS
-uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_send_bitcoin_address(void* ptr, RustBuffer address, RustBuffer fee_quote, RustBuffer request
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_BOLT11_INVOICE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_BOLT11_INVOICE
-uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_send_bolt11_invoice(void* ptr, RustBuffer invoice_details, RustBuffer spark_transfer_fee_sats, uint64_t lightning_fee_sats, RustBuffer request
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_PAYMENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_PAYMENT
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_send_payment(void* ptr, RustBuffer request
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_PAYMENT_INTERNAL
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_PAYMENT_INTERNAL
-uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_send_payment_internal(void* ptr, RustBuffer request, int8_t suppress_payment_event
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_SPARK_ADDRESS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_SPARK_ADDRESS
-uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_send_spark_address(void* ptr, RustBuffer address, RustBuffer request
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SYNC_WALLET
@@ -938,7 +913,7 @@ uint64_t uniffi_breez_sdk_spark_fn_method_storage_set_cached_item(void* ptr, Rus
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_LIST_PAYMENTS
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_LIST_PAYMENTS
-uint64_t uniffi_breez_sdk_spark_fn_method_storage_list_payments(void* ptr, RustBuffer offset, RustBuffer limit
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_list_payments(void* ptr, RustBuffer request
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_INSERT_PAYMENT
@@ -1398,6 +1373,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_get_payment(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_GET_TOKENS_METADATA
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_GET_TOKENS_METADATA
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_get_tokens_metadata(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LIST_FIAT_CURRENCIES
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LIST_FIAT_CURRENCIES
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_list_fiat_currencies(void
@@ -1428,12 +1409,6 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_pay(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_POLL_LIGHTNING_SEND_PAYMENT
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_POLL_LIGHTNING_SEND_PAYMENT
-uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_poll_lightning_send_payment(void
-    
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_PREPARE_LNURL_PAY
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_PREPARE_LNURL_PAY
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_prepare_lnurl_pay(void
@@ -1449,12 +1424,6 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_prepare_send_payment(vo
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_RECEIVE_PAYMENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_RECEIVE_PAYMENT
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_receive_payment(void
-    
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_RECOVER_LIGHTNING_ADDRESS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_RECOVER_LIGHTNING_ADDRESS
-uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_recover_lightning_address(void
     
 );
 #endif
@@ -1476,33 +1445,9 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_remove_event_listener(v
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_BITCOIN_ADDRESS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_BITCOIN_ADDRESS
-uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_send_bitcoin_address(void
-    
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_BOLT11_INVOICE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_BOLT11_INVOICE
-uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_send_bolt11_invoice(void
-    
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_PAYMENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_PAYMENT
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_send_payment(void
-    
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_PAYMENT_INTERNAL
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_PAYMENT_INTERNAL
-uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_send_payment_internal(void
-    
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_SPARK_ADDRESS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_SPARK_ADDRESS
-uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_send_spark_address(void
     
 );
 #endif
@@ -1659,7 +1604,7 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2(uint64_t uniffi_handle, RustBuffer key, RustBuffer value, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3(uint64_t uniffi_handle, RustBuffer offset, RustBuffer limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4(uint64_t uniffi_handle, RustBuffer payment, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5(uint64_t uniffi_handle, RustBuffer payment_id, RustBuffer metadata, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6(uint64_t uniffi_handle, RustBuffer id, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);

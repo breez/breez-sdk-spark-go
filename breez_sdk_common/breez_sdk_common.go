@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io"
 	"math"
+	"math/big"
 	"runtime"
 	"runtime/cgo"
 	"sync"
@@ -2972,12 +2973,12 @@ func (_ FfiDestroyerSymbol) Destroy(value Symbol) {
 
 type TokensPaymentDetails struct {
 	TokenIdentifier *string
-	Amount          *uint64
+	Amount          *common_u128
 }
 
 func (r *TokensPaymentDetails) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(r.TokenIdentifier)
-	FfiDestroyerOptionalUint64{}.Destroy(r.Amount)
+	FfiDestroyerOptionalTypecommon_u128{}.Destroy(r.Amount)
 }
 
 type FfiConverterTokensPaymentDetails struct{}
@@ -2991,7 +2992,7 @@ func (c FfiConverterTokensPaymentDetails) Lift(rb RustBufferI) TokensPaymentDeta
 func (c FfiConverterTokensPaymentDetails) Read(reader io.Reader) TokensPaymentDetails {
 	return TokensPaymentDetails{
 		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterOptionalUint64INSTANCE.Read(reader),
+		FfiConverterOptionalTypecommon_u128INSTANCE.Read(reader),
 	}
 }
 
@@ -3001,7 +3002,7 @@ func (c FfiConverterTokensPaymentDetails) Lower(value TokensPaymentDetails) C.Ru
 
 func (c FfiConverterTokensPaymentDetails) Write(writer io.Writer, value TokensPaymentDetails) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.TokenIdentifier)
-	FfiConverterOptionalUint64INSTANCE.Write(writer, value.Amount)
+	FfiConverterOptionalTypecommon_u128INSTANCE.Write(writer, value.Amount)
 }
 
 type FfiDestroyerTokensPaymentDetails struct{}
@@ -4568,6 +4569,43 @@ func (_ FfiDestroyerOptionalMapStringString) Destroy(value *map[string]string) {
 	}
 }
 
+type FfiConverterOptionalTypecommon_u128 struct{}
+
+var FfiConverterOptionalTypecommon_u128INSTANCE = FfiConverterOptionalTypecommon_u128{}
+
+func (c FfiConverterOptionalTypecommon_u128) Lift(rb RustBufferI) *common_u128 {
+	return LiftFromRustBuffer[*common_u128](c, rb)
+}
+
+func (_ FfiConverterOptionalTypecommon_u128) Read(reader io.Reader) *common_u128 {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterTypecommon_u128INSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalTypecommon_u128) Lower(value *common_u128) C.RustBuffer {
+	return LowerIntoRustBuffer[*common_u128](c, value)
+}
+
+func (_ FfiConverterOptionalTypecommon_u128) Write(writer io.Writer, value *common_u128) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterTypecommon_u128INSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalTypecommon_u128 struct{}
+
+func (_ FfiDestroyerOptionalTypecommon_u128) Destroy(value *common_u128) {
+	if value != nil {
+		FfiDestroyerTypecommon_u128{}.Destroy(*value)
+	}
+}
+
 type FfiConverterSequenceString struct{}
 
 var FfiConverterSequenceStringINSTANCE = FfiConverterSequenceString{}
@@ -5040,6 +5078,51 @@ func (_ FfiDestroyerMapStringString) Destroy(mapValue map[string]string) {
 		FfiDestroyerString{}.Destroy(key)
 		FfiDestroyerString{}.Destroy(value)
 	}
+}
+
+/**
+ * Typealias from the type name used in the UDL file to the custom type.  This
+ * is needed because the UDL type name is used in function/method signatures.
+ * It's also what we have an external type that references a custom type.
+ */
+type common_u128 = *big.Int
+
+type FfiConverterTypecommon_u128 struct{}
+
+var FfiConverterTypecommon_u128INSTANCE = FfiConverterTypecommon_u128{}
+
+func (FfiConverterTypecommon_u128) Lower(value common_u128) RustBufferI {
+	builtinValue := value.String()
+	ffiValue := FfiConverterStringINSTANCE.Lower(builtinValue)
+	return GoRustBuffer{
+		inner: ffiValue,
+	}
+}
+
+func (FfiConverterTypecommon_u128) Write(writer io.Writer, value common_u128) {
+	builtinValue := value.String()
+	FfiConverterStringINSTANCE.Write(writer, builtinValue)
+}
+
+func (FfiConverterTypecommon_u128) Lift(value RustBufferI) common_u128 {
+	builtinValue := FfiConverterStringINSTANCE.Lift(value)
+	result, _ := new(big.Int).SetString(builtinValue, 10)
+	return result
+
+}
+
+func (FfiConverterTypecommon_u128) Read(reader io.Reader) common_u128 {
+	builtinValue := FfiConverterStringINSTANCE.Read(reader)
+	result, _ := new(big.Int).SetString(builtinValue, 10)
+	return result
+
+}
+
+type FfiDestroyerTypecommon_u128 struct{}
+
+func (FfiDestroyerTypecommon_u128) Destroy(value common_u128) {
+	builtinValue := value.String()
+	FfiDestroyerString{}.Destroy(builtinValue)
 }
 
 const (
