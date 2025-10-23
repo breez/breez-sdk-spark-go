@@ -338,6 +338,7 @@ func readFloat64(reader io.Reader) float64 {
 func init() {
 
 	FfiConverterBitcoinChainServiceINSTANCE.register()
+	FfiConverterPaymentObserverINSTANCE.register()
 	FfiConverterStorageINSTANCE.register()
 	FfiConverterCallbackInterfaceEventListenerINSTANCE.register()
 	FfiConverterCallbackInterfaceLoggerINSTANCE.register()
@@ -389,15 +390,6 @@ func uniffiCheckChecksums() {
 		if checksum != 8518 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_init_logging: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_func_parse()
-		})
-		if checksum != 58372 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_parse: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -564,6 +556,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_parse()
+		})
+		if checksum != 195 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_parse: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_prepare_lnurl_pay()
 		})
 		if checksum != 37691 {
@@ -645,6 +646,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_paymentobserver_before_send()
+		})
+		if checksum != 30686 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_paymentobserver_before_send: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_build()
 		})
 		if checksum != 8126 {
@@ -686,6 +696,15 @@ func uniffiCheckChecksums() {
 		if checksum != 61720 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_lnurl_client: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_payment_observer()
+		})
+		if checksum != 21617 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_payment_observer: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1627,6 +1646,7 @@ type BreezSdkInterface interface {
 	ListPayments(request ListPaymentsRequest) (ListPaymentsResponse, error)
 	ListUnclaimedDeposits(request ListUnclaimedDepositsRequest) (ListUnclaimedDepositsResponse, error)
 	LnurlPay(request LnurlPayRequest) (LnurlPayResponse, error)
+	Parse(input string) (breez_sdk_common.InputType, error)
 	PrepareLnurlPay(request PrepareLnurlPayRequest) (PrepareLnurlPayResponse, error)
 	PrepareSendPayment(request PrepareSendPaymentRequest) (PrepareSendPaymentResponse, error)
 	ReceivePayment(request ReceivePaymentRequest) (ReceivePaymentResponse, error)
@@ -2119,6 +2139,37 @@ func (_self *BreezSdk) LnurlPay(request LnurlPayRequest) (LnurlPayResponse, erro
 	return res, err
 }
 
+func (_self *BreezSdk) Parse(input string) (breez_sdk_common.InputType, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) breez_sdk_common.InputType {
+			return breez_sdk_common.FfiConverterInputTypeINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_parse(
+			_pointer, FfiConverterStringINSTANCE.Lower(input)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
 func (_self *BreezSdk) PrepareLnurlPay(request PrepareLnurlPayRequest) (PrepareLnurlPayResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -2454,6 +2505,178 @@ func (_ FfiDestroyerBreezSdk) Destroy(value *BreezSdk) {
 	value.Destroy()
 }
 
+// This interface is used to observe outgoing payments before Lightning, Spark and onchain Bitcoin payments.
+// If the implementation returns an error, the payment is cancelled.
+type PaymentObserver interface {
+	// Called before Lightning, Spark or onchain Bitcoin payments are made
+	BeforeSend(payments []ProvisionalPayment) error
+}
+
+// This interface is used to observe outgoing payments before Lightning, Spark and onchain Bitcoin payments.
+// If the implementation returns an error, the payment is cancelled.
+type PaymentObserverImpl struct {
+	ffiObject FfiObject
+}
+
+// Called before Lightning, Spark or onchain Bitcoin payments are made
+func (_self *PaymentObserverImpl) BeforeSend(payments []ProvisionalPayment) error {
+	_pointer := _self.ffiObject.incrementPointer("PaymentObserver")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[PaymentObserverError](
+		FfiConverterPaymentObserverErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_paymentobserver_before_send(
+			_pointer, FfiConverterSequenceProvisionalPaymentINSTANCE.Lower(payments)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	return err
+}
+func (object *PaymentObserverImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterPaymentObserver struct {
+	handleMap *concurrentHandleMap[PaymentObserver]
+}
+
+var FfiConverterPaymentObserverINSTANCE = FfiConverterPaymentObserver{
+	handleMap: newConcurrentHandleMap[PaymentObserver](),
+}
+
+func (c FfiConverterPaymentObserver) Lift(pointer unsafe.Pointer) PaymentObserver {
+	result := &PaymentObserverImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_paymentobserver(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_paymentobserver(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*PaymentObserverImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterPaymentObserver) Read(reader io.Reader) PaymentObserver {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterPaymentObserver) Lower(value PaymentObserver) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterPaymentObserver) Write(writer io.Writer, value PaymentObserver) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerPaymentObserver struct{}
+
+func (_ FfiDestroyerPaymentObserver) Destroy(value PaymentObserver) {
+	if val, ok := value.(*PaymentObserverImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *PaymentObserverImpl")
+	}
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod0
+func breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod0(uniffiHandle C.uint64_t, payments C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterPaymentObserverINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.BeforeSend(
+				FfiConverterSequenceProvisionalPaymentINSTANCE.Lift(GoRustBuffer{
+					inner: payments,
+				}),
+			)
+
+		if err != nil {
+			var actualError *PaymentObserverError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterPaymentObserverErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+var UniffiVTableCallbackInterfacePaymentObserverINSTANCE = C.UniffiVTableCallbackInterfacePaymentObserver{
+	beforeSend: (C.UniffiCallbackInterfacePaymentObserverMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod0),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverFree),
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverFree
+func breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverFree(handle C.uint64_t) {
+	FfiConverterPaymentObserverINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterPaymentObserver) register() {
+	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_paymentobserver(&UniffiVTableCallbackInterfacePaymentObserverINSTANCE)
+}
+
 // Builder for creating `BreezSdk` instances with customizable components.
 type SdkBuilderInterface interface {
 	// Builds the `BreezSdk` instance with the configured components.
@@ -2472,6 +2695,10 @@ type SdkBuilderInterface interface {
 	// - `use_address_index`: Controls the structure of the BIP derivation path.
 	WithKeySet(keySetType KeySetType, useAddressIndex bool, accountNumber *uint32)
 	WithLnurlClient(lnurlClient breez_sdk_common.RestClient)
+	// Sets the payment observer to be used by the SDK.
+	// Arguments:
+	// - `payment_observer`: The payment observer to be used.
+	WithPaymentObserver(paymentObserver PaymentObserver)
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
 	// - `url`: The base URL of the REST API.
@@ -2627,6 +2854,35 @@ func (_self *SdkBuilder) WithLnurlClient(lnurlClient breez_sdk_common.RestClient
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_lnurl_client(
 			_pointer, breez_sdk_common.FfiConverterRestClientINSTANCE.Lower(lnurlClient)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets the payment observer to be used by the SDK.
+// Arguments:
+// - `payment_observer`: The payment observer to be used.
+func (_self *SdkBuilder) WithPaymentObserver(paymentObserver PaymentObserver) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_payment_observer(
+			_pointer, FfiConverterPaymentObserverINSTANCE.Lower(paymentObserver)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -4193,6 +4449,14 @@ type Config struct {
 	// lightning when sending and receiving. This has the benefit of lower fees
 	// but is at the cost of privacy.
 	PreferSparkOverLightning bool
+	// A set of external input parsers that are used by [`BreezSdk::parse`](crate::sdk::BreezSdk::parse) when the input
+	// is not recognized. See [`ExternalInputParser`] for more details on how to configure
+	// external parsing.
+	ExternalInputParsers *[]breez_sdk_common.ExternalInputParser
+	// The SDK includes some default external input parsers
+	// ([`DEFAULT_EXTERNAL_INPUT_PARSERS`]).
+	// Set this to false in order to prevent their use.
+	UseDefaultExternalInputParsers bool
 }
 
 func (r *Config) Destroy() {
@@ -4202,6 +4466,8 @@ func (r *Config) Destroy() {
 	FfiDestroyerOptionalFee{}.Destroy(r.MaxDepositClaimFee)
 	FfiDestroyerOptionalString{}.Destroy(r.LnurlDomain)
 	FfiDestroyerBool{}.Destroy(r.PreferSparkOverLightning)
+	FfiDestroyerOptionalSequenceExternalInputParser{}.Destroy(r.ExternalInputParsers)
+	FfiDestroyerBool{}.Destroy(r.UseDefaultExternalInputParsers)
 }
 
 type FfiConverterConfig struct{}
@@ -4220,6 +4486,8 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterOptionalFeeINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptionalSequenceExternalInputParserINSTANCE.Read(reader),
+		FfiConverterBoolINSTANCE.Read(reader),
 	}
 }
 
@@ -4234,6 +4502,8 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterOptionalFeeINSTANCE.Write(writer, value.MaxDepositClaimFee)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.LnurlDomain)
 	FfiConverterBoolINSTANCE.Write(writer, value.PreferSparkOverLightning)
+	FfiConverterOptionalSequenceExternalInputParserINSTANCE.Write(writer, value.ExternalInputParsers)
+	FfiConverterBoolINSTANCE.Write(writer, value.UseDefaultExternalInputParsers)
 }
 
 type FfiDestroyerConfig struct{}
@@ -5085,9 +5355,9 @@ type Payment struct {
 	PaymentType PaymentType
 	// Status of the payment
 	Status PaymentStatus
-	// Amount in satoshis
+	// Amount in satoshis or token base units
 	Amount u128
-	// Fee paid in satoshis
+	// Fee paid in satoshis or token base units
 	Fees u128
 	// Timestamp of when the payment was created
 	Timestamp uint64
@@ -5389,6 +5659,53 @@ func (c FfiConverterPrepareSendPaymentResponse) Write(writer io.Writer, value Pr
 type FfiDestroyerPrepareSendPaymentResponse struct{}
 
 func (_ FfiDestroyerPrepareSendPaymentResponse) Destroy(value PrepareSendPaymentResponse) {
+	value.Destroy()
+}
+
+type ProvisionalPayment struct {
+	// Unique identifier for the payment
+	PaymentId string
+	// Amount in satoshis or token base units
+	Amount u128
+	// Details of the payment
+	Details ProvisionalPaymentDetails
+}
+
+func (r *ProvisionalPayment) Destroy() {
+	FfiDestroyerString{}.Destroy(r.PaymentId)
+	FfiDestroyerTypeu128{}.Destroy(r.Amount)
+	FfiDestroyerProvisionalPaymentDetails{}.Destroy(r.Details)
+}
+
+type FfiConverterProvisionalPayment struct{}
+
+var FfiConverterProvisionalPaymentINSTANCE = FfiConverterProvisionalPayment{}
+
+func (c FfiConverterProvisionalPayment) Lift(rb RustBufferI) ProvisionalPayment {
+	return LiftFromRustBuffer[ProvisionalPayment](c, rb)
+}
+
+func (c FfiConverterProvisionalPayment) Read(reader io.Reader) ProvisionalPayment {
+	return ProvisionalPayment{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterTypeu128INSTANCE.Read(reader),
+		FfiConverterProvisionalPaymentDetailsINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterProvisionalPayment) Lower(value ProvisionalPayment) C.RustBuffer {
+	return LowerIntoRustBuffer[ProvisionalPayment](c, value)
+}
+
+func (c FfiConverterProvisionalPayment) Write(writer io.Writer, value ProvisionalPayment) {
+	FfiConverterStringINSTANCE.Write(writer, value.PaymentId)
+	FfiConverterTypeu128INSTANCE.Write(writer, value.Amount)
+	FfiConverterProvisionalPaymentDetailsINSTANCE.Write(writer, value.Details)
+}
+
+type FfiDestroyerProvisionalPayment struct{}
+
+func (_ FfiDestroyerProvisionalPayment) Destroy(value ProvisionalPayment) {
 	value.Destroy()
 }
 
@@ -6763,6 +7080,146 @@ type FfiDestroyerPaymentMethod struct{}
 func (_ FfiDestroyerPaymentMethod) Destroy(value PaymentMethod) {
 }
 
+type PaymentObserverError struct {
+	err error
+}
+
+// Convience method to turn *PaymentObserverError into error
+// Avoiding treating nil pointer as non nil error interface
+func (err *PaymentObserverError) AsError() error {
+	if err == nil {
+		return nil
+	} else {
+		return err
+	}
+}
+
+func (err PaymentObserverError) Error() string {
+	return fmt.Sprintf("PaymentObserverError: %s", err.err.Error())
+}
+
+func (err PaymentObserverError) Unwrap() error {
+	return err.err
+}
+
+// Err* are used for checking error type with `errors.Is`
+var ErrPaymentObserverErrorServiceConnectivity = fmt.Errorf("PaymentObserverErrorServiceConnectivity")
+var ErrPaymentObserverErrorGeneric = fmt.Errorf("PaymentObserverErrorGeneric")
+
+// Variant structs
+type PaymentObserverErrorServiceConnectivity struct {
+	Field0 string
+}
+
+func NewPaymentObserverErrorServiceConnectivity(
+	var0 string,
+) *PaymentObserverError {
+	return &PaymentObserverError{err: &PaymentObserverErrorServiceConnectivity{
+		Field0: var0}}
+}
+
+func (e PaymentObserverErrorServiceConnectivity) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err PaymentObserverErrorServiceConnectivity) Error() string {
+	return fmt.Sprint("ServiceConnectivity",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self PaymentObserverErrorServiceConnectivity) Is(target error) bool {
+	return target == ErrPaymentObserverErrorServiceConnectivity
+}
+
+type PaymentObserverErrorGeneric struct {
+	Field0 string
+}
+
+func NewPaymentObserverErrorGeneric(
+	var0 string,
+) *PaymentObserverError {
+	return &PaymentObserverError{err: &PaymentObserverErrorGeneric{
+		Field0: var0}}
+}
+
+func (e PaymentObserverErrorGeneric) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err PaymentObserverErrorGeneric) Error() string {
+	return fmt.Sprint("Generic",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self PaymentObserverErrorGeneric) Is(target error) bool {
+	return target == ErrPaymentObserverErrorGeneric
+}
+
+type FfiConverterPaymentObserverError struct{}
+
+var FfiConverterPaymentObserverErrorINSTANCE = FfiConverterPaymentObserverError{}
+
+func (c FfiConverterPaymentObserverError) Lift(eb RustBufferI) *PaymentObserverError {
+	return LiftFromRustBuffer[*PaymentObserverError](c, eb)
+}
+
+func (c FfiConverterPaymentObserverError) Lower(value *PaymentObserverError) C.RustBuffer {
+	return LowerIntoRustBuffer[*PaymentObserverError](c, value)
+}
+
+func (c FfiConverterPaymentObserverError) Read(reader io.Reader) *PaymentObserverError {
+	errorID := readUint32(reader)
+
+	switch errorID {
+	case 1:
+		return &PaymentObserverError{&PaymentObserverErrorServiceConnectivity{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 2:
+		return &PaymentObserverError{&PaymentObserverErrorGeneric{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	default:
+		panic(fmt.Sprintf("Unknown error code %d in FfiConverterPaymentObserverError.Read()", errorID))
+	}
+}
+
+func (c FfiConverterPaymentObserverError) Write(writer io.Writer, value *PaymentObserverError) {
+	switch variantValue := value.err.(type) {
+	case *PaymentObserverErrorServiceConnectivity:
+		writeInt32(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *PaymentObserverErrorGeneric:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterPaymentObserverError.Write", value))
+	}
+}
+
+type FfiDestroyerPaymentObserverError struct{}
+
+func (_ FfiDestroyerPaymentObserverError) Destroy(value *PaymentObserverError) {
+	switch variantValue := value.err.(type) {
+	case PaymentObserverErrorServiceConnectivity:
+		variantValue.destroy()
+	case PaymentObserverErrorGeneric:
+		variantValue.destroy()
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerPaymentObserverError.Destroy", value))
+	}
+}
+
 // The status of a payment
 type PaymentStatus uint
 
@@ -6833,6 +7290,106 @@ func (FfiConverterPaymentType) Write(writer io.Writer, value PaymentType) {
 type FfiDestroyerPaymentType struct{}
 
 func (_ FfiDestroyerPaymentType) Destroy(value PaymentType) {
+}
+
+type ProvisionalPaymentDetails interface {
+	Destroy()
+}
+type ProvisionalPaymentDetailsBitcoin struct {
+	WithdrawalAddress string
+}
+
+func (e ProvisionalPaymentDetailsBitcoin) Destroy() {
+	FfiDestroyerString{}.Destroy(e.WithdrawalAddress)
+}
+
+type ProvisionalPaymentDetailsLightning struct {
+	Invoice string
+}
+
+func (e ProvisionalPaymentDetailsLightning) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Invoice)
+}
+
+type ProvisionalPaymentDetailsSpark struct {
+	ReceiverAddress string
+}
+
+func (e ProvisionalPaymentDetailsSpark) Destroy() {
+	FfiDestroyerString{}.Destroy(e.ReceiverAddress)
+}
+
+type ProvisionalPaymentDetailsToken struct {
+	TokenId         string
+	ReceiverAddress string
+}
+
+func (e ProvisionalPaymentDetailsToken) Destroy() {
+	FfiDestroyerString{}.Destroy(e.TokenId)
+	FfiDestroyerString{}.Destroy(e.ReceiverAddress)
+}
+
+type FfiConverterProvisionalPaymentDetails struct{}
+
+var FfiConverterProvisionalPaymentDetailsINSTANCE = FfiConverterProvisionalPaymentDetails{}
+
+func (c FfiConverterProvisionalPaymentDetails) Lift(rb RustBufferI) ProvisionalPaymentDetails {
+	return LiftFromRustBuffer[ProvisionalPaymentDetails](c, rb)
+}
+
+func (c FfiConverterProvisionalPaymentDetails) Lower(value ProvisionalPaymentDetails) C.RustBuffer {
+	return LowerIntoRustBuffer[ProvisionalPaymentDetails](c, value)
+}
+func (FfiConverterProvisionalPaymentDetails) Read(reader io.Reader) ProvisionalPaymentDetails {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return ProvisionalPaymentDetailsBitcoin{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 2:
+		return ProvisionalPaymentDetailsLightning{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 3:
+		return ProvisionalPaymentDetailsSpark{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 4:
+		return ProvisionalPaymentDetailsToken{
+			FfiConverterStringINSTANCE.Read(reader),
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterProvisionalPaymentDetails.Read()", id))
+	}
+}
+
+func (FfiConverterProvisionalPaymentDetails) Write(writer io.Writer, value ProvisionalPaymentDetails) {
+	switch variant_value := value.(type) {
+	case ProvisionalPaymentDetailsBitcoin:
+		writeInt32(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.WithdrawalAddress)
+	case ProvisionalPaymentDetailsLightning:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Invoice)
+	case ProvisionalPaymentDetailsSpark:
+		writeInt32(writer, 3)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.ReceiverAddress)
+	case ProvisionalPaymentDetailsToken:
+		writeInt32(writer, 4)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.TokenId)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.ReceiverAddress)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterProvisionalPaymentDetails.Write", value))
+	}
+}
+
+type FfiDestroyerProvisionalPaymentDetails struct{}
+
+func (_ FfiDestroyerProvisionalPaymentDetails) Destroy(value ProvisionalPaymentDetails) {
+	value.Destroy()
 }
 
 type ReceivePaymentMethod interface {
@@ -8824,6 +9381,43 @@ func (_ FfiDestroyerOptionalSequencePaymentType) Destroy(value *[]PaymentType) {
 	}
 }
 
+type FfiConverterOptionalSequenceExternalInputParser struct{}
+
+var FfiConverterOptionalSequenceExternalInputParserINSTANCE = FfiConverterOptionalSequenceExternalInputParser{}
+
+func (c FfiConverterOptionalSequenceExternalInputParser) Lift(rb RustBufferI) *[]breez_sdk_common.ExternalInputParser {
+	return LiftFromRustBuffer[*[]breez_sdk_common.ExternalInputParser](c, rb)
+}
+
+func (_ FfiConverterOptionalSequenceExternalInputParser) Read(reader io.Reader) *[]breez_sdk_common.ExternalInputParser {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterSequenceExternalInputParserINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalSequenceExternalInputParser) Lower(value *[]breez_sdk_common.ExternalInputParser) C.RustBuffer {
+	return LowerIntoRustBuffer[*[]breez_sdk_common.ExternalInputParser](c, value)
+}
+
+func (_ FfiConverterOptionalSequenceExternalInputParser) Write(writer io.Writer, value *[]breez_sdk_common.ExternalInputParser) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterSequenceExternalInputParserINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalSequenceExternalInputParser struct{}
+
+func (_ FfiDestroyerOptionalSequenceExternalInputParser) Destroy(value *[]breez_sdk_common.ExternalInputParser) {
+	if value != nil {
+		FfiDestroyerSequenceExternalInputParser{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalSuccessAction struct{}
 
 var FfiConverterOptionalSuccessActionINSTANCE = FfiConverterOptionalSuccessAction{}
@@ -9064,6 +9658,49 @@ func (FfiDestroyerSequencePayment) Destroy(sequence []Payment) {
 	}
 }
 
+type FfiConverterSequenceProvisionalPayment struct{}
+
+var FfiConverterSequenceProvisionalPaymentINSTANCE = FfiConverterSequenceProvisionalPayment{}
+
+func (c FfiConverterSequenceProvisionalPayment) Lift(rb RustBufferI) []ProvisionalPayment {
+	return LiftFromRustBuffer[[]ProvisionalPayment](c, rb)
+}
+
+func (c FfiConverterSequenceProvisionalPayment) Read(reader io.Reader) []ProvisionalPayment {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]ProvisionalPayment, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterProvisionalPaymentINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceProvisionalPayment) Lower(value []ProvisionalPayment) C.RustBuffer {
+	return LowerIntoRustBuffer[[]ProvisionalPayment](c, value)
+}
+
+func (c FfiConverterSequenceProvisionalPayment) Write(writer io.Writer, value []ProvisionalPayment) {
+	if len(value) > math.MaxInt32 {
+		panic("[]ProvisionalPayment is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterProvisionalPaymentINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceProvisionalPayment struct{}
+
+func (FfiDestroyerSequenceProvisionalPayment) Destroy(sequence []ProvisionalPayment) {
+	for _, value := range sequence {
+		FfiDestroyerProvisionalPayment{}.Destroy(value)
+	}
+}
+
 type FfiConverterSequenceTokenMetadata struct{}
 
 var FfiConverterSequenceTokenMetadataINSTANCE = FfiConverterSequenceTokenMetadata{}
@@ -9233,6 +9870,49 @@ type FfiDestroyerSequencePaymentType struct{}
 func (FfiDestroyerSequencePaymentType) Destroy(sequence []PaymentType) {
 	for _, value := range sequence {
 		FfiDestroyerPaymentType{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceExternalInputParser struct{}
+
+var FfiConverterSequenceExternalInputParserINSTANCE = FfiConverterSequenceExternalInputParser{}
+
+func (c FfiConverterSequenceExternalInputParser) Lift(rb RustBufferI) []breez_sdk_common.ExternalInputParser {
+	return LiftFromRustBuffer[[]breez_sdk_common.ExternalInputParser](c, rb)
+}
+
+func (c FfiConverterSequenceExternalInputParser) Read(reader io.Reader) []breez_sdk_common.ExternalInputParser {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]breez_sdk_common.ExternalInputParser, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, breez_sdk_common.FfiConverterExternalInputParserINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceExternalInputParser) Lower(value []breez_sdk_common.ExternalInputParser) C.RustBuffer {
+	return LowerIntoRustBuffer[[]breez_sdk_common.ExternalInputParser](c, value)
+}
+
+func (c FfiConverterSequenceExternalInputParser) Write(writer io.Writer, value []breez_sdk_common.ExternalInputParser) {
+	if len(value) > math.MaxInt32 {
+		panic("[]breez_sdk_common.ExternalInputParser is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		breez_sdk_common.FfiConverterExternalInputParserINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceExternalInputParser struct{}
+
+func (FfiDestroyerSequenceExternalInputParser) Destroy(sequence []breez_sdk_common.ExternalInputParser) {
+	for _, value := range sequence {
+		breez_sdk_common.FfiDestroyerExternalInputParser{}.Destroy(value)
 	}
 }
 
@@ -9535,32 +10215,4 @@ func InitLogging(logDir *string, appLogger *Logger, logFilter *string) error {
 		return false
 	})
 	return _uniffiErr.AsError()
-}
-
-func Parse(input string) (breez_sdk_common.InputType, error) {
-	res, err := uniffiRustCallAsync[SdkError](
-		FfiConverterSdkErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) breez_sdk_common.InputType {
-			return breez_sdk_common.FfiConverterInputTypeINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_func_parse(FfiConverterStringINSTANCE.Lower(input)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	return res, err
 }

@@ -462,6 +462,20 @@ static void call_UniffiCallbackInterfaceBitcoinChainServiceMethod3(
 
 
 #endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_PAYMENT_OBSERVER_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_PAYMENT_OBSERVER_METHOD0
+typedef void (*UniffiCallbackInterfacePaymentObserverMethod0)(uint64_t uniffi_handle, RustBuffer payments, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfacePaymentObserverMethod0(
+				UniffiCallbackInterfacePaymentObserverMethod0 cb, uint64_t uniffi_handle, RustBuffer payments, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, payments, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD0
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD0
 typedef void (*UniffiCallbackInterfaceStorageMethod0)(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
@@ -657,6 +671,14 @@ typedef struct UniffiVTableCallbackInterfaceBitcoinChainService {
 } UniffiVTableCallbackInterfaceBitcoinChainService;
 
 #endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_PAYMENT_OBSERVER
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_PAYMENT_OBSERVER
+typedef struct UniffiVTableCallbackInterfacePaymentObserver {
+    UniffiCallbackInterfacePaymentObserverMethod0 beforeSend;
+    UniffiCallbackInterfaceFree uniffiFree;
+} UniffiVTableCallbackInterfacePaymentObserver;
+
+#endif
 #ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_STORAGE
 #define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_STORAGE
 typedef struct UniffiVTableCallbackInterfaceStorage {
@@ -791,6 +813,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_list_unclaimed_deposits(void*
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_lnurl_pay(void* ptr, RustBuffer request
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PARSE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PARSE
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_parse(void* ptr, RustBuffer input
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PREPARE_LNURL_PAY
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PREPARE_LNURL_PAY
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_prepare_lnurl_pay(void* ptr, RustBuffer request
@@ -836,6 +863,26 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_sync_wallet(void* ptr, RustBu
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_wait_for_payment(void* ptr, RustBuffer request
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_PAYMENTOBSERVER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_PAYMENTOBSERVER
+void* uniffi_breez_sdk_spark_fn_clone_paymentobserver(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_PAYMENTOBSERVER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_PAYMENTOBSERVER
+void uniffi_breez_sdk_spark_fn_free_paymentobserver(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_INIT_CALLBACK_VTABLE_PAYMENTOBSERVER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_INIT_CALLBACK_VTABLE_PAYMENTOBSERVER
+void uniffi_breez_sdk_spark_fn_init_callback_vtable_paymentobserver(UniffiVTableCallbackInterfacePaymentObserver* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_PAYMENTOBSERVER_BEFORE_SEND
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_PAYMENTOBSERVER_BEFORE_SEND
+uint64_t uniffi_breez_sdk_spark_fn_method_paymentobserver_before_send(void* ptr, RustBuffer payments
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SDKBUILDER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SDKBUILDER
 void* uniffi_breez_sdk_spark_fn_clone_sdkbuilder(void* ptr, RustCallStatus *out_status
@@ -874,6 +921,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_key_set(void* ptr, Rus
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_LNURL_CLIENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_LNURL_CLIENT
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_lnurl_client(void* ptr, void* lnurl_client
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_PAYMENT_OBSERVER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_PAYMENT_OBSERVER
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_payment_observer(void* ptr, void* payment_observer
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
@@ -984,11 +1036,6 @@ void* uniffi_breez_sdk_spark_fn_func_default_storage(RustBuffer data_dir, RustCa
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_INIT_LOGGING
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_INIT_LOGGING
 void uniffi_breez_sdk_spark_fn_func_init_logging(RustBuffer log_dir, RustBuffer app_logger, RustBuffer log_filter, RustCallStatus *out_status
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_PARSE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_PARSE
-uint64_t uniffi_breez_sdk_spark_fn_func_parse(RustBuffer input
 );
 #endif
 #ifndef UNIFFI_FFIDEF_FFI_BREEZ_SDK_SPARK_RUSTBUFFER_ALLOC
@@ -1295,12 +1342,6 @@ uint16_t uniffi_breez_sdk_spark_checksum_func_init_logging(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_PARSE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_PARSE
-uint16_t uniffi_breez_sdk_spark_checksum_func_parse(void
-    
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BITCOINCHAINSERVICE_GET_ADDRESS_UTXOS
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BITCOINCHAINSERVICE_GET_ADDRESS_UTXOS
 uint16_t uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_get_address_utxos(void
@@ -1409,6 +1450,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_pay(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_PARSE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_PARSE
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_parse(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_PREPARE_LNURL_PAY
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_PREPARE_LNURL_PAY
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_prepare_lnurl_pay(void
@@ -1463,6 +1510,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_wait_for_payment(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_PAYMENTOBSERVER_BEFORE_SEND
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_PAYMENTOBSERVER_BEFORE_SEND
+uint16_t uniffi_breez_sdk_spark_checksum_method_paymentobserver_before_send(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_BUILD
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_BUILD
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_build(void
@@ -1490,6 +1543,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_LNURL_CLIENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_LNURL_CLIENT
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_lnurl_client(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_PAYMENT_OBSERVER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_PAYMENT_OBSERVER
+uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_payment_observer(void
     
 );
 #endif
@@ -1601,6 +1660,8 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2(uint64_t uniffi_handle, RustBuffer txid, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod3(uint64_t uniffi_handle, RustBuffer tx, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceFree(uint64_t handle);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod0(uint64_t uniffi_handle, RustBuffer payments, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverFree(uint64_t handle);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2(uint64_t uniffi_handle, RustBuffer key, RustBuffer value, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);

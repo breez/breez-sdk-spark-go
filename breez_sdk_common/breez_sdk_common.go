@@ -2128,6 +2128,55 @@ func (_ FfiDestroyerCurrencyInfo) Destroy(value CurrencyInfo) {
 	value.Destroy()
 }
 
+// Configuration for an external input parser
+type ExternalInputParser struct {
+	// An arbitrary parser provider id
+	ProviderId string
+	// The external parser will be used when an input conforms to this regex
+	InputRegex string
+	// The URL of the parser containing a placeholder `<input>` that will be replaced with the
+	// input to be parsed. The input is sanitized using percent encoding.
+	ParserUrl string
+}
+
+func (r *ExternalInputParser) Destroy() {
+	FfiDestroyerString{}.Destroy(r.ProviderId)
+	FfiDestroyerString{}.Destroy(r.InputRegex)
+	FfiDestroyerString{}.Destroy(r.ParserUrl)
+}
+
+type FfiConverterExternalInputParser struct{}
+
+var FfiConverterExternalInputParserINSTANCE = FfiConverterExternalInputParser{}
+
+func (c FfiConverterExternalInputParser) Lift(rb RustBufferI) ExternalInputParser {
+	return LiftFromRustBuffer[ExternalInputParser](c, rb)
+}
+
+func (c FfiConverterExternalInputParser) Read(reader io.Reader) ExternalInputParser {
+	return ExternalInputParser{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalInputParser) Lower(value ExternalInputParser) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalInputParser](c, value)
+}
+
+func (c FfiConverterExternalInputParser) Write(writer io.Writer, value ExternalInputParser) {
+	FfiConverterStringINSTANCE.Write(writer, value.ProviderId)
+	FfiConverterStringINSTANCE.Write(writer, value.InputRegex)
+	FfiConverterStringINSTANCE.Write(writer, value.ParserUrl)
+}
+
+type FfiDestroyerExternalInputParser struct{}
+
+func (_ FfiDestroyerExternalInputParser) Destroy(value ExternalInputParser) {
+	value.Destroy()
+}
+
 // Wrapper around the [`CurrencyInfo`] of a fiat currency
 type FiatCurrency struct {
 	Id   string
