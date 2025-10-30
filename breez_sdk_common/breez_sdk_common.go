@@ -2743,42 +2743,6 @@ func (_ FfiDestroyerRestResponse) Destroy(value RestResponse) {
 	value.Destroy()
 }
 
-type SatsPaymentDetails struct {
-	Amount *uint64
-}
-
-func (r *SatsPaymentDetails) Destroy() {
-	FfiDestroyerOptionalUint64{}.Destroy(r.Amount)
-}
-
-type FfiConverterSatsPaymentDetails struct{}
-
-var FfiConverterSatsPaymentDetailsINSTANCE = FfiConverterSatsPaymentDetails{}
-
-func (c FfiConverterSatsPaymentDetails) Lift(rb RustBufferI) SatsPaymentDetails {
-	return LiftFromRustBuffer[SatsPaymentDetails](c, rb)
-}
-
-func (c FfiConverterSatsPaymentDetails) Read(reader io.Reader) SatsPaymentDetails {
-	return SatsPaymentDetails{
-		FfiConverterOptionalUint64INSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterSatsPaymentDetails) Lower(value SatsPaymentDetails) C.RustBuffer {
-	return LowerIntoRustBuffer[SatsPaymentDetails](c, value)
-}
-
-func (c FfiConverterSatsPaymentDetails) Write(writer io.Writer, value SatsPaymentDetails) {
-	FfiConverterOptionalUint64INSTANCE.Write(writer, value.Amount)
-}
-
-type FfiDestroyerSatsPaymentDetails struct{}
-
-func (_ FfiDestroyerSatsPaymentDetails) Destroy(value SatsPaymentDetails) {
-	value.Destroy()
-}
-
 type SilentPaymentAddressDetails struct {
 	Address string
 	Network BitcoinNetwork
@@ -2823,63 +2787,19 @@ func (_ FfiDestroyerSilentPaymentAddressDetails) Destroy(value SilentPaymentAddr
 	value.Destroy()
 }
 
-type SparkAddress struct {
-	IdentityPublicKey  string
-	Network            BitcoinNetwork
-	SparkInvoiceFields *SparkInvoiceFields
-	Signature          *string
-}
-
-func (r *SparkAddress) Destroy() {
-	FfiDestroyerString{}.Destroy(r.IdentityPublicKey)
-	FfiDestroyerBitcoinNetwork{}.Destroy(r.Network)
-	FfiDestroyerOptionalSparkInvoiceFields{}.Destroy(r.SparkInvoiceFields)
-	FfiDestroyerOptionalString{}.Destroy(r.Signature)
-}
-
-type FfiConverterSparkAddress struct{}
-
-var FfiConverterSparkAddressINSTANCE = FfiConverterSparkAddress{}
-
-func (c FfiConverterSparkAddress) Lift(rb RustBufferI) SparkAddress {
-	return LiftFromRustBuffer[SparkAddress](c, rb)
-}
-
-func (c FfiConverterSparkAddress) Read(reader io.Reader) SparkAddress {
-	return SparkAddress{
-		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterBitcoinNetworkINSTANCE.Read(reader),
-		FfiConverterOptionalSparkInvoiceFieldsINSTANCE.Read(reader),
-		FfiConverterOptionalStringINSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterSparkAddress) Lower(value SparkAddress) C.RustBuffer {
-	return LowerIntoRustBuffer[SparkAddress](c, value)
-}
-
-func (c FfiConverterSparkAddress) Write(writer io.Writer, value SparkAddress) {
-	FfiConverterStringINSTANCE.Write(writer, value.IdentityPublicKey)
-	FfiConverterBitcoinNetworkINSTANCE.Write(writer, value.Network)
-	FfiConverterOptionalSparkInvoiceFieldsINSTANCE.Write(writer, value.SparkInvoiceFields)
-	FfiConverterOptionalStringINSTANCE.Write(writer, value.Signature)
-}
-
-type FfiDestroyerSparkAddress struct{}
-
-func (_ FfiDestroyerSparkAddress) Destroy(value SparkAddress) {
-	value.Destroy()
-}
-
 type SparkAddressDetails struct {
-	Address        string
-	DecodedAddress SparkAddress
-	Source         PaymentRequestSource
+	// The raw address string
+	Address string
+	// The identity public key of the address owner
+	IdentityPublicKey string
+	Network           BitcoinNetwork
+	Source            PaymentRequestSource
 }
 
 func (r *SparkAddressDetails) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Address)
-	FfiDestroyerSparkAddress{}.Destroy(r.DecodedAddress)
+	FfiDestroyerString{}.Destroy(r.IdentityPublicKey)
+	FfiDestroyerBitcoinNetwork{}.Destroy(r.Network)
 	FfiDestroyerPaymentRequestSource{}.Destroy(r.Source)
 }
 
@@ -2894,7 +2814,8 @@ func (c FfiConverterSparkAddressDetails) Lift(rb RustBufferI) SparkAddressDetail
 func (c FfiConverterSparkAddressDetails) Read(reader io.Reader) SparkAddressDetails {
 	return SparkAddressDetails{
 		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterSparkAddressINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterBitcoinNetworkINSTANCE.Read(reader),
 		FfiConverterPaymentRequestSourceINSTANCE.Read(reader),
 	}
 }
@@ -2905,7 +2826,8 @@ func (c FfiConverterSparkAddressDetails) Lower(value SparkAddressDetails) C.Rust
 
 func (c FfiConverterSparkAddressDetails) Write(writer io.Writer, value SparkAddressDetails) {
 	FfiConverterStringINSTANCE.Write(writer, value.Address)
-	FfiConverterSparkAddressINSTANCE.Write(writer, value.DecodedAddress)
+	FfiConverterStringINSTANCE.Write(writer, value.IdentityPublicKey)
+	FfiConverterBitcoinNetworkINSTANCE.Write(writer, value.Network)
 	FfiConverterPaymentRequestSourceINSTANCE.Write(writer, value.Source)
 }
 
@@ -2915,59 +2837,74 @@ func (_ FfiDestroyerSparkAddressDetails) Destroy(value SparkAddressDetails) {
 	value.Destroy()
 }
 
-type SparkInvoiceFields struct {
-	Id              string
-	Version         uint32
-	Memo            *string
+type SparkInvoiceDetails struct {
+	// The raw invoice string
+	Invoice string
+	// The identity public key of the invoice issuer
+	IdentityPublicKey string
+	Network           BitcoinNetwork
+	// Optional amount denominated in sats if `token_identifier` is absent, otherwise in the token base units
+	Amount *common_u128
+	// The token identifier of the token payment. Absence indicates a Bitcoin payment.
+	TokenIdentifier *string
+	// Optional expiry time. If not provided, the invoice will never expire.
+	ExpiryTime *uint64
+	// Optional description.
+	Description *string
+	// If set, the invoice may only be fulfilled by a payer with this public key.
 	SenderPublicKey *string
-	ExpiryTime      *uint64
-	PaymentType     *SparkAddressPaymentType
 }
 
-func (r *SparkInvoiceFields) Destroy() {
-	FfiDestroyerString{}.Destroy(r.Id)
-	FfiDestroyerUint32{}.Destroy(r.Version)
-	FfiDestroyerOptionalString{}.Destroy(r.Memo)
-	FfiDestroyerOptionalString{}.Destroy(r.SenderPublicKey)
+func (r *SparkInvoiceDetails) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Invoice)
+	FfiDestroyerString{}.Destroy(r.IdentityPublicKey)
+	FfiDestroyerBitcoinNetwork{}.Destroy(r.Network)
+	FfiDestroyerOptionalTypecommon_u128{}.Destroy(r.Amount)
+	FfiDestroyerOptionalString{}.Destroy(r.TokenIdentifier)
 	FfiDestroyerOptionalUint64{}.Destroy(r.ExpiryTime)
-	FfiDestroyerOptionalSparkAddressPaymentType{}.Destroy(r.PaymentType)
+	FfiDestroyerOptionalString{}.Destroy(r.Description)
+	FfiDestroyerOptionalString{}.Destroy(r.SenderPublicKey)
 }
 
-type FfiConverterSparkInvoiceFields struct{}
+type FfiConverterSparkInvoiceDetails struct{}
 
-var FfiConverterSparkInvoiceFieldsINSTANCE = FfiConverterSparkInvoiceFields{}
+var FfiConverterSparkInvoiceDetailsINSTANCE = FfiConverterSparkInvoiceDetails{}
 
-func (c FfiConverterSparkInvoiceFields) Lift(rb RustBufferI) SparkInvoiceFields {
-	return LiftFromRustBuffer[SparkInvoiceFields](c, rb)
+func (c FfiConverterSparkInvoiceDetails) Lift(rb RustBufferI) SparkInvoiceDetails {
+	return LiftFromRustBuffer[SparkInvoiceDetails](c, rb)
 }
 
-func (c FfiConverterSparkInvoiceFields) Read(reader io.Reader) SparkInvoiceFields {
-	return SparkInvoiceFields{
+func (c FfiConverterSparkInvoiceDetails) Read(reader io.Reader) SparkInvoiceDetails {
+	return SparkInvoiceDetails{
 		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterUint32INSTANCE.Read(reader),
-		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterBitcoinNetworkINSTANCE.Read(reader),
+		FfiConverterOptionalTypecommon_u128INSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalUint64INSTANCE.Read(reader),
-		FfiConverterOptionalSparkAddressPaymentTypeINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterSparkInvoiceFields) Lower(value SparkInvoiceFields) C.RustBuffer {
-	return LowerIntoRustBuffer[SparkInvoiceFields](c, value)
+func (c FfiConverterSparkInvoiceDetails) Lower(value SparkInvoiceDetails) C.RustBuffer {
+	return LowerIntoRustBuffer[SparkInvoiceDetails](c, value)
 }
 
-func (c FfiConverterSparkInvoiceFields) Write(writer io.Writer, value SparkInvoiceFields) {
-	FfiConverterStringINSTANCE.Write(writer, value.Id)
-	FfiConverterUint32INSTANCE.Write(writer, value.Version)
-	FfiConverterOptionalStringINSTANCE.Write(writer, value.Memo)
-	FfiConverterOptionalStringINSTANCE.Write(writer, value.SenderPublicKey)
+func (c FfiConverterSparkInvoiceDetails) Write(writer io.Writer, value SparkInvoiceDetails) {
+	FfiConverterStringINSTANCE.Write(writer, value.Invoice)
+	FfiConverterStringINSTANCE.Write(writer, value.IdentityPublicKey)
+	FfiConverterBitcoinNetworkINSTANCE.Write(writer, value.Network)
+	FfiConverterOptionalTypecommon_u128INSTANCE.Write(writer, value.Amount)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.TokenIdentifier)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ExpiryTime)
-	FfiConverterOptionalSparkAddressPaymentTypeINSTANCE.Write(writer, value.PaymentType)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Description)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.SenderPublicKey)
 }
 
-type FfiDestroyerSparkInvoiceFields struct{}
+type FfiDestroyerSparkInvoiceDetails struct{}
 
-func (_ FfiDestroyerSparkInvoiceFields) Destroy(value SparkInvoiceFields) {
+func (_ FfiDestroyerSparkInvoiceDetails) Destroy(value SparkInvoiceDetails) {
 	value.Destroy()
 }
 
@@ -3017,46 +2954,6 @@ func (c FfiConverterSymbol) Write(writer io.Writer, value Symbol) {
 type FfiDestroyerSymbol struct{}
 
 func (_ FfiDestroyerSymbol) Destroy(value Symbol) {
-	value.Destroy()
-}
-
-type TokensPaymentDetails struct {
-	TokenIdentifier *string
-	Amount          *common_u128
-}
-
-func (r *TokensPaymentDetails) Destroy() {
-	FfiDestroyerOptionalString{}.Destroy(r.TokenIdentifier)
-	FfiDestroyerOptionalTypecommon_u128{}.Destroy(r.Amount)
-}
-
-type FfiConverterTokensPaymentDetails struct{}
-
-var FfiConverterTokensPaymentDetailsINSTANCE = FfiConverterTokensPaymentDetails{}
-
-func (c FfiConverterTokensPaymentDetails) Lift(rb RustBufferI) TokensPaymentDetails {
-	return LiftFromRustBuffer[TokensPaymentDetails](c, rb)
-}
-
-func (c FfiConverterTokensPaymentDetails) Read(reader io.Reader) TokensPaymentDetails {
-	return TokensPaymentDetails{
-		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterOptionalTypecommon_u128INSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterTokensPaymentDetails) Lower(value TokensPaymentDetails) C.RustBuffer {
-	return LowerIntoRustBuffer[TokensPaymentDetails](c, value)
-}
-
-func (c FfiConverterTokensPaymentDetails) Write(writer io.Writer, value TokensPaymentDetails) {
-	FfiConverterOptionalStringINSTANCE.Write(writer, value.TokenIdentifier)
-	FfiConverterOptionalTypecommon_u128INSTANCE.Write(writer, value.Amount)
-}
-
-type FfiDestroyerTokensPaymentDetails struct{}
-
-func (_ FfiDestroyerTokensPaymentDetails) Destroy(value TokensPaymentDetails) {
 	value.Destroy()
 }
 
@@ -3390,6 +3287,14 @@ func (e InputTypeSparkAddress) Destroy() {
 	FfiDestroyerSparkAddressDetails{}.Destroy(e.Field0)
 }
 
+type InputTypeSparkInvoice struct {
+	Field0 SparkInvoiceDetails
+}
+
+func (e InputTypeSparkInvoice) Destroy() {
+	FfiDestroyerSparkInvoiceDetails{}.Destroy(e.Field0)
+}
+
 type FfiConverterInputType struct{}
 
 var FfiConverterInputTypeINSTANCE = FfiConverterInputType{}
@@ -3456,6 +3361,10 @@ func (FfiConverterInputType) Read(reader io.Reader) InputType {
 		return InputTypeSparkAddress{
 			FfiConverterSparkAddressDetailsINSTANCE.Read(reader),
 		}
+	case 14:
+		return InputTypeSparkInvoice{
+			FfiConverterSparkInvoiceDetailsINSTANCE.Read(reader),
+		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterInputType.Read()", id))
 	}
@@ -3502,6 +3411,9 @@ func (FfiConverterInputType) Write(writer io.Writer, value InputType) {
 	case InputTypeSparkAddress:
 		writeInt32(writer, 13)
 		FfiConverterSparkAddressDetailsINSTANCE.Write(writer, variant_value.Field0)
+	case InputTypeSparkInvoice:
+		writeInt32(writer, 14)
+		FfiConverterSparkInvoiceDetailsINSTANCE.Write(writer, variant_value.Field0)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterInputType.Write", value))
@@ -4040,72 +3952,6 @@ func (_ FfiDestroyerServiceConnectivityError) Destroy(value *ServiceConnectivity
 	}
 }
 
-type SparkAddressPaymentType interface {
-	Destroy()
-}
-type SparkAddressPaymentTypeTokensPayment struct {
-	Field0 TokensPaymentDetails
-}
-
-func (e SparkAddressPaymentTypeTokensPayment) Destroy() {
-	FfiDestroyerTokensPaymentDetails{}.Destroy(e.Field0)
-}
-
-type SparkAddressPaymentTypeSatsPayment struct {
-	Field0 SatsPaymentDetails
-}
-
-func (e SparkAddressPaymentTypeSatsPayment) Destroy() {
-	FfiDestroyerSatsPaymentDetails{}.Destroy(e.Field0)
-}
-
-type FfiConverterSparkAddressPaymentType struct{}
-
-var FfiConverterSparkAddressPaymentTypeINSTANCE = FfiConverterSparkAddressPaymentType{}
-
-func (c FfiConverterSparkAddressPaymentType) Lift(rb RustBufferI) SparkAddressPaymentType {
-	return LiftFromRustBuffer[SparkAddressPaymentType](c, rb)
-}
-
-func (c FfiConverterSparkAddressPaymentType) Lower(value SparkAddressPaymentType) C.RustBuffer {
-	return LowerIntoRustBuffer[SparkAddressPaymentType](c, value)
-}
-func (FfiConverterSparkAddressPaymentType) Read(reader io.Reader) SparkAddressPaymentType {
-	id := readInt32(reader)
-	switch id {
-	case 1:
-		return SparkAddressPaymentTypeTokensPayment{
-			FfiConverterTokensPaymentDetailsINSTANCE.Read(reader),
-		}
-	case 2:
-		return SparkAddressPaymentTypeSatsPayment{
-			FfiConverterSatsPaymentDetailsINSTANCE.Read(reader),
-		}
-	default:
-		panic(fmt.Sprintf("invalid enum value %v in FfiConverterSparkAddressPaymentType.Read()", id))
-	}
-}
-
-func (FfiConverterSparkAddressPaymentType) Write(writer io.Writer, value SparkAddressPaymentType) {
-	switch variant_value := value.(type) {
-	case SparkAddressPaymentTypeTokensPayment:
-		writeInt32(writer, 1)
-		FfiConverterTokensPaymentDetailsINSTANCE.Write(writer, variant_value.Field0)
-	case SparkAddressPaymentTypeSatsPayment:
-		writeInt32(writer, 2)
-		FfiConverterSatsPaymentDetailsINSTANCE.Write(writer, variant_value.Field0)
-	default:
-		_ = variant_value
-		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterSparkAddressPaymentType.Write", value))
-	}
-}
-
-type FfiDestroyerSparkAddressPaymentType struct{}
-
-func (_ FfiDestroyerSparkAddressPaymentType) Destroy(value SparkAddressPaymentType) {
-	value.Destroy()
-}
-
 // Supported success action types
 //
 // Receiving any other (unsupported) success action type will result in a failed parsing,
@@ -4433,43 +4279,6 @@ func (_ FfiDestroyerOptionalString) Destroy(value *string) {
 	}
 }
 
-type FfiConverterOptionalSparkInvoiceFields struct{}
-
-var FfiConverterOptionalSparkInvoiceFieldsINSTANCE = FfiConverterOptionalSparkInvoiceFields{}
-
-func (c FfiConverterOptionalSparkInvoiceFields) Lift(rb RustBufferI) *SparkInvoiceFields {
-	return LiftFromRustBuffer[*SparkInvoiceFields](c, rb)
-}
-
-func (_ FfiConverterOptionalSparkInvoiceFields) Read(reader io.Reader) *SparkInvoiceFields {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterSparkInvoiceFieldsINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalSparkInvoiceFields) Lower(value *SparkInvoiceFields) C.RustBuffer {
-	return LowerIntoRustBuffer[*SparkInvoiceFields](c, value)
-}
-
-func (_ FfiConverterOptionalSparkInvoiceFields) Write(writer io.Writer, value *SparkInvoiceFields) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterSparkInvoiceFieldsINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalSparkInvoiceFields struct{}
-
-func (_ FfiDestroyerOptionalSparkInvoiceFields) Destroy(value *SparkInvoiceFields) {
-	if value != nil {
-		FfiDestroyerSparkInvoiceFields{}.Destroy(*value)
-	}
-}
-
 type FfiConverterOptionalSymbol struct{}
 
 var FfiConverterOptionalSymbolINSTANCE = FfiConverterOptionalSymbol{}
@@ -4541,43 +4350,6 @@ type FfiDestroyerOptionalAmount struct{}
 func (_ FfiDestroyerOptionalAmount) Destroy(value *Amount) {
 	if value != nil {
 		FfiDestroyerAmount{}.Destroy(*value)
-	}
-}
-
-type FfiConverterOptionalSparkAddressPaymentType struct{}
-
-var FfiConverterOptionalSparkAddressPaymentTypeINSTANCE = FfiConverterOptionalSparkAddressPaymentType{}
-
-func (c FfiConverterOptionalSparkAddressPaymentType) Lift(rb RustBufferI) *SparkAddressPaymentType {
-	return LiftFromRustBuffer[*SparkAddressPaymentType](c, rb)
-}
-
-func (_ FfiConverterOptionalSparkAddressPaymentType) Read(reader io.Reader) *SparkAddressPaymentType {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterSparkAddressPaymentTypeINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalSparkAddressPaymentType) Lower(value *SparkAddressPaymentType) C.RustBuffer {
-	return LowerIntoRustBuffer[*SparkAddressPaymentType](c, value)
-}
-
-func (_ FfiConverterOptionalSparkAddressPaymentType) Write(writer io.Writer, value *SparkAddressPaymentType) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterSparkAddressPaymentTypeINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalSparkAddressPaymentType struct{}
-
-func (_ FfiDestroyerOptionalSparkAddressPaymentType) Destroy(value *SparkAddressPaymentType) {
-	if value != nil {
-		FfiDestroyerSparkAddressPaymentType{}.Destroy(*value)
 	}
 }
 

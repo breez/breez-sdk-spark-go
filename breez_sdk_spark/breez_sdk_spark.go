@@ -448,6 +448,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_check_message()
+		})
+		if checksum != 4385 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_check_message: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_deposit()
 		})
 		if checksum != 43529 {
@@ -556,6 +565,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_withdraw()
+		})
+		if checksum != 45652 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_withdraw: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_parse()
 		})
 		if checksum != 195 {
@@ -624,6 +642,15 @@ func uniffiCheckChecksums() {
 		if checksum != 54349 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_send_payment: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_sign_message()
+		})
+		if checksum != 57563 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_sign_message: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1602,6 +1629,10 @@ type BreezSdkInterface interface {
 	// A unique identifier for the listener, which can be used to remove it later
 	AddEventListener(listener EventListener) string
 	CheckLightningAddressAvailable(req CheckLightningAddressRequest) (bool, error)
+	// Verifies a message signature against the provided public key. The message
+	// is SHA256 hashed before verification. The signature can be hex encoded
+	// in either DER or compact format.
+	CheckMessage(request CheckMessageRequest) (CheckMessageResponse, error)
 	ClaimDeposit(request ClaimDepositRequest) (ClaimDepositResponse, error)
 	DeleteLightningAddress() error
 	// Stops the SDK's background tasks
@@ -1646,6 +1677,32 @@ type BreezSdkInterface interface {
 	ListPayments(request ListPaymentsRequest) (ListPaymentsResponse, error)
 	ListUnclaimedDeposits(request ListUnclaimedDepositsRequest) (ListUnclaimedDepositsResponse, error)
 	LnurlPay(request LnurlPayRequest) (LnurlPayResponse, error)
+	// Performs an LNURL withdraw operation for the amount of satoshis to
+	// withdraw and the LNURL withdraw request details. The LNURL withdraw request
+	// details can be obtained from calling [`BreezSdk::parse`].
+	//
+	// The method generates a Lightning invoice for the withdraw amount, stores
+	// the LNURL withdraw metadata, and performs the LNURL withdraw using  the generated
+	// invoice.
+	//
+	// If the `completion_timeout_secs` parameter is provided and greater than 0, the
+	// method will wait for the payment to be completed within that period. If the
+	// withdraw is completed within the timeout, the `payment` field in the response
+	// will be set with the payment details. If the `completion_timeout_secs`
+	// parameter is not provided or set to 0, the method will not wait for the payment
+	// to be completed. If the withdraw is not completed within the
+	// timeout, the `payment` field will be empty.
+	//
+	// # Arguments
+	//
+	// * `request` - The LNURL withdraw request
+	//
+	// # Returns
+	//
+	// Result containing either:
+	// * `LnurlWithdrawResponse` - The payment details if the withdraw request was successful
+	// * `SdkError` - If there was an error during the withdraw process
+	LnurlWithdraw(request LnurlWithdrawRequest) (LnurlWithdrawResponse, error)
 	Parse(input string) (breez_sdk_common.InputType, error)
 	PrepareLnurlPay(request PrepareLnurlPayRequest) (PrepareLnurlPayResponse, error)
 	PrepareSendPayment(request PrepareSendPaymentRequest) (PrepareSendPaymentResponse, error)
@@ -1663,6 +1720,10 @@ type BreezSdkInterface interface {
 	// `true` if the listener was found and removed, `false` otherwise
 	RemoveEventListener(id string) bool
 	SendPayment(request SendPaymentRequest) (SendPaymentResponse, error)
+	// Signs a message with the wallet's identity key. The message is SHA256
+	// hashed before signing. The returned signature will be hex encoded in
+	// DER format by default, or compact format if specified.
+	SignMessage(request SignMessageRequest) (SignMessageResponse, error)
 	// Synchronizes the wallet with the Spark network
 	SyncWallet(request SyncWalletRequest) (SyncWalletResponse, error)
 	WaitForPayment(request WaitForPaymentRequest) (WaitForPaymentResponse, error)
@@ -1737,6 +1798,40 @@ func (_self *BreezSdk) CheckLightningAddressAvailable(req CheckLightningAddressR
 		// freeFn
 		func(handle C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_free_i8(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Verifies a message signature against the provided public key. The message
+// is SHA256 hashed before verification. The signature can be hex encoded
+// in either DER or compact format.
+func (_self *BreezSdk) CheckMessage(request CheckMessageRequest) (CheckMessageResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) CheckMessageResponse {
+			return FfiConverterCheckMessageResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_check_message(
+			_pointer, FfiConverterCheckMessageRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
 
@@ -2139,6 +2234,62 @@ func (_self *BreezSdk) LnurlPay(request LnurlPayRequest) (LnurlPayResponse, erro
 	return res, err
 }
 
+// Performs an LNURL withdraw operation for the amount of satoshis to
+// withdraw and the LNURL withdraw request details. The LNURL withdraw request
+// details can be obtained from calling [`BreezSdk::parse`].
+//
+// The method generates a Lightning invoice for the withdraw amount, stores
+// the LNURL withdraw metadata, and performs the LNURL withdraw using  the generated
+// invoice.
+//
+// If the `completion_timeout_secs` parameter is provided and greater than 0, the
+// method will wait for the payment to be completed within that period. If the
+// withdraw is completed within the timeout, the `payment` field in the response
+// will be set with the payment details. If the `completion_timeout_secs`
+// parameter is not provided or set to 0, the method will not wait for the payment
+// to be completed. If the withdraw is not completed within the
+// timeout, the `payment` field will be empty.
+//
+// # Arguments
+//
+// * `request` - The LNURL withdraw request
+//
+// # Returns
+//
+// Result containing either:
+// * `LnurlWithdrawResponse` - The payment details if the withdraw request was successful
+// * `SdkError` - If there was an error during the withdraw process
+func (_self *BreezSdk) LnurlWithdraw(request LnurlWithdrawRequest) (LnurlWithdrawResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) LnurlWithdrawResponse {
+			return FfiConverterLnurlWithdrawResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_lnurl_withdraw(
+			_pointer, FfiConverterLnurlWithdrawRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
 func (_self *BreezSdk) Parse(input string) (breez_sdk_common.InputType, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -2381,6 +2532,40 @@ func (_self *BreezSdk) SendPayment(request SendPaymentRequest) (SendPaymentRespo
 		},
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_send_payment(
 			_pointer, FfiConverterSendPaymentRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Signs a message with the wallet's identity key. The message is SHA256
+// hashed before signing. The returned signature will be hex encoded in
+// DER format by default, or compact format if specified.
+func (_self *BreezSdk) SignMessage(request SignMessageRequest) (SignMessageResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) SignMessageResponse {
+			return FfiConverterSignMessageResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_sign_message(
+			_pointer, FfiConverterSignMessageRequestINSTANCE.Lower(request)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -4358,6 +4543,89 @@ func (_ FfiDestroyerCheckLightningAddressRequest) Destroy(value CheckLightningAd
 	value.Destroy()
 }
 
+type CheckMessageRequest struct {
+	// The message that was signed
+	Message string
+	// The public key that signed the message
+	Pubkey string
+	// The DER or compact hex encoded signature
+	Signature string
+}
+
+func (r *CheckMessageRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Message)
+	FfiDestroyerString{}.Destroy(r.Pubkey)
+	FfiDestroyerString{}.Destroy(r.Signature)
+}
+
+type FfiConverterCheckMessageRequest struct{}
+
+var FfiConverterCheckMessageRequestINSTANCE = FfiConverterCheckMessageRequest{}
+
+func (c FfiConverterCheckMessageRequest) Lift(rb RustBufferI) CheckMessageRequest {
+	return LiftFromRustBuffer[CheckMessageRequest](c, rb)
+}
+
+func (c FfiConverterCheckMessageRequest) Read(reader io.Reader) CheckMessageRequest {
+	return CheckMessageRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterCheckMessageRequest) Lower(value CheckMessageRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[CheckMessageRequest](c, value)
+}
+
+func (c FfiConverterCheckMessageRequest) Write(writer io.Writer, value CheckMessageRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Message)
+	FfiConverterStringINSTANCE.Write(writer, value.Pubkey)
+	FfiConverterStringINSTANCE.Write(writer, value.Signature)
+}
+
+type FfiDestroyerCheckMessageRequest struct{}
+
+func (_ FfiDestroyerCheckMessageRequest) Destroy(value CheckMessageRequest) {
+	value.Destroy()
+}
+
+type CheckMessageResponse struct {
+	IsValid bool
+}
+
+func (r *CheckMessageResponse) Destroy() {
+	FfiDestroyerBool{}.Destroy(r.IsValid)
+}
+
+type FfiConverterCheckMessageResponse struct{}
+
+var FfiConverterCheckMessageResponseINSTANCE = FfiConverterCheckMessageResponse{}
+
+func (c FfiConverterCheckMessageResponse) Lift(rb RustBufferI) CheckMessageResponse {
+	return LiftFromRustBuffer[CheckMessageResponse](c, rb)
+}
+
+func (c FfiConverterCheckMessageResponse) Read(reader io.Reader) CheckMessageResponse {
+	return CheckMessageResponse{
+		FfiConverterBoolINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterCheckMessageResponse) Lower(value CheckMessageResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[CheckMessageResponse](c, value)
+}
+
+func (c FfiConverterCheckMessageResponse) Write(writer io.Writer, value CheckMessageResponse) {
+	FfiConverterBoolINSTANCE.Write(writer, value.IsValid)
+}
+
+type FfiDestroyerCheckMessageResponse struct{}
+
+func (_ FfiDestroyerCheckMessageResponse) Destroy(value CheckMessageResponse) {
+	value.Destroy()
+}
+
 type ClaimDepositRequest struct {
 	Txid   string
 	Vout   uint32
@@ -5307,6 +5575,133 @@ func (_ FfiDestroyerLnurlPayResponse) Destroy(value LnurlPayResponse) {
 	value.Destroy()
 }
 
+// Represents the withdraw LNURL info
+type LnurlWithdrawInfo struct {
+	WithdrawUrl string
+}
+
+func (r *LnurlWithdrawInfo) Destroy() {
+	FfiDestroyerString{}.Destroy(r.WithdrawUrl)
+}
+
+type FfiConverterLnurlWithdrawInfo struct{}
+
+var FfiConverterLnurlWithdrawInfoINSTANCE = FfiConverterLnurlWithdrawInfo{}
+
+func (c FfiConverterLnurlWithdrawInfo) Lift(rb RustBufferI) LnurlWithdrawInfo {
+	return LiftFromRustBuffer[LnurlWithdrawInfo](c, rb)
+}
+
+func (c FfiConverterLnurlWithdrawInfo) Read(reader io.Reader) LnurlWithdrawInfo {
+	return LnurlWithdrawInfo{
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterLnurlWithdrawInfo) Lower(value LnurlWithdrawInfo) C.RustBuffer {
+	return LowerIntoRustBuffer[LnurlWithdrawInfo](c, value)
+}
+
+func (c FfiConverterLnurlWithdrawInfo) Write(writer io.Writer, value LnurlWithdrawInfo) {
+	FfiConverterStringINSTANCE.Write(writer, value.WithdrawUrl)
+}
+
+type FfiDestroyerLnurlWithdrawInfo struct{}
+
+func (_ FfiDestroyerLnurlWithdrawInfo) Destroy(value LnurlWithdrawInfo) {
+	value.Destroy()
+}
+
+type LnurlWithdrawRequest struct {
+	// The amount to withdraw in satoshis
+	// Must be within the min and max withdrawable limits
+	AmountSats      uint64
+	WithdrawRequest breez_sdk_common.LnurlWithdrawRequestDetails
+	// If set, the function will return the payment if it is still pending after this
+	// number of seconds. If unset, the function will return immediately after
+	// initiating the LNURL withdraw.
+	CompletionTimeoutSecs *uint32
+}
+
+func (r *LnurlWithdrawRequest) Destroy() {
+	FfiDestroyerUint64{}.Destroy(r.AmountSats)
+	breez_sdk_common.FfiDestroyerLnurlWithdrawRequestDetails{}.Destroy(r.WithdrawRequest)
+	FfiDestroyerOptionalUint32{}.Destroy(r.CompletionTimeoutSecs)
+}
+
+type FfiConverterLnurlWithdrawRequest struct{}
+
+var FfiConverterLnurlWithdrawRequestINSTANCE = FfiConverterLnurlWithdrawRequest{}
+
+func (c FfiConverterLnurlWithdrawRequest) Lift(rb RustBufferI) LnurlWithdrawRequest {
+	return LiftFromRustBuffer[LnurlWithdrawRequest](c, rb)
+}
+
+func (c FfiConverterLnurlWithdrawRequest) Read(reader io.Reader) LnurlWithdrawRequest {
+	return LnurlWithdrawRequest{
+		FfiConverterUint64INSTANCE.Read(reader),
+		breez_sdk_common.FfiConverterLnurlWithdrawRequestDetailsINSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterLnurlWithdrawRequest) Lower(value LnurlWithdrawRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[LnurlWithdrawRequest](c, value)
+}
+
+func (c FfiConverterLnurlWithdrawRequest) Write(writer io.Writer, value LnurlWithdrawRequest) {
+	FfiConverterUint64INSTANCE.Write(writer, value.AmountSats)
+	breez_sdk_common.FfiConverterLnurlWithdrawRequestDetailsINSTANCE.Write(writer, value.WithdrawRequest)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.CompletionTimeoutSecs)
+}
+
+type FfiDestroyerLnurlWithdrawRequest struct{}
+
+func (_ FfiDestroyerLnurlWithdrawRequest) Destroy(value LnurlWithdrawRequest) {
+	value.Destroy()
+}
+
+type LnurlWithdrawResponse struct {
+	// The Lightning invoice generated for the LNURL withdraw
+	PaymentRequest string
+	Payment        *Payment
+}
+
+func (r *LnurlWithdrawResponse) Destroy() {
+	FfiDestroyerString{}.Destroy(r.PaymentRequest)
+	FfiDestroyerOptionalPayment{}.Destroy(r.Payment)
+}
+
+type FfiConverterLnurlWithdrawResponse struct{}
+
+var FfiConverterLnurlWithdrawResponseINSTANCE = FfiConverterLnurlWithdrawResponse{}
+
+func (c FfiConverterLnurlWithdrawResponse) Lift(rb RustBufferI) LnurlWithdrawResponse {
+	return LiftFromRustBuffer[LnurlWithdrawResponse](c, rb)
+}
+
+func (c FfiConverterLnurlWithdrawResponse) Read(reader io.Reader) LnurlWithdrawResponse {
+	return LnurlWithdrawResponse{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterOptionalPaymentINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterLnurlWithdrawResponse) Lower(value LnurlWithdrawResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[LnurlWithdrawResponse](c, value)
+}
+
+func (c FfiConverterLnurlWithdrawResponse) Write(writer io.Writer, value LnurlWithdrawResponse) {
+	FfiConverterStringINSTANCE.Write(writer, value.PaymentRequest)
+	FfiConverterOptionalPaymentINSTANCE.Write(writer, value.Payment)
+}
+
+type FfiDestroyerLnurlWithdrawResponse struct{}
+
+func (_ FfiDestroyerLnurlWithdrawResponse) Destroy(value LnurlWithdrawResponse) {
+	value.Destroy()
+}
+
 type LogEntry struct {
 	Line  string
 	Level string
@@ -5423,12 +5818,14 @@ func (_ FfiDestroyerPayment) Destroy(value Payment) {
 
 // Metadata associated with a payment that cannot be extracted from the Spark operator.
 type PaymentMetadata struct {
-	LnurlPayInfo     *LnurlPayInfo
-	LnurlDescription *string
+	LnurlPayInfo      *LnurlPayInfo
+	LnurlWithdrawInfo *LnurlWithdrawInfo
+	LnurlDescription  *string
 }
 
 func (r *PaymentMetadata) Destroy() {
 	FfiDestroyerOptionalLnurlPayInfo{}.Destroy(r.LnurlPayInfo)
+	FfiDestroyerOptionalLnurlWithdrawInfo{}.Destroy(r.LnurlWithdrawInfo)
 	FfiDestroyerOptionalString{}.Destroy(r.LnurlDescription)
 }
 
@@ -5443,6 +5840,7 @@ func (c FfiConverterPaymentMetadata) Lift(rb RustBufferI) PaymentMetadata {
 func (c FfiConverterPaymentMetadata) Read(reader io.Reader) PaymentMetadata {
 	return PaymentMetadata{
 		FfiConverterOptionalLnurlPayInfoINSTANCE.Read(reader),
+		FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
@@ -5453,6 +5851,7 @@ func (c FfiConverterPaymentMetadata) Lower(value PaymentMetadata) C.RustBuffer {
 
 func (c FfiConverterPaymentMetadata) Write(writer io.Writer, value PaymentMetadata) {
 	FfiConverterOptionalLnurlPayInfoINSTANCE.Write(writer, value.LnurlPayInfo)
+	FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Write(writer, value.LnurlWithdrawInfo)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.LnurlDescription)
 }
 
@@ -5747,12 +6146,14 @@ func (_ FfiDestroyerReceivePaymentRequest) Destroy(value ReceivePaymentRequest) 
 
 type ReceivePaymentResponse struct {
 	PaymentRequest string
-	FeeSats        uint64
+	// Fee to pay to receive the payment
+	// Denominated in sats or token base units
+	Fee u128
 }
 
 func (r *ReceivePaymentResponse) Destroy() {
 	FfiDestroyerString{}.Destroy(r.PaymentRequest)
-	FfiDestroyerUint64{}.Destroy(r.FeeSats)
+	FfiDestroyerTypeu128{}.Destroy(r.Fee)
 }
 
 type FfiConverterReceivePaymentResponse struct{}
@@ -5766,7 +6167,7 @@ func (c FfiConverterReceivePaymentResponse) Lift(rb RustBufferI) ReceivePaymentR
 func (c FfiConverterReceivePaymentResponse) Read(reader io.Reader) ReceivePaymentResponse {
 	return ReceivePaymentResponse{
 		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterTypeu128INSTANCE.Read(reader),
 	}
 }
 
@@ -5776,7 +6177,7 @@ func (c FfiConverterReceivePaymentResponse) Lower(value ReceivePaymentResponse) 
 
 func (c FfiConverterReceivePaymentResponse) Write(writer io.Writer, value ReceivePaymentResponse) {
 	FfiConverterStringINSTANCE.Write(writer, value.PaymentRequest)
-	FfiConverterUint64INSTANCE.Write(writer, value.FeeSats)
+	FfiConverterTypeu128INSTANCE.Write(writer, value.Fee)
 }
 
 type FfiDestroyerReceivePaymentResponse struct{}
@@ -6078,6 +6479,130 @@ func (c FfiConverterSendPaymentResponse) Write(writer io.Writer, value SendPayme
 type FfiDestroyerSendPaymentResponse struct{}
 
 func (_ FfiDestroyerSendPaymentResponse) Destroy(value SendPaymentResponse) {
+	value.Destroy()
+}
+
+type SignMessageRequest struct {
+	Message string
+	// If true, the signature will be encoded in compact format instead of DER format
+	Compact bool
+}
+
+func (r *SignMessageRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Message)
+	FfiDestroyerBool{}.Destroy(r.Compact)
+}
+
+type FfiConverterSignMessageRequest struct{}
+
+var FfiConverterSignMessageRequestINSTANCE = FfiConverterSignMessageRequest{}
+
+func (c FfiConverterSignMessageRequest) Lift(rb RustBufferI) SignMessageRequest {
+	return LiftFromRustBuffer[SignMessageRequest](c, rb)
+}
+
+func (c FfiConverterSignMessageRequest) Read(reader io.Reader) SignMessageRequest {
+	return SignMessageRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterBoolINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSignMessageRequest) Lower(value SignMessageRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[SignMessageRequest](c, value)
+}
+
+func (c FfiConverterSignMessageRequest) Write(writer io.Writer, value SignMessageRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Message)
+	FfiConverterBoolINSTANCE.Write(writer, value.Compact)
+}
+
+type FfiDestroyerSignMessageRequest struct{}
+
+func (_ FfiDestroyerSignMessageRequest) Destroy(value SignMessageRequest) {
+	value.Destroy()
+}
+
+type SignMessageResponse struct {
+	Pubkey string
+	// The DER or compact hex encoded signature
+	Signature string
+}
+
+func (r *SignMessageResponse) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Pubkey)
+	FfiDestroyerString{}.Destroy(r.Signature)
+}
+
+type FfiConverterSignMessageResponse struct{}
+
+var FfiConverterSignMessageResponseINSTANCE = FfiConverterSignMessageResponse{}
+
+func (c FfiConverterSignMessageResponse) Lift(rb RustBufferI) SignMessageResponse {
+	return LiftFromRustBuffer[SignMessageResponse](c, rb)
+}
+
+func (c FfiConverterSignMessageResponse) Read(reader io.Reader) SignMessageResponse {
+	return SignMessageResponse{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSignMessageResponse) Lower(value SignMessageResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[SignMessageResponse](c, value)
+}
+
+func (c FfiConverterSignMessageResponse) Write(writer io.Writer, value SignMessageResponse) {
+	FfiConverterStringINSTANCE.Write(writer, value.Pubkey)
+	FfiConverterStringINSTANCE.Write(writer, value.Signature)
+}
+
+type FfiDestroyerSignMessageResponse struct{}
+
+func (_ FfiDestroyerSignMessageResponse) Destroy(value SignMessageResponse) {
+	value.Destroy()
+}
+
+type SparkInvoicePaymentDetails struct {
+	// Represents the spark invoice description
+	Description *string
+	// The raw spark invoice string
+	Invoice string
+}
+
+func (r *SparkInvoicePaymentDetails) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.Description)
+	FfiDestroyerString{}.Destroy(r.Invoice)
+}
+
+type FfiConverterSparkInvoicePaymentDetails struct{}
+
+var FfiConverterSparkInvoicePaymentDetailsINSTANCE = FfiConverterSparkInvoicePaymentDetails{}
+
+func (c FfiConverterSparkInvoicePaymentDetails) Lift(rb RustBufferI) SparkInvoicePaymentDetails {
+	return LiftFromRustBuffer[SparkInvoicePaymentDetails](c, rb)
+}
+
+func (c FfiConverterSparkInvoicePaymentDetails) Read(reader io.Reader) SparkInvoicePaymentDetails {
+	return SparkInvoicePaymentDetails{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSparkInvoicePaymentDetails) Lower(value SparkInvoicePaymentDetails) C.RustBuffer {
+	return LowerIntoRustBuffer[SparkInvoicePaymentDetails](c, value)
+}
+
+func (c FfiConverterSparkInvoicePaymentDetails) Write(writer io.Writer, value SparkInvoicePaymentDetails) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Description)
+	FfiConverterStringINSTANCE.Write(writer, value.Invoice)
+}
+
+type FfiDestroyerSparkInvoicePaymentDetails struct{}
+
+func (_ FfiDestroyerSparkInvoicePaymentDetails) Destroy(value SparkInvoicePaymentDetails) {
 	value.Destroy()
 }
 
@@ -6918,19 +7443,23 @@ type PaymentDetails interface {
 	Destroy()
 }
 type PaymentDetailsSpark struct {
+	InvoiceDetails *SparkInvoicePaymentDetails
 }
 
 func (e PaymentDetailsSpark) Destroy() {
+	FfiDestroyerOptionalSparkInvoicePaymentDetails{}.Destroy(e.InvoiceDetails)
 }
 
 type PaymentDetailsToken struct {
-	Metadata TokenMetadata
-	TxHash   string
+	Metadata       TokenMetadata
+	TxHash         string
+	InvoiceDetails *SparkInvoicePaymentDetails
 }
 
 func (e PaymentDetailsToken) Destroy() {
 	FfiDestroyerTokenMetadata{}.Destroy(e.Metadata)
 	FfiDestroyerString{}.Destroy(e.TxHash)
+	FfiDestroyerOptionalSparkInvoicePaymentDetails{}.Destroy(e.InvoiceDetails)
 }
 
 type PaymentDetailsLightning struct {
@@ -6940,6 +7469,7 @@ type PaymentDetailsLightning struct {
 	PaymentHash       string
 	DestinationPubkey string
 	LnurlPayInfo      *LnurlPayInfo
+	LnurlWithdrawInfo *LnurlWithdrawInfo
 }
 
 func (e PaymentDetailsLightning) Destroy() {
@@ -6949,6 +7479,7 @@ func (e PaymentDetailsLightning) Destroy() {
 	FfiDestroyerString{}.Destroy(e.PaymentHash)
 	FfiDestroyerString{}.Destroy(e.DestinationPubkey)
 	FfiDestroyerOptionalLnurlPayInfo{}.Destroy(e.LnurlPayInfo)
+	FfiDestroyerOptionalLnurlWithdrawInfo{}.Destroy(e.LnurlWithdrawInfo)
 }
 
 type PaymentDetailsWithdraw struct {
@@ -6982,11 +7513,14 @@ func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 	id := readInt32(reader)
 	switch id {
 	case 1:
-		return PaymentDetailsSpark{}
+		return PaymentDetailsSpark{
+			FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Read(reader),
+		}
 	case 2:
 		return PaymentDetailsToken{
 			FfiConverterTokenMetadataINSTANCE.Read(reader),
 			FfiConverterStringINSTANCE.Read(reader),
+			FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Read(reader),
 		}
 	case 3:
 		return PaymentDetailsLightning{
@@ -6996,6 +7530,7 @@ func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterOptionalLnurlPayInfoINSTANCE.Read(reader),
+			FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Read(reader),
 		}
 	case 4:
 		return PaymentDetailsWithdraw{
@@ -7014,10 +7549,12 @@ func (FfiConverterPaymentDetails) Write(writer io.Writer, value PaymentDetails) 
 	switch variant_value := value.(type) {
 	case PaymentDetailsSpark:
 		writeInt32(writer, 1)
+		FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Write(writer, variant_value.InvoiceDetails)
 	case PaymentDetailsToken:
 		writeInt32(writer, 2)
 		FfiConverterTokenMetadataINSTANCE.Write(writer, variant_value.Metadata)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.TxHash)
+		FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Write(writer, variant_value.InvoiceDetails)
 	case PaymentDetailsLightning:
 		writeInt32(writer, 3)
 		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.Description)
@@ -7026,6 +7563,7 @@ func (FfiConverterPaymentDetails) Write(writer io.Writer, value PaymentDetails) 
 		FfiConverterStringINSTANCE.Write(writer, variant_value.PaymentHash)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.DestinationPubkey)
 		FfiConverterOptionalLnurlPayInfoINSTANCE.Write(writer, variant_value.LnurlPayInfo)
+		FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Write(writer, variant_value.LnurlWithdrawInfo)
 	case PaymentDetailsWithdraw:
 		writeInt32(writer, 4)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.TxId)
@@ -7312,21 +7850,21 @@ func (e ProvisionalPaymentDetailsLightning) Destroy() {
 }
 
 type ProvisionalPaymentDetailsSpark struct {
-	ReceiverAddress string
+	PayRequest string
 }
 
 func (e ProvisionalPaymentDetailsSpark) Destroy() {
-	FfiDestroyerString{}.Destroy(e.ReceiverAddress)
+	FfiDestroyerString{}.Destroy(e.PayRequest)
 }
 
 type ProvisionalPaymentDetailsToken struct {
-	TokenId         string
-	ReceiverAddress string
+	TokenId    string
+	PayRequest string
 }
 
 func (e ProvisionalPaymentDetailsToken) Destroy() {
 	FfiDestroyerString{}.Destroy(e.TokenId)
-	FfiDestroyerString{}.Destroy(e.ReceiverAddress)
+	FfiDestroyerString{}.Destroy(e.PayRequest)
 }
 
 type FfiConverterProvisionalPaymentDetails struct{}
@@ -7375,11 +7913,11 @@ func (FfiConverterProvisionalPaymentDetails) Write(writer io.Writer, value Provi
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Invoice)
 	case ProvisionalPaymentDetailsSpark:
 		writeInt32(writer, 3)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.ReceiverAddress)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.PayRequest)
 	case ProvisionalPaymentDetailsToken:
 		writeInt32(writer, 4)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.TokenId)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.ReceiverAddress)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.PayRequest)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterProvisionalPaymentDetails.Write", value))
@@ -7399,6 +7937,22 @@ type ReceivePaymentMethodSparkAddress struct {
 }
 
 func (e ReceivePaymentMethodSparkAddress) Destroy() {
+}
+
+type ReceivePaymentMethodSparkInvoice struct {
+	Amount          *u128
+	TokenIdentifier *string
+	ExpiryTime      *uint64
+	Description     *string
+	SenderPublicKey *string
+}
+
+func (e ReceivePaymentMethodSparkInvoice) Destroy() {
+	FfiDestroyerOptionalTypeu128{}.Destroy(e.Amount)
+	FfiDestroyerOptionalString{}.Destroy(e.TokenIdentifier)
+	FfiDestroyerOptionalUint64{}.Destroy(e.ExpiryTime)
+	FfiDestroyerOptionalString{}.Destroy(e.Description)
+	FfiDestroyerOptionalString{}.Destroy(e.SenderPublicKey)
 }
 
 type ReceivePaymentMethodBitcoinAddress struct {
@@ -7434,8 +7988,16 @@ func (FfiConverterReceivePaymentMethod) Read(reader io.Reader) ReceivePaymentMet
 	case 1:
 		return ReceivePaymentMethodSparkAddress{}
 	case 2:
-		return ReceivePaymentMethodBitcoinAddress{}
+		return ReceivePaymentMethodSparkInvoice{
+			FfiConverterOptionalTypeu128INSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
+			FfiConverterOptionalUint64INSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
+		}
 	case 3:
+		return ReceivePaymentMethodBitcoinAddress{}
+	case 4:
 		return ReceivePaymentMethodBolt11Invoice{
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterOptionalUint64INSTANCE.Read(reader),
@@ -7449,10 +8011,17 @@ func (FfiConverterReceivePaymentMethod) Write(writer io.Writer, value ReceivePay
 	switch variant_value := value.(type) {
 	case ReceivePaymentMethodSparkAddress:
 		writeInt32(writer, 1)
-	case ReceivePaymentMethodBitcoinAddress:
+	case ReceivePaymentMethodSparkInvoice:
 		writeInt32(writer, 2)
-	case ReceivePaymentMethodBolt11Invoice:
+		FfiConverterOptionalTypeu128INSTANCE.Write(writer, variant_value.Amount)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.TokenIdentifier)
+		FfiConverterOptionalUint64INSTANCE.Write(writer, variant_value.ExpiryTime)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.Description)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.SenderPublicKey)
+	case ReceivePaymentMethodBitcoinAddress:
 		writeInt32(writer, 3)
+	case ReceivePaymentMethodBolt11Invoice:
+		writeInt32(writer, 4)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Description)
 		FfiConverterOptionalUint64INSTANCE.Write(writer, variant_value.AmountSats)
 	default:
@@ -8176,6 +8745,18 @@ func (e SendPaymentMethodSparkAddress) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(e.TokenIdentifier)
 }
 
+type SendPaymentMethodSparkInvoice struct {
+	SparkInvoiceDetails breez_sdk_common.SparkInvoiceDetails
+	Fee                 u128
+	TokenIdentifier     *string
+}
+
+func (e SendPaymentMethodSparkInvoice) Destroy() {
+	breez_sdk_common.FfiDestroyerSparkInvoiceDetails{}.Destroy(e.SparkInvoiceDetails)
+	FfiDestroyerTypeu128{}.Destroy(e.Fee)
+	FfiDestroyerOptionalString{}.Destroy(e.TokenIdentifier)
+}
+
 type FfiConverterSendPaymentMethod struct{}
 
 var FfiConverterSendPaymentMethodINSTANCE = FfiConverterSendPaymentMethod{}
@@ -8207,6 +8788,12 @@ func (FfiConverterSendPaymentMethod) Read(reader io.Reader) SendPaymentMethod {
 			FfiConverterTypeu128INSTANCE.Read(reader),
 			FfiConverterOptionalStringINSTANCE.Read(reader),
 		}
+	case 4:
+		return SendPaymentMethodSparkInvoice{
+			breez_sdk_common.FfiConverterSparkInvoiceDetailsINSTANCE.Read(reader),
+			FfiConverterTypeu128INSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
+		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterSendPaymentMethod.Read()", id))
 	}
@@ -8226,6 +8813,11 @@ func (FfiConverterSendPaymentMethod) Write(writer io.Writer, value SendPaymentMe
 	case SendPaymentMethodSparkAddress:
 		writeInt32(writer, 3)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Address)
+		FfiConverterTypeu128INSTANCE.Write(writer, variant_value.Fee)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.TokenIdentifier)
+	case SendPaymentMethodSparkInvoice:
+		writeInt32(writer, 4)
+		breez_sdk_common.FfiConverterSparkInvoiceDetailsINSTANCE.Write(writer, variant_value.SparkInvoiceDetails)
 		FfiConverterTypeu128INSTANCE.Write(writer, variant_value.Fee)
 		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.TokenIdentifier)
 	default:
@@ -9048,6 +9640,43 @@ func (_ FfiDestroyerOptionalLnurlPayInfo) Destroy(value *LnurlPayInfo) {
 	}
 }
 
+type FfiConverterOptionalLnurlWithdrawInfo struct{}
+
+var FfiConverterOptionalLnurlWithdrawInfoINSTANCE = FfiConverterOptionalLnurlWithdrawInfo{}
+
+func (c FfiConverterOptionalLnurlWithdrawInfo) Lift(rb RustBufferI) *LnurlWithdrawInfo {
+	return LiftFromRustBuffer[*LnurlWithdrawInfo](c, rb)
+}
+
+func (_ FfiConverterOptionalLnurlWithdrawInfo) Read(reader io.Reader) *LnurlWithdrawInfo {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterLnurlWithdrawInfoINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalLnurlWithdrawInfo) Lower(value *LnurlWithdrawInfo) C.RustBuffer {
+	return LowerIntoRustBuffer[*LnurlWithdrawInfo](c, value)
+}
+
+func (_ FfiConverterOptionalLnurlWithdrawInfo) Write(writer io.Writer, value *LnurlWithdrawInfo) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterLnurlWithdrawInfoINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalLnurlWithdrawInfo struct{}
+
+func (_ FfiDestroyerOptionalLnurlWithdrawInfo) Destroy(value *LnurlWithdrawInfo) {
+	if value != nil {
+		FfiDestroyerLnurlWithdrawInfo{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalPayment struct{}
 
 var FfiConverterOptionalPaymentINSTANCE = FfiConverterOptionalPayment{}
@@ -9082,6 +9711,43 @@ type FfiDestroyerOptionalPayment struct{}
 func (_ FfiDestroyerOptionalPayment) Destroy(value *Payment) {
 	if value != nil {
 		FfiDestroyerPayment{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalSparkInvoicePaymentDetails struct{}
+
+var FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE = FfiConverterOptionalSparkInvoicePaymentDetails{}
+
+func (c FfiConverterOptionalSparkInvoicePaymentDetails) Lift(rb RustBufferI) *SparkInvoicePaymentDetails {
+	return LiftFromRustBuffer[*SparkInvoicePaymentDetails](c, rb)
+}
+
+func (_ FfiConverterOptionalSparkInvoicePaymentDetails) Read(reader io.Reader) *SparkInvoicePaymentDetails {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterSparkInvoicePaymentDetailsINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalSparkInvoicePaymentDetails) Lower(value *SparkInvoicePaymentDetails) C.RustBuffer {
+	return LowerIntoRustBuffer[*SparkInvoicePaymentDetails](c, value)
+}
+
+func (_ FfiConverterOptionalSparkInvoicePaymentDetails) Write(writer io.Writer, value *SparkInvoicePaymentDetails) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterSparkInvoicePaymentDetailsINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalSparkInvoicePaymentDetails struct{}
+
+func (_ FfiDestroyerOptionalSparkInvoicePaymentDetails) Destroy(value *SparkInvoicePaymentDetails) {
+	if value != nil {
+		FfiDestroyerSparkInvoicePaymentDetails{}.Destroy(*value)
 	}
 }
 

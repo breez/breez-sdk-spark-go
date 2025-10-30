@@ -753,6 +753,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_add_event_listener(void* ptr,
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_check_lightning_address_available(void* ptr, RustBuffer req
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_CHECK_MESSAGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_CHECK_MESSAGE
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_check_message(void* ptr, RustBuffer request
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_CLAIM_DEPOSIT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_CLAIM_DEPOSIT
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_claim_deposit(void* ptr, RustBuffer request
@@ -813,6 +818,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_list_unclaimed_deposits(void*
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_lnurl_pay(void* ptr, RustBuffer request
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LNURL_WITHDRAW
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_LNURL_WITHDRAW
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_lnurl_withdraw(void* ptr, RustBuffer request
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PARSE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_PARSE
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_parse(void* ptr, RustBuffer input
@@ -851,6 +861,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_remove_event_listener(void* p
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_PAYMENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SEND_PAYMENT
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_send_payment(void* ptr, RustBuffer request
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SIGN_MESSAGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SIGN_MESSAGE
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_sign_message(void* ptr, RustBuffer request
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_SYNC_WALLET
@@ -1378,6 +1393,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_check_lightning_address
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_CHECK_MESSAGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_CHECK_MESSAGE
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_check_message(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_CLAIM_DEPOSIT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_CLAIM_DEPOSIT
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_deposit(void
@@ -1450,6 +1471,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_pay(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LNURL_WITHDRAW
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_LNURL_WITHDRAW
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_withdraw(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_PARSE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_PARSE
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_parse(void
@@ -1495,6 +1522,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_remove_event_listener(v
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_PAYMENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SEND_PAYMENT
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_send_payment(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SIGN_MESSAGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_SIGN_MESSAGE
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_sign_message(void
     
 );
 #endif
