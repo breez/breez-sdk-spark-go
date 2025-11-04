@@ -385,6 +385,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_default_sync_storage()
+		})
+		if checksum != 62413 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_default_sync_storage: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_init_logging()
 		})
 		if checksum != 8518 {
@@ -732,6 +741,15 @@ func uniffiCheckChecksums() {
 		if checksum != 21617 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_payment_observer: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_real_time_sync_storage()
+		})
+		if checksum != 36431 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_real_time_sync_storage: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -2884,6 +2902,7 @@ type SdkBuilderInterface interface {
 	// Arguments:
 	// - `payment_observer`: The payment observer to be used.
 	WithPaymentObserver(paymentObserver PaymentObserver)
+	WithRealTimeSyncStorage(storage breez_sdk_common.SyncStorage)
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
 	// - `url`: The base URL of the REST API.
@@ -3068,6 +3087,32 @@ func (_self *SdkBuilder) WithPaymentObserver(paymentObserver PaymentObserver) {
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_payment_observer(
 			_pointer, FfiConverterPaymentObserverINSTANCE.Lower(paymentObserver)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+func (_self *SdkBuilder) WithRealTimeSyncStorage(storage breez_sdk_common.SyncStorage) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_real_time_sync_storage(
+			_pointer, breez_sdk_common.FfiConverterSyncStorageINSTANCE.Lower(storage)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -4725,6 +4770,8 @@ type Config struct {
 	// ([`DEFAULT_EXTERNAL_INPUT_PARSERS`]).
 	// Set this to false in order to prevent their use.
 	UseDefaultExternalInputParsers bool
+	// Url to use for the real-time sync server. Defaults to the Breez real-time sync server.
+	RealTimeSyncServerUrl *string
 }
 
 func (r *Config) Destroy() {
@@ -4736,6 +4783,7 @@ func (r *Config) Destroy() {
 	FfiDestroyerBool{}.Destroy(r.PreferSparkOverLightning)
 	FfiDestroyerOptionalSequenceExternalInputParser{}.Destroy(r.ExternalInputParsers)
 	FfiDestroyerBool{}.Destroy(r.UseDefaultExternalInputParsers)
+	FfiDestroyerOptionalString{}.Destroy(r.RealTimeSyncServerUrl)
 }
 
 type FfiConverterConfig struct{}
@@ -4756,6 +4804,7 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterOptionalSequenceExternalInputParserINSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
@@ -4772,6 +4821,7 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterBoolINSTANCE.Write(writer, value.PreferSparkOverLightning)
 	FfiConverterOptionalSequenceExternalInputParserINSTANCE.Write(writer, value.ExternalInputParsers)
 	FfiConverterBoolINSTANCE.Write(writer, value.UseDefaultExternalInputParsers)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.RealTimeSyncServerUrl)
 }
 
 type FfiDestroyerConfig struct{}
@@ -7182,14 +7232,14 @@ type DepositClaimError interface {
 type DepositClaimErrorDepositClaimFeeExceeded struct {
 	Tx        string
 	Vout      uint32
-	MaxFee    Fee
+	MaxFee    *Fee
 	ActualFee uint64
 }
 
 func (e DepositClaimErrorDepositClaimFeeExceeded) Destroy() {
 	FfiDestroyerString{}.Destroy(e.Tx)
 	FfiDestroyerUint32{}.Destroy(e.Vout)
-	FfiDestroyerFee{}.Destroy(e.MaxFee)
+	FfiDestroyerOptionalFee{}.Destroy(e.MaxFee)
 	FfiDestroyerUint64{}.Destroy(e.ActualFee)
 }
 
@@ -7229,7 +7279,7 @@ func (FfiConverterDepositClaimError) Read(reader io.Reader) DepositClaimError {
 		return DepositClaimErrorDepositClaimFeeExceeded{
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterUint32INSTANCE.Read(reader),
-			FfiConverterFeeINSTANCE.Read(reader),
+			FfiConverterOptionalFeeINSTANCE.Read(reader),
 			FfiConverterUint64INSTANCE.Read(reader),
 		}
 	case 2:
@@ -7252,7 +7302,7 @@ func (FfiConverterDepositClaimError) Write(writer io.Writer, value DepositClaimE
 		writeInt32(writer, 1)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Tx)
 		FfiConverterUint32INSTANCE.Write(writer, variant_value.Vout)
-		FfiConverterFeeINSTANCE.Write(writer, variant_value.MaxFee)
+		FfiConverterOptionalFeeINSTANCE.Write(writer, variant_value.MaxFee)
 		FfiConverterUint64INSTANCE.Write(writer, variant_value.ActualFee)
 	case DepositClaimErrorMissingUtxo:
 		writeInt32(writer, 2)
@@ -8249,14 +8299,14 @@ func (self SdkErrorChainServiceError) Is(target error) bool {
 type SdkErrorDepositClaimFeeExceeded struct {
 	Tx        string
 	Vout      uint32
-	MaxFee    Fee
+	MaxFee    *Fee
 	ActualFee uint64
 }
 
 func NewSdkErrorDepositClaimFeeExceeded(
 	tx string,
 	vout uint32,
-	maxFee Fee,
+	maxFee *Fee,
 	actualFee uint64,
 ) *SdkError {
 	return &SdkError{err: &SdkErrorDepositClaimFeeExceeded{
@@ -8269,7 +8319,7 @@ func NewSdkErrorDepositClaimFeeExceeded(
 func (e SdkErrorDepositClaimFeeExceeded) destroy() {
 	FfiDestroyerString{}.Destroy(e.Tx)
 	FfiDestroyerUint32{}.Destroy(e.Vout)
-	FfiDestroyerFee{}.Destroy(e.MaxFee)
+	FfiDestroyerOptionalFee{}.Destroy(e.MaxFee)
 	FfiDestroyerUint64{}.Destroy(e.ActualFee)
 }
 
@@ -8430,7 +8480,7 @@ func (c FfiConverterSdkError) Read(reader io.Reader) *SdkError {
 		return &SdkError{&SdkErrorDepositClaimFeeExceeded{
 			Tx:        FfiConverterStringINSTANCE.Read(reader),
 			Vout:      FfiConverterUint32INSTANCE.Read(reader),
-			MaxFee:    FfiConverterFeeINSTANCE.Read(reader),
+			MaxFee:    FfiConverterOptionalFeeINSTANCE.Read(reader),
 			ActualFee: FfiConverterUint64INSTANCE.Read(reader),
 		}}
 	case 8:
@@ -8475,7 +8525,7 @@ func (c FfiConverterSdkError) Write(writer io.Writer, value *SdkError) {
 		writeInt32(writer, 7)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Tx)
 		FfiConverterUint32INSTANCE.Write(writer, variantValue.Vout)
-		FfiConverterFeeINSTANCE.Write(writer, variantValue.MaxFee)
+		FfiConverterOptionalFeeINSTANCE.Write(writer, variantValue.MaxFee)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.ActualFee)
 	case *SdkErrorMissingUtxo:
 		writeInt32(writer, 8)
@@ -8535,20 +8585,29 @@ type SdkEventSynced struct {
 func (e SdkEventSynced) Destroy() {
 }
 
-// Emitted when the wallet failed to claim some deposits
-type SdkEventClaimDepositsFailed struct {
+// Emitted when data was pushed and/or pulled to/from real-time sync storage.
+type SdkEventDataSynced struct {
+	DidPullNewRecords bool
+}
+
+func (e SdkEventDataSynced) Destroy() {
+	FfiDestroyerBool{}.Destroy(e.DidPullNewRecords)
+}
+
+// Emitted when the SDK was unable to claim deposits
+type SdkEventUnclaimedDeposits struct {
 	UnclaimedDeposits []DepositInfo
 }
 
-func (e SdkEventClaimDepositsFailed) Destroy() {
+func (e SdkEventUnclaimedDeposits) Destroy() {
 	FfiDestroyerSequenceDepositInfo{}.Destroy(e.UnclaimedDeposits)
 }
 
-type SdkEventClaimDepositsSucceeded struct {
+type SdkEventClaimedDeposits struct {
 	ClaimedDeposits []DepositInfo
 }
 
-func (e SdkEventClaimDepositsSucceeded) Destroy() {
+func (e SdkEventClaimedDeposits) Destroy() {
 	FfiDestroyerSequenceDepositInfo{}.Destroy(e.ClaimedDeposits)
 }
 
@@ -8585,18 +8644,22 @@ func (FfiConverterSdkEvent) Read(reader io.Reader) SdkEvent {
 	case 1:
 		return SdkEventSynced{}
 	case 2:
-		return SdkEventClaimDepositsFailed{
-			FfiConverterSequenceDepositInfoINSTANCE.Read(reader),
+		return SdkEventDataSynced{
+			FfiConverterBoolINSTANCE.Read(reader),
 		}
 	case 3:
-		return SdkEventClaimDepositsSucceeded{
+		return SdkEventUnclaimedDeposits{
 			FfiConverterSequenceDepositInfoINSTANCE.Read(reader),
 		}
 	case 4:
+		return SdkEventClaimedDeposits{
+			FfiConverterSequenceDepositInfoINSTANCE.Read(reader),
+		}
+	case 5:
 		return SdkEventPaymentSucceeded{
 			FfiConverterPaymentINSTANCE.Read(reader),
 		}
-	case 5:
+	case 6:
 		return SdkEventPaymentFailed{
 			FfiConverterPaymentINSTANCE.Read(reader),
 		}
@@ -8609,17 +8672,20 @@ func (FfiConverterSdkEvent) Write(writer io.Writer, value SdkEvent) {
 	switch variant_value := value.(type) {
 	case SdkEventSynced:
 		writeInt32(writer, 1)
-	case SdkEventClaimDepositsFailed:
+	case SdkEventDataSynced:
 		writeInt32(writer, 2)
-		FfiConverterSequenceDepositInfoINSTANCE.Write(writer, variant_value.UnclaimedDeposits)
-	case SdkEventClaimDepositsSucceeded:
+		FfiConverterBoolINSTANCE.Write(writer, variant_value.DidPullNewRecords)
+	case SdkEventUnclaimedDeposits:
 		writeInt32(writer, 3)
+		FfiConverterSequenceDepositInfoINSTANCE.Write(writer, variant_value.UnclaimedDeposits)
+	case SdkEventClaimedDeposits:
+		writeInt32(writer, 4)
 		FfiConverterSequenceDepositInfoINSTANCE.Write(writer, variant_value.ClaimedDeposits)
 	case SdkEventPaymentSucceeded:
-		writeInt32(writer, 4)
+		writeInt32(writer, 5)
 		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
 	case SdkEventPaymentFailed:
-		writeInt32(writer, 5)
+		writeInt32(writer, 6)
 		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
 	default:
 		_ = variant_value
@@ -10872,6 +10938,18 @@ func DefaultStorage(dataDir string) (Storage, error) {
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
 		return FfiConverterStorageINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+func DefaultSyncStorage(dataDir string) (breez_sdk_common.SyncStorage, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_default_sync_storage(FfiConverterStringINSTANCE.Lower(dataDir), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue breez_sdk_common.SyncStorage
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return breez_sdk_common.FfiConverterSyncStorageINSTANCE.Lift(_uniffiRV), nil
 	}
 }
 

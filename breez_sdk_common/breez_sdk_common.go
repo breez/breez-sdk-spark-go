@@ -338,6 +338,7 @@ func init() {
 
 	FfiConverterFiatServiceINSTANCE.register()
 	FfiConverterRestClientINSTANCE.register()
+	FfiConverterSyncStorageINSTANCE.register()
 	uniffiCheckChecksums()
 }
 
@@ -395,6 +396,96 @@ func uniffiCheckChecksums() {
 		if checksum != 26893 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_restclient_delete_request: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_add_outgoing_change()
+		})
+		if checksum != 18302 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_add_outgoing_change: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_complete_outgoing_sync()
+		})
+		if checksum != 1608 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_complete_outgoing_sync: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_get_pending_outgoing_changes()
+		})
+		if checksum != 43350 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_get_pending_outgoing_changes: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_get_last_revision()
+		})
+		if checksum != 11560 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_get_last_revision: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_insert_incoming_records()
+		})
+		if checksum != 65359 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_insert_incoming_records: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_delete_incoming_record()
+		})
+		if checksum != 6222 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_delete_incoming_record: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_rebase_pending_outgoing_records()
+		})
+		if checksum != 49312 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_rebase_pending_outgoing_records: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_get_incoming_records()
+		})
+		if checksum != 39529 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_get_incoming_records: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_get_latest_outgoing_change()
+		})
+		if checksum != 13979 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_get_latest_outgoing_change: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_common_checksum_method_syncstorage_update_record_from_incoming()
+		})
+		if checksum != 63333 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_common: uniffi_breez_sdk_common_checksum_method_syncstorage_update_record_from_incoming: UniFFI API checksum mismatch")
 		}
 	}
 }
@@ -1357,6 +1448,1007 @@ func (c FfiConverterRestClient) register() {
 	C.uniffi_breez_sdk_common_fn_init_callback_vtable_restclient(&UniffiVTableCallbackInterfaceRestClientINSTANCE)
 }
 
+type SyncStorage interface {
+	AddOutgoingChange(record UnversionedRecordChange) (uint64, error)
+	CompleteOutgoingSync(record Record) error
+	GetPendingOutgoingChanges(limit uint32) ([]OutgoingChange, error)
+	// Get the revision number of the last synchronized record
+	GetLastRevision() (uint64, error)
+	// Insert incoming records from remote sync
+	InsertIncomingRecords(records []Record) error
+	// Delete an incoming record after it has been processed
+	DeleteIncomingRecord(record Record) error
+	// Update revision numbers of pending outgoing records to be higher than the given revision
+	RebasePendingOutgoingRecords(revision uint64) error
+	// Get incoming records that need to be processed, up to the specified limit
+	GetIncomingRecords(limit uint32) ([]IncomingChange, error)
+	// Get the latest outgoing record if any exists
+	GetLatestOutgoingChange() (*OutgoingChange, error)
+	// Update the sync state record from an incoming record
+	UpdateRecordFromIncoming(record Record) error
+}
+type SyncStorageImpl struct {
+	ffiObject FfiObject
+}
+
+func (_self *SyncStorageImpl) AddOutgoingChange(record UnversionedRecordChange) (uint64, error) {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+			res := C.ffi_breez_sdk_common_rust_future_complete_u64(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.uint64_t) uint64 {
+			return FfiConverterUint64INSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_add_outgoing_change(
+			_pointer, FfiConverterUnversionedRecordChangeINSTANCE.Lower(record)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_u64(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_u64(handle)
+		},
+	)
+
+	return res, err
+}
+
+func (_self *SyncStorageImpl) CompleteOutgoingSync(record Record) error {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_common_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_complete_outgoing_sync(
+			_pointer, FfiConverterRecordINSTANCE.Lower(record)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_void(handle)
+		},
+	)
+
+	return err
+}
+
+func (_self *SyncStorageImpl) GetPendingOutgoingChanges(limit uint32) ([]OutgoingChange, error) {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_common_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []OutgoingChange {
+			return FfiConverterSequenceOutgoingChangeINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_get_pending_outgoing_changes(
+			_pointer, FfiConverterUint32INSTANCE.Lower(limit)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Get the revision number of the last synchronized record
+func (_self *SyncStorageImpl) GetLastRevision() (uint64, error) {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.uint64_t {
+			res := C.ffi_breez_sdk_common_rust_future_complete_u64(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.uint64_t) uint64 {
+			return FfiConverterUint64INSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_get_last_revision(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_u64(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_u64(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Insert incoming records from remote sync
+func (_self *SyncStorageImpl) InsertIncomingRecords(records []Record) error {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_common_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_insert_incoming_records(
+			_pointer, FfiConverterSequenceRecordINSTANCE.Lower(records)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_void(handle)
+		},
+	)
+
+	return err
+}
+
+// Delete an incoming record after it has been processed
+func (_self *SyncStorageImpl) DeleteIncomingRecord(record Record) error {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_common_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_delete_incoming_record(
+			_pointer, FfiConverterRecordINSTANCE.Lower(record)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_void(handle)
+		},
+	)
+
+	return err
+}
+
+// Update revision numbers of pending outgoing records to be higher than the given revision
+func (_self *SyncStorageImpl) RebasePendingOutgoingRecords(revision uint64) error {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_common_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_rebase_pending_outgoing_records(
+			_pointer, FfiConverterUint64INSTANCE.Lower(revision)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_void(handle)
+		},
+	)
+
+	return err
+}
+
+// Get incoming records that need to be processed, up to the specified limit
+func (_self *SyncStorageImpl) GetIncomingRecords(limit uint32) ([]IncomingChange, error) {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_common_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []IncomingChange {
+			return FfiConverterSequenceIncomingChangeINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_get_incoming_records(
+			_pointer, FfiConverterUint32INSTANCE.Lower(limit)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Get the latest outgoing record if any exists
+func (_self *SyncStorageImpl) GetLatestOutgoingChange() (*OutgoingChange, error) {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_common_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) *OutgoingChange {
+			return FfiConverterOptionalOutgoingChangeINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_get_latest_outgoing_change(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Update the sync state record from an incoming record
+func (_self *SyncStorageImpl) UpdateRecordFromIncoming(record Record) error {
+	_pointer := _self.ffiObject.incrementPointer("SyncStorage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SyncStorageError](
+		FfiConverterSyncStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_common_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_common_fn_method_syncstorage_update_record_from_incoming(
+			_pointer, FfiConverterRecordINSTANCE.Lower(record)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_common_rust_future_free_void(handle)
+		},
+	)
+
+	return err
+}
+func (object *SyncStorageImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterSyncStorage struct {
+	handleMap *concurrentHandleMap[SyncStorage]
+}
+
+var FfiConverterSyncStorageINSTANCE = FfiConverterSyncStorage{
+	handleMap: newConcurrentHandleMap[SyncStorage](),
+}
+
+func (c FfiConverterSyncStorage) Lift(pointer unsafe.Pointer) SyncStorage {
+	result := &SyncStorageImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_common_fn_clone_syncstorage(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_common_fn_free_syncstorage(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*SyncStorageImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterSyncStorage) Read(reader io.Reader) SyncStorage {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterSyncStorage) Lower(value SyncStorage) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterSyncStorage) Write(writer io.Writer, value SyncStorage) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerSyncStorage struct{}
+
+func (_ FfiDestroyerSyncStorage) Destroy(value SyncStorage) {
+	if val, ok := value.(*SyncStorageImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *SyncStorageImpl")
+	}
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod0
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod0(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteU64, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructU64, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteU64(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructU64{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.AddOutgoingChange(
+				FfiConverterUnversionedRecordChangeINSTANCE.Lift(GoRustBuffer{
+					inner: record,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterUint64INSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod1
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod1(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.CompleteOutgoingSync(
+				FfiConverterRecordINSTANCE.Lift(GoRustBuffer{
+					inner: record,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod2
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod2(uniffiHandle C.uint64_t, limit C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.GetPendingOutgoingChanges(
+				FfiConverterUint32INSTANCE.Lift(limit),
+			)
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterSequenceOutgoingChangeINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod3
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod3(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteU64, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructU64, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteU64(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructU64{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.GetLastRevision()
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterUint64INSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod4
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod4(uniffiHandle C.uint64_t, records C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.InsertIncomingRecords(
+				FfiConverterSequenceRecordINSTANCE.Lift(GoRustBuffer{
+					inner: records,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod5
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod5(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.DeleteIncomingRecord(
+				FfiConverterRecordINSTANCE.Lift(GoRustBuffer{
+					inner: record,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod6
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod6(uniffiHandle C.uint64_t, revision C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.RebasePendingOutgoingRecords(
+				FfiConverterUint64INSTANCE.Lift(revision),
+			)
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod7
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod7(uniffiHandle C.uint64_t, limit C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.GetIncomingRecords(
+				FfiConverterUint32INSTANCE.Lift(limit),
+			)
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterSequenceIncomingChangeINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod8
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod8(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.GetLatestOutgoingChange()
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterOptionalOutgoingChangeINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod9
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod9(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSyncStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_common_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.UpdateRecordFromIncoming(
+				FfiConverterRecordINSTANCE.Lift(GoRustBuffer{
+					inner: record,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SyncStorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSyncStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+var UniffiVTableCallbackInterfaceSyncStorageINSTANCE = C.UniffiVTableCallbackInterfaceSyncStorage{
+	addOutgoingChange:            (C.UniffiCallbackInterfaceSyncStorageMethod0)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod0),
+	completeOutgoingSync:         (C.UniffiCallbackInterfaceSyncStorageMethod1)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod1),
+	getPendingOutgoingChanges:    (C.UniffiCallbackInterfaceSyncStorageMethod2)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod2),
+	getLastRevision:              (C.UniffiCallbackInterfaceSyncStorageMethod3)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod3),
+	insertIncomingRecords:        (C.UniffiCallbackInterfaceSyncStorageMethod4)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod4),
+	deleteIncomingRecord:         (C.UniffiCallbackInterfaceSyncStorageMethod5)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod5),
+	rebasePendingOutgoingRecords: (C.UniffiCallbackInterfaceSyncStorageMethod6)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod6),
+	getIncomingRecords:           (C.UniffiCallbackInterfaceSyncStorageMethod7)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod7),
+	getLatestOutgoingChange:      (C.UniffiCallbackInterfaceSyncStorageMethod8)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod8),
+	updateRecordFromIncoming:     (C.UniffiCallbackInterfaceSyncStorageMethod9)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageMethod9),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageFree),
+}
+
+//export breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageFree
+func breez_sdk_common_cgo_dispatchCallbackInterfaceSyncStorageFree(handle C.uint64_t) {
+	FfiConverterSyncStorageINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterSyncStorage) register() {
+	C.uniffi_breez_sdk_common_fn_init_callback_vtable_syncstorage(&UniffiVTableCallbackInterfaceSyncStorageINSTANCE)
+}
+
 // Payload of the AES success action, as received from the LNURL endpoint
 //
 // See [`AesSuccessActionDataDecrypted`] for a similar wrapper containing the decrypted payload
@@ -2218,6 +3310,46 @@ func (_ FfiDestroyerFiatCurrency) Destroy(value FiatCurrency) {
 	value.Destroy()
 }
 
+type IncomingChange struct {
+	NewState Record
+	OldState *Record
+}
+
+func (r *IncomingChange) Destroy() {
+	FfiDestroyerRecord{}.Destroy(r.NewState)
+	FfiDestroyerOptionalRecord{}.Destroy(r.OldState)
+}
+
+type FfiConverterIncomingChange struct{}
+
+var FfiConverterIncomingChangeINSTANCE = FfiConverterIncomingChange{}
+
+func (c FfiConverterIncomingChange) Lift(rb RustBufferI) IncomingChange {
+	return LiftFromRustBuffer[IncomingChange](c, rb)
+}
+
+func (c FfiConverterIncomingChange) Read(reader io.Reader) IncomingChange {
+	return IncomingChange{
+		FfiConverterRecordINSTANCE.Read(reader),
+		FfiConverterOptionalRecordINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterIncomingChange) Lower(value IncomingChange) C.RustBuffer {
+	return LowerIntoRustBuffer[IncomingChange](c, value)
+}
+
+func (c FfiConverterIncomingChange) Write(writer io.Writer, value IncomingChange) {
+	FfiConverterRecordINSTANCE.Write(writer, value.NewState)
+	FfiConverterOptionalRecordINSTANCE.Write(writer, value.OldState)
+}
+
+type FfiDestroyerIncomingChange struct{}
+
+func (_ FfiDestroyerIncomingChange) Destroy(value IncomingChange) {
+	value.Destroy()
+}
+
 type LightningAddressDetails struct {
 	Address    string
 	PayRequest LnurlPayRequestDetails
@@ -2622,6 +3754,46 @@ func (_ FfiDestroyerMessageSuccessActionData) Destroy(value MessageSuccessAction
 	value.Destroy()
 }
 
+type OutgoingChange struct {
+	Change RecordChange
+	Parent *Record
+}
+
+func (r *OutgoingChange) Destroy() {
+	FfiDestroyerRecordChange{}.Destroy(r.Change)
+	FfiDestroyerOptionalRecord{}.Destroy(r.Parent)
+}
+
+type FfiConverterOutgoingChange struct{}
+
+var FfiConverterOutgoingChangeINSTANCE = FfiConverterOutgoingChange{}
+
+func (c FfiConverterOutgoingChange) Lift(rb RustBufferI) OutgoingChange {
+	return LiftFromRustBuffer[OutgoingChange](c, rb)
+}
+
+func (c FfiConverterOutgoingChange) Read(reader io.Reader) OutgoingChange {
+	return OutgoingChange{
+		FfiConverterRecordChangeINSTANCE.Read(reader),
+		FfiConverterOptionalRecordINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterOutgoingChange) Lower(value OutgoingChange) C.RustBuffer {
+	return LowerIntoRustBuffer[OutgoingChange](c, value)
+}
+
+func (c FfiConverterOutgoingChange) Write(writer io.Writer, value OutgoingChange) {
+	FfiConverterRecordChangeINSTANCE.Write(writer, value.Change)
+	FfiConverterOptionalRecordINSTANCE.Write(writer, value.Parent)
+}
+
+type FfiDestroyerOutgoingChange struct{}
+
+func (_ FfiDestroyerOutgoingChange) Destroy(value OutgoingChange) {
+	value.Destroy()
+}
+
 type PaymentRequestSource struct {
 	Bip21Uri      *string
 	Bip353Address *string
@@ -2700,6 +3872,142 @@ func (c FfiConverterRate) Write(writer io.Writer, value Rate) {
 type FfiDestroyerRate struct{}
 
 func (_ FfiDestroyerRate) Destroy(value Rate) {
+	value.Destroy()
+}
+
+type Record struct {
+	Id            RecordId
+	Revision      uint64
+	SchemaVersion string
+	Data          map[string]string
+}
+
+func (r *Record) Destroy() {
+	FfiDestroyerRecordId{}.Destroy(r.Id)
+	FfiDestroyerUint64{}.Destroy(r.Revision)
+	FfiDestroyerString{}.Destroy(r.SchemaVersion)
+	FfiDestroyerMapStringString{}.Destroy(r.Data)
+}
+
+type FfiConverterRecord struct{}
+
+var FfiConverterRecordINSTANCE = FfiConverterRecord{}
+
+func (c FfiConverterRecord) Lift(rb RustBufferI) Record {
+	return LiftFromRustBuffer[Record](c, rb)
+}
+
+func (c FfiConverterRecord) Read(reader io.Reader) Record {
+	return Record{
+		FfiConverterRecordIdINSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterMapStringStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterRecord) Lower(value Record) C.RustBuffer {
+	return LowerIntoRustBuffer[Record](c, value)
+}
+
+func (c FfiConverterRecord) Write(writer io.Writer, value Record) {
+	FfiConverterRecordIdINSTANCE.Write(writer, value.Id)
+	FfiConverterUint64INSTANCE.Write(writer, value.Revision)
+	FfiConverterStringINSTANCE.Write(writer, value.SchemaVersion)
+	FfiConverterMapStringStringINSTANCE.Write(writer, value.Data)
+}
+
+type FfiDestroyerRecord struct{}
+
+func (_ FfiDestroyerRecord) Destroy(value Record) {
+	value.Destroy()
+}
+
+type RecordChange struct {
+	Id            RecordId
+	SchemaVersion string
+	UpdatedFields map[string]string
+	Revision      uint64
+}
+
+func (r *RecordChange) Destroy() {
+	FfiDestroyerRecordId{}.Destroy(r.Id)
+	FfiDestroyerString{}.Destroy(r.SchemaVersion)
+	FfiDestroyerMapStringString{}.Destroy(r.UpdatedFields)
+	FfiDestroyerUint64{}.Destroy(r.Revision)
+}
+
+type FfiConverterRecordChange struct{}
+
+var FfiConverterRecordChangeINSTANCE = FfiConverterRecordChange{}
+
+func (c FfiConverterRecordChange) Lift(rb RustBufferI) RecordChange {
+	return LiftFromRustBuffer[RecordChange](c, rb)
+}
+
+func (c FfiConverterRecordChange) Read(reader io.Reader) RecordChange {
+	return RecordChange{
+		FfiConverterRecordIdINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterMapStringStringINSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterRecordChange) Lower(value RecordChange) C.RustBuffer {
+	return LowerIntoRustBuffer[RecordChange](c, value)
+}
+
+func (c FfiConverterRecordChange) Write(writer io.Writer, value RecordChange) {
+	FfiConverterRecordIdINSTANCE.Write(writer, value.Id)
+	FfiConverterStringINSTANCE.Write(writer, value.SchemaVersion)
+	FfiConverterMapStringStringINSTANCE.Write(writer, value.UpdatedFields)
+	FfiConverterUint64INSTANCE.Write(writer, value.Revision)
+}
+
+type FfiDestroyerRecordChange struct{}
+
+func (_ FfiDestroyerRecordChange) Destroy(value RecordChange) {
+	value.Destroy()
+}
+
+type RecordId struct {
+	Type   string
+	DataId string
+}
+
+func (r *RecordId) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Type)
+	FfiDestroyerString{}.Destroy(r.DataId)
+}
+
+type FfiConverterRecordId struct{}
+
+var FfiConverterRecordIdINSTANCE = FfiConverterRecordId{}
+
+func (c FfiConverterRecordId) Lift(rb RustBufferI) RecordId {
+	return LiftFromRustBuffer[RecordId](c, rb)
+}
+
+func (c FfiConverterRecordId) Read(reader io.Reader) RecordId {
+	return RecordId{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterRecordId) Lower(value RecordId) C.RustBuffer {
+	return LowerIntoRustBuffer[RecordId](c, value)
+}
+
+func (c FfiConverterRecordId) Write(writer io.Writer, value RecordId) {
+	FfiConverterStringINSTANCE.Write(writer, value.Type)
+	FfiConverterStringINSTANCE.Write(writer, value.DataId)
+}
+
+type FfiDestroyerRecordId struct{}
+
+func (_ FfiDestroyerRecordId) Destroy(value RecordId) {
 	value.Destroy()
 }
 
@@ -2954,6 +4262,50 @@ func (c FfiConverterSymbol) Write(writer io.Writer, value Symbol) {
 type FfiDestroyerSymbol struct{}
 
 func (_ FfiDestroyerSymbol) Destroy(value Symbol) {
+	value.Destroy()
+}
+
+type UnversionedRecordChange struct {
+	Id            RecordId
+	SchemaVersion string
+	UpdatedFields map[string]string
+}
+
+func (r *UnversionedRecordChange) Destroy() {
+	FfiDestroyerRecordId{}.Destroy(r.Id)
+	FfiDestroyerString{}.Destroy(r.SchemaVersion)
+	FfiDestroyerMapStringString{}.Destroy(r.UpdatedFields)
+}
+
+type FfiConverterUnversionedRecordChange struct{}
+
+var FfiConverterUnversionedRecordChangeINSTANCE = FfiConverterUnversionedRecordChange{}
+
+func (c FfiConverterUnversionedRecordChange) Lift(rb RustBufferI) UnversionedRecordChange {
+	return LiftFromRustBuffer[UnversionedRecordChange](c, rb)
+}
+
+func (c FfiConverterUnversionedRecordChange) Read(reader io.Reader) UnversionedRecordChange {
+	return UnversionedRecordChange{
+		FfiConverterRecordIdINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterMapStringStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterUnversionedRecordChange) Lower(value UnversionedRecordChange) C.RustBuffer {
+	return LowerIntoRustBuffer[UnversionedRecordChange](c, value)
+}
+
+func (c FfiConverterUnversionedRecordChange) Write(writer io.Writer, value UnversionedRecordChange) {
+	FfiConverterRecordIdINSTANCE.Write(writer, value.Id)
+	FfiConverterStringINSTANCE.Write(writer, value.SchemaVersion)
+	FfiConverterMapStringStringINSTANCE.Write(writer, value.UpdatedFields)
+}
+
+type FfiDestroyerUnversionedRecordChange struct{}
+
+func (_ FfiDestroyerUnversionedRecordChange) Destroy(value UnversionedRecordChange) {
 	value.Destroy()
 }
 
@@ -4131,6 +5483,187 @@ func (_ FfiDestroyerSuccessActionProcessed) Destroy(value SuccessActionProcessed
 	value.Destroy()
 }
 
+// Errors that can occur during storage operations
+type SyncStorageError struct {
+	err error
+}
+
+// Convience method to turn *SyncStorageError into error
+// Avoiding treating nil pointer as non nil error interface
+func (err *SyncStorageError) AsError() error {
+	if err == nil {
+		return nil
+	} else {
+		return err
+	}
+}
+
+func (err SyncStorageError) Error() string {
+	return fmt.Sprintf("SyncStorageError: %s", err.err.Error())
+}
+
+func (err SyncStorageError) Unwrap() error {
+	return err.err
+}
+
+// Err* are used for checking error type with `errors.Is`
+var ErrSyncStorageErrorImplementation = fmt.Errorf("SyncStorageErrorImplementation")
+var ErrSyncStorageErrorInitializationError = fmt.Errorf("SyncStorageErrorInitializationError")
+var ErrSyncStorageErrorSerialization = fmt.Errorf("SyncStorageErrorSerialization")
+
+// Variant structs
+type SyncStorageErrorImplementation struct {
+	Field0 string
+}
+
+func NewSyncStorageErrorImplementation(
+	var0 string,
+) *SyncStorageError {
+	return &SyncStorageError{err: &SyncStorageErrorImplementation{
+		Field0: var0}}
+}
+
+func (e SyncStorageErrorImplementation) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err SyncStorageErrorImplementation) Error() string {
+	return fmt.Sprint("Implementation",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self SyncStorageErrorImplementation) Is(target error) bool {
+	return target == ErrSyncStorageErrorImplementation
+}
+
+// Database initialization error
+type SyncStorageErrorInitializationError struct {
+	Field0 string
+}
+
+// Database initialization error
+func NewSyncStorageErrorInitializationError(
+	var0 string,
+) *SyncStorageError {
+	return &SyncStorageError{err: &SyncStorageErrorInitializationError{
+		Field0: var0}}
+}
+
+func (e SyncStorageErrorInitializationError) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err SyncStorageErrorInitializationError) Error() string {
+	return fmt.Sprint("InitializationError",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self SyncStorageErrorInitializationError) Is(target error) bool {
+	return target == ErrSyncStorageErrorInitializationError
+}
+
+type SyncStorageErrorSerialization struct {
+	Field0 string
+}
+
+func NewSyncStorageErrorSerialization(
+	var0 string,
+) *SyncStorageError {
+	return &SyncStorageError{err: &SyncStorageErrorSerialization{
+		Field0: var0}}
+}
+
+func (e SyncStorageErrorSerialization) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err SyncStorageErrorSerialization) Error() string {
+	return fmt.Sprint("Serialization",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self SyncStorageErrorSerialization) Is(target error) bool {
+	return target == ErrSyncStorageErrorSerialization
+}
+
+type FfiConverterSyncStorageError struct{}
+
+var FfiConverterSyncStorageErrorINSTANCE = FfiConverterSyncStorageError{}
+
+func (c FfiConverterSyncStorageError) Lift(eb RustBufferI) *SyncStorageError {
+	return LiftFromRustBuffer[*SyncStorageError](c, eb)
+}
+
+func (c FfiConverterSyncStorageError) Lower(value *SyncStorageError) C.RustBuffer {
+	return LowerIntoRustBuffer[*SyncStorageError](c, value)
+}
+
+func (c FfiConverterSyncStorageError) Read(reader io.Reader) *SyncStorageError {
+	errorID := readUint32(reader)
+
+	switch errorID {
+	case 1:
+		return &SyncStorageError{&SyncStorageErrorImplementation{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 2:
+		return &SyncStorageError{&SyncStorageErrorInitializationError{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 3:
+		return &SyncStorageError{&SyncStorageErrorSerialization{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	default:
+		panic(fmt.Sprintf("Unknown error code %d in FfiConverterSyncStorageError.Read()", errorID))
+	}
+}
+
+func (c FfiConverterSyncStorageError) Write(writer io.Writer, value *SyncStorageError) {
+	switch variantValue := value.err.(type) {
+	case *SyncStorageErrorImplementation:
+		writeInt32(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *SyncStorageErrorInitializationError:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *SyncStorageErrorSerialization:
+		writeInt32(writer, 3)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterSyncStorageError.Write", value))
+	}
+}
+
+type FfiDestroyerSyncStorageError struct{}
+
+func (_ FfiDestroyerSyncStorageError) Destroy(value *SyncStorageError) {
+	switch variantValue := value.err.(type) {
+	case SyncStorageErrorImplementation:
+		variantValue.destroy()
+	case SyncStorageErrorInitializationError:
+		variantValue.destroy()
+	case SyncStorageErrorSerialization:
+		variantValue.destroy()
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerSyncStorageError.Destroy", value))
+	}
+}
+
 type FfiConverterOptionalUint32 struct{}
 
 var FfiConverterOptionalUint32INSTANCE = FfiConverterOptionalUint32{}
@@ -4276,6 +5809,80 @@ type FfiDestroyerOptionalString struct{}
 func (_ FfiDestroyerOptionalString) Destroy(value *string) {
 	if value != nil {
 		FfiDestroyerString{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalOutgoingChange struct{}
+
+var FfiConverterOptionalOutgoingChangeINSTANCE = FfiConverterOptionalOutgoingChange{}
+
+func (c FfiConverterOptionalOutgoingChange) Lift(rb RustBufferI) *OutgoingChange {
+	return LiftFromRustBuffer[*OutgoingChange](c, rb)
+}
+
+func (_ FfiConverterOptionalOutgoingChange) Read(reader io.Reader) *OutgoingChange {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterOutgoingChangeINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalOutgoingChange) Lower(value *OutgoingChange) C.RustBuffer {
+	return LowerIntoRustBuffer[*OutgoingChange](c, value)
+}
+
+func (_ FfiConverterOptionalOutgoingChange) Write(writer io.Writer, value *OutgoingChange) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterOutgoingChangeINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalOutgoingChange struct{}
+
+func (_ FfiDestroyerOptionalOutgoingChange) Destroy(value *OutgoingChange) {
+	if value != nil {
+		FfiDestroyerOutgoingChange{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalRecord struct{}
+
+var FfiConverterOptionalRecordINSTANCE = FfiConverterOptionalRecord{}
+
+func (c FfiConverterOptionalRecord) Lift(rb RustBufferI) *Record {
+	return LiftFromRustBuffer[*Record](c, rb)
+}
+
+func (_ FfiConverterOptionalRecord) Read(reader io.Reader) *Record {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterRecordINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalRecord) Lower(value *Record) C.RustBuffer {
+	return LowerIntoRustBuffer[*Record](c, value)
+}
+
+func (_ FfiConverterOptionalRecord) Write(writer io.Writer, value *Record) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterRecordINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalRecord struct{}
+
+func (_ FfiDestroyerOptionalRecord) Destroy(value *Record) {
+	if value != nil {
+		FfiDestroyerRecord{}.Destroy(*value)
 	}
 }
 
@@ -4685,6 +6292,49 @@ func (FfiDestroyerSequenceFiatCurrency) Destroy(sequence []FiatCurrency) {
 	}
 }
 
+type FfiConverterSequenceIncomingChange struct{}
+
+var FfiConverterSequenceIncomingChangeINSTANCE = FfiConverterSequenceIncomingChange{}
+
+func (c FfiConverterSequenceIncomingChange) Lift(rb RustBufferI) []IncomingChange {
+	return LiftFromRustBuffer[[]IncomingChange](c, rb)
+}
+
+func (c FfiConverterSequenceIncomingChange) Read(reader io.Reader) []IncomingChange {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]IncomingChange, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterIncomingChangeINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceIncomingChange) Lower(value []IncomingChange) C.RustBuffer {
+	return LowerIntoRustBuffer[[]IncomingChange](c, value)
+}
+
+func (c FfiConverterSequenceIncomingChange) Write(writer io.Writer, value []IncomingChange) {
+	if len(value) > math.MaxInt32 {
+		panic("[]IncomingChange is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterIncomingChangeINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceIncomingChange struct{}
+
+func (FfiDestroyerSequenceIncomingChange) Destroy(sequence []IncomingChange) {
+	for _, value := range sequence {
+		FfiDestroyerIncomingChange{}.Destroy(value)
+	}
+}
+
 type FfiConverterSequenceLocaleOverrides struct{}
 
 var FfiConverterSequenceLocaleOverridesINSTANCE = FfiConverterSequenceLocaleOverrides{}
@@ -4771,6 +6421,49 @@ func (FfiDestroyerSequenceLocalizedName) Destroy(sequence []LocalizedName) {
 	}
 }
 
+type FfiConverterSequenceOutgoingChange struct{}
+
+var FfiConverterSequenceOutgoingChangeINSTANCE = FfiConverterSequenceOutgoingChange{}
+
+func (c FfiConverterSequenceOutgoingChange) Lift(rb RustBufferI) []OutgoingChange {
+	return LiftFromRustBuffer[[]OutgoingChange](c, rb)
+}
+
+func (c FfiConverterSequenceOutgoingChange) Read(reader io.Reader) []OutgoingChange {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]OutgoingChange, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterOutgoingChangeINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceOutgoingChange) Lower(value []OutgoingChange) C.RustBuffer {
+	return LowerIntoRustBuffer[[]OutgoingChange](c, value)
+}
+
+func (c FfiConverterSequenceOutgoingChange) Write(writer io.Writer, value []OutgoingChange) {
+	if len(value) > math.MaxInt32 {
+		panic("[]OutgoingChange is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterOutgoingChangeINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceOutgoingChange struct{}
+
+func (FfiDestroyerSequenceOutgoingChange) Destroy(sequence []OutgoingChange) {
+	for _, value := range sequence {
+		FfiDestroyerOutgoingChange{}.Destroy(value)
+	}
+}
+
 type FfiConverterSequenceRate struct{}
 
 var FfiConverterSequenceRateINSTANCE = FfiConverterSequenceRate{}
@@ -4811,6 +6504,49 @@ type FfiDestroyerSequenceRate struct{}
 func (FfiDestroyerSequenceRate) Destroy(sequence []Rate) {
 	for _, value := range sequence {
 		FfiDestroyerRate{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceRecord struct{}
+
+var FfiConverterSequenceRecordINSTANCE = FfiConverterSequenceRecord{}
+
+func (c FfiConverterSequenceRecord) Lift(rb RustBufferI) []Record {
+	return LiftFromRustBuffer[[]Record](c, rb)
+}
+
+func (c FfiConverterSequenceRecord) Read(reader io.Reader) []Record {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]Record, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterRecordINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceRecord) Lower(value []Record) C.RustBuffer {
+	return LowerIntoRustBuffer[[]Record](c, value)
+}
+
+func (c FfiConverterSequenceRecord) Write(writer io.Writer, value []Record) {
+	if len(value) > math.MaxInt32 {
+		panic("[]Record is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterRecordINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceRecord struct{}
+
+func (FfiDestroyerSequenceRecord) Destroy(sequence []Record) {
+	for _, value := range sequence {
+		FfiDestroyerRecord{}.Destroy(value)
 	}
 }
 
