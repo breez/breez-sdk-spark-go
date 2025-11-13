@@ -504,6 +504,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_get_token_issuer()
+		})
+		if checksum != 26649 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_get_token_issuer: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_get_tokens_metadata()
 		})
 		if checksum != 40125 {
@@ -1022,6 +1031,69 @@ func uniffiCheckChecksums() {
 		if checksum != 9986 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_syncstorage_update_record_from_incoming: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_tokenissuer_burn_issuer_token()
+		})
+		if checksum != 56056 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_tokenissuer_burn_issuer_token: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_tokenissuer_create_issuer_token()
+		})
+		if checksum != 33277 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_tokenissuer_create_issuer_token: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_tokenissuer_freeze_issuer_token()
+		})
+		if checksum != 32344 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_tokenissuer_freeze_issuer_token: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_tokenissuer_get_issuer_token_balance()
+		})
+		if checksum != 9758 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_tokenissuer_get_issuer_token_balance: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_tokenissuer_get_issuer_token_metadata()
+		})
+		if checksum != 57707 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_tokenissuer_get_issuer_token_metadata: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_tokenissuer_mint_issuer_token()
+		})
+		if checksum != 36459 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_tokenissuer_mint_issuer_token: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_tokenissuer_unfreeze_issuer_token()
+		})
+		if checksum != 65025 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_tokenissuer_unfreeze_issuer_token: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1869,6 +1941,8 @@ type BreezSdkInterface interface {
 	GetInfo(request GetInfoRequest) (GetInfoResponse, error)
 	GetLightningAddress() (*LightningAddressInfo, error)
 	GetPayment(request GetPaymentRequest) (GetPaymentResponse, error)
+	// Returns an instance of the [`TokenIssuer`] for managing token issuance.
+	GetTokenIssuer() *TokenIssuer
 	// Returns the metadata for the given token identifiers.
 	//
 	// Results are not guaranteed to be in the same order as the input token identifiers.
@@ -2252,6 +2326,16 @@ func (_self *BreezSdk) GetPayment(request GetPaymentRequest) (GetPaymentResponse
 	)
 
 	return res, err
+}
+
+// Returns an instance of the [`TokenIssuer`] for managing token issuance.
+func (_self *BreezSdk) GetTokenIssuer() *TokenIssuer {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterTokenIssuerINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_method_breezsdk_get_token_issuer(
+			_pointer, _uniffiStatus)
+	}))
 }
 
 // Returns the metadata for the given token identifiers.
@@ -6575,6 +6659,422 @@ func (c FfiConverterSyncStorage) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_syncstorage(&UniffiVTableCallbackInterfaceSyncStorageINSTANCE)
 }
 
+type TokenIssuerInterface interface {
+	// Burns supply of the issuer token
+	//
+	// # Arguments
+	//
+	// * `request`: The request containing the amount of the supply to burn
+	//
+	// # Returns
+	//
+	// Result containing either:
+	// * `Payment` - The payment representing the burn transaction
+	// * `SdkError` - If there was an error during the burn process
+	BurnIssuerToken(request BurnIssuerTokenRequest) (Payment, error)
+	// Creates a new issuer token
+	//
+	// # Arguments
+	//
+	// * `request`: The request containing the token parameters
+	//
+	// # Returns
+	//
+	// Result containing either:
+	// * `TokenMetadata` - The metadata of the created token
+	// * `SdkError` - If there was an error during the token creation
+	CreateIssuerToken(request CreateIssuerTokenRequest) (TokenMetadata, error)
+	// Freezes tokens held at the specified address
+	//
+	// # Arguments
+	//
+	// * `request`: The request containing the spark address where the tokens to be frozen are held
+	//
+	// # Returns
+	//
+	// Result containing either:
+	// * `FreezeIssuerTokenResponse` - The response containing details of the freeze operation
+	// * `SdkError` - If there was an error during the freeze process
+	FreezeIssuerToken(request FreezeIssuerTokenRequest) (FreezeIssuerTokenResponse, error)
+	// Gets the issuer token balance
+	//
+	// # Returns
+	//
+	// Result containing either:
+	// * `TokenBalance` - The balance of the issuer token
+	// * `SdkError` - If there was an error during the retrieval or no issuer token exists
+	GetIssuerTokenBalance() (TokenBalance, error)
+	// Gets the issuer token metadata
+	//
+	// # Returns
+	//
+	// Result containing either:
+	// * `TokenMetadata` - The metadata of the issuer token
+	// * `SdkError` - If there was an error during the retrieval or no issuer token exists
+	GetIssuerTokenMetadata() (TokenMetadata, error)
+	// Mints supply for the issuer token
+	//
+	// # Arguments
+	//
+	// * `request`: The request contiaining the amount of the supply to mint
+	//
+	// # Returns
+	//
+	// Result containing either:
+	// * `Payment` - The payment representing the minting transaction
+	// * `SdkError` - If there was an error during the minting process
+	MintIssuerToken(request MintIssuerTokenRequest) (Payment, error)
+	// Unfreezes tokens held at the specified address
+	//
+	// # Arguments
+	//
+	// * `request`: The request containing the spark address where the tokens to be unfrozen are held
+	//
+	// # Returns
+	//
+	// Result containing either:
+	// * `UnfreezeIssuerTokenResponse` - The response containing details of the unfreeze operation
+	// * `SdkError` - If there was an error during the unfreeze process
+	UnfreezeIssuerToken(request UnfreezeIssuerTokenRequest) (UnfreezeIssuerTokenResponse, error)
+}
+type TokenIssuer struct {
+	ffiObject FfiObject
+}
+
+// Burns supply of the issuer token
+//
+// # Arguments
+//
+// * `request`: The request containing the amount of the supply to burn
+//
+// # Returns
+//
+// Result containing either:
+// * `Payment` - The payment representing the burn transaction
+// * `SdkError` - If there was an error during the burn process
+func (_self *TokenIssuer) BurnIssuerToken(request BurnIssuerTokenRequest) (Payment, error) {
+	_pointer := _self.ffiObject.incrementPointer("*TokenIssuer")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) Payment {
+			return FfiConverterPaymentINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_tokenissuer_burn_issuer_token(
+			_pointer, FfiConverterBurnIssuerTokenRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Creates a new issuer token
+//
+// # Arguments
+//
+// * `request`: The request containing the token parameters
+//
+// # Returns
+//
+// Result containing either:
+// * `TokenMetadata` - The metadata of the created token
+// * `SdkError` - If there was an error during the token creation
+func (_self *TokenIssuer) CreateIssuerToken(request CreateIssuerTokenRequest) (TokenMetadata, error) {
+	_pointer := _self.ffiObject.incrementPointer("*TokenIssuer")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) TokenMetadata {
+			return FfiConverterTokenMetadataINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_tokenissuer_create_issuer_token(
+			_pointer, FfiConverterCreateIssuerTokenRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Freezes tokens held at the specified address
+//
+// # Arguments
+//
+// * `request`: The request containing the spark address where the tokens to be frozen are held
+//
+// # Returns
+//
+// Result containing either:
+// * `FreezeIssuerTokenResponse` - The response containing details of the freeze operation
+// * `SdkError` - If there was an error during the freeze process
+func (_self *TokenIssuer) FreezeIssuerToken(request FreezeIssuerTokenRequest) (FreezeIssuerTokenResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*TokenIssuer")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) FreezeIssuerTokenResponse {
+			return FfiConverterFreezeIssuerTokenResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_tokenissuer_freeze_issuer_token(
+			_pointer, FfiConverterFreezeIssuerTokenRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Gets the issuer token balance
+//
+// # Returns
+//
+// Result containing either:
+// * `TokenBalance` - The balance of the issuer token
+// * `SdkError` - If there was an error during the retrieval or no issuer token exists
+func (_self *TokenIssuer) GetIssuerTokenBalance() (TokenBalance, error) {
+	_pointer := _self.ffiObject.incrementPointer("*TokenIssuer")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) TokenBalance {
+			return FfiConverterTokenBalanceINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_tokenissuer_get_issuer_token_balance(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Gets the issuer token metadata
+//
+// # Returns
+//
+// Result containing either:
+// * `TokenMetadata` - The metadata of the issuer token
+// * `SdkError` - If there was an error during the retrieval or no issuer token exists
+func (_self *TokenIssuer) GetIssuerTokenMetadata() (TokenMetadata, error) {
+	_pointer := _self.ffiObject.incrementPointer("*TokenIssuer")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) TokenMetadata {
+			return FfiConverterTokenMetadataINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_tokenissuer_get_issuer_token_metadata(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Mints supply for the issuer token
+//
+// # Arguments
+//
+// * `request`: The request contiaining the amount of the supply to mint
+//
+// # Returns
+//
+// Result containing either:
+// * `Payment` - The payment representing the minting transaction
+// * `SdkError` - If there was an error during the minting process
+func (_self *TokenIssuer) MintIssuerToken(request MintIssuerTokenRequest) (Payment, error) {
+	_pointer := _self.ffiObject.incrementPointer("*TokenIssuer")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) Payment {
+			return FfiConverterPaymentINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_tokenissuer_mint_issuer_token(
+			_pointer, FfiConverterMintIssuerTokenRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// Unfreezes tokens held at the specified address
+//
+// # Arguments
+//
+// * `request`: The request containing the spark address where the tokens to be unfrozen are held
+//
+// # Returns
+//
+// Result containing either:
+// * `UnfreezeIssuerTokenResponse` - The response containing details of the unfreeze operation
+// * `SdkError` - If there was an error during the unfreeze process
+func (_self *TokenIssuer) UnfreezeIssuerToken(request UnfreezeIssuerTokenRequest) (UnfreezeIssuerTokenResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*TokenIssuer")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) UnfreezeIssuerTokenResponse {
+			return FfiConverterUnfreezeIssuerTokenResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_tokenissuer_unfreeze_issuer_token(
+			_pointer, FfiConverterUnfreezeIssuerTokenRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+func (object *TokenIssuer) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterTokenIssuer struct{}
+
+var FfiConverterTokenIssuerINSTANCE = FfiConverterTokenIssuer{}
+
+func (c FfiConverterTokenIssuer) Lift(pointer unsafe.Pointer) *TokenIssuer {
+	result := &TokenIssuer{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_tokenissuer(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_tokenissuer(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*TokenIssuer).Destroy)
+	return result
+}
+
+func (c FfiConverterTokenIssuer) Read(reader io.Reader) *TokenIssuer {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterTokenIssuer) Lower(value *TokenIssuer) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*TokenIssuer")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterTokenIssuer) Write(writer io.Writer, value *TokenIssuer) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerTokenIssuer struct{}
+
+func (_ FfiDestroyerTokenIssuer) Destroy(value *TokenIssuer) {
+	value.Destroy()
+}
+
 // Payload of the AES success action, as received from the LNURL endpoint
 //
 // See [`AesSuccessActionDataDecrypted`] for a similar wrapper containing the decrypted payload
@@ -7285,6 +7785,42 @@ func (_ FfiDestroyerBolt12OfferDetails) Destroy(value Bolt12OfferDetails) {
 	value.Destroy()
 }
 
+type BurnIssuerTokenRequest struct {
+	Amount u128
+}
+
+func (r *BurnIssuerTokenRequest) Destroy() {
+	FfiDestroyerTypeu128{}.Destroy(r.Amount)
+}
+
+type FfiConverterBurnIssuerTokenRequest struct{}
+
+var FfiConverterBurnIssuerTokenRequestINSTANCE = FfiConverterBurnIssuerTokenRequest{}
+
+func (c FfiConverterBurnIssuerTokenRequest) Lift(rb RustBufferI) BurnIssuerTokenRequest {
+	return LiftFromRustBuffer[BurnIssuerTokenRequest](c, rb)
+}
+
+func (c FfiConverterBurnIssuerTokenRequest) Read(reader io.Reader) BurnIssuerTokenRequest {
+	return BurnIssuerTokenRequest{
+		FfiConverterTypeu128INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterBurnIssuerTokenRequest) Lower(value BurnIssuerTokenRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[BurnIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterBurnIssuerTokenRequest) Write(writer io.Writer, value BurnIssuerTokenRequest) {
+	FfiConverterTypeu128INSTANCE.Write(writer, value.Amount)
+}
+
+type FfiDestroyerBurnIssuerTokenRequest struct{}
+
+func (_ FfiDestroyerBurnIssuerTokenRequest) Destroy(value BurnIssuerTokenRequest) {
+	value.Destroy()
+}
+
 type CheckLightningAddressRequest struct {
 	Username string
 }
@@ -7615,6 +8151,58 @@ func (_ FfiDestroyerConnectRequest) Destroy(value ConnectRequest) {
 	value.Destroy()
 }
 
+type CreateIssuerTokenRequest struct {
+	Name        string
+	Ticker      string
+	Decimals    uint32
+	IsFreezable bool
+	MaxSupply   u128
+}
+
+func (r *CreateIssuerTokenRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Name)
+	FfiDestroyerString{}.Destroy(r.Ticker)
+	FfiDestroyerUint32{}.Destroy(r.Decimals)
+	FfiDestroyerBool{}.Destroy(r.IsFreezable)
+	FfiDestroyerTypeu128{}.Destroy(r.MaxSupply)
+}
+
+type FfiConverterCreateIssuerTokenRequest struct{}
+
+var FfiConverterCreateIssuerTokenRequestINSTANCE = FfiConverterCreateIssuerTokenRequest{}
+
+func (c FfiConverterCreateIssuerTokenRequest) Lift(rb RustBufferI) CreateIssuerTokenRequest {
+	return LiftFromRustBuffer[CreateIssuerTokenRequest](c, rb)
+}
+
+func (c FfiConverterCreateIssuerTokenRequest) Read(reader io.Reader) CreateIssuerTokenRequest {
+	return CreateIssuerTokenRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterTypeu128INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterCreateIssuerTokenRequest) Lower(value CreateIssuerTokenRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[CreateIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterCreateIssuerTokenRequest) Write(writer io.Writer, value CreateIssuerTokenRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Name)
+	FfiConverterStringINSTANCE.Write(writer, value.Ticker)
+	FfiConverterUint32INSTANCE.Write(writer, value.Decimals)
+	FfiConverterBoolINSTANCE.Write(writer, value.IsFreezable)
+	FfiConverterTypeu128INSTANCE.Write(writer, value.MaxSupply)
+}
+
+type FfiDestroyerCreateIssuerTokenRequest struct{}
+
+func (_ FfiDestroyerCreateIssuerTokenRequest) Destroy(value CreateIssuerTokenRequest) {
+	value.Destroy()
+}
+
 type Credentials struct {
 	Username string
 	Password string
@@ -7859,6 +8447,82 @@ func (c FfiConverterFiatCurrency) Write(writer io.Writer, value FiatCurrency) {
 type FfiDestroyerFiatCurrency struct{}
 
 func (_ FfiDestroyerFiatCurrency) Destroy(value FiatCurrency) {
+	value.Destroy()
+}
+
+type FreezeIssuerTokenRequest struct {
+	Address string
+}
+
+func (r *FreezeIssuerTokenRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Address)
+}
+
+type FfiConverterFreezeIssuerTokenRequest struct{}
+
+var FfiConverterFreezeIssuerTokenRequestINSTANCE = FfiConverterFreezeIssuerTokenRequest{}
+
+func (c FfiConverterFreezeIssuerTokenRequest) Lift(rb RustBufferI) FreezeIssuerTokenRequest {
+	return LiftFromRustBuffer[FreezeIssuerTokenRequest](c, rb)
+}
+
+func (c FfiConverterFreezeIssuerTokenRequest) Read(reader io.Reader) FreezeIssuerTokenRequest {
+	return FreezeIssuerTokenRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterFreezeIssuerTokenRequest) Lower(value FreezeIssuerTokenRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[FreezeIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterFreezeIssuerTokenRequest) Write(writer io.Writer, value FreezeIssuerTokenRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Address)
+}
+
+type FfiDestroyerFreezeIssuerTokenRequest struct{}
+
+func (_ FfiDestroyerFreezeIssuerTokenRequest) Destroy(value FreezeIssuerTokenRequest) {
+	value.Destroy()
+}
+
+type FreezeIssuerTokenResponse struct {
+	ImpactedOutputIds   []string
+	ImpactedTokenAmount u128
+}
+
+func (r *FreezeIssuerTokenResponse) Destroy() {
+	FfiDestroyerSequenceString{}.Destroy(r.ImpactedOutputIds)
+	FfiDestroyerTypeu128{}.Destroy(r.ImpactedTokenAmount)
+}
+
+type FfiConverterFreezeIssuerTokenResponse struct{}
+
+var FfiConverterFreezeIssuerTokenResponseINSTANCE = FfiConverterFreezeIssuerTokenResponse{}
+
+func (c FfiConverterFreezeIssuerTokenResponse) Lift(rb RustBufferI) FreezeIssuerTokenResponse {
+	return LiftFromRustBuffer[FreezeIssuerTokenResponse](c, rb)
+}
+
+func (c FfiConverterFreezeIssuerTokenResponse) Read(reader io.Reader) FreezeIssuerTokenResponse {
+	return FreezeIssuerTokenResponse{
+		FfiConverterSequenceStringINSTANCE.Read(reader),
+		FfiConverterTypeu128INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterFreezeIssuerTokenResponse) Lower(value FreezeIssuerTokenResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[FreezeIssuerTokenResponse](c, value)
+}
+
+func (c FfiConverterFreezeIssuerTokenResponse) Write(writer io.Writer, value FreezeIssuerTokenResponse) {
+	FfiConverterSequenceStringINSTANCE.Write(writer, value.ImpactedOutputIds)
+	FfiConverterTypeu128INSTANCE.Write(writer, value.ImpactedTokenAmount)
+}
+
+type FfiDestroyerFreezeIssuerTokenResponse struct{}
+
+func (_ FfiDestroyerFreezeIssuerTokenResponse) Destroy(value FreezeIssuerTokenResponse) {
 	value.Destroy()
 }
 
@@ -9088,6 +9752,42 @@ func (c FfiConverterMessageSuccessActionData) Write(writer io.Writer, value Mess
 type FfiDestroyerMessageSuccessActionData struct{}
 
 func (_ FfiDestroyerMessageSuccessActionData) Destroy(value MessageSuccessActionData) {
+	value.Destroy()
+}
+
+type MintIssuerTokenRequest struct {
+	Amount u128
+}
+
+func (r *MintIssuerTokenRequest) Destroy() {
+	FfiDestroyerTypeu128{}.Destroy(r.Amount)
+}
+
+type FfiConverterMintIssuerTokenRequest struct{}
+
+var FfiConverterMintIssuerTokenRequestINSTANCE = FfiConverterMintIssuerTokenRequest{}
+
+func (c FfiConverterMintIssuerTokenRequest) Lift(rb RustBufferI) MintIssuerTokenRequest {
+	return LiftFromRustBuffer[MintIssuerTokenRequest](c, rb)
+}
+
+func (c FfiConverterMintIssuerTokenRequest) Read(reader io.Reader) MintIssuerTokenRequest {
+	return MintIssuerTokenRequest{
+		FfiConverterTypeu128INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterMintIssuerTokenRequest) Lower(value MintIssuerTokenRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[MintIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterMintIssuerTokenRequest) Write(writer io.Writer, value MintIssuerTokenRequest) {
+	FfiConverterTypeu128INSTANCE.Write(writer, value.Amount)
+}
+
+type FfiDestroyerMintIssuerTokenRequest struct{}
+
+func (_ FfiDestroyerMintIssuerTokenRequest) Destroy(value MintIssuerTokenRequest) {
 	value.Destroy()
 }
 
@@ -10673,6 +11373,82 @@ func (c FfiConverterTxStatus) Write(writer io.Writer, value TxStatus) {
 type FfiDestroyerTxStatus struct{}
 
 func (_ FfiDestroyerTxStatus) Destroy(value TxStatus) {
+	value.Destroy()
+}
+
+type UnfreezeIssuerTokenRequest struct {
+	Address string
+}
+
+func (r *UnfreezeIssuerTokenRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Address)
+}
+
+type FfiConverterUnfreezeIssuerTokenRequest struct{}
+
+var FfiConverterUnfreezeIssuerTokenRequestINSTANCE = FfiConverterUnfreezeIssuerTokenRequest{}
+
+func (c FfiConverterUnfreezeIssuerTokenRequest) Lift(rb RustBufferI) UnfreezeIssuerTokenRequest {
+	return LiftFromRustBuffer[UnfreezeIssuerTokenRequest](c, rb)
+}
+
+func (c FfiConverterUnfreezeIssuerTokenRequest) Read(reader io.Reader) UnfreezeIssuerTokenRequest {
+	return UnfreezeIssuerTokenRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterUnfreezeIssuerTokenRequest) Lower(value UnfreezeIssuerTokenRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[UnfreezeIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterUnfreezeIssuerTokenRequest) Write(writer io.Writer, value UnfreezeIssuerTokenRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Address)
+}
+
+type FfiDestroyerUnfreezeIssuerTokenRequest struct{}
+
+func (_ FfiDestroyerUnfreezeIssuerTokenRequest) Destroy(value UnfreezeIssuerTokenRequest) {
+	value.Destroy()
+}
+
+type UnfreezeIssuerTokenResponse struct {
+	ImpactedOutputIds   []string
+	ImpactedTokenAmount u128
+}
+
+func (r *UnfreezeIssuerTokenResponse) Destroy() {
+	FfiDestroyerSequenceString{}.Destroy(r.ImpactedOutputIds)
+	FfiDestroyerTypeu128{}.Destroy(r.ImpactedTokenAmount)
+}
+
+type FfiConverterUnfreezeIssuerTokenResponse struct{}
+
+var FfiConverterUnfreezeIssuerTokenResponseINSTANCE = FfiConverterUnfreezeIssuerTokenResponse{}
+
+func (c FfiConverterUnfreezeIssuerTokenResponse) Lift(rb RustBufferI) UnfreezeIssuerTokenResponse {
+	return LiftFromRustBuffer[UnfreezeIssuerTokenResponse](c, rb)
+}
+
+func (c FfiConverterUnfreezeIssuerTokenResponse) Read(reader io.Reader) UnfreezeIssuerTokenResponse {
+	return UnfreezeIssuerTokenResponse{
+		FfiConverterSequenceStringINSTANCE.Read(reader),
+		FfiConverterTypeu128INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterUnfreezeIssuerTokenResponse) Lower(value UnfreezeIssuerTokenResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[UnfreezeIssuerTokenResponse](c, value)
+}
+
+func (c FfiConverterUnfreezeIssuerTokenResponse) Write(writer io.Writer, value UnfreezeIssuerTokenResponse) {
+	FfiConverterSequenceStringINSTANCE.Write(writer, value.ImpactedOutputIds)
+	FfiConverterTypeu128INSTANCE.Write(writer, value.ImpactedTokenAmount)
+}
+
+type FfiDestroyerUnfreezeIssuerTokenResponse struct{}
+
+func (_ FfiDestroyerUnfreezeIssuerTokenResponse) Destroy(value UnfreezeIssuerTokenResponse) {
 	value.Destroy()
 }
 
