@@ -423,6 +423,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_recommended_fees()
+		})
+		if checksum != 43230 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_recommended_fees: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_add_event_listener()
 		})
 		if checksum != 37737 {
@@ -621,6 +630,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_recommended_fees()
+		})
+		if checksum != 16947 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_recommended_fees: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_refund_deposit()
 		})
 		if checksum != 33646 {
@@ -680,15 +698,6 @@ func uniffiCheckChecksums() {
 		if checksum != 1721 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_update_user_settings: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_wait_for_payment()
-		})
-		if checksum != 64922 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_wait_for_payment: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -821,7 +830,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_rest_chain_service()
 		})
-		if checksum != 56288 {
+		if checksum != 63155 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_rest_chain_service: UniFFI API checksum mismatch")
 		}
@@ -1414,6 +1423,7 @@ type BitcoinChainService interface {
 	GetTransactionStatus(txid string) (TxStatus, error)
 	GetTransactionHex(txid string) (string, error)
 	BroadcastTransaction(tx string) error
+	RecommendedFees() (RecommendedFees, error)
 }
 type BitcoinChainServiceImpl struct {
 	ffiObject FfiObject
@@ -1537,6 +1547,37 @@ func (_self *BitcoinChainServiceImpl) BroadcastTransaction(tx string) error {
 	)
 
 	return err
+}
+
+func (_self *BitcoinChainServiceImpl) RecommendedFees() (RecommendedFees, error) {
+	_pointer := _self.ffiObject.incrementPointer("BitcoinChainService")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[ChainServiceError](
+		FfiConverterChainServiceErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) RecommendedFees {
+			return FfiConverterRecommendedFeesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_bitcoinchainservice_recommended_fees(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
 }
 func (object *BitcoinChainServiceImpl) Destroy() {
 	runtime.SetFinalizer(object, nil)
@@ -1890,11 +1931,71 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod3(uni
 	}()
 }
 
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod4
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod4(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterBitcoinChainServiceINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.RecommendedFees()
+
+		if err != nil {
+			var actualError *ChainServiceError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterChainServiceErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterRecommendedFeesINSTANCE.Lower(res)
+	}()
+}
+
 var UniffiVTableCallbackInterfaceBitcoinChainServiceINSTANCE = C.UniffiVTableCallbackInterfaceBitcoinChainService{
 	getAddressUtxos:      (C.UniffiCallbackInterfaceBitcoinChainServiceMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod0),
 	getTransactionStatus: (C.UniffiCallbackInterfaceBitcoinChainServiceMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod1),
 	getTransactionHex:    (C.UniffiCallbackInterfaceBitcoinChainServiceMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod2),
 	broadcastTransaction: (C.UniffiCallbackInterfaceBitcoinChainServiceMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod3),
+	recommendedFees:      (C.UniffiCallbackInterfaceBitcoinChainServiceMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceMethod4),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceBitcoinChainServiceFree),
 }
@@ -2006,6 +2107,8 @@ type BreezSdkInterface interface {
 	PrepareLnurlPay(request PrepareLnurlPayRequest) (PrepareLnurlPayResponse, error)
 	PrepareSendPayment(request PrepareSendPaymentRequest) (PrepareSendPaymentResponse, error)
 	ReceivePayment(request ReceivePaymentRequest) (ReceivePaymentResponse, error)
+	// Get the recommended BTC fees based on the configured chain service.
+	RecommendedFees() (RecommendedFees, error)
 	RefundDeposit(request RefundDepositRequest) (RefundDepositResponse, error)
 	RegisterLightningAddress(request RegisterLightningAddressRequest) (LightningAddressInfo, error)
 	// Removes a previously registered event listener
@@ -2029,7 +2132,6 @@ type BreezSdkInterface interface {
 	//
 	// Some settings are updated on the Spark network so network requests may be performed.
 	UpdateUserSettings(request UpdateUserSettingsRequest) error
-	WaitForPayment(request WaitForPaymentRequest) (WaitForPaymentResponse, error)
 }
 
 // `BreezSDK` is a wrapper around `SparkSDK` that provides a more structured API
@@ -2761,6 +2863,38 @@ func (_self *BreezSdk) ReceivePayment(request ReceivePaymentRequest) (ReceivePay
 	return res, err
 }
 
+// Get the recommended BTC fees based on the configured chain service.
+func (_self *BreezSdk) RecommendedFees() (RecommendedFees, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) RecommendedFees {
+			return FfiConverterRecommendedFeesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_recommended_fees(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
 func (_self *BreezSdk) RefundDeposit(request RefundDepositRequest) (RefundDepositResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -2986,37 +3120,6 @@ func (_self *BreezSdk) UpdateUserSettings(request UpdateUserSettingsRequest) err
 	)
 
 	return err
-}
-
-func (_self *BreezSdk) WaitForPayment(request WaitForPaymentRequest) (WaitForPaymentResponse, error) {
-	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SdkError](
-		FfiConverterSdkErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) WaitForPaymentResponse {
-			return FfiConverterWaitForPaymentResponseINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_breezsdk_wait_for_payment(
-			_pointer, FfiConverterWaitForPaymentRequestINSTANCE.Lower(request)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	return res, err
 }
 func (object *BreezSdk) Destroy() {
 	runtime.SetFinalizer(object, nil)
@@ -3946,8 +4049,9 @@ type SdkBuilderInterface interface {
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
 	// - `url`: The base URL of the REST API.
+	// - `api_type`: The API type to be used.
 	// - `credentials`: Optional credentials for basic authentication.
-	WithRestChainService(url string, credentials *Credentials)
+	WithRestChainService(url string, apiType ChainApiType, credentials *Credentials)
 	// Sets the storage implementation to be used by the SDK.
 	// Arguments:
 	// - `storage`: The storage implementation to be used.
@@ -4205,8 +4309,9 @@ func (_self *SdkBuilder) WithRealTimeSyncStorage(storage SyncStorage) {
 // Sets the REST chain service to be used by the SDK.
 // Arguments:
 // - `url`: The base URL of the REST API.
+// - `api_type`: The API type to be used.
 // - `credentials`: Optional credentials for basic authentication.
-func (_self *SdkBuilder) WithRestChainService(url string, credentials *Credentials) {
+func (_self *SdkBuilder) WithRestChainService(url string, apiType ChainApiType, credentials *Credentials) {
 	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
 	defer _self.ffiObject.decrementPointer()
 	uniffiRustCallAsync[error](
@@ -4219,7 +4324,7 @@ func (_self *SdkBuilder) WithRestChainService(url string, credentials *Credentia
 		// liftFn
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_rest_chain_service(
-			_pointer, FfiConverterStringINSTANCE.Lower(url), FfiConverterOptionalCredentialsINSTANCE.Lower(credentials)),
+			_pointer, FfiConverterStringINSTANCE.Lower(url), FfiConverterChainApiTypeINSTANCE.Lower(apiType), FfiConverterOptionalCredentialsINSTANCE.Lower(credentials)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -9246,10 +9351,15 @@ func (_ FfiDestroyerLnurlPayInfo) Destroy(value LnurlPayInfo) {
 
 type LnurlPayRequest struct {
 	PrepareResponse PrepareLnurlPayResponse
+	// If set, providing the same idempotency key for multiple requests will ensure that only one
+	// payment is made. If an idempotency key is re-used, the same payment will be returned.
+	// The idempotency key must be a valid UUID.
+	IdempotencyKey *string
 }
 
 func (r *LnurlPayRequest) Destroy() {
 	FfiDestroyerPrepareLnurlPayResponse{}.Destroy(r.PrepareResponse)
+	FfiDestroyerOptionalString{}.Destroy(r.IdempotencyKey)
 }
 
 type FfiConverterLnurlPayRequest struct{}
@@ -9263,6 +9373,7 @@ func (c FfiConverterLnurlPayRequest) Lift(rb RustBufferI) LnurlPayRequest {
 func (c FfiConverterLnurlPayRequest) Read(reader io.Reader) LnurlPayRequest {
 	return LnurlPayRequest{
 		FfiConverterPrepareLnurlPayResponseINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
@@ -9272,6 +9383,7 @@ func (c FfiConverterLnurlPayRequest) Lower(value LnurlPayRequest) C.RustBuffer {
 
 func (c FfiConverterLnurlPayRequest) Write(writer io.Writer, value LnurlPayRequest) {
 	FfiConverterPrepareLnurlPayResponseINSTANCE.Write(writer, value.PrepareResponse)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.IdempotencyKey)
 }
 
 type FfiDestroyerLnurlPayRequest struct{}
@@ -10356,6 +10468,58 @@ func (_ FfiDestroyerReceivePaymentResponse) Destroy(value ReceivePaymentResponse
 	value.Destroy()
 }
 
+type RecommendedFees struct {
+	FastestFee  uint64
+	HalfHourFee uint64
+	HourFee     uint64
+	EconomyFee  uint64
+	MinimumFee  uint64
+}
+
+func (r *RecommendedFees) Destroy() {
+	FfiDestroyerUint64{}.Destroy(r.FastestFee)
+	FfiDestroyerUint64{}.Destroy(r.HalfHourFee)
+	FfiDestroyerUint64{}.Destroy(r.HourFee)
+	FfiDestroyerUint64{}.Destroy(r.EconomyFee)
+	FfiDestroyerUint64{}.Destroy(r.MinimumFee)
+}
+
+type FfiConverterRecommendedFees struct{}
+
+var FfiConverterRecommendedFeesINSTANCE = FfiConverterRecommendedFees{}
+
+func (c FfiConverterRecommendedFees) Lift(rb RustBufferI) RecommendedFees {
+	return LiftFromRustBuffer[RecommendedFees](c, rb)
+}
+
+func (c FfiConverterRecommendedFees) Read(reader io.Reader) RecommendedFees {
+	return RecommendedFees{
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterRecommendedFees) Lower(value RecommendedFees) C.RustBuffer {
+	return LowerIntoRustBuffer[RecommendedFees](c, value)
+}
+
+func (c FfiConverterRecommendedFees) Write(writer io.Writer, value RecommendedFees) {
+	FfiConverterUint64INSTANCE.Write(writer, value.FastestFee)
+	FfiConverterUint64INSTANCE.Write(writer, value.HalfHourFee)
+	FfiConverterUint64INSTANCE.Write(writer, value.HourFee)
+	FfiConverterUint64INSTANCE.Write(writer, value.EconomyFee)
+	FfiConverterUint64INSTANCE.Write(writer, value.MinimumFee)
+}
+
+type FfiDestroyerRecommendedFees struct{}
+
+func (_ FfiDestroyerRecommendedFees) Destroy(value RecommendedFees) {
+	value.Destroy()
+}
+
 type Record struct {
 	Id            RecordId
 	Revision      uint64
@@ -10755,11 +10919,17 @@ func (_ FfiDestroyerSendOnchainSpeedFeeQuote) Destroy(value SendOnchainSpeedFeeQ
 type SendPaymentRequest struct {
 	PrepareResponse PrepareSendPaymentResponse
 	Options         *SendPaymentOptions
+	// The optional idempotency key for all Spark based transfers (excludes token payments).
+	// If set, providing the same idempotency key for multiple requests will ensure that only one
+	// payment is made. If an idempotency key is re-used, the same payment will be returned.
+	// The idempotency key must be a valid UUID.
+	IdempotencyKey *string
 }
 
 func (r *SendPaymentRequest) Destroy() {
 	FfiDestroyerPrepareSendPaymentResponse{}.Destroy(r.PrepareResponse)
 	FfiDestroyerOptionalSendPaymentOptions{}.Destroy(r.Options)
+	FfiDestroyerOptionalString{}.Destroy(r.IdempotencyKey)
 }
 
 type FfiConverterSendPaymentRequest struct{}
@@ -10774,6 +10944,7 @@ func (c FfiConverterSendPaymentRequest) Read(reader io.Reader) SendPaymentReques
 	return SendPaymentRequest{
 		FfiConverterPrepareSendPaymentResponseINSTANCE.Read(reader),
 		FfiConverterOptionalSendPaymentOptionsINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
@@ -10784,6 +10955,7 @@ func (c FfiConverterSendPaymentRequest) Lower(value SendPaymentRequest) C.RustBu
 func (c FfiConverterSendPaymentRequest) Write(writer io.Writer, value SendPaymentRequest) {
 	FfiConverterPrepareSendPaymentResponseINSTANCE.Write(writer, value.PrepareResponse)
 	FfiConverterOptionalSendPaymentOptionsINSTANCE.Write(writer, value.Options)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.IdempotencyKey)
 }
 
 type FfiDestroyerSendPaymentRequest struct{}
@@ -11665,78 +11837,6 @@ func (_ FfiDestroyerUtxo) Destroy(value Utxo) {
 	value.Destroy()
 }
 
-type WaitForPaymentRequest struct {
-	Identifier WaitForPaymentIdentifier
-}
-
-func (r *WaitForPaymentRequest) Destroy() {
-	FfiDestroyerWaitForPaymentIdentifier{}.Destroy(r.Identifier)
-}
-
-type FfiConverterWaitForPaymentRequest struct{}
-
-var FfiConverterWaitForPaymentRequestINSTANCE = FfiConverterWaitForPaymentRequest{}
-
-func (c FfiConverterWaitForPaymentRequest) Lift(rb RustBufferI) WaitForPaymentRequest {
-	return LiftFromRustBuffer[WaitForPaymentRequest](c, rb)
-}
-
-func (c FfiConverterWaitForPaymentRequest) Read(reader io.Reader) WaitForPaymentRequest {
-	return WaitForPaymentRequest{
-		FfiConverterWaitForPaymentIdentifierINSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterWaitForPaymentRequest) Lower(value WaitForPaymentRequest) C.RustBuffer {
-	return LowerIntoRustBuffer[WaitForPaymentRequest](c, value)
-}
-
-func (c FfiConverterWaitForPaymentRequest) Write(writer io.Writer, value WaitForPaymentRequest) {
-	FfiConverterWaitForPaymentIdentifierINSTANCE.Write(writer, value.Identifier)
-}
-
-type FfiDestroyerWaitForPaymentRequest struct{}
-
-func (_ FfiDestroyerWaitForPaymentRequest) Destroy(value WaitForPaymentRequest) {
-	value.Destroy()
-}
-
-type WaitForPaymentResponse struct {
-	Payment Payment
-}
-
-func (r *WaitForPaymentResponse) Destroy() {
-	FfiDestroyerPayment{}.Destroy(r.Payment)
-}
-
-type FfiConverterWaitForPaymentResponse struct{}
-
-var FfiConverterWaitForPaymentResponseINSTANCE = FfiConverterWaitForPaymentResponse{}
-
-func (c FfiConverterWaitForPaymentResponse) Lift(rb RustBufferI) WaitForPaymentResponse {
-	return LiftFromRustBuffer[WaitForPaymentResponse](c, rb)
-}
-
-func (c FfiConverterWaitForPaymentResponse) Read(reader io.Reader) WaitForPaymentResponse {
-	return WaitForPaymentResponse{
-		FfiConverterPaymentINSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterWaitForPaymentResponse) Lower(value WaitForPaymentResponse) C.RustBuffer {
-	return LowerIntoRustBuffer[WaitForPaymentResponse](c, value)
-}
-
-func (c FfiConverterWaitForPaymentResponse) Write(writer io.Writer, value WaitForPaymentResponse) {
-	FfiConverterPaymentINSTANCE.Write(writer, value.Payment)
-}
-
-type FfiDestroyerWaitForPaymentResponse struct{}
-
-func (_ FfiDestroyerWaitForPaymentResponse) Destroy(value WaitForPaymentResponse) {
-	value.Destroy()
-}
-
 // Result of decryption of [`AesSuccessActionData`] payload
 type AesSuccessActionDataResult interface {
 	Destroy()
@@ -11971,6 +12071,38 @@ func (FfiConverterBitcoinNetwork) Write(writer io.Writer, value BitcoinNetwork) 
 type FfiDestroyerBitcoinNetwork struct{}
 
 func (_ FfiDestroyerBitcoinNetwork) Destroy(value BitcoinNetwork) {
+}
+
+type ChainApiType uint
+
+const (
+	ChainApiTypeEsplora      ChainApiType = 1
+	ChainApiTypeMempoolSpace ChainApiType = 2
+)
+
+type FfiConverterChainApiType struct{}
+
+var FfiConverterChainApiTypeINSTANCE = FfiConverterChainApiType{}
+
+func (c FfiConverterChainApiType) Lift(rb RustBufferI) ChainApiType {
+	return LiftFromRustBuffer[ChainApiType](c, rb)
+}
+
+func (c FfiConverterChainApiType) Lower(value ChainApiType) C.RustBuffer {
+	return LowerIntoRustBuffer[ChainApiType](c, value)
+}
+func (FfiConverterChainApiType) Read(reader io.Reader) ChainApiType {
+	id := readInt32(reader)
+	return ChainApiType(id)
+}
+
+func (FfiConverterChainApiType) Write(writer io.Writer, value ChainApiType) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerChainApiType struct{}
+
+func (_ FfiDestroyerChainApiType) Destroy(value ChainApiType) {
 }
 
 type ChainServiceError struct {
@@ -15215,72 +15347,6 @@ func (FfiConverterUpdateDepositPayload) Write(writer io.Writer, value UpdateDepo
 type FfiDestroyerUpdateDepositPayload struct{}
 
 func (_ FfiDestroyerUpdateDepositPayload) Destroy(value UpdateDepositPayload) {
-	value.Destroy()
-}
-
-type WaitForPaymentIdentifier interface {
-	Destroy()
-}
-type WaitForPaymentIdentifierPaymentId struct {
-	Field0 string
-}
-
-func (e WaitForPaymentIdentifierPaymentId) Destroy() {
-	FfiDestroyerString{}.Destroy(e.Field0)
-}
-
-type WaitForPaymentIdentifierPaymentRequest struct {
-	Field0 string
-}
-
-func (e WaitForPaymentIdentifierPaymentRequest) Destroy() {
-	FfiDestroyerString{}.Destroy(e.Field0)
-}
-
-type FfiConverterWaitForPaymentIdentifier struct{}
-
-var FfiConverterWaitForPaymentIdentifierINSTANCE = FfiConverterWaitForPaymentIdentifier{}
-
-func (c FfiConverterWaitForPaymentIdentifier) Lift(rb RustBufferI) WaitForPaymentIdentifier {
-	return LiftFromRustBuffer[WaitForPaymentIdentifier](c, rb)
-}
-
-func (c FfiConverterWaitForPaymentIdentifier) Lower(value WaitForPaymentIdentifier) C.RustBuffer {
-	return LowerIntoRustBuffer[WaitForPaymentIdentifier](c, value)
-}
-func (FfiConverterWaitForPaymentIdentifier) Read(reader io.Reader) WaitForPaymentIdentifier {
-	id := readInt32(reader)
-	switch id {
-	case 1:
-		return WaitForPaymentIdentifierPaymentId{
-			FfiConverterStringINSTANCE.Read(reader),
-		}
-	case 2:
-		return WaitForPaymentIdentifierPaymentRequest{
-			FfiConverterStringINSTANCE.Read(reader),
-		}
-	default:
-		panic(fmt.Sprintf("invalid enum value %v in FfiConverterWaitForPaymentIdentifier.Read()", id))
-	}
-}
-
-func (FfiConverterWaitForPaymentIdentifier) Write(writer io.Writer, value WaitForPaymentIdentifier) {
-	switch variant_value := value.(type) {
-	case WaitForPaymentIdentifierPaymentId:
-		writeInt32(writer, 1)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.Field0)
-	case WaitForPaymentIdentifierPaymentRequest:
-		writeInt32(writer, 2)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.Field0)
-	default:
-		_ = variant_value
-		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterWaitForPaymentIdentifier.Write", value))
-	}
-}
-
-type FfiDestroyerWaitForPaymentIdentifier struct{}
-
-func (_ FfiDestroyerWaitForPaymentIdentifier) Destroy(value WaitForPaymentIdentifier) {
 	value.Destroy()
 }
 
