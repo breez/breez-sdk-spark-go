@@ -468,6 +468,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_htlc_payment()
+		})
+		if checksum != 57587 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_htlc_payment: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_delete_lightning_address()
 		})
 		if checksum != 44132 {
@@ -2028,6 +2037,7 @@ type BreezSdkInterface interface {
 	// in either DER or compact format.
 	CheckMessage(request CheckMessageRequest) (CheckMessageResponse, error)
 	ClaimDeposit(request ClaimDepositRequest) (ClaimDepositResponse, error)
+	ClaimHtlcPayment(request ClaimHtlcPaymentRequest) (ClaimHtlcPaymentResponse, error)
 	DeleteLightningAddress() error
 	// Stops the SDK's background tasks
 	//
@@ -2261,6 +2271,37 @@ func (_self *BreezSdk) ClaimDeposit(request ClaimDepositRequest) (ClaimDepositRe
 		},
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_claim_deposit(
 			_pointer, FfiConverterClaimDepositRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+func (_self *BreezSdk) ClaimHtlcPayment(request ClaimHtlcPaymentRequest) (ClaimHtlcPaymentResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ClaimHtlcPaymentResponse {
+			return FfiConverterClaimHtlcPaymentResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_claim_htlc_payment(
+			_pointer, FfiConverterClaimHtlcPaymentRequestINSTANCE.Lower(request)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -8125,6 +8166,78 @@ func (_ FfiDestroyerClaimDepositResponse) Destroy(value ClaimDepositResponse) {
 	value.Destroy()
 }
 
+type ClaimHtlcPaymentRequest struct {
+	Preimage string
+}
+
+func (r *ClaimHtlcPaymentRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Preimage)
+}
+
+type FfiConverterClaimHtlcPaymentRequest struct{}
+
+var FfiConverterClaimHtlcPaymentRequestINSTANCE = FfiConverterClaimHtlcPaymentRequest{}
+
+func (c FfiConverterClaimHtlcPaymentRequest) Lift(rb RustBufferI) ClaimHtlcPaymentRequest {
+	return LiftFromRustBuffer[ClaimHtlcPaymentRequest](c, rb)
+}
+
+func (c FfiConverterClaimHtlcPaymentRequest) Read(reader io.Reader) ClaimHtlcPaymentRequest {
+	return ClaimHtlcPaymentRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterClaimHtlcPaymentRequest) Lower(value ClaimHtlcPaymentRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ClaimHtlcPaymentRequest](c, value)
+}
+
+func (c FfiConverterClaimHtlcPaymentRequest) Write(writer io.Writer, value ClaimHtlcPaymentRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Preimage)
+}
+
+type FfiDestroyerClaimHtlcPaymentRequest struct{}
+
+func (_ FfiDestroyerClaimHtlcPaymentRequest) Destroy(value ClaimHtlcPaymentRequest) {
+	value.Destroy()
+}
+
+type ClaimHtlcPaymentResponse struct {
+	Payment Payment
+}
+
+func (r *ClaimHtlcPaymentResponse) Destroy() {
+	FfiDestroyerPayment{}.Destroy(r.Payment)
+}
+
+type FfiConverterClaimHtlcPaymentResponse struct{}
+
+var FfiConverterClaimHtlcPaymentResponseINSTANCE = FfiConverterClaimHtlcPaymentResponse{}
+
+func (c FfiConverterClaimHtlcPaymentResponse) Lift(rb RustBufferI) ClaimHtlcPaymentResponse {
+	return LiftFromRustBuffer[ClaimHtlcPaymentResponse](c, rb)
+}
+
+func (c FfiConverterClaimHtlcPaymentResponse) Read(reader io.Reader) ClaimHtlcPaymentResponse {
+	return ClaimHtlcPaymentResponse{
+		FfiConverterPaymentINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterClaimHtlcPaymentResponse) Lower(value ClaimHtlcPaymentResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[ClaimHtlcPaymentResponse](c, value)
+}
+
+func (c FfiConverterClaimHtlcPaymentResponse) Write(writer io.Writer, value ClaimHtlcPaymentResponse) {
+	FfiConverterPaymentINSTANCE.Write(writer, value.Payment)
+}
+
+type FfiDestroyerClaimHtlcPaymentResponse struct{}
+
+func (_ FfiDestroyerClaimHtlcPaymentResponse) Destroy(value ClaimHtlcPaymentResponse) {
+	value.Destroy()
+}
+
 type Config struct {
 	ApiKey             *string
 	Network            Network
@@ -9064,6 +9177,8 @@ type ListPaymentsRequest struct {
 	TypeFilter   *[]PaymentType
 	StatusFilter *[]PaymentStatus
 	AssetFilter  *AssetFilter
+	// Only include payments with specific Spark HTLC statuses
+	SparkHtlcStatusFilter *[]SparkHtlcStatus
 	// Only include payments created after this timestamp (inclusive)
 	FromTimestamp *uint64
 	// Only include payments created before this timestamp (exclusive)
@@ -9079,6 +9194,7 @@ func (r *ListPaymentsRequest) Destroy() {
 	FfiDestroyerOptionalSequencePaymentType{}.Destroy(r.TypeFilter)
 	FfiDestroyerOptionalSequencePaymentStatus{}.Destroy(r.StatusFilter)
 	FfiDestroyerOptionalAssetFilter{}.Destroy(r.AssetFilter)
+	FfiDestroyerOptionalSequenceSparkHtlcStatus{}.Destroy(r.SparkHtlcStatusFilter)
 	FfiDestroyerOptionalUint64{}.Destroy(r.FromTimestamp)
 	FfiDestroyerOptionalUint64{}.Destroy(r.ToTimestamp)
 	FfiDestroyerOptionalUint32{}.Destroy(r.Offset)
@@ -9099,6 +9215,7 @@ func (c FfiConverterListPaymentsRequest) Read(reader io.Reader) ListPaymentsRequ
 		FfiConverterOptionalSequencePaymentTypeINSTANCE.Read(reader),
 		FfiConverterOptionalSequencePaymentStatusINSTANCE.Read(reader),
 		FfiConverterOptionalAssetFilterINSTANCE.Read(reader),
+		FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE.Read(reader),
 		FfiConverterOptionalUint64INSTANCE.Read(reader),
 		FfiConverterOptionalUint64INSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
@@ -9115,6 +9232,7 @@ func (c FfiConverterListPaymentsRequest) Write(writer io.Writer, value ListPayme
 	FfiConverterOptionalSequencePaymentTypeINSTANCE.Write(writer, value.TypeFilter)
 	FfiConverterOptionalSequencePaymentStatusINSTANCE.Write(writer, value.StatusFilter)
 	FfiConverterOptionalAssetFilterINSTANCE.Write(writer, value.AssetFilter)
+	FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE.Write(writer, value.SparkHtlcStatusFilter)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.FromTimestamp)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ToTimestamp)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.Offset)
@@ -9233,7 +9351,7 @@ func (_ FfiDestroyerListUnclaimedDepositsResponse) Destroy(value ListUnclaimedDe
 	value.Destroy()
 }
 
-// Wrapped in a [`LnurlAuth`], this is the result of [`parse`] when given a LNURL-auth endpoint.
+// Wrapped in a [`InputType::LnurlAuth`], this is the result of [`parse`](breez_sdk_common::input::parse) when given a LNURL-auth endpoint.
 //
 // It represents the endpoint's parameters for the LNURL workflow.
 //
@@ -11176,6 +11294,101 @@ func (_ FfiDestroyerSparkAddressDetails) Destroy(value SparkAddressDetails) {
 	value.Destroy()
 }
 
+type SparkHtlcDetails struct {
+	// The payment hash of the HTLC
+	PaymentHash string
+	// The preimage of the HTLC. Empty until receiver has released it.
+	Preimage *string
+	// The expiry time of the HTLC in seconds since the Unix epoch
+	ExpiryTime uint64
+	// The HTLC status
+	Status SparkHtlcStatus
+}
+
+func (r *SparkHtlcDetails) Destroy() {
+	FfiDestroyerString{}.Destroy(r.PaymentHash)
+	FfiDestroyerOptionalString{}.Destroy(r.Preimage)
+	FfiDestroyerUint64{}.Destroy(r.ExpiryTime)
+	FfiDestroyerSparkHtlcStatus{}.Destroy(r.Status)
+}
+
+type FfiConverterSparkHtlcDetails struct{}
+
+var FfiConverterSparkHtlcDetailsINSTANCE = FfiConverterSparkHtlcDetails{}
+
+func (c FfiConverterSparkHtlcDetails) Lift(rb RustBufferI) SparkHtlcDetails {
+	return LiftFromRustBuffer[SparkHtlcDetails](c, rb)
+}
+
+func (c FfiConverterSparkHtlcDetails) Read(reader io.Reader) SparkHtlcDetails {
+	return SparkHtlcDetails{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterSparkHtlcStatusINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSparkHtlcDetails) Lower(value SparkHtlcDetails) C.RustBuffer {
+	return LowerIntoRustBuffer[SparkHtlcDetails](c, value)
+}
+
+func (c FfiConverterSparkHtlcDetails) Write(writer io.Writer, value SparkHtlcDetails) {
+	FfiConverterStringINSTANCE.Write(writer, value.PaymentHash)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Preimage)
+	FfiConverterUint64INSTANCE.Write(writer, value.ExpiryTime)
+	FfiConverterSparkHtlcStatusINSTANCE.Write(writer, value.Status)
+}
+
+type FfiDestroyerSparkHtlcDetails struct{}
+
+func (_ FfiDestroyerSparkHtlcDetails) Destroy(value SparkHtlcDetails) {
+	value.Destroy()
+}
+
+type SparkHtlcOptions struct {
+	// The payment hash of the HTLC. The receiver will need to provide the associated preimage to claim it.
+	PaymentHash string
+	// The duration of the HTLC in seconds.
+	// After this time, the HTLC will be returned.
+	ExpiryDurationSecs uint64
+}
+
+func (r *SparkHtlcOptions) Destroy() {
+	FfiDestroyerString{}.Destroy(r.PaymentHash)
+	FfiDestroyerUint64{}.Destroy(r.ExpiryDurationSecs)
+}
+
+type FfiConverterSparkHtlcOptions struct{}
+
+var FfiConverterSparkHtlcOptionsINSTANCE = FfiConverterSparkHtlcOptions{}
+
+func (c FfiConverterSparkHtlcOptions) Lift(rb RustBufferI) SparkHtlcOptions {
+	return LiftFromRustBuffer[SparkHtlcOptions](c, rb)
+}
+
+func (c FfiConverterSparkHtlcOptions) Read(reader io.Reader) SparkHtlcOptions {
+	return SparkHtlcOptions{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSparkHtlcOptions) Lower(value SparkHtlcOptions) C.RustBuffer {
+	return LowerIntoRustBuffer[SparkHtlcOptions](c, value)
+}
+
+func (c FfiConverterSparkHtlcOptions) Write(writer io.Writer, value SparkHtlcOptions) {
+	FfiConverterStringINSTANCE.Write(writer, value.PaymentHash)
+	FfiConverterUint64INSTANCE.Write(writer, value.ExpiryDurationSecs)
+}
+
+type FfiDestroyerSparkHtlcOptions struct{}
+
+func (_ FfiDestroyerSparkHtlcOptions) Destroy(value SparkHtlcOptions) {
+	value.Destroy()
+}
+
 type SparkInvoiceDetails struct {
 	// The raw invoice string
 	Invoice string
@@ -12797,10 +13010,12 @@ type PaymentDetails interface {
 }
 type PaymentDetailsSpark struct {
 	InvoiceDetails *SparkInvoicePaymentDetails
+	HtlcDetails    *SparkHtlcDetails
 }
 
 func (e PaymentDetailsSpark) Destroy() {
 	FfiDestroyerOptionalSparkInvoicePaymentDetails{}.Destroy(e.InvoiceDetails)
+	FfiDestroyerOptionalSparkHtlcDetails{}.Destroy(e.HtlcDetails)
 }
 
 type PaymentDetailsToken struct {
@@ -12868,6 +13083,7 @@ func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 	case 1:
 		return PaymentDetailsSpark{
 			FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Read(reader),
+			FfiConverterOptionalSparkHtlcDetailsINSTANCE.Read(reader),
 		}
 	case 2:
 		return PaymentDetailsToken{
@@ -12903,6 +13119,7 @@ func (FfiConverterPaymentDetails) Write(writer io.Writer, value PaymentDetails) 
 	case PaymentDetailsSpark:
 		writeInt32(writer, 1)
 		FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Write(writer, variant_value.InvoiceDetails)
+		FfiConverterOptionalSparkHtlcDetailsINSTANCE.Write(writer, variant_value.HtlcDetails)
 	case PaymentDetailsToken:
 		writeInt32(writer, 2)
 		FfiConverterTokenMetadataINSTANCE.Write(writer, variant_value.Metadata)
@@ -14237,6 +14454,14 @@ func (e SendPaymentOptionsBolt11Invoice) Destroy() {
 	FfiDestroyerOptionalUint32{}.Destroy(e.CompletionTimeoutSecs)
 }
 
+type SendPaymentOptionsSparkAddress struct {
+	HtlcOptions *SparkHtlcOptions
+}
+
+func (e SendPaymentOptionsSparkAddress) Destroy() {
+	FfiDestroyerOptionalSparkHtlcOptions{}.Destroy(e.HtlcOptions)
+}
+
 type FfiConverterSendPaymentOptions struct{}
 
 var FfiConverterSendPaymentOptionsINSTANCE = FfiConverterSendPaymentOptions{}
@@ -14260,6 +14485,10 @@ func (FfiConverterSendPaymentOptions) Read(reader io.Reader) SendPaymentOptions 
 			FfiConverterBoolINSTANCE.Read(reader),
 			FfiConverterOptionalUint32INSTANCE.Read(reader),
 		}
+	case 3:
+		return SendPaymentOptionsSparkAddress{
+			FfiConverterOptionalSparkHtlcOptionsINSTANCE.Read(reader),
+		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterSendPaymentOptions.Read()", id))
 	}
@@ -14274,6 +14503,9 @@ func (FfiConverterSendPaymentOptions) Write(writer io.Writer, value SendPaymentO
 		writeInt32(writer, 2)
 		FfiConverterBoolINSTANCE.Write(writer, variant_value.PreferSpark)
 		FfiConverterOptionalUint32INSTANCE.Write(writer, variant_value.CompletionTimeoutSecs)
+	case SendPaymentOptionsSparkAddress:
+		writeInt32(writer, 3)
+		FfiConverterOptionalSparkHtlcOptionsINSTANCE.Write(writer, variant_value.HtlcOptions)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterSendPaymentOptions.Write", value))
@@ -14737,6 +14969,42 @@ func (_ FfiDestroyerServiceConnectivityError) Destroy(value *ServiceConnectivity
 		_ = variantValue
 		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerServiceConnectivityError.Destroy", value))
 	}
+}
+
+type SparkHtlcStatus uint
+
+const (
+	// The HTLC is waiting for the preimage to be shared by the receiver
+	SparkHtlcStatusWaitingForPreimage SparkHtlcStatus = 1
+	// The HTLC preimage has been shared and the transfer can be or has been claimed by the receiver
+	SparkHtlcStatusPreimageShared SparkHtlcStatus = 2
+	// The HTLC has been returned to the sender due to expiry
+	SparkHtlcStatusReturned SparkHtlcStatus = 3
+)
+
+type FfiConverterSparkHtlcStatus struct{}
+
+var FfiConverterSparkHtlcStatusINSTANCE = FfiConverterSparkHtlcStatus{}
+
+func (c FfiConverterSparkHtlcStatus) Lift(rb RustBufferI) SparkHtlcStatus {
+	return LiftFromRustBuffer[SparkHtlcStatus](c, rb)
+}
+
+func (c FfiConverterSparkHtlcStatus) Lower(value SparkHtlcStatus) C.RustBuffer {
+	return LowerIntoRustBuffer[SparkHtlcStatus](c, value)
+}
+func (FfiConverterSparkHtlcStatus) Read(reader io.Reader) SparkHtlcStatus {
+	id := readInt32(reader)
+	return SparkHtlcStatus(id)
+}
+
+func (FfiConverterSparkHtlcStatus) Write(writer io.Writer, value SparkHtlcStatus) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerSparkHtlcStatus struct{}
+
+func (_ FfiDestroyerSparkHtlcStatus) Destroy(value SparkHtlcStatus) {
 }
 
 // Errors that can occur during storage operations
@@ -15919,6 +16187,80 @@ func (_ FfiDestroyerOptionalRecord) Destroy(value *Record) {
 	}
 }
 
+type FfiConverterOptionalSparkHtlcDetails struct{}
+
+var FfiConverterOptionalSparkHtlcDetailsINSTANCE = FfiConverterOptionalSparkHtlcDetails{}
+
+func (c FfiConverterOptionalSparkHtlcDetails) Lift(rb RustBufferI) *SparkHtlcDetails {
+	return LiftFromRustBuffer[*SparkHtlcDetails](c, rb)
+}
+
+func (_ FfiConverterOptionalSparkHtlcDetails) Read(reader io.Reader) *SparkHtlcDetails {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterSparkHtlcDetailsINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalSparkHtlcDetails) Lower(value *SparkHtlcDetails) C.RustBuffer {
+	return LowerIntoRustBuffer[*SparkHtlcDetails](c, value)
+}
+
+func (_ FfiConverterOptionalSparkHtlcDetails) Write(writer io.Writer, value *SparkHtlcDetails) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterSparkHtlcDetailsINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalSparkHtlcDetails struct{}
+
+func (_ FfiDestroyerOptionalSparkHtlcDetails) Destroy(value *SparkHtlcDetails) {
+	if value != nil {
+		FfiDestroyerSparkHtlcDetails{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalSparkHtlcOptions struct{}
+
+var FfiConverterOptionalSparkHtlcOptionsINSTANCE = FfiConverterOptionalSparkHtlcOptions{}
+
+func (c FfiConverterOptionalSparkHtlcOptions) Lift(rb RustBufferI) *SparkHtlcOptions {
+	return LiftFromRustBuffer[*SparkHtlcOptions](c, rb)
+}
+
+func (_ FfiConverterOptionalSparkHtlcOptions) Read(reader io.Reader) *SparkHtlcOptions {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterSparkHtlcOptionsINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalSparkHtlcOptions) Lower(value *SparkHtlcOptions) C.RustBuffer {
+	return LowerIntoRustBuffer[*SparkHtlcOptions](c, value)
+}
+
+func (_ FfiConverterOptionalSparkHtlcOptions) Write(writer io.Writer, value *SparkHtlcOptions) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterSparkHtlcOptionsINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalSparkHtlcOptions struct{}
+
+func (_ FfiDestroyerOptionalSparkHtlcOptions) Destroy(value *SparkHtlcOptions) {
+	if value != nil {
+		FfiDestroyerSparkHtlcOptions{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalSparkInvoicePaymentDetails struct{}
 
 var FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE = FfiConverterOptionalSparkInvoicePaymentDetails{}
@@ -16434,6 +16776,43 @@ type FfiDestroyerOptionalSequencePaymentType struct{}
 func (_ FfiDestroyerOptionalSequencePaymentType) Destroy(value *[]PaymentType) {
 	if value != nil {
 		FfiDestroyerSequencePaymentType{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalSequenceSparkHtlcStatus struct{}
+
+var FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE = FfiConverterOptionalSequenceSparkHtlcStatus{}
+
+func (c FfiConverterOptionalSequenceSparkHtlcStatus) Lift(rb RustBufferI) *[]SparkHtlcStatus {
+	return LiftFromRustBuffer[*[]SparkHtlcStatus](c, rb)
+}
+
+func (_ FfiConverterOptionalSequenceSparkHtlcStatus) Read(reader io.Reader) *[]SparkHtlcStatus {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterSequenceSparkHtlcStatusINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalSequenceSparkHtlcStatus) Lower(value *[]SparkHtlcStatus) C.RustBuffer {
+	return LowerIntoRustBuffer[*[]SparkHtlcStatus](c, value)
+}
+
+func (_ FfiConverterOptionalSequenceSparkHtlcStatus) Write(writer io.Writer, value *[]SparkHtlcStatus) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterSequenceSparkHtlcStatusINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalSequenceSparkHtlcStatus struct{}
+
+func (_ FfiDestroyerOptionalSequenceSparkHtlcStatus) Destroy(value *[]SparkHtlcStatus) {
+	if value != nil {
+		FfiDestroyerSequenceSparkHtlcStatus{}.Destroy(*value)
 	}
 }
 
@@ -17411,6 +17790,49 @@ type FfiDestroyerSequencePaymentType struct{}
 func (FfiDestroyerSequencePaymentType) Destroy(sequence []PaymentType) {
 	for _, value := range sequence {
 		FfiDestroyerPaymentType{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceSparkHtlcStatus struct{}
+
+var FfiConverterSequenceSparkHtlcStatusINSTANCE = FfiConverterSequenceSparkHtlcStatus{}
+
+func (c FfiConverterSequenceSparkHtlcStatus) Lift(rb RustBufferI) []SparkHtlcStatus {
+	return LiftFromRustBuffer[[]SparkHtlcStatus](c, rb)
+}
+
+func (c FfiConverterSequenceSparkHtlcStatus) Read(reader io.Reader) []SparkHtlcStatus {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]SparkHtlcStatus, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterSparkHtlcStatusINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceSparkHtlcStatus) Lower(value []SparkHtlcStatus) C.RustBuffer {
+	return LowerIntoRustBuffer[[]SparkHtlcStatus](c, value)
+}
+
+func (c FfiConverterSequenceSparkHtlcStatus) Write(writer io.Writer, value []SparkHtlcStatus) {
+	if len(value) > math.MaxInt32 {
+		panic("[]SparkHtlcStatus is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterSparkHtlcStatusINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceSparkHtlcStatus struct{}
+
+func (FfiDestroyerSequenceSparkHtlcStatus) Destroy(sequence []SparkHtlcStatus) {
+	for _, value := range sequence {
+		FfiDestroyerSparkHtlcStatus{}.Destroy(value)
 	}
 }
 
