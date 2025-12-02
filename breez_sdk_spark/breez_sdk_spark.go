@@ -963,6 +963,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_storage_set_lnurl_metadata()
+		})
+		if checksum != 7460 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_set_lnurl_metadata: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_syncstorage_add_outgoing_change()
 		})
 		if checksum != 19087 {
@@ -4545,6 +4554,7 @@ type Storage interface {
 	//
 	// Success or a `StorageError`
 	UpdateDeposit(txid string, vout uint32, payload UpdateDepositPayload) error
+	SetLnurlMetadata(metadata []SetLnurlMetadataItem) error
 }
 
 // Trait for persistent storage
@@ -4959,6 +4969,33 @@ func (_self *StorageImpl) UpdateDeposit(txid string, vout uint32, payload Update
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_storage_update_deposit(
 			_pointer, FfiConverterStringINSTANCE.Lower(txid), FfiConverterUint32INSTANCE.Lower(vout), FfiConverterUpdateDepositPayloadINSTANCE.Lower(payload)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	return err
+}
+
+func (_self *StorageImpl) SetLnurlMetadata(metadata []SetLnurlMetadataItem) error {
+	_pointer := _self.ffiObject.incrementPointer("Storage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[StorageError](
+		FfiConverterStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_storage_set_lnurl_metadata(
+			_pointer, FfiConverterSequenceSetLnurlMetadataItemINSTANCE.Lower(metadata)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -5778,6 +5815,67 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod11(uniffiHandle C
 	}()
 }
 
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod12
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod12(uniffiHandle C.uint64_t, metadata C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.SetLnurlMetadata(
+				FfiConverterSequenceSetLnurlMetadataItemINSTANCE.Lift(GoRustBuffer{
+					inner: metadata,
+				}),
+			)
+
+		if err != nil {
+			var actualError *StorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
 var UniffiVTableCallbackInterfaceStorageINSTANCE = C.UniffiVTableCallbackInterfaceStorage{
 	deleteCachedItem:    (C.UniffiCallbackInterfaceStorageMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0),
 	getCachedItem:       (C.UniffiCallbackInterfaceStorageMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1),
@@ -5791,6 +5889,7 @@ var UniffiVTableCallbackInterfaceStorageINSTANCE = C.UniffiVTableCallbackInterfa
 	deleteDeposit:       (C.UniffiCallbackInterfaceStorageMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9),
 	listDeposits:        (C.UniffiCallbackInterfaceStorageMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10),
 	updateDeposit:       (C.UniffiCallbackInterfaceStorageMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod11),
+	setLnurlMetadata:    (C.UniffiCallbackInterfaceStorageMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod12),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree),
 }
@@ -9642,6 +9741,50 @@ func (_ FfiDestroyerLnurlPayResponse) Destroy(value LnurlPayResponse) {
 	value.Destroy()
 }
 
+type LnurlReceiveMetadata struct {
+	NostrZapRequest *string
+	NostrZapReceipt *string
+	SenderComment   *string
+}
+
+func (r *LnurlReceiveMetadata) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.NostrZapRequest)
+	FfiDestroyerOptionalString{}.Destroy(r.NostrZapReceipt)
+	FfiDestroyerOptionalString{}.Destroy(r.SenderComment)
+}
+
+type FfiConverterLnurlReceiveMetadata struct{}
+
+var FfiConverterLnurlReceiveMetadataINSTANCE = FfiConverterLnurlReceiveMetadata{}
+
+func (c FfiConverterLnurlReceiveMetadata) Lift(rb RustBufferI) LnurlReceiveMetadata {
+	return LiftFromRustBuffer[LnurlReceiveMetadata](c, rb)
+}
+
+func (c FfiConverterLnurlReceiveMetadata) Read(reader io.Reader) LnurlReceiveMetadata {
+	return LnurlReceiveMetadata{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterLnurlReceiveMetadata) Lower(value LnurlReceiveMetadata) C.RustBuffer {
+	return LowerIntoRustBuffer[LnurlReceiveMetadata](c, value)
+}
+
+func (c FfiConverterLnurlReceiveMetadata) Write(writer io.Writer, value LnurlReceiveMetadata) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrZapRequest)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrZapReceipt)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.SenderComment)
+}
+
+type FfiDestroyerLnurlReceiveMetadata struct{}
+
+func (_ FfiDestroyerLnurlReceiveMetadata) Destroy(value LnurlReceiveMetadata) {
+	value.Destroy()
+}
+
 // Represents the withdraw LNURL info
 type LnurlWithdrawInfo struct {
 	WithdrawUrl string
@@ -11118,6 +11261,54 @@ func (_ FfiDestroyerSendPaymentResponse) Destroy(value SendPaymentResponse) {
 	value.Destroy()
 }
 
+type SetLnurlMetadataItem struct {
+	PaymentHash     string
+	SenderComment   *string
+	NostrZapRequest *string
+	NostrZapReceipt *string
+}
+
+func (r *SetLnurlMetadataItem) Destroy() {
+	FfiDestroyerString{}.Destroy(r.PaymentHash)
+	FfiDestroyerOptionalString{}.Destroy(r.SenderComment)
+	FfiDestroyerOptionalString{}.Destroy(r.NostrZapRequest)
+	FfiDestroyerOptionalString{}.Destroy(r.NostrZapReceipt)
+}
+
+type FfiConverterSetLnurlMetadataItem struct{}
+
+var FfiConverterSetLnurlMetadataItemINSTANCE = FfiConverterSetLnurlMetadataItem{}
+
+func (c FfiConverterSetLnurlMetadataItem) Lift(rb RustBufferI) SetLnurlMetadataItem {
+	return LiftFromRustBuffer[SetLnurlMetadataItem](c, rb)
+}
+
+func (c FfiConverterSetLnurlMetadataItem) Read(reader io.Reader) SetLnurlMetadataItem {
+	return SetLnurlMetadataItem{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSetLnurlMetadataItem) Lower(value SetLnurlMetadataItem) C.RustBuffer {
+	return LowerIntoRustBuffer[SetLnurlMetadataItem](c, value)
+}
+
+func (c FfiConverterSetLnurlMetadataItem) Write(writer io.Writer, value SetLnurlMetadataItem) {
+	FfiConverterStringINSTANCE.Write(writer, value.PaymentHash)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.SenderComment)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrZapRequest)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrZapReceipt)
+}
+
+type FfiDestroyerSetLnurlMetadataItem struct{}
+
+func (_ FfiDestroyerSetLnurlMetadataItem) Destroy(value SetLnurlMetadataItem) {
+	value.Destroy()
+}
+
 type SignMessageRequest struct {
 	Message string
 	// If true, the signature will be encoded in compact format instead of DER format
@@ -12499,18 +12690,20 @@ func (_ FfiDestroyerChainServiceError) Destroy(value *ChainServiceError) {
 type DepositClaimError interface {
 	Destroy()
 }
-type DepositClaimErrorDepositClaimFeeExceeded struct {
-	Tx        string
-	Vout      uint32
-	MaxFee    *Fee
-	ActualFee uint64
+type DepositClaimErrorMaxDepositClaimFeeExceeded struct {
+	Tx                         string
+	Vout                       uint32
+	MaxFee                     *Fee
+	RequiredFeeSats            uint64
+	RequiredFeeRateSatPerVbyte uint64
 }
 
-func (e DepositClaimErrorDepositClaimFeeExceeded) Destroy() {
+func (e DepositClaimErrorMaxDepositClaimFeeExceeded) Destroy() {
 	FfiDestroyerString{}.Destroy(e.Tx)
 	FfiDestroyerUint32{}.Destroy(e.Vout)
 	FfiDestroyerOptionalFee{}.Destroy(e.MaxFee)
-	FfiDestroyerUint64{}.Destroy(e.ActualFee)
+	FfiDestroyerUint64{}.Destroy(e.RequiredFeeSats)
+	FfiDestroyerUint64{}.Destroy(e.RequiredFeeRateSatPerVbyte)
 }
 
 type DepositClaimErrorMissingUtxo struct {
@@ -12546,10 +12739,11 @@ func (FfiConverterDepositClaimError) Read(reader io.Reader) DepositClaimError {
 	id := readInt32(reader)
 	switch id {
 	case 1:
-		return DepositClaimErrorDepositClaimFeeExceeded{
+		return DepositClaimErrorMaxDepositClaimFeeExceeded{
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterUint32INSTANCE.Read(reader),
 			FfiConverterOptionalFeeINSTANCE.Read(reader),
+			FfiConverterUint64INSTANCE.Read(reader),
 			FfiConverterUint64INSTANCE.Read(reader),
 		}
 	case 2:
@@ -12568,12 +12762,13 @@ func (FfiConverterDepositClaimError) Read(reader io.Reader) DepositClaimError {
 
 func (FfiConverterDepositClaimError) Write(writer io.Writer, value DepositClaimError) {
 	switch variant_value := value.(type) {
-	case DepositClaimErrorDepositClaimFeeExceeded:
+	case DepositClaimErrorMaxDepositClaimFeeExceeded:
 		writeInt32(writer, 1)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Tx)
 		FfiConverterUint32INSTANCE.Write(writer, variant_value.Vout)
 		FfiConverterOptionalFeeINSTANCE.Write(writer, variant_value.MaxFee)
-		FfiConverterUint64INSTANCE.Write(writer, variant_value.ActualFee)
+		FfiConverterUint64INSTANCE.Write(writer, variant_value.RequiredFeeSats)
+		FfiConverterUint64INSTANCE.Write(writer, variant_value.RequiredFeeRateSatPerVbyte)
 	case DepositClaimErrorMissingUtxo:
 		writeInt32(writer, 2)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Tx)
@@ -13031,13 +13226,14 @@ func (e PaymentDetailsToken) Destroy() {
 }
 
 type PaymentDetailsLightning struct {
-	Description       *string
-	Preimage          *string
-	Invoice           string
-	PaymentHash       string
-	DestinationPubkey string
-	LnurlPayInfo      *LnurlPayInfo
-	LnurlWithdrawInfo *LnurlWithdrawInfo
+	Description          *string
+	Preimage             *string
+	Invoice              string
+	PaymentHash          string
+	DestinationPubkey    string
+	LnurlPayInfo         *LnurlPayInfo
+	LnurlWithdrawInfo    *LnurlWithdrawInfo
+	LnurlReceiveMetadata *LnurlReceiveMetadata
 }
 
 func (e PaymentDetailsLightning) Destroy() {
@@ -13048,6 +13244,7 @@ func (e PaymentDetailsLightning) Destroy() {
 	FfiDestroyerString{}.Destroy(e.DestinationPubkey)
 	FfiDestroyerOptionalLnurlPayInfo{}.Destroy(e.LnurlPayInfo)
 	FfiDestroyerOptionalLnurlWithdrawInfo{}.Destroy(e.LnurlWithdrawInfo)
+	FfiDestroyerOptionalLnurlReceiveMetadata{}.Destroy(e.LnurlReceiveMetadata)
 }
 
 type PaymentDetailsWithdraw struct {
@@ -13100,6 +13297,7 @@ func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterOptionalLnurlPayInfoINSTANCE.Read(reader),
 			FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Read(reader),
+			FfiConverterOptionalLnurlReceiveMetadataINSTANCE.Read(reader),
 		}
 	case 4:
 		return PaymentDetailsWithdraw{
@@ -13134,6 +13332,7 @@ func (FfiConverterPaymentDetails) Write(writer io.Writer, value PaymentDetails) 
 		FfiConverterStringINSTANCE.Write(writer, variant_value.DestinationPubkey)
 		FfiConverterOptionalLnurlPayInfoINSTANCE.Write(writer, variant_value.LnurlPayInfo)
 		FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Write(writer, variant_value.LnurlWithdrawInfo)
+		FfiConverterOptionalLnurlReceiveMetadataINSTANCE.Write(writer, variant_value.LnurlReceiveMetadata)
 	case PaymentDetailsWithdraw:
 		writeInt32(writer, 4)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.TxId)
@@ -13636,7 +13835,7 @@ var ErrSdkErrorInvalidInput = fmt.Errorf("SdkErrorInvalidInput")
 var ErrSdkErrorNetworkError = fmt.Errorf("SdkErrorNetworkError")
 var ErrSdkErrorStorageError = fmt.Errorf("SdkErrorStorageError")
 var ErrSdkErrorChainServiceError = fmt.Errorf("SdkErrorChainServiceError")
-var ErrSdkErrorDepositClaimFeeExceeded = fmt.Errorf("SdkErrorDepositClaimFeeExceeded")
+var ErrSdkErrorMaxDepositClaimFeeExceeded = fmt.Errorf("SdkErrorMaxDepositClaimFeeExceeded")
 var ErrSdkErrorMissingUtxo = fmt.Errorf("SdkErrorMissingUtxo")
 var ErrSdkErrorLnurlError = fmt.Errorf("SdkErrorLnurlError")
 var ErrSdkErrorGeneric = fmt.Errorf("SdkErrorGeneric")
@@ -13816,35 +14015,39 @@ func (self SdkErrorChainServiceError) Is(target error) bool {
 	return target == ErrSdkErrorChainServiceError
 }
 
-type SdkErrorDepositClaimFeeExceeded struct {
-	Tx        string
-	Vout      uint32
-	MaxFee    *Fee
-	ActualFee uint64
+type SdkErrorMaxDepositClaimFeeExceeded struct {
+	Tx                         string
+	Vout                       uint32
+	MaxFee                     *Fee
+	RequiredFeeSats            uint64
+	RequiredFeeRateSatPerVbyte uint64
 }
 
-func NewSdkErrorDepositClaimFeeExceeded(
+func NewSdkErrorMaxDepositClaimFeeExceeded(
 	tx string,
 	vout uint32,
 	maxFee *Fee,
-	actualFee uint64,
+	requiredFeeSats uint64,
+	requiredFeeRateSatPerVbyte uint64,
 ) *SdkError {
-	return &SdkError{err: &SdkErrorDepositClaimFeeExceeded{
-		Tx:        tx,
-		Vout:      vout,
-		MaxFee:    maxFee,
-		ActualFee: actualFee}}
+	return &SdkError{err: &SdkErrorMaxDepositClaimFeeExceeded{
+		Tx:                         tx,
+		Vout:                       vout,
+		MaxFee:                     maxFee,
+		RequiredFeeSats:            requiredFeeSats,
+		RequiredFeeRateSatPerVbyte: requiredFeeRateSatPerVbyte}}
 }
 
-func (e SdkErrorDepositClaimFeeExceeded) destroy() {
+func (e SdkErrorMaxDepositClaimFeeExceeded) destroy() {
 	FfiDestroyerString{}.Destroy(e.Tx)
 	FfiDestroyerUint32{}.Destroy(e.Vout)
 	FfiDestroyerOptionalFee{}.Destroy(e.MaxFee)
-	FfiDestroyerUint64{}.Destroy(e.ActualFee)
+	FfiDestroyerUint64{}.Destroy(e.RequiredFeeSats)
+	FfiDestroyerUint64{}.Destroy(e.RequiredFeeRateSatPerVbyte)
 }
 
-func (err SdkErrorDepositClaimFeeExceeded) Error() string {
-	return fmt.Sprint("DepositClaimFeeExceeded",
+func (err SdkErrorMaxDepositClaimFeeExceeded) Error() string {
+	return fmt.Sprint("MaxDepositClaimFeeExceeded",
 		": ",
 
 		"Tx=",
@@ -13856,13 +14059,16 @@ func (err SdkErrorDepositClaimFeeExceeded) Error() string {
 		"MaxFee=",
 		err.MaxFee,
 		", ",
-		"ActualFee=",
-		err.ActualFee,
+		"RequiredFeeSats=",
+		err.RequiredFeeSats,
+		", ",
+		"RequiredFeeRateSatPerVbyte=",
+		err.RequiredFeeRateSatPerVbyte,
 	)
 }
 
-func (self SdkErrorDepositClaimFeeExceeded) Is(target error) bool {
-	return target == ErrSdkErrorDepositClaimFeeExceeded
+func (self SdkErrorMaxDepositClaimFeeExceeded) Is(target error) bool {
+	return target == ErrSdkErrorMaxDepositClaimFeeExceeded
 }
 
 type SdkErrorMissingUtxo struct {
@@ -13997,11 +14203,12 @@ func (c FfiConverterSdkError) Read(reader io.Reader) *SdkError {
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	case 7:
-		return &SdkError{&SdkErrorDepositClaimFeeExceeded{
-			Tx:        FfiConverterStringINSTANCE.Read(reader),
-			Vout:      FfiConverterUint32INSTANCE.Read(reader),
-			MaxFee:    FfiConverterOptionalFeeINSTANCE.Read(reader),
-			ActualFee: FfiConverterUint64INSTANCE.Read(reader),
+		return &SdkError{&SdkErrorMaxDepositClaimFeeExceeded{
+			Tx:                         FfiConverterStringINSTANCE.Read(reader),
+			Vout:                       FfiConverterUint32INSTANCE.Read(reader),
+			MaxFee:                     FfiConverterOptionalFeeINSTANCE.Read(reader),
+			RequiredFeeSats:            FfiConverterUint64INSTANCE.Read(reader),
+			RequiredFeeRateSatPerVbyte: FfiConverterUint64INSTANCE.Read(reader),
 		}}
 	case 8:
 		return &SdkError{&SdkErrorMissingUtxo{
@@ -14041,12 +14248,13 @@ func (c FfiConverterSdkError) Write(writer io.Writer, value *SdkError) {
 	case *SdkErrorChainServiceError:
 		writeInt32(writer, 6)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
-	case *SdkErrorDepositClaimFeeExceeded:
+	case *SdkErrorMaxDepositClaimFeeExceeded:
 		writeInt32(writer, 7)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Tx)
 		FfiConverterUint32INSTANCE.Write(writer, variantValue.Vout)
 		FfiConverterOptionalFeeINSTANCE.Write(writer, variantValue.MaxFee)
-		FfiConverterUint64INSTANCE.Write(writer, variantValue.ActualFee)
+		FfiConverterUint64INSTANCE.Write(writer, variantValue.RequiredFeeSats)
+		FfiConverterUint64INSTANCE.Write(writer, variantValue.RequiredFeeRateSatPerVbyte)
 	case *SdkErrorMissingUtxo:
 		writeInt32(writer, 8)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Tx)
@@ -14079,7 +14287,7 @@ func (_ FfiDestroyerSdkError) Destroy(value *SdkError) {
 		variantValue.destroy()
 	case SdkErrorChainServiceError:
 		variantValue.destroy()
-	case SdkErrorDepositClaimFeeExceeded:
+	case SdkErrorMaxDepositClaimFeeExceeded:
 		variantValue.destroy()
 	case SdkErrorMissingUtxo:
 		variantValue.destroy()
@@ -16039,6 +16247,43 @@ func (_ FfiDestroyerOptionalLnurlPayInfo) Destroy(value *LnurlPayInfo) {
 	}
 }
 
+type FfiConverterOptionalLnurlReceiveMetadata struct{}
+
+var FfiConverterOptionalLnurlReceiveMetadataINSTANCE = FfiConverterOptionalLnurlReceiveMetadata{}
+
+func (c FfiConverterOptionalLnurlReceiveMetadata) Lift(rb RustBufferI) *LnurlReceiveMetadata {
+	return LiftFromRustBuffer[*LnurlReceiveMetadata](c, rb)
+}
+
+func (_ FfiConverterOptionalLnurlReceiveMetadata) Read(reader io.Reader) *LnurlReceiveMetadata {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterLnurlReceiveMetadataINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalLnurlReceiveMetadata) Lower(value *LnurlReceiveMetadata) C.RustBuffer {
+	return LowerIntoRustBuffer[*LnurlReceiveMetadata](c, value)
+}
+
+func (_ FfiConverterOptionalLnurlReceiveMetadata) Write(writer io.Writer, value *LnurlReceiveMetadata) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterLnurlReceiveMetadataINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalLnurlReceiveMetadata struct{}
+
+func (_ FfiDestroyerOptionalLnurlReceiveMetadata) Destroy(value *LnurlReceiveMetadata) {
+	if value != nil {
+		FfiDestroyerLnurlReceiveMetadata{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalLnurlWithdrawInfo struct{}
 
 var FfiConverterOptionalLnurlWithdrawInfoINSTANCE = FfiConverterOptionalLnurlWithdrawInfo{}
@@ -17575,6 +17820,49 @@ type FfiDestroyerSequenceRecord struct{}
 func (FfiDestroyerSequenceRecord) Destroy(sequence []Record) {
 	for _, value := range sequence {
 		FfiDestroyerRecord{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceSetLnurlMetadataItem struct{}
+
+var FfiConverterSequenceSetLnurlMetadataItemINSTANCE = FfiConverterSequenceSetLnurlMetadataItem{}
+
+func (c FfiConverterSequenceSetLnurlMetadataItem) Lift(rb RustBufferI) []SetLnurlMetadataItem {
+	return LiftFromRustBuffer[[]SetLnurlMetadataItem](c, rb)
+}
+
+func (c FfiConverterSequenceSetLnurlMetadataItem) Read(reader io.Reader) []SetLnurlMetadataItem {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]SetLnurlMetadataItem, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterSetLnurlMetadataItemINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceSetLnurlMetadataItem) Lower(value []SetLnurlMetadataItem) C.RustBuffer {
+	return LowerIntoRustBuffer[[]SetLnurlMetadataItem](c, value)
+}
+
+func (c FfiConverterSequenceSetLnurlMetadataItem) Write(writer io.Writer, value []SetLnurlMetadataItem) {
+	if len(value) > math.MaxInt32 {
+		panic("[]SetLnurlMetadataItem is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterSetLnurlMetadataItemINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceSetLnurlMetadataItem struct{}
+
+func (FfiDestroyerSequenceSetLnurlMetadataItem) Destroy(sequence []SetLnurlMetadataItem) {
+	for _, value := range sequence {
+		FfiDestroyerSetLnurlMetadataItem{}.Destroy(value)
 	}
 }
 
