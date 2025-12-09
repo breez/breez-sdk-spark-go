@@ -8188,13 +8188,13 @@ func (_ FfiDestroyerCheckMessageResponse) Destroy(value CheckMessageResponse) {
 type ClaimDepositRequest struct {
 	Txid   string
 	Vout   uint32
-	MaxFee *Fee
+	MaxFee *MaxFee
 }
 
 func (r *ClaimDepositRequest) Destroy() {
 	FfiDestroyerString{}.Destroy(r.Txid)
 	FfiDestroyerUint32{}.Destroy(r.Vout)
-	FfiDestroyerOptionalFee{}.Destroy(r.MaxFee)
+	FfiDestroyerOptionalMaxFee{}.Destroy(r.MaxFee)
 }
 
 type FfiConverterClaimDepositRequest struct{}
@@ -8209,7 +8209,7 @@ func (c FfiConverterClaimDepositRequest) Read(reader io.Reader) ClaimDepositRequ
 	return ClaimDepositRequest{
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterUint32INSTANCE.Read(reader),
-		FfiConverterOptionalFeeINSTANCE.Read(reader),
+		FfiConverterOptionalMaxFeeINSTANCE.Read(reader),
 	}
 }
 
@@ -8220,7 +8220,7 @@ func (c FfiConverterClaimDepositRequest) Lower(value ClaimDepositRequest) C.Rust
 func (c FfiConverterClaimDepositRequest) Write(writer io.Writer, value ClaimDepositRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.Txid)
 	FfiConverterUint32INSTANCE.Write(writer, value.Vout)
-	FfiConverterOptionalFeeINSTANCE.Write(writer, value.MaxFee)
+	FfiConverterOptionalMaxFeeINSTANCE.Write(writer, value.MaxFee)
 }
 
 type FfiDestroyerClaimDepositRequest struct{}
@@ -8341,7 +8341,7 @@ type Config struct {
 	ApiKey             *string
 	Network            Network
 	SyncIntervalSecs   uint32
-	MaxDepositClaimFee *Fee
+	MaxDepositClaimFee *MaxFee
 	// The domain used for receiving through lnurl-pay and lightning address.
 	LnurlDomain *string
 	// When this is set to `true` we will prefer to use spark payments over
@@ -8369,7 +8369,7 @@ func (r *Config) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(r.ApiKey)
 	FfiDestroyerNetwork{}.Destroy(r.Network)
 	FfiDestroyerUint32{}.Destroy(r.SyncIntervalSecs)
-	FfiDestroyerOptionalFee{}.Destroy(r.MaxDepositClaimFee)
+	FfiDestroyerOptionalMaxFee{}.Destroy(r.MaxDepositClaimFee)
 	FfiDestroyerOptionalString{}.Destroy(r.LnurlDomain)
 	FfiDestroyerBool{}.Destroy(r.PreferSparkOverLightning)
 	FfiDestroyerOptionalSequenceExternalInputParser{}.Destroy(r.ExternalInputParsers)
@@ -8391,7 +8391,7 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterNetworkINSTANCE.Read(reader),
 		FfiConverterUint32INSTANCE.Read(reader),
-		FfiConverterOptionalFeeINSTANCE.Read(reader),
+		FfiConverterOptionalMaxFeeINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterOptionalSequenceExternalInputParserINSTANCE.Read(reader),
@@ -8409,7 +8409,7 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.ApiKey)
 	FfiConverterNetworkINSTANCE.Write(writer, value.Network)
 	FfiConverterUint32INSTANCE.Write(writer, value.SyncIntervalSecs)
-	FfiConverterOptionalFeeINSTANCE.Write(writer, value.MaxDepositClaimFee)
+	FfiConverterOptionalMaxFeeINSTANCE.Write(writer, value.MaxDepositClaimFee)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.LnurlDomain)
 	FfiConverterBoolINSTANCE.Write(writer, value.PreferSparkOverLightning)
 	FfiConverterOptionalSequenceExternalInputParserINSTANCE.Write(writer, value.ExternalInputParsers)
@@ -13135,6 +13135,87 @@ type FfiDestroyerKeySetType struct{}
 func (_ FfiDestroyerKeySetType) Destroy(value KeySetType) {
 }
 
+type MaxFee interface {
+	Destroy()
+}
+type MaxFeeFixed struct {
+	Amount uint64
+}
+
+func (e MaxFeeFixed) Destroy() {
+	FfiDestroyerUint64{}.Destroy(e.Amount)
+}
+
+type MaxFeeRate struct {
+	SatPerVbyte uint64
+}
+
+func (e MaxFeeRate) Destroy() {
+	FfiDestroyerUint64{}.Destroy(e.SatPerVbyte)
+}
+
+type MaxFeeNetworkRecommended struct {
+	LeewaySatPerVbyte uint64
+}
+
+func (e MaxFeeNetworkRecommended) Destroy() {
+	FfiDestroyerUint64{}.Destroy(e.LeewaySatPerVbyte)
+}
+
+type FfiConverterMaxFee struct{}
+
+var FfiConverterMaxFeeINSTANCE = FfiConverterMaxFee{}
+
+func (c FfiConverterMaxFee) Lift(rb RustBufferI) MaxFee {
+	return LiftFromRustBuffer[MaxFee](c, rb)
+}
+
+func (c FfiConverterMaxFee) Lower(value MaxFee) C.RustBuffer {
+	return LowerIntoRustBuffer[MaxFee](c, value)
+}
+func (FfiConverterMaxFee) Read(reader io.Reader) MaxFee {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return MaxFeeFixed{
+			FfiConverterUint64INSTANCE.Read(reader),
+		}
+	case 2:
+		return MaxFeeRate{
+			FfiConverterUint64INSTANCE.Read(reader),
+		}
+	case 3:
+		return MaxFeeNetworkRecommended{
+			FfiConverterUint64INSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterMaxFee.Read()", id))
+	}
+}
+
+func (FfiConverterMaxFee) Write(writer io.Writer, value MaxFee) {
+	switch variant_value := value.(type) {
+	case MaxFeeFixed:
+		writeInt32(writer, 1)
+		FfiConverterUint64INSTANCE.Write(writer, variant_value.Amount)
+	case MaxFeeRate:
+		writeInt32(writer, 2)
+		FfiConverterUint64INSTANCE.Write(writer, variant_value.SatPerVbyte)
+	case MaxFeeNetworkRecommended:
+		writeInt32(writer, 3)
+		FfiConverterUint64INSTANCE.Write(writer, variant_value.LeewaySatPerVbyte)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterMaxFee.Write", value))
+	}
+}
+
+type FfiDestroyerMaxFee struct{}
+
+func (_ FfiDestroyerMaxFee) Destroy(value MaxFee) {
+	value.Destroy()
+}
+
 type Network uint
 
 const (
@@ -14313,15 +14394,6 @@ type SdkEventSynced struct {
 func (e SdkEventSynced) Destroy() {
 }
 
-// Emitted when data was pushed and/or pulled to/from real-time sync storage.
-type SdkEventDataSynced struct {
-	DidPullNewRecords bool
-}
-
-func (e SdkEventDataSynced) Destroy() {
-	FfiDestroyerBool{}.Destroy(e.DidPullNewRecords)
-}
-
 // Emitted when the SDK was unable to claim deposits
 type SdkEventUnclaimedDeposits struct {
 	UnclaimedDeposits []DepositInfo
@@ -14380,26 +14452,22 @@ func (FfiConverterSdkEvent) Read(reader io.Reader) SdkEvent {
 	case 1:
 		return SdkEventSynced{}
 	case 2:
-		return SdkEventDataSynced{
-			FfiConverterBoolINSTANCE.Read(reader),
-		}
-	case 3:
 		return SdkEventUnclaimedDeposits{
 			FfiConverterSequenceDepositInfoINSTANCE.Read(reader),
 		}
-	case 4:
+	case 3:
 		return SdkEventClaimedDeposits{
 			FfiConverterSequenceDepositInfoINSTANCE.Read(reader),
 		}
-	case 5:
+	case 4:
 		return SdkEventPaymentSucceeded{
 			FfiConverterPaymentINSTANCE.Read(reader),
 		}
-	case 6:
+	case 5:
 		return SdkEventPaymentPending{
 			FfiConverterPaymentINSTANCE.Read(reader),
 		}
-	case 7:
+	case 6:
 		return SdkEventPaymentFailed{
 			FfiConverterPaymentINSTANCE.Read(reader),
 		}
@@ -14412,23 +14480,20 @@ func (FfiConverterSdkEvent) Write(writer io.Writer, value SdkEvent) {
 	switch variant_value := value.(type) {
 	case SdkEventSynced:
 		writeInt32(writer, 1)
-	case SdkEventDataSynced:
-		writeInt32(writer, 2)
-		FfiConverterBoolINSTANCE.Write(writer, variant_value.DidPullNewRecords)
 	case SdkEventUnclaimedDeposits:
-		writeInt32(writer, 3)
+		writeInt32(writer, 2)
 		FfiConverterSequenceDepositInfoINSTANCE.Write(writer, variant_value.UnclaimedDeposits)
 	case SdkEventClaimedDeposits:
-		writeInt32(writer, 4)
+		writeInt32(writer, 3)
 		FfiConverterSequenceDepositInfoINSTANCE.Write(writer, variant_value.ClaimedDeposits)
 	case SdkEventPaymentSucceeded:
-		writeInt32(writer, 5)
+		writeInt32(writer, 4)
 		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
 	case SdkEventPaymentPending:
-		writeInt32(writer, 6)
+		writeInt32(writer, 5)
 		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
 	case SdkEventPaymentFailed:
-		writeInt32(writer, 7)
+		writeInt32(writer, 6)
 		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
 	default:
 		_ = variant_value
@@ -16725,6 +16790,43 @@ type FfiDestroyerOptionalFee struct{}
 func (_ FfiDestroyerOptionalFee) Destroy(value *Fee) {
 	if value != nil {
 		FfiDestroyerFee{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalMaxFee struct{}
+
+var FfiConverterOptionalMaxFeeINSTANCE = FfiConverterOptionalMaxFee{}
+
+func (c FfiConverterOptionalMaxFee) Lift(rb RustBufferI) *MaxFee {
+	return LiftFromRustBuffer[*MaxFee](c, rb)
+}
+
+func (_ FfiConverterOptionalMaxFee) Read(reader io.Reader) *MaxFee {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterMaxFeeINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalMaxFee) Lower(value *MaxFee) C.RustBuffer {
+	return LowerIntoRustBuffer[*MaxFee](c, value)
+}
+
+func (_ FfiConverterOptionalMaxFee) Write(writer io.Writer, value *MaxFee) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterMaxFeeINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalMaxFee struct{}
+
+func (_ FfiDestroyerOptionalMaxFee) Destroy(value *MaxFee) {
+	if value != nil {
+		FfiDestroyerMaxFee{}.Destroy(*value)
 	}
 }
 
