@@ -441,6 +441,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_cancel_leaf_optimization()
+		})
+		if checksum != 56996 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_cancel_leaf_optimization: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_check_lightning_address_available()
 		})
 		if checksum != 31624 {
@@ -500,6 +509,15 @@ func uniffiCheckChecksums() {
 		if checksum != 6771 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_get_info: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_get_leaf_optimization_progress()
+		})
+		if checksum != 38008 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_get_leaf_optimization_progress: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -689,6 +707,15 @@ func uniffiCheckChecksums() {
 		if checksum != 57563 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_sign_message: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_start_leaf_optimization()
+		})
+		if checksum != 22827 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_start_leaf_optimization: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1151,6 +1178,30 @@ func uniffiCheckChecksums() {
 		}
 	}
 }
+
+type FfiConverterUint8 struct{}
+
+var FfiConverterUint8INSTANCE = FfiConverterUint8{}
+
+func (FfiConverterUint8) Lower(value uint8) C.uint8_t {
+	return C.uint8_t(value)
+}
+
+func (FfiConverterUint8) Write(writer io.Writer, value uint8) {
+	writeUint8(writer, value)
+}
+
+func (FfiConverterUint8) Lift(value C.uint8_t) uint8 {
+	return uint8(value)
+}
+
+func (FfiConverterUint8) Read(reader io.Reader) uint8 {
+	return readUint8(reader)
+}
+
+type FfiDestroyerUint8 struct{}
+
+func (FfiDestroyerUint8) Destroy(_ uint8) {}
 
 type FfiConverterUint16 struct{}
 
@@ -2040,6 +2091,15 @@ type BreezSdkInterface interface {
 	//
 	// A unique identifier for the listener, which can be used to remove it later
 	AddEventListener(listener EventListener) string
+	// Cancels the ongoing leaf optimization.
+	//
+	// This method cancels the ongoing optimization and waits for it to fully stop.
+	// The current round will complete before stopping. This method blocks
+	// until the optimization has fully stopped and leaves reserved for optimization
+	// are available again.
+	//
+	// If no optimization is running, this method returns immediately.
+	CancelLeafOptimization() error
 	CheckLightningAddressAvailable(req CheckLightningAddressRequest) (bool, error)
 	// Verifies a message signature against the provided public key. The message
 	// is SHA256 hashed before verification. The signature can be hex encoded
@@ -2059,6 +2119,8 @@ type BreezSdkInterface interface {
 	Disconnect() error
 	// Returns the balance of the wallet in satoshis
 	GetInfo(request GetInfoRequest) (GetInfoResponse, error)
+	// Returns the current optimization progress snapshot.
+	GetLeafOptimizationProgress() OptimizationProgress
 	GetLightningAddress() (*LightningAddressInfo, error)
 	GetPayment(request GetPaymentRequest) (GetPaymentResponse, error)
 	// Returns an instance of the [`TokenIssuer`] for managing token issuance.
@@ -2145,6 +2207,12 @@ type BreezSdkInterface interface {
 	// hashed before signing. The returned signature will be hex encoded in
 	// DER format by default, or compact format if specified.
 	SignMessage(request SignMessageRequest) (SignMessageResponse, error)
+	// Starts leaf optimization in the background.
+	//
+	// This method spawns the optimization work in a background task and returns
+	// immediately. Progress is reported via events.
+	// If optimization is already running, no new task will be started.
+	StartLeafOptimization()
 	// Synchronizes the wallet with the Spark network
 	SyncWallet(request SyncWalletRequest) (SyncWalletResponse, error)
 	// Updates the user settings for the wallet.
@@ -2197,6 +2265,41 @@ func (_self *BreezSdk) AddEventListener(listener EventListener) string {
 	)
 
 	return res
+}
+
+// Cancels the ongoing leaf optimization.
+//
+// This method cancels the ongoing optimization and waits for it to fully stop.
+// The current round will complete before stopping. This method blocks
+// until the optimization has fully stopped and leaves reserved for optimization
+// are available again.
+//
+// If no optimization is running, this method returns immediately.
+func (_self *BreezSdk) CancelLeafOptimization() error {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_cancel_leaf_optimization(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	return err
 }
 
 func (_self *BreezSdk) CheckLightningAddressAvailable(req CheckLightningAddressRequest) (bool, error) {
@@ -2416,6 +2519,18 @@ func (_self *BreezSdk) GetInfo(request GetInfoRequest) (GetInfoResponse, error) 
 	)
 
 	return res, err
+}
+
+// Returns the current optimization progress snapshot.
+func (_self *BreezSdk) GetLeafOptimizationProgress() OptimizationProgress {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterOptimizationProgressINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_breez_sdk_spark_fn_method_breezsdk_get_leaf_optimization_progress(
+				_pointer, _uniffiStatus),
+		}
+	}))
 }
 
 func (_self *BreezSdk) GetLightningAddress() (*LightningAddressInfo, error) {
@@ -3108,6 +3223,21 @@ func (_self *BreezSdk) SignMessage(request SignMessageRequest) (SignMessageRespo
 	)
 
 	return res, err
+}
+
+// Starts leaf optimization in the background.
+//
+// This method spawns the optimization work in a background task and returns
+// immediately. Progress is reported via events.
+// If optimization is already running, no new task will be started.
+func (_self *BreezSdk) StartLeafOptimization() {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	rustCall(func(_uniffiStatus *C.RustCallStatus) bool {
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_start_leaf_optimization(
+			_pointer, _uniffiStatus)
+		return false
+	})
 }
 
 // Synchronizes the wallet with the Spark network
@@ -8363,6 +8493,12 @@ type Config struct {
 	// If set to true, the Spark private mode will be enabled on the first initialization of the SDK.
 	// If set to false, no changes will be made to the Spark private mode.
 	PrivateEnabledDefault bool
+	// Configuration for leaf optimization.
+	//
+	// Leaf optimization controls the denominations of leaves that are held in the wallet.
+	// Fewer, bigger leaves allow for more funds to be exited unilaterally.
+	// More leaves allow payments to be made without needing a swap, reducing payment latency.
+	OptimizationConfig OptimizationConfig
 }
 
 func (r *Config) Destroy() {
@@ -8376,6 +8512,7 @@ func (r *Config) Destroy() {
 	FfiDestroyerBool{}.Destroy(r.UseDefaultExternalInputParsers)
 	FfiDestroyerOptionalString{}.Destroy(r.RealTimeSyncServerUrl)
 	FfiDestroyerBool{}.Destroy(r.PrivateEnabledDefault)
+	FfiDestroyerOptimizationConfig{}.Destroy(r.OptimizationConfig)
 }
 
 type FfiConverterConfig struct{}
@@ -8398,6 +8535,7 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptimizationConfigINSTANCE.Read(reader),
 	}
 }
 
@@ -8416,6 +8554,7 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterBoolINSTANCE.Write(writer, value.UseDefaultExternalInputParsers)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RealTimeSyncServerUrl)
 	FfiConverterBoolINSTANCE.Write(writer, value.PrivateEnabledDefault)
+	FfiConverterOptimizationConfigINSTANCE.Write(writer, value.OptimizationConfig)
 }
 
 type FfiDestroyerConfig struct{}
@@ -10161,6 +10300,103 @@ func (c FfiConverterMintIssuerTokenRequest) Write(writer io.Writer, value MintIs
 type FfiDestroyerMintIssuerTokenRequest struct{}
 
 func (_ FfiDestroyerMintIssuerTokenRequest) Destroy(value MintIssuerTokenRequest) {
+	value.Destroy()
+}
+
+type OptimizationConfig struct {
+	// Whether automatic leaf optimization is enabled.
+	//
+	// If set to true, the SDK will automatically optimize the leaf set when it changes.
+	// Otherwise, the manual optimization API must be used to optimize the leaf set.
+	//
+	// Default value is true.
+	AutoEnabled bool
+	// The desired multiplicity for the leaf set. Acceptable values are 0-5.
+	//
+	// Setting this to 0 will optimize for maximizing unilateral exit.
+	// Higher values will optimize for minimizing transfer swaps, with higher values
+	// being more aggressive.
+	//
+	// Default value is 1.
+	Multiplicity uint8
+}
+
+func (r *OptimizationConfig) Destroy() {
+	FfiDestroyerBool{}.Destroy(r.AutoEnabled)
+	FfiDestroyerUint8{}.Destroy(r.Multiplicity)
+}
+
+type FfiConverterOptimizationConfig struct{}
+
+var FfiConverterOptimizationConfigINSTANCE = FfiConverterOptimizationConfig{}
+
+func (c FfiConverterOptimizationConfig) Lift(rb RustBufferI) OptimizationConfig {
+	return LiftFromRustBuffer[OptimizationConfig](c, rb)
+}
+
+func (c FfiConverterOptimizationConfig) Read(reader io.Reader) OptimizationConfig {
+	return OptimizationConfig{
+		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterUint8INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterOptimizationConfig) Lower(value OptimizationConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[OptimizationConfig](c, value)
+}
+
+func (c FfiConverterOptimizationConfig) Write(writer io.Writer, value OptimizationConfig) {
+	FfiConverterBoolINSTANCE.Write(writer, value.AutoEnabled)
+	FfiConverterUint8INSTANCE.Write(writer, value.Multiplicity)
+}
+
+type FfiDestroyerOptimizationConfig struct{}
+
+func (_ FfiDestroyerOptimizationConfig) Destroy(value OptimizationConfig) {
+	value.Destroy()
+}
+
+type OptimizationProgress struct {
+	IsRunning    bool
+	CurrentRound uint32
+	TotalRounds  uint32
+}
+
+func (r *OptimizationProgress) Destroy() {
+	FfiDestroyerBool{}.Destroy(r.IsRunning)
+	FfiDestroyerUint32{}.Destroy(r.CurrentRound)
+	FfiDestroyerUint32{}.Destroy(r.TotalRounds)
+}
+
+type FfiConverterOptimizationProgress struct{}
+
+var FfiConverterOptimizationProgressINSTANCE = FfiConverterOptimizationProgress{}
+
+func (c FfiConverterOptimizationProgress) Lift(rb RustBufferI) OptimizationProgress {
+	return LiftFromRustBuffer[OptimizationProgress](c, rb)
+}
+
+func (c FfiConverterOptimizationProgress) Read(reader io.Reader) OptimizationProgress {
+	return OptimizationProgress{
+		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterOptimizationProgress) Lower(value OptimizationProgress) C.RustBuffer {
+	return LowerIntoRustBuffer[OptimizationProgress](c, value)
+}
+
+func (c FfiConverterOptimizationProgress) Write(writer io.Writer, value OptimizationProgress) {
+	FfiConverterBoolINSTANCE.Write(writer, value.IsRunning)
+	FfiConverterUint32INSTANCE.Write(writer, value.CurrentRound)
+	FfiConverterUint32INSTANCE.Write(writer, value.TotalRounds)
+}
+
+type FfiDestroyerOptimizationProgress struct{}
+
+func (_ FfiDestroyerOptimizationProgress) Destroy(value OptimizationProgress) {
 	value.Destroy()
 }
 
@@ -13281,6 +13517,128 @@ type FfiDestroyerOnchainConfirmationSpeed struct{}
 func (_ FfiDestroyerOnchainConfirmationSpeed) Destroy(value OnchainConfirmationSpeed) {
 }
 
+type OptimizationEvent interface {
+	Destroy()
+}
+
+// Optimization has started with the given number of rounds.
+type OptimizationEventStarted struct {
+	TotalRounds uint32
+}
+
+func (e OptimizationEventStarted) Destroy() {
+	FfiDestroyerUint32{}.Destroy(e.TotalRounds)
+}
+
+// A round has completed.
+type OptimizationEventRoundCompleted struct {
+	CurrentRound uint32
+	TotalRounds  uint32
+}
+
+func (e OptimizationEventRoundCompleted) Destroy() {
+	FfiDestroyerUint32{}.Destroy(e.CurrentRound)
+	FfiDestroyerUint32{}.Destroy(e.TotalRounds)
+}
+
+// Optimization completed successfully.
+type OptimizationEventCompleted struct {
+}
+
+func (e OptimizationEventCompleted) Destroy() {
+}
+
+// Optimization was cancelled.
+type OptimizationEventCancelled struct {
+}
+
+func (e OptimizationEventCancelled) Destroy() {
+}
+
+// Optimization failed with an error.
+type OptimizationEventFailed struct {
+	Error string
+}
+
+func (e OptimizationEventFailed) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Error)
+}
+
+// Optimization was skipped because leaves are already optimal.
+type OptimizationEventSkipped struct {
+}
+
+func (e OptimizationEventSkipped) Destroy() {
+}
+
+type FfiConverterOptimizationEvent struct{}
+
+var FfiConverterOptimizationEventINSTANCE = FfiConverterOptimizationEvent{}
+
+func (c FfiConverterOptimizationEvent) Lift(rb RustBufferI) OptimizationEvent {
+	return LiftFromRustBuffer[OptimizationEvent](c, rb)
+}
+
+func (c FfiConverterOptimizationEvent) Lower(value OptimizationEvent) C.RustBuffer {
+	return LowerIntoRustBuffer[OptimizationEvent](c, value)
+}
+func (FfiConverterOptimizationEvent) Read(reader io.Reader) OptimizationEvent {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return OptimizationEventStarted{
+			FfiConverterUint32INSTANCE.Read(reader),
+		}
+	case 2:
+		return OptimizationEventRoundCompleted{
+			FfiConverterUint32INSTANCE.Read(reader),
+			FfiConverterUint32INSTANCE.Read(reader),
+		}
+	case 3:
+		return OptimizationEventCompleted{}
+	case 4:
+		return OptimizationEventCancelled{}
+	case 5:
+		return OptimizationEventFailed{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 6:
+		return OptimizationEventSkipped{}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterOptimizationEvent.Read()", id))
+	}
+}
+
+func (FfiConverterOptimizationEvent) Write(writer io.Writer, value OptimizationEvent) {
+	switch variant_value := value.(type) {
+	case OptimizationEventStarted:
+		writeInt32(writer, 1)
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.TotalRounds)
+	case OptimizationEventRoundCompleted:
+		writeInt32(writer, 2)
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.CurrentRound)
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.TotalRounds)
+	case OptimizationEventCompleted:
+		writeInt32(writer, 3)
+	case OptimizationEventCancelled:
+		writeInt32(writer, 4)
+	case OptimizationEventFailed:
+		writeInt32(writer, 5)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Error)
+	case OptimizationEventSkipped:
+		writeInt32(writer, 6)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterOptimizationEvent.Write", value))
+	}
+}
+
+type FfiDestroyerOptimizationEvent struct{}
+
+func (_ FfiDestroyerOptimizationEvent) Destroy(value OptimizationEvent) {
+	value.Destroy()
+}
+
 type PaymentDetails interface {
 	Destroy()
 }
@@ -13814,11 +14172,13 @@ func (e ReceivePaymentMethodBitcoinAddress) Destroy() {
 type ReceivePaymentMethodBolt11Invoice struct {
 	Description string
 	AmountSats  *uint64
+	ExpirySecs  *uint32
 }
 
 func (e ReceivePaymentMethodBolt11Invoice) Destroy() {
 	FfiDestroyerString{}.Destroy(e.Description)
 	FfiDestroyerOptionalUint64{}.Destroy(e.AmountSats)
+	FfiDestroyerOptionalUint32{}.Destroy(e.ExpirySecs)
 }
 
 type FfiConverterReceivePaymentMethod struct{}
@@ -13851,6 +14211,7 @@ func (FfiConverterReceivePaymentMethod) Read(reader io.Reader) ReceivePaymentMet
 		return ReceivePaymentMethodBolt11Invoice{
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterOptionalUint64INSTANCE.Read(reader),
+			FfiConverterOptionalUint32INSTANCE.Read(reader),
 		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterReceivePaymentMethod.Read()", id))
@@ -13874,6 +14235,7 @@ func (FfiConverterReceivePaymentMethod) Write(writer io.Writer, value ReceivePay
 		writeInt32(writer, 4)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Description)
 		FfiConverterOptionalUint64INSTANCE.Write(writer, variant_value.AmountSats)
+		FfiConverterOptionalUint32INSTANCE.Write(writer, variant_value.ExpirySecs)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterReceivePaymentMethod.Write", value))
@@ -14435,6 +14797,14 @@ func (e SdkEventPaymentFailed) Destroy() {
 	FfiDestroyerPayment{}.Destroy(e.Payment)
 }
 
+type SdkEventOptimization struct {
+	OptimizationEvent OptimizationEvent
+}
+
+func (e SdkEventOptimization) Destroy() {
+	FfiDestroyerOptimizationEvent{}.Destroy(e.OptimizationEvent)
+}
+
 type FfiConverterSdkEvent struct{}
 
 var FfiConverterSdkEventINSTANCE = FfiConverterSdkEvent{}
@@ -14471,6 +14841,10 @@ func (FfiConverterSdkEvent) Read(reader io.Reader) SdkEvent {
 		return SdkEventPaymentFailed{
 			FfiConverterPaymentINSTANCE.Read(reader),
 		}
+	case 7:
+		return SdkEventOptimization{
+			FfiConverterOptimizationEventINSTANCE.Read(reader),
+		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterSdkEvent.Read()", id))
 	}
@@ -14495,6 +14869,9 @@ func (FfiConverterSdkEvent) Write(writer io.Writer, value SdkEvent) {
 	case SdkEventPaymentFailed:
 		writeInt32(writer, 6)
 		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
+	case SdkEventOptimization:
+		writeInt32(writer, 7)
+		FfiConverterOptimizationEventINSTANCE.Write(writer, variant_value.OptimizationEvent)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterSdkEvent.Write", value))
