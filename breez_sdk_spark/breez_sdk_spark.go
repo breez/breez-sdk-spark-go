@@ -523,11 +523,11 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_token_conversion_limits()
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_conversion_limits()
 		})
-		if checksum != 9413 {
+		if checksum != 50958 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_token_conversion_limits: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_conversion_limits: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -2316,7 +2316,7 @@ type BreezSdkInterface interface {
 	//
 	// Result containing either success or an `SdkError` if the background task couldn't be stopped
 	Disconnect() error
-	FetchTokenConversionLimits(request FetchTokenConversionLimitsRequest) (FetchTokenConversionLimitsResponse, error)
+	FetchConversionLimits(request FetchConversionLimitsRequest) (FetchConversionLimitsResponse, error)
 	// Returns the balance of the wallet in satoshis
 	GetInfo(request GetInfoRequest) (GetInfoResponse, error)
 	// Returns the current optimization progress snapshot.
@@ -2689,7 +2689,7 @@ func (_self *BreezSdk) Disconnect() error {
 	return err
 }
 
-func (_self *BreezSdk) FetchTokenConversionLimits(request FetchTokenConversionLimitsRequest) (FetchTokenConversionLimitsResponse, error) {
+func (_self *BreezSdk) FetchConversionLimits(request FetchConversionLimitsRequest) (FetchConversionLimitsResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SdkError](
@@ -2702,11 +2702,11 @@ func (_self *BreezSdk) FetchTokenConversionLimits(request FetchTokenConversionLi
 			}
 		},
 		// liftFn
-		func(ffi RustBufferI) FetchTokenConversionLimitsResponse {
-			return FfiConverterFetchTokenConversionLimitsResponseINSTANCE.Lift(ffi)
+		func(ffi RustBufferI) FetchConversionLimitsResponse {
+			return FfiConverterFetchConversionLimitsResponseINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_breezsdk_fetch_token_conversion_limits(
-			_pointer, FfiConverterFetchTokenConversionLimitsRequestINSTANCE.Lower(request)),
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_fetch_conversion_limits(
+			_pointer, FfiConverterFetchConversionLimitsRequestINSTANCE.Lower(request)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -11029,6 +11029,170 @@ func (_ FfiDestroyerConnectWithSignerRequest) Destroy(value ConnectWithSignerReq
 	value.Destroy()
 }
 
+// Response from estimating a conversion, used when preparing a payment that requires conversion
+type ConversionEstimate struct {
+	// The conversion options used for the estimate
+	Options ConversionOptions
+	// The estimated amount to be received from the conversion
+	// Denominated in satoshis if converting from Bitcoin, otherwise in the token base units.
+	Amount u128
+	// The fee estimated for the conversion
+	// Denominated in satoshis if converting from Bitcoin, otherwise in the token base units.
+	Fee u128
+}
+
+func (r *ConversionEstimate) Destroy() {
+	FfiDestroyerConversionOptions{}.Destroy(r.Options)
+	FfiDestroyerTypeu128{}.Destroy(r.Amount)
+	FfiDestroyerTypeu128{}.Destroy(r.Fee)
+}
+
+type FfiConverterConversionEstimate struct{}
+
+var FfiConverterConversionEstimateINSTANCE = FfiConverterConversionEstimate{}
+
+func (c FfiConverterConversionEstimate) Lift(rb RustBufferI) ConversionEstimate {
+	return LiftFromRustBuffer[ConversionEstimate](c, rb)
+}
+
+func (c FfiConverterConversionEstimate) Read(reader io.Reader) ConversionEstimate {
+	return ConversionEstimate{
+		FfiConverterConversionOptionsINSTANCE.Read(reader),
+		FfiConverterTypeu128INSTANCE.Read(reader),
+		FfiConverterTypeu128INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterConversionEstimate) Lower(value ConversionEstimate) C.RustBuffer {
+	return LowerIntoRustBuffer[ConversionEstimate](c, value)
+}
+
+func (c FfiConverterConversionEstimate) Write(writer io.Writer, value ConversionEstimate) {
+	FfiConverterConversionOptionsINSTANCE.Write(writer, value.Options)
+	FfiConverterTypeu128INSTANCE.Write(writer, value.Amount)
+	FfiConverterTypeu128INSTANCE.Write(writer, value.Fee)
+}
+
+type FfiDestroyerConversionEstimate struct{}
+
+func (_ FfiDestroyerConversionEstimate) Destroy(value ConversionEstimate) {
+	value.Destroy()
+}
+
+type ConversionInfo struct {
+	// The pool id associated with the conversion
+	PoolId string
+	// The conversion id shared by both sides of the conversion
+	ConversionId string
+	// The status of the conversion
+	Status ConversionStatus
+	// The fee paid for the conversion
+	// Denominated in satoshis if converting from Bitcoin, otherwise in the token base units.
+	Fee *u128
+	// The purpose of the conversion
+	Purpose *ConversionPurpose
+}
+
+func (r *ConversionInfo) Destroy() {
+	FfiDestroyerString{}.Destroy(r.PoolId)
+	FfiDestroyerString{}.Destroy(r.ConversionId)
+	FfiDestroyerConversionStatus{}.Destroy(r.Status)
+	FfiDestroyerOptionalTypeu128{}.Destroy(r.Fee)
+	FfiDestroyerOptionalConversionPurpose{}.Destroy(r.Purpose)
+}
+
+type FfiConverterConversionInfo struct{}
+
+var FfiConverterConversionInfoINSTANCE = FfiConverterConversionInfo{}
+
+func (c FfiConverterConversionInfo) Lift(rb RustBufferI) ConversionInfo {
+	return LiftFromRustBuffer[ConversionInfo](c, rb)
+}
+
+func (c FfiConverterConversionInfo) Read(reader io.Reader) ConversionInfo {
+	return ConversionInfo{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterConversionStatusINSTANCE.Read(reader),
+		FfiConverterOptionalTypeu128INSTANCE.Read(reader),
+		FfiConverterOptionalConversionPurposeINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterConversionInfo) Lower(value ConversionInfo) C.RustBuffer {
+	return LowerIntoRustBuffer[ConversionInfo](c, value)
+}
+
+func (c FfiConverterConversionInfo) Write(writer io.Writer, value ConversionInfo) {
+	FfiConverterStringINSTANCE.Write(writer, value.PoolId)
+	FfiConverterStringINSTANCE.Write(writer, value.ConversionId)
+	FfiConverterConversionStatusINSTANCE.Write(writer, value.Status)
+	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.Fee)
+	FfiConverterOptionalConversionPurposeINSTANCE.Write(writer, value.Purpose)
+}
+
+type FfiDestroyerConversionInfo struct{}
+
+func (_ FfiDestroyerConversionInfo) Destroy(value ConversionInfo) {
+	value.Destroy()
+}
+
+// Options for conversion when fulfilling a payment. When set, the SDK will
+// perform a conversion before fulfilling the payment. If not set, the payment
+// will only be fulfilled if the wallet has sufficient balance of the required asset.
+type ConversionOptions struct {
+	// The type of conversion to perform when fulfilling the payment
+	ConversionType ConversionType
+	// The optional maximum slippage in basis points (1/100 of a percent) allowed when
+	// a conversion is needed to fulfill the payment. Defaults to 50 bps (0.5%) if not set.
+	// The conversion will fail if the actual amount received is less than
+	// `estimated_amount * (1 - max_slippage_bps / 10_000)`.
+	MaxSlippageBps *uint32
+	// The optional timeout in seconds to wait for the conversion to complete
+	// when fulfilling the payment. This timeout only concerns waiting for the received
+	// payment of the conversion. If the timeout is reached before the conversion
+	// is complete, the payment will fail. Defaults to 30 seconds if not set.
+	CompletionTimeoutSecs *uint32
+}
+
+func (r *ConversionOptions) Destroy() {
+	FfiDestroyerConversionType{}.Destroy(r.ConversionType)
+	FfiDestroyerOptionalUint32{}.Destroy(r.MaxSlippageBps)
+	FfiDestroyerOptionalUint32{}.Destroy(r.CompletionTimeoutSecs)
+}
+
+type FfiConverterConversionOptions struct{}
+
+var FfiConverterConversionOptionsINSTANCE = FfiConverterConversionOptions{}
+
+func (c FfiConverterConversionOptions) Lift(rb RustBufferI) ConversionOptions {
+	return LiftFromRustBuffer[ConversionOptions](c, rb)
+}
+
+func (c FfiConverterConversionOptions) Read(reader io.Reader) ConversionOptions {
+	return ConversionOptions{
+		FfiConverterConversionTypeINSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterConversionOptions) Lower(value ConversionOptions) C.RustBuffer {
+	return LowerIntoRustBuffer[ConversionOptions](c, value)
+}
+
+func (c FfiConverterConversionOptions) Write(writer io.Writer, value ConversionOptions) {
+	FfiConverterConversionTypeINSTANCE.Write(writer, value.ConversionType)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxSlippageBps)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.CompletionTimeoutSecs)
+}
+
+type FfiDestroyerConversionOptions struct{}
+
+func (_ FfiDestroyerConversionOptions) Destroy(value ConversionOptions) {
+	value.Destroy()
+}
+
 type CreateIssuerTokenRequest struct {
 	Name        string
 	Ticker      string
@@ -11880,49 +12044,49 @@ func (_ FfiDestroyerExternalVerifiableSecretShare) Destroy(value ExternalVerifia
 	value.Destroy()
 }
 
-type FetchTokenConversionLimitsRequest struct {
+type FetchConversionLimitsRequest struct {
 	// The type of conversion, either from or to Bitcoin.
-	ConversionType TokenConversionType
+	ConversionType ConversionType
 	// The token identifier when converting to a token.
 	TokenIdentifier *string
 }
 
-func (r *FetchTokenConversionLimitsRequest) Destroy() {
-	FfiDestroyerTokenConversionType{}.Destroy(r.ConversionType)
+func (r *FetchConversionLimitsRequest) Destroy() {
+	FfiDestroyerConversionType{}.Destroy(r.ConversionType)
 	FfiDestroyerOptionalString{}.Destroy(r.TokenIdentifier)
 }
 
-type FfiConverterFetchTokenConversionLimitsRequest struct{}
+type FfiConverterFetchConversionLimitsRequest struct{}
 
-var FfiConverterFetchTokenConversionLimitsRequestINSTANCE = FfiConverterFetchTokenConversionLimitsRequest{}
+var FfiConverterFetchConversionLimitsRequestINSTANCE = FfiConverterFetchConversionLimitsRequest{}
 
-func (c FfiConverterFetchTokenConversionLimitsRequest) Lift(rb RustBufferI) FetchTokenConversionLimitsRequest {
-	return LiftFromRustBuffer[FetchTokenConversionLimitsRequest](c, rb)
+func (c FfiConverterFetchConversionLimitsRequest) Lift(rb RustBufferI) FetchConversionLimitsRequest {
+	return LiftFromRustBuffer[FetchConversionLimitsRequest](c, rb)
 }
 
-func (c FfiConverterFetchTokenConversionLimitsRequest) Read(reader io.Reader) FetchTokenConversionLimitsRequest {
-	return FetchTokenConversionLimitsRequest{
-		FfiConverterTokenConversionTypeINSTANCE.Read(reader),
+func (c FfiConverterFetchConversionLimitsRequest) Read(reader io.Reader) FetchConversionLimitsRequest {
+	return FetchConversionLimitsRequest{
+		FfiConverterConversionTypeINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterFetchTokenConversionLimitsRequest) Lower(value FetchTokenConversionLimitsRequest) C.RustBuffer {
-	return LowerIntoRustBuffer[FetchTokenConversionLimitsRequest](c, value)
+func (c FfiConverterFetchConversionLimitsRequest) Lower(value FetchConversionLimitsRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[FetchConversionLimitsRequest](c, value)
 }
 
-func (c FfiConverterFetchTokenConversionLimitsRequest) Write(writer io.Writer, value FetchTokenConversionLimitsRequest) {
-	FfiConverterTokenConversionTypeINSTANCE.Write(writer, value.ConversionType)
+func (c FfiConverterFetchConversionLimitsRequest) Write(writer io.Writer, value FetchConversionLimitsRequest) {
+	FfiConverterConversionTypeINSTANCE.Write(writer, value.ConversionType)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.TokenIdentifier)
 }
 
-type FfiDestroyerFetchTokenConversionLimitsRequest struct{}
+type FfiDestroyerFetchConversionLimitsRequest struct{}
 
-func (_ FfiDestroyerFetchTokenConversionLimitsRequest) Destroy(value FetchTokenConversionLimitsRequest) {
+func (_ FfiDestroyerFetchConversionLimitsRequest) Destroy(value FetchConversionLimitsRequest) {
 	value.Destroy()
 }
 
-type FetchTokenConversionLimitsResponse struct {
+type FetchConversionLimitsResponse struct {
 	// The minimum amount to be converted.
 	// Denominated in satoshis if converting from Bitcoin, otherwise in the token base units.
 	MinFromAmount *u128
@@ -11931,38 +12095,38 @@ type FetchTokenConversionLimitsResponse struct {
 	MinToAmount *u128
 }
 
-func (r *FetchTokenConversionLimitsResponse) Destroy() {
+func (r *FetchConversionLimitsResponse) Destroy() {
 	FfiDestroyerOptionalTypeu128{}.Destroy(r.MinFromAmount)
 	FfiDestroyerOptionalTypeu128{}.Destroy(r.MinToAmount)
 }
 
-type FfiConverterFetchTokenConversionLimitsResponse struct{}
+type FfiConverterFetchConversionLimitsResponse struct{}
 
-var FfiConverterFetchTokenConversionLimitsResponseINSTANCE = FfiConverterFetchTokenConversionLimitsResponse{}
+var FfiConverterFetchConversionLimitsResponseINSTANCE = FfiConverterFetchConversionLimitsResponse{}
 
-func (c FfiConverterFetchTokenConversionLimitsResponse) Lift(rb RustBufferI) FetchTokenConversionLimitsResponse {
-	return LiftFromRustBuffer[FetchTokenConversionLimitsResponse](c, rb)
+func (c FfiConverterFetchConversionLimitsResponse) Lift(rb RustBufferI) FetchConversionLimitsResponse {
+	return LiftFromRustBuffer[FetchConversionLimitsResponse](c, rb)
 }
 
-func (c FfiConverterFetchTokenConversionLimitsResponse) Read(reader io.Reader) FetchTokenConversionLimitsResponse {
-	return FetchTokenConversionLimitsResponse{
+func (c FfiConverterFetchConversionLimitsResponse) Read(reader io.Reader) FetchConversionLimitsResponse {
+	return FetchConversionLimitsResponse{
 		FfiConverterOptionalTypeu128INSTANCE.Read(reader),
 		FfiConverterOptionalTypeu128INSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterFetchTokenConversionLimitsResponse) Lower(value FetchTokenConversionLimitsResponse) C.RustBuffer {
-	return LowerIntoRustBuffer[FetchTokenConversionLimitsResponse](c, value)
+func (c FfiConverterFetchConversionLimitsResponse) Lower(value FetchConversionLimitsResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[FetchConversionLimitsResponse](c, value)
 }
 
-func (c FfiConverterFetchTokenConversionLimitsResponse) Write(writer io.Writer, value FetchTokenConversionLimitsResponse) {
+func (c FfiConverterFetchConversionLimitsResponse) Write(writer io.Writer, value FetchConversionLimitsResponse) {
 	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.MinFromAmount)
 	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.MinToAmount)
 }
 
-type FfiDestroyerFetchTokenConversionLimitsResponse struct{}
+type FfiDestroyerFetchConversionLimitsResponse struct{}
 
-func (_ FfiDestroyerFetchTokenConversionLimitsResponse) Destroy(value FetchTokenConversionLimitsResponse) {
+func (_ FfiDestroyerFetchConversionLimitsResponse) Destroy(value FetchConversionLimitsResponse) {
 	value.Destroy()
 }
 
@@ -13790,11 +13954,11 @@ func (_ FfiDestroyerPayment) Destroy(value Payment) {
 
 // Metadata associated with a payment that cannot be extracted from the Spark operator.
 type PaymentMetadata struct {
-	ParentPaymentId     *string
-	LnurlPayInfo        *LnurlPayInfo
-	LnurlWithdrawInfo   *LnurlWithdrawInfo
-	LnurlDescription    *string
-	TokenConversionInfo *TokenConversionInfo
+	ParentPaymentId   *string
+	LnurlPayInfo      *LnurlPayInfo
+	LnurlWithdrawInfo *LnurlWithdrawInfo
+	LnurlDescription  *string
+	ConversionInfo    *ConversionInfo
 }
 
 func (r *PaymentMetadata) Destroy() {
@@ -13802,7 +13966,7 @@ func (r *PaymentMetadata) Destroy() {
 	FfiDestroyerOptionalLnurlPayInfo{}.Destroy(r.LnurlPayInfo)
 	FfiDestroyerOptionalLnurlWithdrawInfo{}.Destroy(r.LnurlWithdrawInfo)
 	FfiDestroyerOptionalString{}.Destroy(r.LnurlDescription)
-	FfiDestroyerOptionalTokenConversionInfo{}.Destroy(r.TokenConversionInfo)
+	FfiDestroyerOptionalConversionInfo{}.Destroy(r.ConversionInfo)
 }
 
 type FfiConverterPaymentMetadata struct{}
@@ -13819,7 +13983,7 @@ func (c FfiConverterPaymentMetadata) Read(reader io.Reader) PaymentMetadata {
 		FfiConverterOptionalLnurlPayInfoINSTANCE.Read(reader),
 		FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterOptionalTokenConversionInfoINSTANCE.Read(reader),
+		FfiConverterOptionalConversionInfoINSTANCE.Read(reader),
 	}
 }
 
@@ -13832,7 +13996,7 @@ func (c FfiConverterPaymentMetadata) Write(writer io.Writer, value PaymentMetada
 	FfiConverterOptionalLnurlPayInfoINSTANCE.Write(writer, value.LnurlPayInfo)
 	FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Write(writer, value.LnurlWithdrawInfo)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.LnurlDescription)
-	FfiConverterOptionalTokenConversionInfoINSTANCE.Write(writer, value.TokenConversionInfo)
+	FfiConverterOptionalConversionInfoINSTANCE.Write(writer, value.ConversionInfo)
 }
 
 type FfiDestroyerPaymentMetadata struct{}
@@ -13993,15 +14157,15 @@ type PrepareSendPaymentRequest struct {
 	// If provided, the payment will be for a token.
 	// May only be provided if the payment request is a spark address.
 	TokenIdentifier *string
-	// If provided, the payment will include a token conversion step before sending the payment
-	TokenConversionOptions *TokenConversionOptions
+	// If provided, the payment will include a conversion step before sending the payment
+	ConversionOptions *ConversionOptions
 }
 
 func (r *PrepareSendPaymentRequest) Destroy() {
 	FfiDestroyerString{}.Destroy(r.PaymentRequest)
 	FfiDestroyerOptionalTypeu128{}.Destroy(r.Amount)
 	FfiDestroyerOptionalString{}.Destroy(r.TokenIdentifier)
-	FfiDestroyerOptionalTokenConversionOptions{}.Destroy(r.TokenConversionOptions)
+	FfiDestroyerOptionalConversionOptions{}.Destroy(r.ConversionOptions)
 }
 
 type FfiConverterPrepareSendPaymentRequest struct{}
@@ -14017,7 +14181,7 @@ func (c FfiConverterPrepareSendPaymentRequest) Read(reader io.Reader) PrepareSen
 		FfiConverterStringINSTANCE.Read(reader),
 		FfiConverterOptionalTypeu128INSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterOptionalTokenConversionOptionsINSTANCE.Read(reader),
+		FfiConverterOptionalConversionOptionsINSTANCE.Read(reader),
 	}
 }
 
@@ -14029,7 +14193,7 @@ func (c FfiConverterPrepareSendPaymentRequest) Write(writer io.Writer, value Pre
 	FfiConverterStringINSTANCE.Write(writer, value.PaymentRequest)
 	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.Amount)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.TokenIdentifier)
-	FfiConverterOptionalTokenConversionOptionsINSTANCE.Write(writer, value.TokenConversionOptions)
+	FfiConverterOptionalConversionOptionsINSTANCE.Write(writer, value.ConversionOptions)
 }
 
 type FfiDestroyerPrepareSendPaymentRequest struct{}
@@ -14046,18 +14210,15 @@ type PrepareSendPaymentResponse struct {
 	// The presence of this field indicates that the payment is for a token.
 	// If empty, it is a Bitcoin payment.
 	TokenIdentifier *string
-	// When set, the payment will include a token conversion step before sending the payment
-	TokenConversionOptions *TokenConversionOptions
-	// The estimated token conversion fee if the payment involves a token conversion
-	TokenConversionFee *u128
+	// When set, the payment will include a conversion step before sending the payment
+	ConversionEstimate *ConversionEstimate
 }
 
 func (r *PrepareSendPaymentResponse) Destroy() {
 	FfiDestroyerSendPaymentMethod{}.Destroy(r.PaymentMethod)
 	FfiDestroyerTypeu128{}.Destroy(r.Amount)
 	FfiDestroyerOptionalString{}.Destroy(r.TokenIdentifier)
-	FfiDestroyerOptionalTokenConversionOptions{}.Destroy(r.TokenConversionOptions)
-	FfiDestroyerOptionalTypeu128{}.Destroy(r.TokenConversionFee)
+	FfiDestroyerOptionalConversionEstimate{}.Destroy(r.ConversionEstimate)
 }
 
 type FfiConverterPrepareSendPaymentResponse struct{}
@@ -14073,8 +14234,7 @@ func (c FfiConverterPrepareSendPaymentResponse) Read(reader io.Reader) PrepareSe
 		FfiConverterSendPaymentMethodINSTANCE.Read(reader),
 		FfiConverterTypeu128INSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterOptionalTokenConversionOptionsINSTANCE.Read(reader),
-		FfiConverterOptionalTypeu128INSTANCE.Read(reader),
+		FfiConverterOptionalConversionEstimateINSTANCE.Read(reader),
 	}
 }
 
@@ -14086,8 +14246,7 @@ func (c FfiConverterPrepareSendPaymentResponse) Write(writer io.Writer, value Pr
 	FfiConverterSendPaymentMethodINSTANCE.Write(writer, value.PaymentMethod)
 	FfiConverterTypeu128INSTANCE.Write(writer, value.Amount)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.TokenIdentifier)
-	FfiConverterOptionalTokenConversionOptionsINSTANCE.Write(writer, value.TokenConversionOptions)
-	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.TokenConversionFee)
+	FfiConverterOptionalConversionEstimateINSTANCE.Write(writer, value.ConversionEstimate)
 }
 
 type FfiDestroyerPrepareSendPaymentResponse struct{}
@@ -15171,7 +15330,7 @@ type SparkHtlcDetails struct {
 	PaymentHash string
 	// The preimage of the HTLC. Empty until receiver has released it.
 	Preimage *string
-	// The expiry time of the HTLC in seconds since the Unix epoch
+	// The expiry time of the HTLC as a unix timestamp in seconds
 	ExpiryTime uint64
 	// The HTLC status
 	Status SparkHtlcStatus
@@ -15271,7 +15430,7 @@ type SparkInvoiceDetails struct {
 	Amount *u128
 	// The token identifier of the token payment. Absence indicates a Bitcoin payment.
 	TokenIdentifier *string
-	// Optional expiry time. If not provided, the invoice will never expire.
+	// Optional expiry time as a unix timestamp in seconds. If not provided, the invoice will never expire.
 	ExpiryTime *uint64
 	// Optional description.
 	Description *string
@@ -15524,115 +15683,6 @@ func (c FfiConverterTokenBalance) Write(writer io.Writer, value TokenBalance) {
 type FfiDestroyerTokenBalance struct{}
 
 func (_ FfiDestroyerTokenBalance) Destroy(value TokenBalance) {
-	value.Destroy()
-}
-
-type TokenConversionInfo struct {
-	// The pool id associated with the conversion
-	PoolId string
-	// The receiving payment id associated with the conversion
-	PaymentId *string
-	// The fee paid for the conversion
-	// Denominated in satoshis if converting from Bitcoin, otherwise in the token base units.
-	Fee *u128
-	// The refund payment id if a refund payment was made
-	RefundIdentifier *string
-}
-
-func (r *TokenConversionInfo) Destroy() {
-	FfiDestroyerString{}.Destroy(r.PoolId)
-	FfiDestroyerOptionalString{}.Destroy(r.PaymentId)
-	FfiDestroyerOptionalTypeu128{}.Destroy(r.Fee)
-	FfiDestroyerOptionalString{}.Destroy(r.RefundIdentifier)
-}
-
-type FfiConverterTokenConversionInfo struct{}
-
-var FfiConverterTokenConversionInfoINSTANCE = FfiConverterTokenConversionInfo{}
-
-func (c FfiConverterTokenConversionInfo) Lift(rb RustBufferI) TokenConversionInfo {
-	return LiftFromRustBuffer[TokenConversionInfo](c, rb)
-}
-
-func (c FfiConverterTokenConversionInfo) Read(reader io.Reader) TokenConversionInfo {
-	return TokenConversionInfo{
-		FfiConverterStringINSTANCE.Read(reader),
-		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterOptionalTypeu128INSTANCE.Read(reader),
-		FfiConverterOptionalStringINSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterTokenConversionInfo) Lower(value TokenConversionInfo) C.RustBuffer {
-	return LowerIntoRustBuffer[TokenConversionInfo](c, value)
-}
-
-func (c FfiConverterTokenConversionInfo) Write(writer io.Writer, value TokenConversionInfo) {
-	FfiConverterStringINSTANCE.Write(writer, value.PoolId)
-	FfiConverterOptionalStringINSTANCE.Write(writer, value.PaymentId)
-	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.Fee)
-	FfiConverterOptionalStringINSTANCE.Write(writer, value.RefundIdentifier)
-}
-
-type FfiDestroyerTokenConversionInfo struct{}
-
-func (_ FfiDestroyerTokenConversionInfo) Destroy(value TokenConversionInfo) {
-	value.Destroy()
-}
-
-// Options for token conversion when fulfilling a payment. When set, the SDK will
-// perform a token conversion before fulfilling the payment. If not set, the payment
-// will only be fulfilled if the wallet has sufficient balance of the required asset.
-type TokenConversionOptions struct {
-	// The type of token conversion to perform when fulfilling the payment
-	ConversionType TokenConversionType
-	// The optional maximum slippage in basis points (1/100 of a percent) allowed when
-	// a token conversion is needed to fulfill the payment. Defaults to 50 bps (0.5%) if not set.
-	// The token conversion will fail if the actual amount received is less than
-	// `estimated_amount * (1 - max_slippage_bps / 10_000)`.
-	MaxSlippageBps *uint32
-	// The optional timeout in seconds to wait for the token conversion to complete
-	// when fulfilling the payment. This timeout only concerns waiting for the received
-	// payment of the token conversion. If the timeout is reached before the conversion
-	// is complete, the payment will fail. Defaults to 30 seconds if not set.
-	CompletionTimeoutSecs *uint32
-}
-
-func (r *TokenConversionOptions) Destroy() {
-	FfiDestroyerTokenConversionType{}.Destroy(r.ConversionType)
-	FfiDestroyerOptionalUint32{}.Destroy(r.MaxSlippageBps)
-	FfiDestroyerOptionalUint32{}.Destroy(r.CompletionTimeoutSecs)
-}
-
-type FfiConverterTokenConversionOptions struct{}
-
-var FfiConverterTokenConversionOptionsINSTANCE = FfiConverterTokenConversionOptions{}
-
-func (c FfiConverterTokenConversionOptions) Lift(rb RustBufferI) TokenConversionOptions {
-	return LiftFromRustBuffer[TokenConversionOptions](c, rb)
-}
-
-func (c FfiConverterTokenConversionOptions) Read(reader io.Reader) TokenConversionOptions {
-	return TokenConversionOptions{
-		FfiConverterTokenConversionTypeINSTANCE.Read(reader),
-		FfiConverterOptionalUint32INSTANCE.Read(reader),
-		FfiConverterOptionalUint32INSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterTokenConversionOptions) Lower(value TokenConversionOptions) C.RustBuffer {
-	return LowerIntoRustBuffer[TokenConversionOptions](c, value)
-}
-
-func (c FfiConverterTokenConversionOptions) Write(writer io.Writer, value TokenConversionOptions) {
-	FfiConverterTokenConversionTypeINSTANCE.Write(writer, value.ConversionType)
-	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxSlippageBps)
-	FfiConverterOptionalUint32INSTANCE.Write(writer, value.CompletionTimeoutSecs)
-}
-
-type FfiDestroyerTokenConversionOptions struct{}
-
-func (_ FfiDestroyerTokenConversionOptions) Destroy(value TokenConversionOptions) {
 	value.Destroy()
 }
 
@@ -16475,6 +16525,174 @@ func (_ FfiDestroyerChainServiceError) Destroy(value *ChainServiceError) {
 		_ = variantValue
 		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerChainServiceError.Destroy", value))
 	}
+}
+
+// The purpose of the conversion, which is used to provide context for the conversion
+// if its related to an ongoing payment or a self-transfer.
+type ConversionPurpose interface {
+	Destroy()
+}
+
+// Conversion is associated with an ongoing payment
+type ConversionPurposeOngoingPayment struct {
+	PaymentRequest string
+}
+
+func (e ConversionPurposeOngoingPayment) Destroy() {
+	FfiDestroyerString{}.Destroy(e.PaymentRequest)
+}
+
+// Conversion is for self-transfer
+type ConversionPurposeSelfTransfer struct {
+}
+
+func (e ConversionPurposeSelfTransfer) Destroy() {
+}
+
+type FfiConverterConversionPurpose struct{}
+
+var FfiConverterConversionPurposeINSTANCE = FfiConverterConversionPurpose{}
+
+func (c FfiConverterConversionPurpose) Lift(rb RustBufferI) ConversionPurpose {
+	return LiftFromRustBuffer[ConversionPurpose](c, rb)
+}
+
+func (c FfiConverterConversionPurpose) Lower(value ConversionPurpose) C.RustBuffer {
+	return LowerIntoRustBuffer[ConversionPurpose](c, value)
+}
+func (FfiConverterConversionPurpose) Read(reader io.Reader) ConversionPurpose {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return ConversionPurposeOngoingPayment{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 2:
+		return ConversionPurposeSelfTransfer{}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterConversionPurpose.Read()", id))
+	}
+}
+
+func (FfiConverterConversionPurpose) Write(writer io.Writer, value ConversionPurpose) {
+	switch variant_value := value.(type) {
+	case ConversionPurposeOngoingPayment:
+		writeInt32(writer, 1)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.PaymentRequest)
+	case ConversionPurposeSelfTransfer:
+		writeInt32(writer, 2)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterConversionPurpose.Write", value))
+	}
+}
+
+type FfiDestroyerConversionPurpose struct{}
+
+func (_ FfiDestroyerConversionPurpose) Destroy(value ConversionPurpose) {
+	value.Destroy()
+}
+
+// The status of the conversion
+type ConversionStatus uint
+
+const (
+	// The conversion was successful
+	ConversionStatusCompleted ConversionStatus = 1
+	// The conversion failed and no refund was made yet, which requires action by the SDK to
+	// perform the refund. This can happen if there was a failure during the conversion process.
+	ConversionStatusRefundNeeded ConversionStatus = 2
+	// The conversion failed and a refund was made
+	ConversionStatusRefunded ConversionStatus = 3
+)
+
+type FfiConverterConversionStatus struct{}
+
+var FfiConverterConversionStatusINSTANCE = FfiConverterConversionStatus{}
+
+func (c FfiConverterConversionStatus) Lift(rb RustBufferI) ConversionStatus {
+	return LiftFromRustBuffer[ConversionStatus](c, rb)
+}
+
+func (c FfiConverterConversionStatus) Lower(value ConversionStatus) C.RustBuffer {
+	return LowerIntoRustBuffer[ConversionStatus](c, value)
+}
+func (FfiConverterConversionStatus) Read(reader io.Reader) ConversionStatus {
+	id := readInt32(reader)
+	return ConversionStatus(id)
+}
+
+func (FfiConverterConversionStatus) Write(writer io.Writer, value ConversionStatus) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerConversionStatus struct{}
+
+func (_ FfiDestroyerConversionStatus) Destroy(value ConversionStatus) {
+}
+
+type ConversionType interface {
+	Destroy()
+}
+
+// Converting from Bitcoin to a token
+type ConversionTypeFromBitcoin struct {
+}
+
+func (e ConversionTypeFromBitcoin) Destroy() {
+}
+
+// Converting from a token to Bitcoin
+type ConversionTypeToBitcoin struct {
+	FromTokenIdentifier string
+}
+
+func (e ConversionTypeToBitcoin) Destroy() {
+	FfiDestroyerString{}.Destroy(e.FromTokenIdentifier)
+}
+
+type FfiConverterConversionType struct{}
+
+var FfiConverterConversionTypeINSTANCE = FfiConverterConversionType{}
+
+func (c FfiConverterConversionType) Lift(rb RustBufferI) ConversionType {
+	return LiftFromRustBuffer[ConversionType](c, rb)
+}
+
+func (c FfiConverterConversionType) Lower(value ConversionType) C.RustBuffer {
+	return LowerIntoRustBuffer[ConversionType](c, value)
+}
+func (FfiConverterConversionType) Read(reader io.Reader) ConversionType {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return ConversionTypeFromBitcoin{}
+	case 2:
+		return ConversionTypeToBitcoin{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterConversionType.Read()", id))
+	}
+}
+
+func (FfiConverterConversionType) Write(writer io.Writer, value ConversionType) {
+	switch variant_value := value.(type) {
+	case ConversionTypeFromBitcoin:
+		writeInt32(writer, 1)
+	case ConversionTypeToBitcoin:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.FromTokenIdentifier)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterConversionType.Write", value))
+	}
+}
+
+type FfiDestroyerConversionType struct{}
+
+func (_ FfiDestroyerConversionType) Destroy(value ConversionType) {
+	value.Destroy()
 }
 
 type DepositClaimError interface {
@@ -17337,29 +17555,29 @@ type PaymentDetails interface {
 	Destroy()
 }
 type PaymentDetailsSpark struct {
-	InvoiceDetails      *SparkInvoicePaymentDetails
-	HtlcDetails         *SparkHtlcDetails
-	TokenConversionInfo *TokenConversionInfo
+	InvoiceDetails *SparkInvoicePaymentDetails
+	HtlcDetails    *SparkHtlcDetails
+	ConversionInfo *ConversionInfo
 }
 
 func (e PaymentDetailsSpark) Destroy() {
 	FfiDestroyerOptionalSparkInvoicePaymentDetails{}.Destroy(e.InvoiceDetails)
 	FfiDestroyerOptionalSparkHtlcDetails{}.Destroy(e.HtlcDetails)
-	FfiDestroyerOptionalTokenConversionInfo{}.Destroy(e.TokenConversionInfo)
+	FfiDestroyerOptionalConversionInfo{}.Destroy(e.ConversionInfo)
 }
 
 type PaymentDetailsToken struct {
-	Metadata            TokenMetadata
-	TxHash              string
-	InvoiceDetails      *SparkInvoicePaymentDetails
-	TokenConversionInfo *TokenConversionInfo
+	Metadata       TokenMetadata
+	TxHash         string
+	InvoiceDetails *SparkInvoicePaymentDetails
+	ConversionInfo *ConversionInfo
 }
 
 func (e PaymentDetailsToken) Destroy() {
 	FfiDestroyerTokenMetadata{}.Destroy(e.Metadata)
 	FfiDestroyerString{}.Destroy(e.TxHash)
 	FfiDestroyerOptionalSparkInvoicePaymentDetails{}.Destroy(e.InvoiceDetails)
-	FfiDestroyerOptionalTokenConversionInfo{}.Destroy(e.TokenConversionInfo)
+	FfiDestroyerOptionalConversionInfo{}.Destroy(e.ConversionInfo)
 }
 
 type PaymentDetailsLightning struct {
@@ -17418,14 +17636,14 @@ func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 		return PaymentDetailsSpark{
 			FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Read(reader),
 			FfiConverterOptionalSparkHtlcDetailsINSTANCE.Read(reader),
-			FfiConverterOptionalTokenConversionInfoINSTANCE.Read(reader),
+			FfiConverterOptionalConversionInfoINSTANCE.Read(reader),
 		}
 	case 2:
 		return PaymentDetailsToken{
 			FfiConverterTokenMetadataINSTANCE.Read(reader),
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Read(reader),
-			FfiConverterOptionalTokenConversionInfoINSTANCE.Read(reader),
+			FfiConverterOptionalConversionInfoINSTANCE.Read(reader),
 		}
 	case 3:
 		return PaymentDetailsLightning{
@@ -17457,13 +17675,13 @@ func (FfiConverterPaymentDetails) Write(writer io.Writer, value PaymentDetails) 
 		writeInt32(writer, 1)
 		FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Write(writer, variant_value.InvoiceDetails)
 		FfiConverterOptionalSparkHtlcDetailsINSTANCE.Write(writer, variant_value.HtlcDetails)
-		FfiConverterOptionalTokenConversionInfoINSTANCE.Write(writer, variant_value.TokenConversionInfo)
+		FfiConverterOptionalConversionInfoINSTANCE.Write(writer, variant_value.ConversionInfo)
 	case PaymentDetailsToken:
 		writeInt32(writer, 2)
 		FfiConverterTokenMetadataINSTANCE.Write(writer, variant_value.Metadata)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.TxHash)
 		FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Write(writer, variant_value.InvoiceDetails)
-		FfiConverterOptionalTokenConversionInfoINSTANCE.Write(writer, variant_value.TokenConversionInfo)
+		FfiConverterOptionalConversionInfoINSTANCE.Write(writer, variant_value.ConversionInfo)
 	case PaymentDetailsLightning:
 		writeInt32(writer, 3)
 		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.Description)
@@ -20368,70 +20586,6 @@ func (_ FfiDestroyerSyncStorageError) Destroy(value *SyncStorageError) {
 	}
 }
 
-type TokenConversionType interface {
-	Destroy()
-}
-
-// Converting from Bitcoin to a token
-type TokenConversionTypeFromBitcoin struct {
-}
-
-func (e TokenConversionTypeFromBitcoin) Destroy() {
-}
-
-// Converting from a token to Bitcoin
-type TokenConversionTypeToBitcoin struct {
-	FromTokenIdentifier string
-}
-
-func (e TokenConversionTypeToBitcoin) Destroy() {
-	FfiDestroyerString{}.Destroy(e.FromTokenIdentifier)
-}
-
-type FfiConverterTokenConversionType struct{}
-
-var FfiConverterTokenConversionTypeINSTANCE = FfiConverterTokenConversionType{}
-
-func (c FfiConverterTokenConversionType) Lift(rb RustBufferI) TokenConversionType {
-	return LiftFromRustBuffer[TokenConversionType](c, rb)
-}
-
-func (c FfiConverterTokenConversionType) Lower(value TokenConversionType) C.RustBuffer {
-	return LowerIntoRustBuffer[TokenConversionType](c, value)
-}
-func (FfiConverterTokenConversionType) Read(reader io.Reader) TokenConversionType {
-	id := readInt32(reader)
-	switch id {
-	case 1:
-		return TokenConversionTypeFromBitcoin{}
-	case 2:
-		return TokenConversionTypeToBitcoin{
-			FfiConverterStringINSTANCE.Read(reader),
-		}
-	default:
-		panic(fmt.Sprintf("invalid enum value %v in FfiConverterTokenConversionType.Read()", id))
-	}
-}
-
-func (FfiConverterTokenConversionType) Write(writer io.Writer, value TokenConversionType) {
-	switch variant_value := value.(type) {
-	case TokenConversionTypeFromBitcoin:
-		writeInt32(writer, 1)
-	case TokenConversionTypeToBitcoin:
-		writeInt32(writer, 2)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.FromTokenIdentifier)
-	default:
-		_ = variant_value
-		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterTokenConversionType.Write", value))
-	}
-}
-
-type FfiDestroyerTokenConversionType struct{}
-
-func (_ FfiDestroyerTokenConversionType) Destroy(value TokenConversionType) {
-	value.Destroy()
-}
-
 type UpdateDepositPayload interface {
 	Destroy()
 }
@@ -20846,6 +21000,117 @@ type FfiDestroyerOptionalBytes struct{}
 func (_ FfiDestroyerOptionalBytes) Destroy(value *[]byte) {
 	if value != nil {
 		FfiDestroyerBytes{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalConversionEstimate struct{}
+
+var FfiConverterOptionalConversionEstimateINSTANCE = FfiConverterOptionalConversionEstimate{}
+
+func (c FfiConverterOptionalConversionEstimate) Lift(rb RustBufferI) *ConversionEstimate {
+	return LiftFromRustBuffer[*ConversionEstimate](c, rb)
+}
+
+func (_ FfiConverterOptionalConversionEstimate) Read(reader io.Reader) *ConversionEstimate {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterConversionEstimateINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalConversionEstimate) Lower(value *ConversionEstimate) C.RustBuffer {
+	return LowerIntoRustBuffer[*ConversionEstimate](c, value)
+}
+
+func (_ FfiConverterOptionalConversionEstimate) Write(writer io.Writer, value *ConversionEstimate) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterConversionEstimateINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalConversionEstimate struct{}
+
+func (_ FfiDestroyerOptionalConversionEstimate) Destroy(value *ConversionEstimate) {
+	if value != nil {
+		FfiDestroyerConversionEstimate{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalConversionInfo struct{}
+
+var FfiConverterOptionalConversionInfoINSTANCE = FfiConverterOptionalConversionInfo{}
+
+func (c FfiConverterOptionalConversionInfo) Lift(rb RustBufferI) *ConversionInfo {
+	return LiftFromRustBuffer[*ConversionInfo](c, rb)
+}
+
+func (_ FfiConverterOptionalConversionInfo) Read(reader io.Reader) *ConversionInfo {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterConversionInfoINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalConversionInfo) Lower(value *ConversionInfo) C.RustBuffer {
+	return LowerIntoRustBuffer[*ConversionInfo](c, value)
+}
+
+func (_ FfiConverterOptionalConversionInfo) Write(writer io.Writer, value *ConversionInfo) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterConversionInfoINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalConversionInfo struct{}
+
+func (_ FfiDestroyerOptionalConversionInfo) Destroy(value *ConversionInfo) {
+	if value != nil {
+		FfiDestroyerConversionInfo{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalConversionOptions struct{}
+
+var FfiConverterOptionalConversionOptionsINSTANCE = FfiConverterOptionalConversionOptions{}
+
+func (c FfiConverterOptionalConversionOptions) Lift(rb RustBufferI) *ConversionOptions {
+	return LiftFromRustBuffer[*ConversionOptions](c, rb)
+}
+
+func (_ FfiConverterOptionalConversionOptions) Read(reader io.Reader) *ConversionOptions {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterConversionOptionsINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalConversionOptions) Lower(value *ConversionOptions) C.RustBuffer {
+	return LowerIntoRustBuffer[*ConversionOptions](c, value)
+}
+
+func (_ FfiConverterOptionalConversionOptions) Write(writer io.Writer, value *ConversionOptions) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterConversionOptionsINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalConversionOptions struct{}
+
+func (_ FfiDestroyerOptionalConversionOptions) Destroy(value *ConversionOptions) {
+	if value != nil {
+		FfiDestroyerConversionOptions{}.Destroy(*value)
 	}
 }
 
@@ -21330,80 +21595,6 @@ func (_ FfiDestroyerOptionalSymbol) Destroy(value *Symbol) {
 	}
 }
 
-type FfiConverterOptionalTokenConversionInfo struct{}
-
-var FfiConverterOptionalTokenConversionInfoINSTANCE = FfiConverterOptionalTokenConversionInfo{}
-
-func (c FfiConverterOptionalTokenConversionInfo) Lift(rb RustBufferI) *TokenConversionInfo {
-	return LiftFromRustBuffer[*TokenConversionInfo](c, rb)
-}
-
-func (_ FfiConverterOptionalTokenConversionInfo) Read(reader io.Reader) *TokenConversionInfo {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterTokenConversionInfoINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalTokenConversionInfo) Lower(value *TokenConversionInfo) C.RustBuffer {
-	return LowerIntoRustBuffer[*TokenConversionInfo](c, value)
-}
-
-func (_ FfiConverterOptionalTokenConversionInfo) Write(writer io.Writer, value *TokenConversionInfo) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterTokenConversionInfoINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalTokenConversionInfo struct{}
-
-func (_ FfiDestroyerOptionalTokenConversionInfo) Destroy(value *TokenConversionInfo) {
-	if value != nil {
-		FfiDestroyerTokenConversionInfo{}.Destroy(*value)
-	}
-}
-
-type FfiConverterOptionalTokenConversionOptions struct{}
-
-var FfiConverterOptionalTokenConversionOptionsINSTANCE = FfiConverterOptionalTokenConversionOptions{}
-
-func (c FfiConverterOptionalTokenConversionOptions) Lift(rb RustBufferI) *TokenConversionOptions {
-	return LiftFromRustBuffer[*TokenConversionOptions](c, rb)
-}
-
-func (_ FfiConverterOptionalTokenConversionOptions) Read(reader io.Reader) *TokenConversionOptions {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterTokenConversionOptionsINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalTokenConversionOptions) Lower(value *TokenConversionOptions) C.RustBuffer {
-	return LowerIntoRustBuffer[*TokenConversionOptions](c, value)
-}
-
-func (_ FfiConverterOptionalTokenConversionOptions) Write(writer io.Writer, value *TokenConversionOptions) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterTokenConversionOptionsINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalTokenConversionOptions struct{}
-
-func (_ FfiDestroyerOptionalTokenConversionOptions) Destroy(value *TokenConversionOptions) {
-	if value != nil {
-		FfiDestroyerTokenConversionOptions{}.Destroy(*value)
-	}
-}
-
 type FfiConverterOptionalAmount struct{}
 
 var FfiConverterOptionalAmountINSTANCE = FfiConverterOptionalAmount{}
@@ -21475,6 +21666,43 @@ type FfiDestroyerOptionalAssetFilter struct{}
 func (_ FfiDestroyerOptionalAssetFilter) Destroy(value *AssetFilter) {
 	if value != nil {
 		FfiDestroyerAssetFilter{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalConversionPurpose struct{}
+
+var FfiConverterOptionalConversionPurposeINSTANCE = FfiConverterOptionalConversionPurpose{}
+
+func (c FfiConverterOptionalConversionPurpose) Lift(rb RustBufferI) *ConversionPurpose {
+	return LiftFromRustBuffer[*ConversionPurpose](c, rb)
+}
+
+func (_ FfiConverterOptionalConversionPurpose) Read(reader io.Reader) *ConversionPurpose {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterConversionPurposeINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalConversionPurpose) Lower(value *ConversionPurpose) C.RustBuffer {
+	return LowerIntoRustBuffer[*ConversionPurpose](c, value)
+}
+
+func (_ FfiConverterOptionalConversionPurpose) Write(writer io.Writer, value *ConversionPurpose) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterConversionPurposeINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalConversionPurpose struct{}
+
+func (_ FfiDestroyerOptionalConversionPurpose) Destroy(value *ConversionPurpose) {
+	if value != nil {
+		FfiDestroyerConversionPurpose{}.Destroy(*value)
 	}
 }
 
