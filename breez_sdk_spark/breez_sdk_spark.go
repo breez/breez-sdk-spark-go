@@ -631,6 +631,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_auth()
+		})
+		if checksum != 37942 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_auth: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_lnurl_pay()
 		})
 		if checksum != 10147 {
@@ -786,7 +795,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_ecdsa()
 		})
-		if checksum != 52291 {
+		if checksum != 37648 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_ecdsa: UniFFI API checksum mismatch")
 		}
@@ -795,7 +804,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_ecdsa_recoverable()
 		})
-		if checksum != 8564 {
+		if checksum != 3107 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_ecdsa_recoverable: UniFFI API checksum mismatch")
 		}
@@ -829,9 +838,18 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_hmac_sha256()
+		})
+		if checksum != 19799 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_hmac_sha256: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_frost_signing_commitments()
 		})
-		if checksum != 24826 {
+		if checksum != 24833 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_frost_signing_commitments: UniFFI API checksum mismatch")
 		}
@@ -840,7 +858,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_for_node()
 		})
-		if checksum != 32818 {
+		if checksum != 62425 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_for_node: UniFFI API checksum mismatch")
 		}
@@ -849,7 +867,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_key()
 		})
-		if checksum != 22789 {
+		if checksum != 21363 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_key: UniFFI API checksum mismatch")
 		}
@@ -858,7 +876,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_static_deposit_private_key_source()
 		})
-		if checksum != 37751 {
+		if checksum != 61352 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_static_deposit_private_key_source: UniFFI API checksum mismatch")
 		}
@@ -867,7 +885,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_static_deposit_private_key()
 		})
-		if checksum != 55375 {
+		if checksum != 57038 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_static_deposit_private_key: UniFFI API checksum mismatch")
 		}
@@ -876,7 +894,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_static_deposit_public_key()
 		})
-		if checksum != 49264 {
+		if checksum != 47081 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_static_deposit_public_key: UniFFI API checksum mismatch")
 		}
@@ -885,7 +903,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_subtract_private_keys()
 		})
-		if checksum != 46671 {
+		if checksum != 63060 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_subtract_private_keys: UniFFI API checksum mismatch")
 		}
@@ -894,7 +912,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_split_secret()
 		})
-		if checksum != 840 {
+		if checksum != 22937 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_split_secret: UniFFI API checksum mismatch")
 		}
@@ -903,7 +921,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_private_key_for_receiver()
 		})
-		if checksum != 42476 {
+		if checksum != 52786 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_private_key_for_receiver: UniFFI API checksum mismatch")
 		}
@@ -912,7 +930,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_from_private_key_source()
 		})
-		if checksum != 38684 {
+		if checksum != 58178 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_from_private_key_source: UniFFI API checksum mismatch")
 		}
@@ -921,7 +939,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_frost()
 		})
-		if checksum != 1497 {
+		if checksum != 44847 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_frost: UniFFI API checksum mismatch")
 		}
@@ -930,7 +948,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_aggregate_frost_signatures()
 		})
-		if checksum != 26523 {
+		if checksum != 61746 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_aggregate_frost_signatures: UniFFI API checksum mismatch")
 		}
@@ -2357,6 +2375,54 @@ type BreezSdkInterface interface {
 
 	ListPayments(request ListPaymentsRequest) (ListPaymentsResponse, error)
 	ListUnclaimedDeposits(request ListUnclaimedDepositsRequest) (ListUnclaimedDepositsResponse, error)
+	// Performs LNURL-auth with the service.
+	//
+	// This method implements the LNURL-auth protocol as specified in LUD-04 and LUD-05.
+	// It derives a domain-specific linking key, signs the challenge, and sends the
+	// authentication request to the service.
+	//
+	// # Arguments
+	//
+	// * `request_data` - The parsed LNURL-auth request details obtained from [`parse`]
+	//
+	// # Returns
+	//
+	// * `Ok(LnurlCallbackStatus::Ok)` - Authentication was successful
+	// * `Ok(LnurlCallbackStatus::ErrorStatus{reason})` - Service returned an error
+	// * `Err(SdkError)` - An error occurred during the authentication process
+	//
+	// # Example
+	//
+	// ```rust,no_run
+	// # use breez_sdk_spark::{BreezSdk, InputType};
+	// # async fn example(sdk: BreezSdk) -> Result<(), Box<dyn std::error::Error>> {
+	// // 1. Parse the LNURL-auth string
+	// let input = sdk.parse("lnurl1...").await?;
+	// let auth_request = match input {
+	// InputType::LnurlAuth(data) => data,
+	// _ => return Err("Not an auth request".into()),
+	// };
+	//
+	// // 2. Show user the domain and get confirmation
+	// println!("Authenticate with {}?", auth_request.domain);
+	//
+	// // 3. Perform authentication
+	// let status = sdk.lnurl_auth(auth_request).await?;
+	// match status {
+	// breez_sdk_spark::LnurlCallbackStatus::Ok => println!("Success!"),
+	// breez_sdk_spark::LnurlCallbackStatus::ErrorStatus { error_details } => {
+	// println!("Error: {}", error_details.reason)
+	// }
+	// }
+	// # Ok(())
+	// # }
+	// ```
+	//
+	// # See Also
+	//
+	// * LUD-04: <https://github.com/lnurl/luds/blob/luds/04.md>
+	// * LUD-05: <https://github.com/lnurl/luds/blob/luds/05.md>
+	LnurlAuth(requestData LnurlAuthRequestDetails) (LnurlCallbackStatus, error)
 	LnurlPay(request LnurlPayRequest) (LnurlPayResponse, error)
 	// Performs an LNURL withdraw operation for the amount of satoshis to
 	// withdraw and the LNURL withdraw request details. The LNURL withdraw request
@@ -3048,6 +3114,84 @@ func (_self *BreezSdk) ListUnclaimedDeposits(request ListUnclaimedDepositsReques
 	return res, err
 }
 
+// Performs LNURL-auth with the service.
+//
+// This method implements the LNURL-auth protocol as specified in LUD-04 and LUD-05.
+// It derives a domain-specific linking key, signs the challenge, and sends the
+// authentication request to the service.
+//
+// # Arguments
+//
+// * `request_data` - The parsed LNURL-auth request details obtained from [`parse`]
+//
+// # Returns
+//
+// * `Ok(LnurlCallbackStatus::Ok)` - Authentication was successful
+// * `Ok(LnurlCallbackStatus::ErrorStatus{reason})` - Service returned an error
+// * `Err(SdkError)` - An error occurred during the authentication process
+//
+// # Example
+//
+// ```rust,no_run
+// # use breez_sdk_spark::{BreezSdk, InputType};
+// # async fn example(sdk: BreezSdk) -> Result<(), Box<dyn std::error::Error>> {
+// // 1. Parse the LNURL-auth string
+// let input = sdk.parse("lnurl1...").await?;
+// let auth_request = match input {
+// InputType::LnurlAuth(data) => data,
+// _ => return Err("Not an auth request".into()),
+// };
+//
+// // 2. Show user the domain and get confirmation
+// println!("Authenticate with {}?", auth_request.domain);
+//
+// // 3. Perform authentication
+// let status = sdk.lnurl_auth(auth_request).await?;
+// match status {
+// breez_sdk_spark::LnurlCallbackStatus::Ok => println!("Success!"),
+// breez_sdk_spark::LnurlCallbackStatus::ErrorStatus { error_details } => {
+// println!("Error: {}", error_details.reason)
+// }
+// }
+// # Ok(())
+// # }
+// ```
+//
+// # See Also
+//
+// * LUD-04: <https://github.com/lnurl/luds/blob/luds/04.md>
+// * LUD-05: <https://github.com/lnurl/luds/blob/luds/05.md>
+func (_self *BreezSdk) LnurlAuth(requestData LnurlAuthRequestDetails) (LnurlCallbackStatus, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) LnurlCallbackStatus {
+			return FfiConverterLnurlCallbackStatusINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_lnurl_auth(
+			_pointer, FfiConverterLnurlAuthRequestDetailsINSTANCE.Lower(requestData)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
 func (_self *BreezSdk) LnurlPay(request LnurlPayRequest) (LnurlPayResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -3605,22 +3749,26 @@ type ExternalSigner interface {
 	DerivePublicKey(path string) (PublicKeyBytes, error)
 	// Signs a message using ECDSA at the given derivation path.
 	//
+	// The message should be a 32-byte digest (typically a hash of the original data).
+	//
 	// # Arguments
-	// * `message` - The message to sign
+	// * `message` - The 32-byte message digest to sign
 	// * `path` - BIP32 derivation path as a string
 	//
 	// # Returns
 	// 64-byte compact ECDSA signature, or a `SignerError`
-	SignEcdsa(message []byte, path string) (EcdsaSignatureBytes, error)
+	SignEcdsa(message MessageBytes, path string) (EcdsaSignatureBytes, error)
 	// Signs a message using recoverable ECDSA at the given derivation path.
 	//
+	// The message should be a 32-byte digest (typically a hash of the original data).
+	//
 	// # Arguments
-	// * `message` - The message to sign (will be double-SHA256 hashed)
+	// * `message` - The 32-byte message digest to sign
 	// * `path` - BIP32 derivation path as a string
 	//
 	// # Returns
 	// 65 bytes: recovery ID (31 + `recovery_id`) + 64-byte signature, or a `SignerError`
-	SignEcdsaRecoverable(message []byte, path string) (RecoverableEcdsaSignatureBytes, error)
+	SignEcdsaRecoverable(message MessageBytes, path string) (RecoverableEcdsaSignatureBytes, error)
 	// Encrypts a message using ECIES at the given derivation path.
 	//
 	// # Arguments
@@ -3648,6 +3796,15 @@ type ExternalSigner interface {
 	// # Returns
 	// 64-byte Schnorr signature, or a `SignerError`
 	SignHashSchnorr(hash []byte, path string) (SchnorrSignatureBytes, error)
+	// HMAC-SHA256 of a message at the given derivation path.
+	//
+	// # Arguments
+	// * `message` - The message to hash
+	// * `path` - BIP32 derivation path as a string
+	//
+	// # Returns
+	// 32-byte HMAC-SHA256, or a `SignerError`
+	HmacSha256(message []byte, path string) (HashedMessageBytes, error)
 	// Generates Frost signing commitments for multi-party signing.
 	//
 	// # Returns
@@ -3817,13 +3974,15 @@ func (_self *ExternalSignerImpl) DerivePublicKey(path string) (PublicKeyBytes, e
 
 // Signs a message using ECDSA at the given derivation path.
 //
+// The message should be a 32-byte digest (typically a hash of the original data).
+//
 // # Arguments
-// * `message` - The message to sign
+// * `message` - The 32-byte message digest to sign
 // * `path` - BIP32 derivation path as a string
 //
 // # Returns
 // 64-byte compact ECDSA signature, or a `SignerError`
-func (_self *ExternalSignerImpl) SignEcdsa(message []byte, path string) (EcdsaSignatureBytes, error) {
+func (_self *ExternalSignerImpl) SignEcdsa(message MessageBytes, path string) (EcdsaSignatureBytes, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
@@ -3840,7 +3999,7 @@ func (_self *ExternalSignerImpl) SignEcdsa(message []byte, path string) (EcdsaSi
 			return FfiConverterEcdsaSignatureBytesINSTANCE.Lift(ffi)
 		},
 		C.uniffi_breez_sdk_spark_fn_method_externalsigner_sign_ecdsa(
-			_pointer, FfiConverterBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
+			_pointer, FfiConverterMessageBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -3856,13 +4015,15 @@ func (_self *ExternalSignerImpl) SignEcdsa(message []byte, path string) (EcdsaSi
 
 // Signs a message using recoverable ECDSA at the given derivation path.
 //
+// The message should be a 32-byte digest (typically a hash of the original data).
+//
 // # Arguments
-// * `message` - The message to sign (will be double-SHA256 hashed)
+// * `message` - The 32-byte message digest to sign
 // * `path` - BIP32 derivation path as a string
 //
 // # Returns
 // 65 bytes: recovery ID (31 + `recovery_id`) + 64-byte signature, or a `SignerError`
-func (_self *ExternalSignerImpl) SignEcdsaRecoverable(message []byte, path string) (RecoverableEcdsaSignatureBytes, error) {
+func (_self *ExternalSignerImpl) SignEcdsaRecoverable(message MessageBytes, path string) (RecoverableEcdsaSignatureBytes, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
@@ -3879,7 +4040,7 @@ func (_self *ExternalSignerImpl) SignEcdsaRecoverable(message []byte, path strin
 			return FfiConverterRecoverableEcdsaSignatureBytesINSTANCE.Lift(ffi)
 		},
 		C.uniffi_breez_sdk_spark_fn_method_externalsigner_sign_ecdsa_recoverable(
-			_pointer, FfiConverterBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
+			_pointer, FfiConverterMessageBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -3997,6 +4158,45 @@ func (_self *ExternalSignerImpl) SignHashSchnorr(hash []byte, path string) (Schn
 		},
 		C.uniffi_breez_sdk_spark_fn_method_externalsigner_sign_hash_schnorr(
 			_pointer, FfiConverterBytesINSTANCE.Lower(hash), FfiConverterStringINSTANCE.Lower(path)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	return res, err
+}
+
+// HMAC-SHA256 of a message at the given derivation path.
+//
+// # Arguments
+// * `message` - The message to hash
+// * `path` - BIP32 derivation path as a string
+//
+// # Returns
+// 32-byte HMAC-SHA256, or a `SignerError`
+func (_self *ExternalSignerImpl) HmacSha256(message []byte, path string) (HashedMessageBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) HashedMessageBytes {
+			return FfiConverterHashedMessageBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsigner_hmac_sha256(
+			_pointer, FfiConverterBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -4650,7 +4850,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod2(uniffiHa
 
 		res, err :=
 			uniffiObj.SignEcdsa(
-				FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+				FfiConverterMessageBytesINSTANCE.Lift(GoRustBuffer{
 					inner: message,
 				}),
 				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
@@ -4716,7 +4916,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod3(uniffiHa
 
 		res, err :=
 			uniffiObj.SignEcdsaRecoverable(
-				FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+				FfiConverterMessageBytesINSTANCE.Lift(GoRustBuffer{
 					inner: message,
 				}),
 				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
@@ -4945,7 +5145,73 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod6(uniffiHa
 }
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.HmacSha256(
+				FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+					inner: message,
+				}),
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: path,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterHashedMessageBytesINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5003,8 +5269,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8(uniffiHandle C.uint64_t, id C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9(uniffiHandle C.uint64_t, id C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5066,8 +5332,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5125,8 +5391,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5186,8 +5452,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5247,8 +5513,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5308,8 +5574,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13(uniffiHandle C.uint64_t, signingKey C.RustBuffer, newSigningKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14(uniffiHandle C.uint64_t, signingKey C.RustBuffer, newSigningKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5374,8 +5640,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14(uniffiHandle C.uint64_t, secret C.RustBuffer, threshold C.uint32_t, numShares C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15(uniffiHandle C.uint64_t, secret C.RustBuffer, threshold C.uint32_t, numShares C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5439,8 +5705,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15(uniffiHandle C.uint64_t, privateKey C.RustBuffer, receiverPublicKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiHandle C.uint64_t, privateKey C.RustBuffer, receiverPublicKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5505,8 +5771,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiHandle C.uint64_t, privateKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17(uniffiHandle C.uint64_t, privateKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5568,8 +5834,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5631,8 +5897,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5702,18 +5968,19 @@ var UniffiVTableCallbackInterfaceExternalSignerINSTANCE = C.UniffiVTableCallback
 	eciesEncrypt:                     (C.UniffiCallbackInterfaceExternalSignerMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod4),
 	eciesDecrypt:                     (C.UniffiCallbackInterfaceExternalSignerMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod5),
 	signHashSchnorr:                  (C.UniffiCallbackInterfaceExternalSignerMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod6),
-	generateFrostSigningCommitments:  (C.UniffiCallbackInterfaceExternalSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7),
-	getPublicKeyForNode:              (C.UniffiCallbackInterfaceExternalSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8),
-	generateRandomKey:                (C.UniffiCallbackInterfaceExternalSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9),
-	getStaticDepositPrivateKeySource: (C.UniffiCallbackInterfaceExternalSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10),
-	getStaticDepositPrivateKey:       (C.UniffiCallbackInterfaceExternalSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11),
-	getStaticDepositPublicKey:        (C.UniffiCallbackInterfaceExternalSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12),
-	subtractPrivateKeys:              (C.UniffiCallbackInterfaceExternalSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13),
-	splitSecret:                      (C.UniffiCallbackInterfaceExternalSignerMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14),
-	encryptPrivateKeyForReceiver:     (C.UniffiCallbackInterfaceExternalSignerMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15),
-	getPublicKeyFromPrivateKeySource: (C.UniffiCallbackInterfaceExternalSignerMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16),
-	signFrost:                        (C.UniffiCallbackInterfaceExternalSignerMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17),
-	aggregateFrostSignatures:         (C.UniffiCallbackInterfaceExternalSignerMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18),
+	hmacSha256:                       (C.UniffiCallbackInterfaceExternalSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7),
+	generateFrostSigningCommitments:  (C.UniffiCallbackInterfaceExternalSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8),
+	getPublicKeyForNode:              (C.UniffiCallbackInterfaceExternalSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9),
+	generateRandomKey:                (C.UniffiCallbackInterfaceExternalSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10),
+	getStaticDepositPrivateKeySource: (C.UniffiCallbackInterfaceExternalSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11),
+	getStaticDepositPrivateKey:       (C.UniffiCallbackInterfaceExternalSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12),
+	getStaticDepositPublicKey:        (C.UniffiCallbackInterfaceExternalSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13),
+	subtractPrivateKeys:              (C.UniffiCallbackInterfaceExternalSignerMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14),
+	splitSecret:                      (C.UniffiCallbackInterfaceExternalSignerMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15),
+	encryptPrivateKeyForReceiver:     (C.UniffiCallbackInterfaceExternalSignerMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16),
+	getPublicKeyFromPrivateKeySource: (C.UniffiCallbackInterfaceExternalSignerMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17),
+	signFrost:                        (C.UniffiCallbackInterfaceExternalSignerMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18),
+	aggregateFrostSignatures:         (C.UniffiCallbackInterfaceExternalSignerMethod19)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerFree),
 }
@@ -12471,6 +12738,42 @@ func (_ FfiDestroyerGetTokensMetadataResponse) Destroy(value GetTokensMetadataRe
 	value.Destroy()
 }
 
+type HashedMessageBytes struct {
+	Bytes []byte
+}
+
+func (r *HashedMessageBytes) Destroy() {
+	FfiDestroyerBytes{}.Destroy(r.Bytes)
+}
+
+type FfiConverterHashedMessageBytes struct{}
+
+var FfiConverterHashedMessageBytesINSTANCE = FfiConverterHashedMessageBytes{}
+
+func (c FfiConverterHashedMessageBytes) Lift(rb RustBufferI) HashedMessageBytes {
+	return LiftFromRustBuffer[HashedMessageBytes](c, rb)
+}
+
+func (c FfiConverterHashedMessageBytes) Read(reader io.Reader) HashedMessageBytes {
+	return HashedMessageBytes{
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterHashedMessageBytes) Lower(value HashedMessageBytes) C.RustBuffer {
+	return LowerIntoRustBuffer[HashedMessageBytes](c, value)
+}
+
+func (c FfiConverterHashedMessageBytes) Write(writer io.Writer, value HashedMessageBytes) {
+	FfiConverterBytesINSTANCE.Write(writer, value.Bytes)
+}
+
+type FfiDestroyerHashedMessageBytes struct{}
+
+func (_ FfiDestroyerHashedMessageBytes) Destroy(value HashedMessageBytes) {
+	value.Destroy()
+}
+
 // FFI-safe wrapper for (Identifier, `SigningCommitments`) pair
 type IdentifierCommitmentPair struct {
 	Identifier ExternalIdentifier
@@ -13086,6 +13389,43 @@ func (_ FfiDestroyerLnurlAuthRequestDetails) Destroy(value LnurlAuthRequestDetai
 	value.Destroy()
 }
 
+// LNURL error details
+type LnurlErrorDetails struct {
+	Reason string
+}
+
+func (r *LnurlErrorDetails) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Reason)
+}
+
+type FfiConverterLnurlErrorDetails struct{}
+
+var FfiConverterLnurlErrorDetailsINSTANCE = FfiConverterLnurlErrorDetails{}
+
+func (c FfiConverterLnurlErrorDetails) Lift(rb RustBufferI) LnurlErrorDetails {
+	return LiftFromRustBuffer[LnurlErrorDetails](c, rb)
+}
+
+func (c FfiConverterLnurlErrorDetails) Read(reader io.Reader) LnurlErrorDetails {
+	return LnurlErrorDetails{
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterLnurlErrorDetails) Lower(value LnurlErrorDetails) C.RustBuffer {
+	return LowerIntoRustBuffer[LnurlErrorDetails](c, value)
+}
+
+func (c FfiConverterLnurlErrorDetails) Write(writer io.Writer, value LnurlErrorDetails) {
+	FfiConverterStringINSTANCE.Write(writer, value.Reason)
+}
+
+type FfiDestroyerLnurlErrorDetails struct{}
+
+func (_ FfiDestroyerLnurlErrorDetails) Destroy(value LnurlErrorDetails) {
+	value.Destroy()
+}
+
 // Represents the payment LNURL info
 type LnurlPayInfo struct {
 	LnAddress              *string
@@ -13666,6 +14006,43 @@ func (c FfiConverterLogEntry) Write(writer io.Writer, value LogEntry) {
 type FfiDestroyerLogEntry struct{}
 
 func (_ FfiDestroyerLogEntry) Destroy(value LogEntry) {
+	value.Destroy()
+}
+
+// FFI-safe representation of a 32-byte message digest for ECDSA signing
+type MessageBytes struct {
+	Bytes []byte
+}
+
+func (r *MessageBytes) Destroy() {
+	FfiDestroyerBytes{}.Destroy(r.Bytes)
+}
+
+type FfiConverterMessageBytes struct{}
+
+var FfiConverterMessageBytesINSTANCE = FfiConverterMessageBytes{}
+
+func (c FfiConverterMessageBytes) Lift(rb RustBufferI) MessageBytes {
+	return LiftFromRustBuffer[MessageBytes](c, rb)
+}
+
+func (c FfiConverterMessageBytes) Read(reader io.Reader) MessageBytes {
+	return MessageBytes{
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterMessageBytes) Lower(value MessageBytes) C.RustBuffer {
+	return LowerIntoRustBuffer[MessageBytes](c, value)
+}
+
+func (c FfiConverterMessageBytes) Write(writer io.Writer, value MessageBytes) {
+	FfiConverterBytesINSTANCE.Write(writer, value.Bytes)
+}
+
+type FfiDestroyerMessageBytes struct{}
+
+func (_ FfiDestroyerMessageBytes) Destroy(value MessageBytes) {
 	value.Destroy()
 }
 
@@ -17281,6 +17658,71 @@ func (FfiConverterKeySetType) Write(writer io.Writer, value KeySetType) {
 type FfiDestroyerKeySetType struct{}
 
 func (_ FfiDestroyerKeySetType) Destroy(value KeySetType) {
+}
+
+// The response from a LNURL-auth callback, indicating success or failure.
+type LnurlCallbackStatus interface {
+	Destroy()
+}
+
+// On-wire format is: `{"status": "OK"}`
+type LnurlCallbackStatusOk struct {
+}
+
+func (e LnurlCallbackStatusOk) Destroy() {
+}
+
+// On-wire format is: `{"status": "ERROR", "reason": "error details..."}`
+type LnurlCallbackStatusErrorStatus struct {
+	ErrorDetails LnurlErrorDetails
+}
+
+func (e LnurlCallbackStatusErrorStatus) Destroy() {
+	FfiDestroyerLnurlErrorDetails{}.Destroy(e.ErrorDetails)
+}
+
+type FfiConverterLnurlCallbackStatus struct{}
+
+var FfiConverterLnurlCallbackStatusINSTANCE = FfiConverterLnurlCallbackStatus{}
+
+func (c FfiConverterLnurlCallbackStatus) Lift(rb RustBufferI) LnurlCallbackStatus {
+	return LiftFromRustBuffer[LnurlCallbackStatus](c, rb)
+}
+
+func (c FfiConverterLnurlCallbackStatus) Lower(value LnurlCallbackStatus) C.RustBuffer {
+	return LowerIntoRustBuffer[LnurlCallbackStatus](c, value)
+}
+func (FfiConverterLnurlCallbackStatus) Read(reader io.Reader) LnurlCallbackStatus {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return LnurlCallbackStatusOk{}
+	case 2:
+		return LnurlCallbackStatusErrorStatus{
+			FfiConverterLnurlErrorDetailsINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterLnurlCallbackStatus.Read()", id))
+	}
+}
+
+func (FfiConverterLnurlCallbackStatus) Write(writer io.Writer, value LnurlCallbackStatus) {
+	switch variant_value := value.(type) {
+	case LnurlCallbackStatusOk:
+		writeInt32(writer, 1)
+	case LnurlCallbackStatusErrorStatus:
+		writeInt32(writer, 2)
+		FfiConverterLnurlErrorDetailsINSTANCE.Write(writer, variant_value.ErrorDetails)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterLnurlCallbackStatus.Write", value))
+	}
+}
+
+type FfiDestroyerLnurlCallbackStatus struct{}
+
+func (_ FfiDestroyerLnurlCallbackStatus) Destroy(value LnurlCallbackStatus) {
+	value.Destroy()
 }
 
 type MaxFee interface {
