@@ -867,25 +867,25 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_key()
 		})
-		if checksum != 21363 {
+		if checksum != 24906 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_key: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_static_deposit_private_key_source()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret_key_encrypted()
 		})
-		if checksum != 61352 {
+		if checksum != 50023 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_static_deposit_private_key_source: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret_key_encrypted: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret_key()
 		})
-		if checksum != 8728 {
+		if checksum != 61854 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret_key: UniFFI API checksum mismatch")
 		}
@@ -903,7 +903,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_subtract_secret_keys()
 		})
-		if checksum != 2714 {
+		if checksum != 4979 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_subtract_secret_keys: UniFFI API checksum mismatch")
 		}
@@ -919,20 +919,20 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_private_key_for_receiver()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_secret_key_for_receiver()
 		})
-		if checksum != 52786 {
+		if checksum != 43011 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_private_key_for_receiver: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_secret_key_for_receiver: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_from_private_key_source()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_public_key_from_secret_key_source()
 		})
-		if checksum != 58178 {
+		if checksum != 35440 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_from_private_key_source: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_public_key_from_secret_key_source: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -3828,26 +3828,26 @@ type ExternalSigner interface {
 	// # Returns
 	// The public key for the node, or an error string
 	GetPublicKeyForNode(id ExternalTreeNodeId) (PublicKeyBytes, error)
-	// Generates a random private key.
+	// Generates a random secret key.
 	//
 	// # Returns
-	// A randomly generated private key source, or an error string
-	GenerateRandomKey() (ExternalPrivateKeySource, error)
-	// Gets a static deposit private key source by index.
+	// A randomly generated secret key source, or an error string
+	GenerateRandomKey() (ExternalSecretKeySource, error)
+	// Gets an encrypted static deposit secret key by index.
 	//
 	// # Arguments
 	// * `index` - The index of the static deposit key
 	//
 	// # Returns
-	// The private key source, or an error string
-	GetStaticDepositPrivateKeySource(index uint32) (ExternalPrivateKeySource, error)
-	// Gets a static deposit private key by index.
+	// The encrypted secret key, or an error string
+	StaticDepositSecretKeyEncrypted(index uint32) (ExternalSecretKeySource, error)
+	// Gets a static deposit secret key by index.
 	//
 	// # Arguments
 	// * `index` - The index of the static deposit key
 	//
 	// # Returns
-	// The 32-byte private key, or an error string
+	// The 32-byte secret key, or an error string
 	//
 	// See also: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
 	StaticDepositSecretKey(index uint32) (PrivateKeyBytes, error)
@@ -3861,15 +3861,18 @@ type ExternalSigner interface {
 	//
 	// See also: [JavaScript `getStaticDepositSigningKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-signing-key)
 	StaticDepositSigningKey(index uint32) (PublicKeyBytes, error)
-	// Subtracts one private key from another.
+	// Subtracts one secret key from another.
 	//
 	// # Arguments
-	// * `signing_key` - The first private key source
-	// * `new_signing_key` - The second private key source to subtract
+	// * `signing_key` - The first secret key source
+	// * `new_signing_key` - The second secret key source to subtract
 	//
 	// # Returns
-	// The resulting private key source, or an error string
-	SubtractSecretKeys(signingKey ExternalPrivateKeySource, newSigningKey ExternalPrivateKeySource) (ExternalPrivateKeySource, error)
+	// The resulting secret key source, or an error string
+	//
+	// See also: [JavaScript `subtractSplitAndEncrypt`](https://docs.spark.money/wallets/spark-signer#subtract,-split,-and-encrypt)
+	// (this method provides the subtraction step of that higher-level operation)
+	SubtractSecretKeys(signingKey ExternalSecretKeySource, newSigningKey ExternalSecretKeySource) (ExternalSecretKeySource, error)
 	// Splits a secret with proofs using Shamir's Secret Sharing.
 	//
 	// # Arguments
@@ -3882,23 +3885,23 @@ type ExternalSigner interface {
 	//
 	// See also: [JavaScript `splitSecretWithProofs`](https://docs.spark.money/wallets/spark-signer#split-secret-with-proofs)
 	SplitSecretWithProofs(secret ExternalSecretToSplit, threshold uint32, numShares uint32) ([]ExternalVerifiableSecretShare, error)
-	// Encrypts a private key for a specific receiver's public key.
+	// Encrypts a secret key for a specific receiver's public key.
 	//
 	// # Arguments
-	// * `private_key` - The encrypted private key to re-encrypt
+	// * `secret_key` - The encrypted secret key to re-encrypt
 	// * `receiver_public_key` - The receiver's 33-byte public key
 	//
 	// # Returns
 	// Encrypted data for the receiver, or an error string
-	EncryptPrivateKeyForReceiver(privateKey ExternalEncryptedPrivateKey, receiverPublicKey PublicKeyBytes) ([]byte, error)
-	// Gets the public key from a private key source.
+	EncryptSecretKeyForReceiver(secretKey ExternalEncryptedPrivateKey, receiverPublicKey PublicKeyBytes) ([]byte, error)
+	// Gets the public key from a secret key source.
 	//
 	// # Arguments
-	// * `private_key` - The private key source
+	// * `secret_key` - The secret key source
 	//
 	// # Returns
 	// The corresponding 33-byte public key, or an error string
-	GetPublicKeyFromPrivateKeySource(privateKey ExternalPrivateKeySource) (PublicKeyBytes, error)
+	PublicKeyFromSecretKeySource(secretKey ExternalSecretKeySource) (PublicKeyBytes, error)
 	// Signs using Frost protocol (multi-party signing).
 	//
 	// # Arguments
@@ -4313,11 +4316,11 @@ func (_self *ExternalSignerImpl) GetPublicKeyForNode(id ExternalTreeNodeId) (Pub
 	return res, err
 }
 
-// Generates a random private key.
+// Generates a random secret key.
 //
 // # Returns
-// A randomly generated private key source, or an error string
-func (_self *ExternalSignerImpl) GenerateRandomKey() (ExternalPrivateKeySource, error) {
+// A randomly generated secret key source, or an error string
+func (_self *ExternalSignerImpl) GenerateRandomKey() (ExternalSecretKeySource, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
@@ -4330,8 +4333,8 @@ func (_self *ExternalSignerImpl) GenerateRandomKey() (ExternalPrivateKeySource, 
 			}
 		},
 		// liftFn
-		func(ffi RustBufferI) ExternalPrivateKeySource {
-			return FfiConverterExternalPrivateKeySourceINSTANCE.Lift(ffi)
+		func(ffi RustBufferI) ExternalSecretKeySource {
+			return FfiConverterExternalSecretKeySourceINSTANCE.Lift(ffi)
 		},
 		C.uniffi_breez_sdk_spark_fn_method_externalsigner_generate_random_key(
 			_pointer),
@@ -4348,14 +4351,14 @@ func (_self *ExternalSignerImpl) GenerateRandomKey() (ExternalPrivateKeySource, 
 	return res, err
 }
 
-// Gets a static deposit private key source by index.
+// Gets an encrypted static deposit secret key by index.
 //
 // # Arguments
 // * `index` - The index of the static deposit key
 //
 // # Returns
-// The private key source, or an error string
-func (_self *ExternalSignerImpl) GetStaticDepositPrivateKeySource(index uint32) (ExternalPrivateKeySource, error) {
+// The encrypted secret key, or an error string
+func (_self *ExternalSignerImpl) StaticDepositSecretKeyEncrypted(index uint32) (ExternalSecretKeySource, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
@@ -4368,10 +4371,10 @@ func (_self *ExternalSignerImpl) GetStaticDepositPrivateKeySource(index uint32) 
 			}
 		},
 		// liftFn
-		func(ffi RustBufferI) ExternalPrivateKeySource {
-			return FfiConverterExternalPrivateKeySourceINSTANCE.Lift(ffi)
+		func(ffi RustBufferI) ExternalSecretKeySource {
+			return FfiConverterExternalSecretKeySourceINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_get_static_deposit_private_key_source(
+		C.uniffi_breez_sdk_spark_fn_method_externalsigner_static_deposit_secret_key_encrypted(
 			_pointer, FfiConverterUint32INSTANCE.Lower(index)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -4386,13 +4389,13 @@ func (_self *ExternalSignerImpl) GetStaticDepositPrivateKeySource(index uint32) 
 	return res, err
 }
 
-// Gets a static deposit private key by index.
+// Gets a static deposit secret key by index.
 //
 // # Arguments
 // * `index` - The index of the static deposit key
 //
 // # Returns
-// The 32-byte private key, or an error string
+// The 32-byte secret key, or an error string
 //
 // See also: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
 func (_self *ExternalSignerImpl) StaticDepositSecretKey(index uint32) (PrivateKeyBytes, error) {
@@ -4466,15 +4469,18 @@ func (_self *ExternalSignerImpl) StaticDepositSigningKey(index uint32) (PublicKe
 	return res, err
 }
 
-// Subtracts one private key from another.
+// Subtracts one secret key from another.
 //
 // # Arguments
-// * `signing_key` - The first private key source
-// * `new_signing_key` - The second private key source to subtract
+// * `signing_key` - The first secret key source
+// * `new_signing_key` - The second secret key source to subtract
 //
 // # Returns
-// The resulting private key source, or an error string
-func (_self *ExternalSignerImpl) SubtractSecretKeys(signingKey ExternalPrivateKeySource, newSigningKey ExternalPrivateKeySource) (ExternalPrivateKeySource, error) {
+// The resulting secret key source, or an error string
+//
+// See also: [JavaScript `subtractSplitAndEncrypt`](https://docs.spark.money/wallets/spark-signer#subtract,-split,-and-encrypt)
+// (this method provides the subtraction step of that higher-level operation)
+func (_self *ExternalSignerImpl) SubtractSecretKeys(signingKey ExternalSecretKeySource, newSigningKey ExternalSecretKeySource) (ExternalSecretKeySource, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
@@ -4487,11 +4493,11 @@ func (_self *ExternalSignerImpl) SubtractSecretKeys(signingKey ExternalPrivateKe
 			}
 		},
 		// liftFn
-		func(ffi RustBufferI) ExternalPrivateKeySource {
-			return FfiConverterExternalPrivateKeySourceINSTANCE.Lift(ffi)
+		func(ffi RustBufferI) ExternalSecretKeySource {
+			return FfiConverterExternalSecretKeySourceINSTANCE.Lift(ffi)
 		},
 		C.uniffi_breez_sdk_spark_fn_method_externalsigner_subtract_secret_keys(
-			_pointer, FfiConverterExternalPrivateKeySourceINSTANCE.Lower(signingKey), FfiConverterExternalPrivateKeySourceINSTANCE.Lower(newSigningKey)),
+			_pointer, FfiConverterExternalSecretKeySourceINSTANCE.Lower(signingKey), FfiConverterExternalSecretKeySourceINSTANCE.Lower(newSigningKey)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -4547,15 +4553,15 @@ func (_self *ExternalSignerImpl) SplitSecretWithProofs(secret ExternalSecretToSp
 	return res, err
 }
 
-// Encrypts a private key for a specific receiver's public key.
+// Encrypts a secret key for a specific receiver's public key.
 //
 // # Arguments
-// * `private_key` - The encrypted private key to re-encrypt
+// * `secret_key` - The encrypted secret key to re-encrypt
 // * `receiver_public_key` - The receiver's 33-byte public key
 //
 // # Returns
 // Encrypted data for the receiver, or an error string
-func (_self *ExternalSignerImpl) EncryptPrivateKeyForReceiver(privateKey ExternalEncryptedPrivateKey, receiverPublicKey PublicKeyBytes) ([]byte, error) {
+func (_self *ExternalSignerImpl) EncryptSecretKeyForReceiver(secretKey ExternalEncryptedPrivateKey, receiverPublicKey PublicKeyBytes) ([]byte, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
@@ -4571,8 +4577,8 @@ func (_self *ExternalSignerImpl) EncryptPrivateKeyForReceiver(privateKey Externa
 		func(ffi RustBufferI) []byte {
 			return FfiConverterBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_encrypt_private_key_for_receiver(
-			_pointer, FfiConverterExternalEncryptedPrivateKeyINSTANCE.Lower(privateKey), FfiConverterPublicKeyBytesINSTANCE.Lower(receiverPublicKey)),
+		C.uniffi_breez_sdk_spark_fn_method_externalsigner_encrypt_secret_key_for_receiver(
+			_pointer, FfiConverterExternalEncryptedPrivateKeyINSTANCE.Lower(secretKey), FfiConverterPublicKeyBytesINSTANCE.Lower(receiverPublicKey)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -4586,14 +4592,14 @@ func (_self *ExternalSignerImpl) EncryptPrivateKeyForReceiver(privateKey Externa
 	return res, err
 }
 
-// Gets the public key from a private key source.
+// Gets the public key from a secret key source.
 //
 // # Arguments
-// * `private_key` - The private key source
+// * `secret_key` - The secret key source
 //
 // # Returns
 // The corresponding 33-byte public key, or an error string
-func (_self *ExternalSignerImpl) GetPublicKeyFromPrivateKeySource(privateKey ExternalPrivateKeySource) (PublicKeyBytes, error) {
+func (_self *ExternalSignerImpl) PublicKeyFromSecretKeySource(secretKey ExternalSecretKeySource) (PublicKeyBytes, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
@@ -4609,8 +4615,8 @@ func (_self *ExternalSignerImpl) GetPublicKeyFromPrivateKeySource(privateKey Ext
 		func(ffi RustBufferI) PublicKeyBytes {
 			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_get_public_key_from_private_key_source(
-			_pointer, FfiConverterExternalPrivateKeySourceINSTANCE.Lower(privateKey)),
+		C.uniffi_breez_sdk_spark_fn_method_externalsigner_public_key_from_secret_key_source(
+			_pointer, FfiConverterExternalSecretKeySourceINSTANCE.Lower(secretKey)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -5427,7 +5433,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10(uniffiH
 			}
 		}
 
-		*uniffiOutReturn = FfiConverterExternalPrivateKeySourceINSTANCE.Lower(res)
+		*uniffiOutReturn = FfiConverterExternalSecretKeySourceINSTANCE.Lower(res)
 	}()
 }
 
@@ -5466,7 +5472,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11(uniffiH
 		}()
 
 		res, err :=
-			uniffiObj.GetStaticDepositPrivateKeySource(
+			uniffiObj.StaticDepositSecretKeyEncrypted(
 				FfiConverterUint32INSTANCE.Lift(index),
 			)
 
@@ -5488,7 +5494,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11(uniffiH
 			}
 		}
 
-		*uniffiOutReturn = FfiConverterExternalPrivateKeySourceINSTANCE.Lower(res)
+		*uniffiOutReturn = FfiConverterExternalSecretKeySourceINSTANCE.Lower(res)
 	}()
 }
 
@@ -5650,10 +5656,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14(uniffiH
 
 		res, err :=
 			uniffiObj.SubtractSecretKeys(
-				FfiConverterExternalPrivateKeySourceINSTANCE.Lift(GoRustBuffer{
+				FfiConverterExternalSecretKeySourceINSTANCE.Lift(GoRustBuffer{
 					inner: signingKey,
 				}),
-				FfiConverterExternalPrivateKeySourceINSTANCE.Lift(GoRustBuffer{
+				FfiConverterExternalSecretKeySourceINSTANCE.Lift(GoRustBuffer{
 					inner: newSigningKey,
 				}),
 			)
@@ -5676,7 +5682,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14(uniffiH
 			}
 		}
 
-		*uniffiOutReturn = FfiConverterExternalPrivateKeySourceINSTANCE.Lower(res)
+		*uniffiOutReturn = FfiConverterExternalSecretKeySourceINSTANCE.Lower(res)
 	}()
 }
 
@@ -5746,7 +5752,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15(uniffiH
 }
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiHandle C.uint64_t, privateKey C.RustBuffer, receiverPublicKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiHandle C.uint64_t, secretKey C.RustBuffer, receiverPublicKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5780,9 +5786,9 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiH
 		}()
 
 		res, err :=
-			uniffiObj.EncryptPrivateKeyForReceiver(
+			uniffiObj.EncryptSecretKeyForReceiver(
 				FfiConverterExternalEncryptedPrivateKeyINSTANCE.Lift(GoRustBuffer{
-					inner: privateKey,
+					inner: secretKey,
 				}),
 				FfiConverterPublicKeyBytesINSTANCE.Lift(GoRustBuffer{
 					inner: receiverPublicKey,
@@ -5812,7 +5818,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiH
 }
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17(uniffiHandle C.uint64_t, privateKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17(uniffiHandle C.uint64_t, secretKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -5846,9 +5852,9 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17(uniffiH
 		}()
 
 		res, err :=
-			uniffiObj.GetPublicKeyFromPrivateKeySource(
-				FfiConverterExternalPrivateKeySourceINSTANCE.Lift(GoRustBuffer{
-					inner: privateKey,
+			uniffiObj.PublicKeyFromSecretKeySource(
+				FfiConverterExternalSecretKeySourceINSTANCE.Lift(GoRustBuffer{
+					inner: secretKey,
 				}),
 			)
 
@@ -6001,26 +6007,26 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19(uniffiH
 }
 
 var UniffiVTableCallbackInterfaceExternalSignerINSTANCE = C.UniffiVTableCallbackInterfaceExternalSigner{
-	identityPublicKey:                (C.UniffiCallbackInterfaceExternalSignerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod0),
-	derivePublicKey:                  (C.UniffiCallbackInterfaceExternalSignerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod1),
-	signEcdsa:                        (C.UniffiCallbackInterfaceExternalSignerMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod2),
-	signEcdsaRecoverable:             (C.UniffiCallbackInterfaceExternalSignerMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod3),
-	encryptEcies:                     (C.UniffiCallbackInterfaceExternalSignerMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod4),
-	decryptEcies:                     (C.UniffiCallbackInterfaceExternalSignerMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod5),
-	signHashSchnorr:                  (C.UniffiCallbackInterfaceExternalSignerMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod6),
-	hmacSha256:                       (C.UniffiCallbackInterfaceExternalSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7),
-	generateRandomSigningCommitment:  (C.UniffiCallbackInterfaceExternalSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8),
-	getPublicKeyForNode:              (C.UniffiCallbackInterfaceExternalSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9),
-	generateRandomKey:                (C.UniffiCallbackInterfaceExternalSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10),
-	getStaticDepositPrivateKeySource: (C.UniffiCallbackInterfaceExternalSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11),
-	staticDepositSecretKey:           (C.UniffiCallbackInterfaceExternalSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12),
-	staticDepositSigningKey:          (C.UniffiCallbackInterfaceExternalSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13),
-	subtractSecretKeys:               (C.UniffiCallbackInterfaceExternalSignerMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14),
-	splitSecretWithProofs:            (C.UniffiCallbackInterfaceExternalSignerMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15),
-	encryptPrivateKeyForReceiver:     (C.UniffiCallbackInterfaceExternalSignerMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16),
-	getPublicKeyFromPrivateKeySource: (C.UniffiCallbackInterfaceExternalSignerMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17),
-	signFrost:                        (C.UniffiCallbackInterfaceExternalSignerMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18),
-	aggregateFrost:                   (C.UniffiCallbackInterfaceExternalSignerMethod19)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19),
+	identityPublicKey:               (C.UniffiCallbackInterfaceExternalSignerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod0),
+	derivePublicKey:                 (C.UniffiCallbackInterfaceExternalSignerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod1),
+	signEcdsa:                       (C.UniffiCallbackInterfaceExternalSignerMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod2),
+	signEcdsaRecoverable:            (C.UniffiCallbackInterfaceExternalSignerMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod3),
+	encryptEcies:                    (C.UniffiCallbackInterfaceExternalSignerMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod4),
+	decryptEcies:                    (C.UniffiCallbackInterfaceExternalSignerMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod5),
+	signHashSchnorr:                 (C.UniffiCallbackInterfaceExternalSignerMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod6),
+	hmacSha256:                      (C.UniffiCallbackInterfaceExternalSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7),
+	generateRandomSigningCommitment: (C.UniffiCallbackInterfaceExternalSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8),
+	getPublicKeyForNode:             (C.UniffiCallbackInterfaceExternalSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9),
+	generateRandomKey:               (C.UniffiCallbackInterfaceExternalSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10),
+	staticDepositSecretKeyEncrypted: (C.UniffiCallbackInterfaceExternalSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11),
+	staticDepositSecretKey:          (C.UniffiCallbackInterfaceExternalSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12),
+	staticDepositSigningKey:         (C.UniffiCallbackInterfaceExternalSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13),
+	subtractSecretKeys:              (C.UniffiCallbackInterfaceExternalSignerMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14),
+	splitSecretWithProofs:           (C.UniffiCallbackInterfaceExternalSignerMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15),
+	encryptSecretKeyForReceiver:     (C.UniffiCallbackInterfaceExternalSignerMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16),
+	publicKeyFromSecretKeySource:    (C.UniffiCallbackInterfaceExternalSignerMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17),
+	signFrost:                       (C.UniffiCallbackInterfaceExternalSignerMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18),
+	aggregateFrost:                  (C.UniffiCallbackInterfaceExternalSignerMethod19)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerFree),
 }
@@ -12166,7 +12172,7 @@ type ExternalSignFrostRequest struct {
 	// The public key (33 bytes compressed)
 	PublicKey []byte
 	// The private key source
-	PrivateKey ExternalPrivateKeySource
+	PrivateKey ExternalSecretKeySource
 	// The verifying key (33 bytes compressed)
 	VerifyingKey []byte
 	// The self nonce commitment
@@ -12180,7 +12186,7 @@ type ExternalSignFrostRequest struct {
 func (r *ExternalSignFrostRequest) Destroy() {
 	FfiDestroyerBytes{}.Destroy(r.Message)
 	FfiDestroyerBytes{}.Destroy(r.PublicKey)
-	FfiDestroyerExternalPrivateKeySource{}.Destroy(r.PrivateKey)
+	FfiDestroyerExternalSecretKeySource{}.Destroy(r.PrivateKey)
 	FfiDestroyerBytes{}.Destroy(r.VerifyingKey)
 	FfiDestroyerExternalFrostCommitments{}.Destroy(r.SelfNonceCommitment)
 	FfiDestroyerSequenceIdentifierCommitmentPair{}.Destroy(r.StatechainCommitments)
@@ -12199,7 +12205,7 @@ func (c FfiConverterExternalSignFrostRequest) Read(reader io.Reader) ExternalSig
 	return ExternalSignFrostRequest{
 		FfiConverterBytesINSTANCE.Read(reader),
 		FfiConverterBytesINSTANCE.Read(reader),
-		FfiConverterExternalPrivateKeySourceINSTANCE.Read(reader),
+		FfiConverterExternalSecretKeySourceINSTANCE.Read(reader),
 		FfiConverterBytesINSTANCE.Read(reader),
 		FfiConverterExternalFrostCommitmentsINSTANCE.Read(reader),
 		FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Read(reader),
@@ -12214,7 +12220,7 @@ func (c FfiConverterExternalSignFrostRequest) Lower(value ExternalSignFrostReque
 func (c FfiConverterExternalSignFrostRequest) Write(writer io.Writer, value ExternalSignFrostRequest) {
 	FfiConverterBytesINSTANCE.Write(writer, value.Message)
 	FfiConverterBytesINSTANCE.Write(writer, value.PublicKey)
-	FfiConverterExternalPrivateKeySourceINSTANCE.Write(writer, value.PrivateKey)
+	FfiConverterExternalSecretKeySourceINSTANCE.Write(writer, value.PrivateKey)
 	FfiConverterBytesINSTANCE.Write(writer, value.VerifyingKey)
 	FfiConverterExternalFrostCommitmentsINSTANCE.Write(writer, value.SelfNonceCommitment)
 	FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Write(writer, value.StatechainCommitments)
@@ -17213,73 +17219,73 @@ func (_ FfiDestroyerDepositClaimError) Destroy(value DepositClaimError) {
 	value.Destroy()
 }
 
-// FFI-safe representation of `spark_wallet::PrivateKeySource`
-type ExternalPrivateKeySource interface {
+// FFI-safe representation of `spark_wallet::SecretKeySource`
+type ExternalSecretKeySource interface {
 	Destroy()
 }
 
 // Private key derived from a tree node
-type ExternalPrivateKeySourceDerived struct {
+type ExternalSecretKeySourceDerived struct {
 	NodeId ExternalTreeNodeId
 }
 
-func (e ExternalPrivateKeySourceDerived) Destroy() {
+func (e ExternalSecretKeySourceDerived) Destroy() {
 	FfiDestroyerExternalTreeNodeId{}.Destroy(e.NodeId)
 }
 
 // Encrypted private key
-type ExternalPrivateKeySourceEncrypted struct {
+type ExternalSecretKeySourceEncrypted struct {
 	Key ExternalEncryptedPrivateKey
 }
 
-func (e ExternalPrivateKeySourceEncrypted) Destroy() {
+func (e ExternalSecretKeySourceEncrypted) Destroy() {
 	FfiDestroyerExternalEncryptedPrivateKey{}.Destroy(e.Key)
 }
 
-type FfiConverterExternalPrivateKeySource struct{}
+type FfiConverterExternalSecretKeySource struct{}
 
-var FfiConverterExternalPrivateKeySourceINSTANCE = FfiConverterExternalPrivateKeySource{}
+var FfiConverterExternalSecretKeySourceINSTANCE = FfiConverterExternalSecretKeySource{}
 
-func (c FfiConverterExternalPrivateKeySource) Lift(rb RustBufferI) ExternalPrivateKeySource {
-	return LiftFromRustBuffer[ExternalPrivateKeySource](c, rb)
+func (c FfiConverterExternalSecretKeySource) Lift(rb RustBufferI) ExternalSecretKeySource {
+	return LiftFromRustBuffer[ExternalSecretKeySource](c, rb)
 }
 
-func (c FfiConverterExternalPrivateKeySource) Lower(value ExternalPrivateKeySource) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalPrivateKeySource](c, value)
+func (c FfiConverterExternalSecretKeySource) Lower(value ExternalSecretKeySource) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalSecretKeySource](c, value)
 }
-func (FfiConverterExternalPrivateKeySource) Read(reader io.Reader) ExternalPrivateKeySource {
+func (FfiConverterExternalSecretKeySource) Read(reader io.Reader) ExternalSecretKeySource {
 	id := readInt32(reader)
 	switch id {
 	case 1:
-		return ExternalPrivateKeySourceDerived{
+		return ExternalSecretKeySourceDerived{
 			FfiConverterExternalTreeNodeIdINSTANCE.Read(reader),
 		}
 	case 2:
-		return ExternalPrivateKeySourceEncrypted{
+		return ExternalSecretKeySourceEncrypted{
 			FfiConverterExternalEncryptedPrivateKeyINSTANCE.Read(reader),
 		}
 	default:
-		panic(fmt.Sprintf("invalid enum value %v in FfiConverterExternalPrivateKeySource.Read()", id))
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterExternalSecretKeySource.Read()", id))
 	}
 }
 
-func (FfiConverterExternalPrivateKeySource) Write(writer io.Writer, value ExternalPrivateKeySource) {
+func (FfiConverterExternalSecretKeySource) Write(writer io.Writer, value ExternalSecretKeySource) {
 	switch variant_value := value.(type) {
-	case ExternalPrivateKeySourceDerived:
+	case ExternalSecretKeySourceDerived:
 		writeInt32(writer, 1)
 		FfiConverterExternalTreeNodeIdINSTANCE.Write(writer, variant_value.NodeId)
-	case ExternalPrivateKeySourceEncrypted:
+	case ExternalSecretKeySourceEncrypted:
 		writeInt32(writer, 2)
 		FfiConverterExternalEncryptedPrivateKeyINSTANCE.Write(writer, variant_value.Key)
 	default:
 		_ = variant_value
-		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterExternalPrivateKeySource.Write", value))
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterExternalSecretKeySource.Write", value))
 	}
 }
 
-type FfiDestroyerExternalPrivateKeySource struct{}
+type FfiDestroyerExternalSecretKeySource struct{}
 
-func (_ FfiDestroyerExternalPrivateKeySource) Destroy(value ExternalPrivateKeySource) {
+func (_ FfiDestroyerExternalSecretKeySource) Destroy(value ExternalSecretKeySource) {
 	value.Destroy()
 }
 
@@ -17290,11 +17296,11 @@ type ExternalSecretToSplit interface {
 
 // A private key to split
 type ExternalSecretToSplitPrivateKey struct {
-	Source ExternalPrivateKeySource
+	Source ExternalSecretKeySource
 }
 
 func (e ExternalSecretToSplitPrivateKey) Destroy() {
-	FfiDestroyerExternalPrivateKeySource{}.Destroy(e.Source)
+	FfiDestroyerExternalSecretKeySource{}.Destroy(e.Source)
 }
 
 // A preimage to split (32 bytes)
@@ -17322,7 +17328,7 @@ func (FfiConverterExternalSecretToSplit) Read(reader io.Reader) ExternalSecretTo
 	switch id {
 	case 1:
 		return ExternalSecretToSplitPrivateKey{
-			FfiConverterExternalPrivateKeySourceINSTANCE.Read(reader),
+			FfiConverterExternalSecretKeySourceINSTANCE.Read(reader),
 		}
 	case 2:
 		return ExternalSecretToSplitPreimage{
@@ -17337,7 +17343,7 @@ func (FfiConverterExternalSecretToSplit) Write(writer io.Writer, value ExternalS
 	switch variant_value := value.(type) {
 	case ExternalSecretToSplitPrivateKey:
 		writeInt32(writer, 1)
-		FfiConverterExternalPrivateKeySourceINSTANCE.Write(writer, variant_value.Source)
+		FfiConverterExternalSecretKeySourceINSTANCE.Write(writer, variant_value.Source)
 	case ExternalSecretToSplitPreimage:
 		writeInt32(writer, 2)
 		FfiConverterBytesINSTANCE.Write(writer, variant_value.Data)
