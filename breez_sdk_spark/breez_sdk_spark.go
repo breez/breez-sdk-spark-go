@@ -858,25 +858,25 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_for_node()
 		})
-		if checksum != 62425 {
+		if checksum != 37434 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_for_node: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_key()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_secret()
 		})
-		if checksum != 63908 {
+		if checksum != 26114 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_key: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_secret: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret_encrypted()
 		})
-		if checksum != 64635 {
+		if checksum != 38925 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret_encrypted: UniFFI API checksum mismatch")
 		}
@@ -885,7 +885,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret()
 		})
-		if checksum != 35967 {
+		if checksum != 45280 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret: UniFFI API checksum mismatch")
 		}
@@ -894,7 +894,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_signing_key()
 		})
-		if checksum != 15562 {
+		if checksum != 62519 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_signing_key: UniFFI API checksum mismatch")
 		}
@@ -903,7 +903,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_subtract_secrets()
 		})
-		if checksum != 43864 {
+		if checksum != 51106 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_subtract_secrets: UniFFI API checksum mismatch")
 		}
@@ -912,7 +912,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_split_secret_with_proofs()
 		})
-		if checksum != 6228 {
+		if checksum != 19489 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_split_secret_with_proofs: UniFFI API checksum mismatch")
 		}
@@ -921,7 +921,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_secret_for_receiver()
 		})
-		if checksum != 61924 {
+		if checksum != 51627 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_secret_for_receiver: UniFFI API checksum mismatch")
 		}
@@ -930,7 +930,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_public_key_from_secret()
 		})
-		if checksum != 27909 {
+		if checksum != 53055 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_public_key_from_secret: UniFFI API checksum mismatch")
 		}
@@ -939,7 +939,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_frost()
 		})
-		if checksum != 2993 {
+		if checksum != 20635 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_frost: UniFFI API checksum mismatch")
 		}
@@ -948,7 +948,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_aggregate_frost()
 		})
-		if checksum != 27769 {
+		if checksum != 53544 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_aggregate_frost: UniFFI API checksum mismatch")
 		}
@@ -3826,51 +3826,64 @@ type ExternalSigner interface {
 	// * `id` - The tree node identifier
 	//
 	// # Returns
-	// The public key for the node, or an error string
+	// The public key for the node, or a `SignerError`
 	GetPublicKeyForNode(id ExternalTreeNodeId) (PublicKeyBytes, error)
-	// Generates a random secret.
+	// Generates a random secret that is encrypted and known only to the signer.
+	//
+	// This method creates a new random secret and returns it in encrypted form.
+	// The plaintext secret never leaves the signer boundary, providing a secure way
+	// to create secrets that can be referenced in subsequent operations without
+	// exposing them.
+	//
+	// This is conceptually similar to Spark's key derivation system where secrets
+	// are represented by opaque references (like tree node IDs or Random) rather than raw values.
+	// The encrypted secret can be passed to other signer methods that need to operate
+	// on it, while keeping the actual secret material protected within the signer.
 	//
 	// # Returns
-	// A randomly generated secret source, or an error string
-	GenerateRandomKey() (ExternalSecretSource, error)
+	// An encrypted secret that can be used in subsequent signer operations,
+	// or a `SignerError` if generation fails.
+	//
+	// See also: [Key Derivation System](https://docs.spark.money/wallets/spark-signer#the-keyderivation-system)
+	GenerateRandomSecret() (ExternalEncryptedSecret, error)
 	// Gets an encrypted static deposit secret by index.
 	//
 	// # Arguments
-	// * `index` - The index of the static deposit key
+	// * `index` - The index of the static deposit secret
 	//
 	// # Returns
-	// The encrypted secret source, or an error string
+	// The encrypted secret, or a `SignerError`
 	//
 	// This is the encrypted version of: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
 	StaticDepositSecretEncrypted(index uint32) (ExternalSecretSource, error)
 	// Gets a static deposit secret by index.
 	//
 	// # Arguments
-	// * `index` - The index of the static deposit key
+	// * `index` - The index of the static deposit secret
 	//
 	// # Returns
-	// The 32-byte secret, or an error string
+	// The 32-byte secret, or a `SignerError`
 	//
 	// See also: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
 	StaticDepositSecret(index uint32) (SecretBytes, error)
-	// Gets a static deposit public key by index.
+	// Gets a static deposit signing public key by index.
 	//
 	// # Arguments
-	// * `index` - The index of the static deposit key
+	// * `index` - The index of the static deposit public signing key
 	//
 	// # Returns
-	// The 33-byte public key, or an error string
+	// The 33-byte public key, or a `SignerError`
 	//
 	// See also: [JavaScript `getStaticDepositSigningKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-signing-key)
 	StaticDepositSigningKey(index uint32) (PublicKeyBytes, error)
 	// Subtracts one secret from another.
 	//
 	// # Arguments
-	// * `signing_key` - The first secret source
-	// * `new_signing_key` - The second secret source to subtract
+	// * `signing_key` - The first secret
+	// * `new_signing_key` - The second secret to subtract
 	//
 	// # Returns
-	// The resulting secret source, or an error string
+	// The resulting secret, or a `SignerError`
 	//
 	// See also: [JavaScript `subtractSplitAndEncrypt`](https://docs.spark.money/wallets/spark-signer#subtract,-split,-and-encrypt)
 	// (this method provides the subtraction step of that higher-level operation)
@@ -3883,7 +3896,7 @@ type ExternalSigner interface {
 	// * `num_shares` - Total number of shares to create
 	//
 	// # Returns
-	// Vector of verifiable secret shares, or an error string
+	// Vector of verifiable secret shares, or a `SignerError`
 	//
 	// See also: [JavaScript `splitSecretWithProofs`](https://docs.spark.money/wallets/spark-signer#split-secret-with-proofs)
 	SplitSecretWithProofs(secret ExternalSecretToSplit, threshold uint32, numShares uint32) ([]ExternalVerifiableSecretShare, error)
@@ -3894,15 +3907,17 @@ type ExternalSigner interface {
 	// * `receiver_public_key` - The receiver's 33-byte public key
 	//
 	// # Returns
-	// Encrypted data for the receiver, or an error string
+	// Encrypted data for the receiver, or a `SignerError`
 	EncryptSecretForReceiver(encryptedSecret ExternalEncryptedSecret, receiverPublicKey PublicKeyBytes) ([]byte, error)
-	// Gets the public key from a secret source.
+	// Gets the public key from a secret.
 	//
 	// # Arguments
-	// * `secret` - The secret source
+	// * `secret` - The secret
 	//
 	// # Returns
-	// The corresponding 33-byte public key, or an error string
+	// The corresponding 33-byte public key, or a `SignerError`
+	//
+	// See also: [JavaScript `getPublicKeyFromDerivation`](https://docs.spark.money/wallets/spark-signer#get-public-key-from-derivation)
 	PublicKeyFromSecret(secret ExternalSecretSource) (PublicKeyBytes, error)
 	// Signs using Frost protocol (multi-party signing).
 	//
@@ -3910,7 +3925,7 @@ type ExternalSigner interface {
 	// * `request` - The Frost signing request
 	//
 	// # Returns
-	// A signature share, or an error string
+	// A signature share, or a `SignerError`
 	//
 	// See also: [JavaScript `signFrost`](https://docs.spark.money/wallets/spark-signer#frost-signing)
 	SignFrost(request ExternalSignFrostRequest) (ExternalFrostSignatureShare, error)
@@ -3920,7 +3935,7 @@ type ExternalSigner interface {
 	// * `request` - The Frost aggregation request
 	//
 	// # Returns
-	// The aggregated Frost signature, or an error string
+	// The aggregated Frost signature, or a `SignerError`
 	//
 	// See also: [JavaScript `aggregateFrost`](https://docs.spark.money/wallets/spark-signer#aggregate-frost-signatures)
 	AggregateFrost(request ExternalAggregateFrostRequest) (ExternalFrostSignature, error)
@@ -4286,7 +4301,7 @@ func (_self *ExternalSignerImpl) GenerateRandomSigningCommitment() (ExternalFros
 // * `id` - The tree node identifier
 //
 // # Returns
-// The public key for the node, or an error string
+// The public key for the node, or a `SignerError`
 func (_self *ExternalSignerImpl) GetPublicKeyForNode(id ExternalTreeNodeId) (PublicKeyBytes, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
@@ -4318,11 +4333,24 @@ func (_self *ExternalSignerImpl) GetPublicKeyForNode(id ExternalTreeNodeId) (Pub
 	return res, err
 }
 
-// Generates a random secret.
+// Generates a random secret that is encrypted and known only to the signer.
+//
+// This method creates a new random secret and returns it in encrypted form.
+// The plaintext secret never leaves the signer boundary, providing a secure way
+// to create secrets that can be referenced in subsequent operations without
+// exposing them.
+//
+// This is conceptually similar to Spark's key derivation system where secrets
+// are represented by opaque references (like tree node IDs or Random) rather than raw values.
+// The encrypted secret can be passed to other signer methods that need to operate
+// on it, while keeping the actual secret material protected within the signer.
 //
 // # Returns
-// A randomly generated secret source, or an error string
-func (_self *ExternalSignerImpl) GenerateRandomKey() (ExternalSecretSource, error) {
+// An encrypted secret that can be used in subsequent signer operations,
+// or a `SignerError` if generation fails.
+//
+// See also: [Key Derivation System](https://docs.spark.money/wallets/spark-signer#the-keyderivation-system)
+func (_self *ExternalSignerImpl) GenerateRandomSecret() (ExternalEncryptedSecret, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
@@ -4335,10 +4363,10 @@ func (_self *ExternalSignerImpl) GenerateRandomKey() (ExternalSecretSource, erro
 			}
 		},
 		// liftFn
-		func(ffi RustBufferI) ExternalSecretSource {
-			return FfiConverterExternalSecretSourceINSTANCE.Lift(ffi)
+		func(ffi RustBufferI) ExternalEncryptedSecret {
+			return FfiConverterExternalEncryptedSecretINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_generate_random_key(
+		C.uniffi_breez_sdk_spark_fn_method_externalsigner_generate_random_secret(
 			_pointer),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -4356,10 +4384,10 @@ func (_self *ExternalSignerImpl) GenerateRandomKey() (ExternalSecretSource, erro
 // Gets an encrypted static deposit secret by index.
 //
 // # Arguments
-// * `index` - The index of the static deposit key
+// * `index` - The index of the static deposit secret
 //
 // # Returns
-// The encrypted secret source, or an error string
+// The encrypted secret, or a `SignerError`
 //
 // This is the encrypted version of: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
 func (_self *ExternalSignerImpl) StaticDepositSecretEncrypted(index uint32) (ExternalSecretSource, error) {
@@ -4396,10 +4424,10 @@ func (_self *ExternalSignerImpl) StaticDepositSecretEncrypted(index uint32) (Ext
 // Gets a static deposit secret by index.
 //
 // # Arguments
-// * `index` - The index of the static deposit key
+// * `index` - The index of the static deposit secret
 //
 // # Returns
-// The 32-byte secret, or an error string
+// The 32-byte secret, or a `SignerError`
 //
 // See also: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
 func (_self *ExternalSignerImpl) StaticDepositSecret(index uint32) (SecretBytes, error) {
@@ -4433,13 +4461,13 @@ func (_self *ExternalSignerImpl) StaticDepositSecret(index uint32) (SecretBytes,
 	return res, err
 }
 
-// Gets a static deposit public key by index.
+// Gets a static deposit signing public key by index.
 //
 // # Arguments
-// * `index` - The index of the static deposit key
+// * `index` - The index of the static deposit public signing key
 //
 // # Returns
-// The 33-byte public key, or an error string
+// The 33-byte public key, or a `SignerError`
 //
 // See also: [JavaScript `getStaticDepositSigningKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-signing-key)
 func (_self *ExternalSignerImpl) StaticDepositSigningKey(index uint32) (PublicKeyBytes, error) {
@@ -4476,11 +4504,11 @@ func (_self *ExternalSignerImpl) StaticDepositSigningKey(index uint32) (PublicKe
 // Subtracts one secret from another.
 //
 // # Arguments
-// * `signing_key` - The first secret source
-// * `new_signing_key` - The second secret source to subtract
+// * `signing_key` - The first secret
+// * `new_signing_key` - The second secret to subtract
 //
 // # Returns
-// The resulting secret source, or an error string
+// The resulting secret, or a `SignerError`
 //
 // See also: [JavaScript `subtractSplitAndEncrypt`](https://docs.spark.money/wallets/spark-signer#subtract,-split,-and-encrypt)
 // (this method provides the subtraction step of that higher-level operation)
@@ -4523,7 +4551,7 @@ func (_self *ExternalSignerImpl) SubtractSecrets(signingKey ExternalSecretSource
 // * `num_shares` - Total number of shares to create
 //
 // # Returns
-// Vector of verifiable secret shares, or an error string
+// Vector of verifiable secret shares, or a `SignerError`
 //
 // See also: [JavaScript `splitSecretWithProofs`](https://docs.spark.money/wallets/spark-signer#split-secret-with-proofs)
 func (_self *ExternalSignerImpl) SplitSecretWithProofs(secret ExternalSecretToSplit, threshold uint32, numShares uint32) ([]ExternalVerifiableSecretShare, error) {
@@ -4564,7 +4592,7 @@ func (_self *ExternalSignerImpl) SplitSecretWithProofs(secret ExternalSecretToSp
 // * `receiver_public_key` - The receiver's 33-byte public key
 //
 // # Returns
-// Encrypted data for the receiver, or an error string
+// Encrypted data for the receiver, or a `SignerError`
 func (_self *ExternalSignerImpl) EncryptSecretForReceiver(encryptedSecret ExternalEncryptedSecret, receiverPublicKey PublicKeyBytes) ([]byte, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
@@ -4596,13 +4624,15 @@ func (_self *ExternalSignerImpl) EncryptSecretForReceiver(encryptedSecret Extern
 	return res, err
 }
 
-// Gets the public key from a secret source.
+// Gets the public key from a secret.
 //
 // # Arguments
-// * `secret` - The secret source
+// * `secret` - The secret
 //
 // # Returns
-// The corresponding 33-byte public key, or an error string
+// The corresponding 33-byte public key, or a `SignerError`
+//
+// See also: [JavaScript `getPublicKeyFromDerivation`](https://docs.spark.money/wallets/spark-signer#get-public-key-from-derivation)
 func (_self *ExternalSignerImpl) PublicKeyFromSecret(secret ExternalSecretSource) (PublicKeyBytes, error) {
 	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
 	defer _self.ffiObject.decrementPointer()
@@ -4640,7 +4670,7 @@ func (_self *ExternalSignerImpl) PublicKeyFromSecret(secret ExternalSecretSource
 // * `request` - The Frost signing request
 //
 // # Returns
-// A signature share, or an error string
+// A signature share, or a `SignerError`
 //
 // See also: [JavaScript `signFrost`](https://docs.spark.money/wallets/spark-signer#frost-signing)
 func (_self *ExternalSignerImpl) SignFrost(request ExternalSignFrostRequest) (ExternalFrostSignatureShare, error) {
@@ -4680,7 +4710,7 @@ func (_self *ExternalSignerImpl) SignFrost(request ExternalSignFrostRequest) (Ex
 // * `request` - The Frost aggregation request
 //
 // # Returns
-// The aggregated Frost signature, or an error string
+// The aggregated Frost signature, or a `SignerError`
 //
 // See also: [JavaScript `aggregateFrost`](https://docs.spark.money/wallets/spark-signer#aggregate-frost-signatures)
 func (_self *ExternalSignerImpl) AggregateFrost(request ExternalAggregateFrostRequest) (ExternalFrostSignature, error) {
@@ -5417,7 +5447,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10(uniffiH
 		}()
 
 		res, err :=
-			uniffiObj.GenerateRandomKey()
+			uniffiObj.GenerateRandomSecret()
 
 		if err != nil {
 			var actualError *SignerError
@@ -5437,7 +5467,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10(uniffiH
 			}
 		}
 
-		*uniffiOutReturn = FfiConverterExternalSecretSourceINSTANCE.Lower(res)
+		*uniffiOutReturn = FfiConverterExternalEncryptedSecretINSTANCE.Lower(res)
 	}()
 }
 
@@ -6021,7 +6051,7 @@ var UniffiVTableCallbackInterfaceExternalSignerINSTANCE = C.UniffiVTableCallback
 	hmacSha256:                      (C.UniffiCallbackInterfaceExternalSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7),
 	generateRandomSigningCommitment: (C.UniffiCallbackInterfaceExternalSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8),
 	getPublicKeyForNode:             (C.UniffiCallbackInterfaceExternalSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9),
-	generateRandomKey:               (C.UniffiCallbackInterfaceExternalSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10),
+	generateRandomSecret:            (C.UniffiCallbackInterfaceExternalSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10),
 	staticDepositSecretEncrypted:    (C.UniffiCallbackInterfaceExternalSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11),
 	staticDepositSecret:             (C.UniffiCallbackInterfaceExternalSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12),
 	staticDepositSigningKey:         (C.UniffiCallbackInterfaceExternalSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13),
