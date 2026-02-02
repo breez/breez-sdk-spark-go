@@ -127,9 +127,9 @@ func main() {
 
 ## Bundling
 
-For [Android](#android) and [Windows](#windows) the provided binding libraries need to be copied into a location where they need to be found during runtime. 
+For [Android](#android) and [Windows](#windows), the provided binding libraries must be copied to a location that can be found at runtime.  
 
-For [iOS](#ios) the native binary framework need additionaly installing using [Swift Package Manager](#swift-package-manager) or [CocoaPods](#cocoapods).
+For [iOS](#ios), the native binary framework must be installed in addition using [Swift Package Manager](#swift-package-manager) or [CocoaPods](#cocoapods).
 
 ### Android
 
