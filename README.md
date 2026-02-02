@@ -45,17 +45,17 @@ This package embeds the Breez SDK - Nodeless *(Spark Implementation)* runtime co
       <td>See <a href="#android">Android</a></td>
     </tr>
     <tr>
-      <td rowspan="2">Darwin</td>
+      <td rowspan="2">Darwin (macOS)</td>
       <td><code>amd64</code></td>
       <td><code>x86_64-apple-darwin</code></td>
       <td>✅</td>
-      <td></td>
+      <td>See <a href="#darwin-macos">Darwin (macOS)</a></td>
     </tr>
     <tr>
       <td><code>aarch64</code></td>
       <td><code>aarch64-apple-darwin</code></td>
       <td>✅</td>
-      <td></td>
+      <td>See <a href="darwin-macos">Darwin (macOS)</a></td>
     </tr>
     <tr>
       <td rowspan="2">iOS</td>
@@ -154,6 +154,19 @@ So they are in the following structure
                 └── AndroidManifest.xml
         └── build.gradle
     └── build.gradle
+```
+
+### Darwin (macOS)
+
+For development, `go run` and `go build` work out of the box since the bundled `.dylib` is referenced via `rpath` pointing into the Go module cache.
+
+For deployment, create a universal dylib and place it in your app bundle's Frameworks directory:
+
+```bash
+lipo -create \
+  vendor/github.com/breez/breez-sdk-spark-go/breez_sdk_spark/lib/darwin-aarch64/libbreez_sdk_spark_bindings.dylib \
+  vendor/github.com/breez/breez-sdk-spark-go/breez_sdk_spark/lib/darwin-amd64/libbreez_sdk_spark_bindings.dylib \
+  -output YourMacOSApp/Contents/Frameworks/libbreez_sdk_spark_bindings.dylib
 ```
 
 ### iOS
