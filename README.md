@@ -27,6 +27,7 @@ This package embeds the Breez SDK - Nodeless *(Spark Implementation)* runtime co
       <th>Architecture</th>
       <th>Triple</th>
       <th>Status</th>
+      <th>Bundling</th>
     </tr>
   </thead>
   <tbody>
@@ -35,39 +36,59 @@ This package embeds the Breez SDK - Nodeless *(Spark Implementation)* runtime co
       <td><code>amd64</code></td>
       <td><code>x86_64-linux-android</code></td>
       <td>✅</td>
+      <td>See <a href="#android">Android</a></td>
     </tr>
     <tr>
       <td><code>aarch64</code></td>
       <td><code>aarch64-linux-android</code></td>
       <td>✅</td>
+      <td>See <a href="#android">Android</a></td>
     </tr>
     <tr>
       <td rowspan="2">Darwin</td>
       <td><code>amd64</code></td>
       <td><code>x86_64-apple-darwin</code></td>
       <td>✅</td>
+      <td></td>
     </tr>
     <tr>
       <td><code>aarch64</code></td>
       <td><code>aarch64-apple-darwin</code></td>
       <td>✅</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td rowspan="2">iOS</td>
+      <td><code>amd64</code></td>
+      <td><code>x86_64-apple-ios</code></td>
+      <td>✅</td>
+      <td>See <a href="#ios">iOS</a></td>
+    </tr>
+    <tr>
+      <td><code>aarch64</code></td>
+      <td><code>aarch64-apple-ios</code></td>
+      <td>✅</td>
+      <td>See <a href="#ios">iOS</a></td>
     </tr>
     <tr>
       <td rowspan="2">Linux</td>
       <td><code>amd64</code></td>
       <td><code>x86_64-unknown-linux-gnu</code></td>
       <td>✅</td>
+      <td></td>
     </tr>
     <tr>
       <td><code>aarch64</code></td>
       <td><code>aarch64-unknown-linux-gnu</code></td>
       <td>✅</td>
+      <td></td>
     </tr>
     <tr>
       <td>Windows</td>
       <td><code>amd64</code></td>
       <td><code>x86_64-pc-windows-msvc</code></td>
       <td>✅</td>
+      <td>See <a href="#windows">Windows</a></td>
     </tr>
   </tbody>
 </table>
@@ -80,25 +101,35 @@ Head over to the Breez SDK - Nodeless *(Spark Implementation)* [documentation](h
 package main
 
 import (
-	"github.com/breez/breez-sdk-spark-go/breez_sdk_spark"
+    "github.com/breez/breez-sdk-spark-go/breez_sdk_spark"
 )
 
 func main() {
-    mnemonic := "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
-
-    config := breez_sdk_spark.DefaultConfig(breez_sdk_spark.NetworkMainnet)
-
-    sdk, err := breez_sdk_spark.Connect(breez_sdk_spark.ConnectRequest{
-        Config:     config,
+    mnemonic := "<mnemonic words>"
+    var seed breez_sdk_spark.Seed = breez_sdk_spark.SeedMnemonic{
         Mnemonic:   mnemonic,
+        Passphrase: nil,
+    }
+
+    apiKey := "<breez api key>"
+    config := breez_sdk_spark.DefaultConfig(breez_sdk_spark.NetworkMainnet)
+    config.ApiKey = &apiKey
+
+    connectRequest := breez_sdk_spark.ConnectRequest{
+        Config:     config,
+        Seed:       seed,
         StorageDir: "./.data",
-    })
+    }
+
+    sdk, err := breez_sdk_spark.Connect(connectRequest)
 }
 ```
 
 ## Bundling
 
-For some platforms the provided binding libraries need to be copied into a location where they need to be found during runtime.
+For [Android](#android) and [Windows](#windows) the provided binding libraries need to be copied into a location where they need to be found during runtime. 
+
+For [iOS](#ios) the native binary framework need additionaly installing using [Swift Package Manager](#swift-package-manager) or [CocoaPods](#cocoapods).
 
 ### Android
 
@@ -123,6 +154,44 @@ So they are in the following structure
                 └── AndroidManifest.xml
         └── build.gradle
     └── build.gradle
+```
+
+### iOS
+
+When targeting iOS, you must also install the native binary framework. This is the same framework used by the Swift Breez SDK package and can be installed via [Swift Package Manager](#swift-package-manager) or [CocoaPods](#cocoapods).
+
+**Note:** The Go and Swift packages (installed via SPM or CocoaPods) **MUST** have the same version. A version mismatch between the two will cause linking or runtime errors.
+
+
+#### Swift Package Manager
+
+##### Installation via Xcode
+
+Via `File > Add Packages...`, add
+
+```
+https://github.com/breez/breez-sdk-spark-swift.git
+```
+
+as a package dependency in Xcode.
+
+##### Installation via Swift Package Manifest
+
+Add the following to the dependencies array of your `Package.swift`:
+
+``` swift
+.package(url: "https://github.com/breez/breez-sdk-spark-swift.git"),
+```
+
+#### CocoaPods
+
+Add the Breez SDK to your `Podfile` like so and run `pod install`:
+
+``` ruby
+target '<YourApp>' do
+  use_frameworks!
+  pod 'breez_sdk_sparkFFI'
+end
 ```
 
 ### Windows
