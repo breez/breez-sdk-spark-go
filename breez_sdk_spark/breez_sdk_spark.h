@@ -954,208 +954,208 @@ static void call_UniffiCallbackInterfaceStorageMethod7(
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD8
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD8
-typedef void (*UniffiCallbackInterfaceStorageMethod8)(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, uint64_t amount_sats, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod8)(uint64_t uniffi_handle, RustBuffer parent_payment_ids, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod8(
-				UniffiCallbackInterfaceStorageMethod8 cb, uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, uint64_t amount_sats, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod8 cb, uint64_t uniffi_handle, RustBuffer parent_payment_ids, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, txid, vout, amount_sats, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, parent_payment_ids, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD9
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD9
-typedef void (*UniffiCallbackInterfaceStorageMethod9)(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod9)(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, uint64_t amount_sats, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod9(
-				UniffiCallbackInterfaceStorageMethod9 cb, uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod9 cb, uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, uint64_t amount_sats, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, txid, vout, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, txid, vout, amount_sats, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD10
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD10
-typedef void (*UniffiCallbackInterfaceStorageMethod10)(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod10)(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod10(
-				UniffiCallbackInterfaceStorageMethod10 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod10 cb, uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, txid, vout, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD11
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD11
-typedef void (*UniffiCallbackInterfaceStorageMethod11)(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, RustBuffer payload, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod11)(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod11(
-				UniffiCallbackInterfaceStorageMethod11 cb, uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, RustBuffer payload, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod11 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, txid, vout, payload, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD12
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD12
-typedef void (*UniffiCallbackInterfaceStorageMethod12)(uint64_t uniffi_handle, RustBuffer metadata, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod12)(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, RustBuffer payload, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod12(
-				UniffiCallbackInterfaceStorageMethod12 cb, uint64_t uniffi_handle, RustBuffer metadata, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod12 cb, uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, RustBuffer payload, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, txid, vout, payload, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD13
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD13
+typedef void (*UniffiCallbackInterfaceStorageMethod13)(uint64_t uniffi_handle, RustBuffer metadata, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceStorageMethod13(
+				UniffiCallbackInterfaceStorageMethod13 cb, uint64_t uniffi_handle, RustBuffer metadata, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, metadata, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD0
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD0
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod0)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD14
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD14
+typedef void (*UniffiCallbackInterfaceStorageMethod14)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod0(
-				UniffiCallbackInterfaceSyncStorageMethod0 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod14(
+				UniffiCallbackInterfaceStorageMethod14 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, record, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD1
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD1
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod1)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD15
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD15
+typedef void (*UniffiCallbackInterfaceStorageMethod15)(uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod1(
-				UniffiCallbackInterfaceSyncStorageMethod1 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod15(
+				UniffiCallbackInterfaceStorageMethod15 cb, uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, record, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, record, local_revision, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD2
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD2
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod2)(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD16
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD16
+typedef void (*UniffiCallbackInterfaceStorageMethod16)(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod2(
-				UniffiCallbackInterfaceSyncStorageMethod2 cb, uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod16(
+				UniffiCallbackInterfaceStorageMethod16 cb, uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, limit, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD3
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD3
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod3)(uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD17
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD17
+typedef void (*UniffiCallbackInterfaceStorageMethod17)(uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod3(
-				UniffiCallbackInterfaceSyncStorageMethod3 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod17(
+				UniffiCallbackInterfaceStorageMethod17 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD4
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD4
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod4)(uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD18
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD18
+typedef void (*UniffiCallbackInterfaceStorageMethod18)(uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod4(
-				UniffiCallbackInterfaceSyncStorageMethod4 cb, uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod18(
+				UniffiCallbackInterfaceStorageMethod18 cb, uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, records, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD5
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD5
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod5)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD19
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD19
+typedef void (*UniffiCallbackInterfaceStorageMethod19)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod5(
-				UniffiCallbackInterfaceSyncStorageMethod5 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod19(
+				UniffiCallbackInterfaceStorageMethod19 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, record, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD6
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD6
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod6)(uint64_t uniffi_handle, uint64_t revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD20
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD20
+typedef void (*UniffiCallbackInterfaceStorageMethod20)(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod6(
-				UniffiCallbackInterfaceSyncStorageMethod6 cb, uint64_t uniffi_handle, uint64_t revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
-{
-	return cb(uniffi_handle, revision, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
-}
-
-
-#endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD7
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD7
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod7)(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
-
-// Making function static works arround:
-// https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod7(
-				UniffiCallbackInterfaceSyncStorageMethod7 cb, uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod20(
+				UniffiCallbackInterfaceStorageMethod20 cb, uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, limit, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD8
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD8
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod8)(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD21
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD21
+typedef void (*UniffiCallbackInterfaceStorageMethod21)(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod8(
-				UniffiCallbackInterfaceSyncStorageMethod8 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod21(
+				UniffiCallbackInterfaceStorageMethod21 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD9
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SYNC_STORAGE_METHOD9
-typedef void (*UniffiCallbackInterfaceSyncStorageMethod9)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD22
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD22
+typedef void (*UniffiCallbackInterfaceStorageMethod22)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceSyncStorageMethod9(
-				UniffiCallbackInterfaceSyncStorageMethod9 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod22(
+				UniffiCallbackInterfaceStorageMethod22 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, record, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
@@ -1252,33 +1252,26 @@ typedef struct UniffiVTableCallbackInterfaceStorage {
     UniffiCallbackInterfaceStorageMethod2 setCachedItem;
     UniffiCallbackInterfaceStorageMethod3 listPayments;
     UniffiCallbackInterfaceStorageMethod4 insertPayment;
-    UniffiCallbackInterfaceStorageMethod5 setPaymentMetadata;
+    UniffiCallbackInterfaceStorageMethod5 insertPaymentMetadata;
     UniffiCallbackInterfaceStorageMethod6 getPaymentById;
     UniffiCallbackInterfaceStorageMethod7 getPaymentByInvoice;
-    UniffiCallbackInterfaceStorageMethod8 addDeposit;
-    UniffiCallbackInterfaceStorageMethod9 deleteDeposit;
-    UniffiCallbackInterfaceStorageMethod10 listDeposits;
-    UniffiCallbackInterfaceStorageMethod11 updateDeposit;
-    UniffiCallbackInterfaceStorageMethod12 setLnurlMetadata;
+    UniffiCallbackInterfaceStorageMethod8 getPaymentsByParentIds;
+    UniffiCallbackInterfaceStorageMethod9 addDeposit;
+    UniffiCallbackInterfaceStorageMethod10 deleteDeposit;
+    UniffiCallbackInterfaceStorageMethod11 listDeposits;
+    UniffiCallbackInterfaceStorageMethod12 updateDeposit;
+    UniffiCallbackInterfaceStorageMethod13 setLnurlMetadata;
+    UniffiCallbackInterfaceStorageMethod14 addOutgoingChange;
+    UniffiCallbackInterfaceStorageMethod15 completeOutgoingSync;
+    UniffiCallbackInterfaceStorageMethod16 getPendingOutgoingChanges;
+    UniffiCallbackInterfaceStorageMethod17 getLastRevision;
+    UniffiCallbackInterfaceStorageMethod18 insertIncomingRecords;
+    UniffiCallbackInterfaceStorageMethod19 deleteIncomingRecord;
+    UniffiCallbackInterfaceStorageMethod20 getIncomingRecords;
+    UniffiCallbackInterfaceStorageMethod21 getLatestOutgoingChange;
+    UniffiCallbackInterfaceStorageMethod22 updateRecordFromIncoming;
     UniffiCallbackInterfaceFree uniffiFree;
 } UniffiVTableCallbackInterfaceStorage;
-
-#endif
-#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_SYNC_STORAGE
-#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_SYNC_STORAGE
-typedef struct UniffiVTableCallbackInterfaceSyncStorage {
-    UniffiCallbackInterfaceSyncStorageMethod0 addOutgoingChange;
-    UniffiCallbackInterfaceSyncStorageMethod1 completeOutgoingSync;
-    UniffiCallbackInterfaceSyncStorageMethod2 getPendingOutgoingChanges;
-    UniffiCallbackInterfaceSyncStorageMethod3 getLastRevision;
-    UniffiCallbackInterfaceSyncStorageMethod4 insertIncomingRecords;
-    UniffiCallbackInterfaceSyncStorageMethod5 deleteIncomingRecord;
-    UniffiCallbackInterfaceSyncStorageMethod6 rebasePendingOutgoingRecords;
-    UniffiCallbackInterfaceSyncStorageMethod7 getIncomingRecords;
-    UniffiCallbackInterfaceSyncStorageMethod8 getLatestOutgoingChange;
-    UniffiCallbackInterfaceSyncStorageMethod9 updateRecordFromIncoming;
-    UniffiCallbackInterfaceFree uniffiFree;
-} UniffiVTableCallbackInterfaceSyncStorage;
 
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_BITCOINCHAINSERVICE
@@ -1334,6 +1327,11 @@ void uniffi_breez_sdk_spark_fn_free_breezsdk(void* ptr, RustCallStatus *out_stat
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_ADD_EVENT_LISTENER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_ADD_EVENT_LISTENER
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_add_event_listener(void* ptr, uint64_t listener
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_BUY_BITCOIN
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_BUY_BITCOIN
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_buy_bitcoin(void* ptr, RustBuffer request
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_CANCEL_LEAF_OPTIMIZATION
@@ -1751,11 +1749,6 @@ uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_lnurl_client(void* ptr
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_payment_observer(void* ptr, void* payment_observer
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_REAL_TIME_SYNC_STORAGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_REAL_TIME_SYNC_STORAGE
-uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_real_time_sync_storage(void* ptr, void* storage
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_rest_chain_service(void* ptr, RustBuffer url, RustBuffer api_type, RustBuffer credentials
@@ -1806,9 +1799,9 @@ uint64_t uniffi_breez_sdk_spark_fn_method_storage_list_payments(void* ptr, RustB
 uint64_t uniffi_breez_sdk_spark_fn_method_storage_insert_payment(void* ptr, RustBuffer payment
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_SET_PAYMENT_METADATA
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_SET_PAYMENT_METADATA
-uint64_t uniffi_breez_sdk_spark_fn_method_storage_set_payment_metadata(void* ptr, RustBuffer payment_id, RustBuffer metadata
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_INSERT_PAYMENT_METADATA
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_INSERT_PAYMENT_METADATA
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_insert_payment_metadata(void* ptr, RustBuffer payment_id, RustBuffer metadata
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_PAYMENT_BY_ID
@@ -1819,6 +1812,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_storage_get_payment_by_id(void* ptr, R
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_PAYMENT_BY_INVOICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_PAYMENT_BY_INVOICE
 uint64_t uniffi_breez_sdk_spark_fn_method_storage_get_payment_by_invoice(void* ptr, RustBuffer invoice
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_PAYMENTS_BY_PARENT_IDS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_PAYMENTS_BY_PARENT_IDS
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_get_payments_by_parent_ids(void* ptr, RustBuffer parent_payment_ids
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_ADD_DEPOSIT
@@ -1846,69 +1844,49 @@ uint64_t uniffi_breez_sdk_spark_fn_method_storage_update_deposit(void* ptr, Rust
 uint64_t uniffi_breez_sdk_spark_fn_method_storage_set_lnurl_metadata(void* ptr, RustBuffer metadata
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SYNCSTORAGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SYNCSTORAGE
-void* uniffi_breez_sdk_spark_fn_clone_syncstorage(void* ptr, RustCallStatus *out_status
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_ADD_OUTGOING_CHANGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_ADD_OUTGOING_CHANGE
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_add_outgoing_change(void* ptr, RustBuffer record
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_SYNCSTORAGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_SYNCSTORAGE
-void uniffi_breez_sdk_spark_fn_free_syncstorage(void* ptr, RustCallStatus *out_status
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_COMPLETE_OUTGOING_SYNC
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_COMPLETE_OUTGOING_SYNC
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_complete_outgoing_sync(void* ptr, RustBuffer record, uint64_t local_revision
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_INIT_CALLBACK_VTABLE_SYNCSTORAGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_INIT_CALLBACK_VTABLE_SYNCSTORAGE
-void uniffi_breez_sdk_spark_fn_init_callback_vtable_syncstorage(UniffiVTableCallbackInterfaceSyncStorage* vtable
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_PENDING_OUTGOING_CHANGES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_PENDING_OUTGOING_CHANGES
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_get_pending_outgoing_changes(void* ptr, uint32_t limit
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_ADD_OUTGOING_CHANGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_ADD_OUTGOING_CHANGE
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_add_outgoing_change(void* ptr, RustBuffer record
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_LAST_REVISION
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_LAST_REVISION
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_get_last_revision(void* ptr
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_COMPLETE_OUTGOING_SYNC
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_COMPLETE_OUTGOING_SYNC
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_complete_outgoing_sync(void* ptr, RustBuffer record
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_INSERT_INCOMING_RECORDS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_INSERT_INCOMING_RECORDS
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_insert_incoming_records(void* ptr, RustBuffer records
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_GET_PENDING_OUTGOING_CHANGES
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_GET_PENDING_OUTGOING_CHANGES
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_get_pending_outgoing_changes(void* ptr, uint32_t limit
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_DELETE_INCOMING_RECORD
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_DELETE_INCOMING_RECORD
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_delete_incoming_record(void* ptr, RustBuffer record
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_GET_LAST_REVISION
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_GET_LAST_REVISION
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_get_last_revision(void* ptr
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_INCOMING_RECORDS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_INCOMING_RECORDS
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_get_incoming_records(void* ptr, uint32_t limit
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_INSERT_INCOMING_RECORDS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_INSERT_INCOMING_RECORDS
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_insert_incoming_records(void* ptr, RustBuffer records
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_LATEST_OUTGOING_CHANGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_LATEST_OUTGOING_CHANGE
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_get_latest_outgoing_change(void* ptr
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_DELETE_INCOMING_RECORD
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_DELETE_INCOMING_RECORD
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_delete_incoming_record(void* ptr, RustBuffer record
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_REBASE_PENDING_OUTGOING_RECORDS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_REBASE_PENDING_OUTGOING_RECORDS
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_rebase_pending_outgoing_records(void* ptr, uint64_t revision
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_GET_INCOMING_RECORDS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_GET_INCOMING_RECORDS
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_get_incoming_records(void* ptr, uint32_t limit
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_GET_LATEST_OUTGOING_CHANGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_GET_LATEST_OUTGOING_CHANGE
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_get_latest_outgoing_change(void* ptr
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_UPDATE_RECORD_FROM_INCOMING
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SYNCSTORAGE_UPDATE_RECORD_FROM_INCOMING
-uint64_t uniffi_breez_sdk_spark_fn_method_syncstorage_update_record_from_incoming(void* ptr, RustBuffer record
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_UPDATE_RECORD_FROM_INCOMING
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_UPDATE_RECORD_FROM_INCOMING
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_update_record_from_incoming(void* ptr, RustBuffer record
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_TOKENISSUER
@@ -1976,6 +1954,11 @@ uint64_t uniffi_breez_sdk_spark_fn_func_connect(RustBuffer request
 uint64_t uniffi_breez_sdk_spark_fn_func_connect_with_signer(RustBuffer request
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_CREATE_POSTGRES_STORAGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_CREATE_POSTGRES_STORAGE
+uint64_t uniffi_breez_sdk_spark_fn_func_create_postgres_storage(RustBuffer config
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_CONFIG
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_CONFIG
 RustBuffer uniffi_breez_sdk_spark_fn_func_default_config(RustBuffer network, RustCallStatus *out_status
@@ -1984,6 +1967,17 @@ RustBuffer uniffi_breez_sdk_spark_fn_func_default_config(RustBuffer network, Rus
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_EXTERNAL_SIGNER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_EXTERNAL_SIGNER
 void* uniffi_breez_sdk_spark_fn_func_default_external_signer(RustBuffer mnemonic, RustBuffer passphrase, RustBuffer network, RustBuffer key_set_config, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_POSTGRES_STORAGE_CONFIG
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_POSTGRES_STORAGE_CONFIG
+RustBuffer uniffi_breez_sdk_spark_fn_func_default_postgres_storage_config(RustBuffer connection_string, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_GET_SPARK_STATUS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_GET_SPARK_STATUS
+uint64_t uniffi_breez_sdk_spark_fn_func_get_spark_status(void
+    
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_INIT_LOGGING
@@ -2283,6 +2277,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_func_connect_with_signer(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_CREATE_POSTGRES_STORAGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_CREATE_POSTGRES_STORAGE
+uint16_t uniffi_breez_sdk_spark_checksum_func_create_postgres_storage(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_DEFAULT_CONFIG
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_DEFAULT_CONFIG
 uint16_t uniffi_breez_sdk_spark_checksum_func_default_config(void
@@ -2292,6 +2292,18 @@ uint16_t uniffi_breez_sdk_spark_checksum_func_default_config(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_DEFAULT_EXTERNAL_SIGNER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_DEFAULT_EXTERNAL_SIGNER
 uint16_t uniffi_breez_sdk_spark_checksum_func_default_external_signer(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_DEFAULT_POSTGRES_STORAGE_CONFIG
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_DEFAULT_POSTGRES_STORAGE_CONFIG
+uint16_t uniffi_breez_sdk_spark_checksum_func_default_postgres_storage_config(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_GET_SPARK_STATUS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_GET_SPARK_STATUS
+uint16_t uniffi_breez_sdk_spark_checksum_func_get_spark_status(void
     
 );
 #endif
@@ -2334,6 +2346,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_bitcoinchainservice_recommended_
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_ADD_EVENT_LISTENER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_ADD_EVENT_LISTENER
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_add_event_listener(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_BUY_BITCOIN
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_BUY_BITCOIN
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_buy_bitcoin(void
     
 );
 #endif
@@ -2745,12 +2763,6 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_payment_observer
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_REAL_TIME_SYNC_STORAGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_REAL_TIME_SYNC_STORAGE
-uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_real_time_sync_storage(void
-    
-);
-#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_rest_chain_service(void
@@ -2793,9 +2805,9 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_storage_insert_payment(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_SET_PAYMENT_METADATA
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_SET_PAYMENT_METADATA
-uint16_t uniffi_breez_sdk_spark_checksum_method_storage_set_payment_metadata(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_INSERT_PAYMENT_METADATA
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_INSERT_PAYMENT_METADATA
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_insert_payment_metadata(void
     
 );
 #endif
@@ -2808,6 +2820,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_storage_get_payment_by_id(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_PAYMENT_BY_INVOICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_PAYMENT_BY_INVOICE
 uint16_t uniffi_breez_sdk_spark_checksum_method_storage_get_payment_by_invoice(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_PAYMENTS_BY_PARENT_IDS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_PAYMENTS_BY_PARENT_IDS
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_get_payments_by_parent_ids(void
     
 );
 #endif
@@ -2841,63 +2859,57 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_storage_set_lnurl_metadata(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_ADD_OUTGOING_CHANGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_ADD_OUTGOING_CHANGE
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_add_outgoing_change(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_ADD_OUTGOING_CHANGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_ADD_OUTGOING_CHANGE
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_add_outgoing_change(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_COMPLETE_OUTGOING_SYNC
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_COMPLETE_OUTGOING_SYNC
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_complete_outgoing_sync(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_COMPLETE_OUTGOING_SYNC
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_COMPLETE_OUTGOING_SYNC
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_complete_outgoing_sync(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_GET_PENDING_OUTGOING_CHANGES
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_GET_PENDING_OUTGOING_CHANGES
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_get_pending_outgoing_changes(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_PENDING_OUTGOING_CHANGES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_PENDING_OUTGOING_CHANGES
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_get_pending_outgoing_changes(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_GET_LAST_REVISION
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_GET_LAST_REVISION
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_get_last_revision(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_LAST_REVISION
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_LAST_REVISION
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_get_last_revision(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_INSERT_INCOMING_RECORDS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_INSERT_INCOMING_RECORDS
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_insert_incoming_records(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_INSERT_INCOMING_RECORDS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_INSERT_INCOMING_RECORDS
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_insert_incoming_records(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_DELETE_INCOMING_RECORD
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_DELETE_INCOMING_RECORD
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_delete_incoming_record(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_DELETE_INCOMING_RECORD
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_DELETE_INCOMING_RECORD
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_delete_incoming_record(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_REBASE_PENDING_OUTGOING_RECORDS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_REBASE_PENDING_OUTGOING_RECORDS
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_rebase_pending_outgoing_records(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_INCOMING_RECORDS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_INCOMING_RECORDS
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_get_incoming_records(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_GET_INCOMING_RECORDS
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_GET_INCOMING_RECORDS
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_get_incoming_records(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_LATEST_OUTGOING_CHANGE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_LATEST_OUTGOING_CHANGE
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_get_latest_outgoing_change(void
     
 );
 #endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_GET_LATEST_OUTGOING_CHANGE
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_GET_LATEST_OUTGOING_CHANGE
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_get_latest_outgoing_change(void
-    
-);
-#endif
-#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_UPDATE_RECORD_FROM_INCOMING
-#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SYNCSTORAGE_UPDATE_RECORD_FROM_INCOMING
-uint16_t uniffi_breez_sdk_spark_checksum_method_syncstorage_update_record_from_incoming(void
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_UPDATE_RECORD_FROM_INCOMING
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_UPDATE_RECORD_FROM_INCOMING
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_update_record_from_incoming(void
     
 );
 #endif
@@ -3012,23 +3024,22 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5(uint64_t uniffi_handle, RustBuffer payment_id, RustBuffer metadata, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6(uint64_t uniffi_handle, RustBuffer id, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7(uint64_t uniffi_handle, RustBuffer invoice, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, uint64_t amount_sats, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod11(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, RustBuffer payload, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod12(uint64_t uniffi_handle, RustBuffer metadata, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod8(uint64_t uniffi_handle, RustBuffer parent_payment_ids, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod9(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, uint64_t amount_sats, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod10(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod11(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod12(uint64_t uniffi_handle, RustBuffer txid, uint32_t vout, RustBuffer payload, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod13(uint64_t uniffi_handle, RustBuffer metadata, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod14(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15(uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17(uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18(uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree(uint64_t handle);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod0(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod1(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod2(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod3(uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod4(uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod5(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod6(uint64_t uniffi_handle, uint64_t revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod7(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod8(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageMethod9(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceSyncStorageFree(uint64_t handle);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerMethod0(uint64_t uniffi_handle, RustBuffer event, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerFree(uint64_t handle);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceLoggerMethod0(uint64_t uniffi_handle, RustBuffer l, void* uniffi_out_return, RustCallStatus* callStatus );
