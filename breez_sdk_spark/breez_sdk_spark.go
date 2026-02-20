@@ -6514,6 +6514,11 @@ func (c FfiConverterPaymentObserver) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_paymentobserver(&UniffiVTableCallbackInterfacePaymentObserverINSTANCE)
 }
 
+// REST client trait for making HTTP requests.
+//
+// This trait provides a way for users to supply their own HTTP client implementation
+// for use with the SDK. The SDK will use this client for all HTTP operations including
+// LNURL flows and chain service requests.
 type RestClient interface {
 	// Makes a GET request and logs on DEBUG.
 	// ### Arguments
@@ -6533,6 +6538,12 @@ type RestClient interface {
 	// - `body`: the optional DELETE body
 	DeleteRequest(url string, headers *map[string]string, body *string) (RestResponse, error)
 }
+
+// REST client trait for making HTTP requests.
+//
+// This trait provides a way for users to supply their own HTTP client implementation
+// for use with the SDK. The SDK will use this client for all HTTP operations including
+// LNURL flows and chain service requests.
 type RestClientImpl struct {
 	ffiObject FfiObject
 }
@@ -11234,6 +11245,11 @@ type Config struct {
 	// Fewer, bigger leaves allow for more funds to be exited unilaterally.
 	// More leaves allow payments to be made without needing a swap, reducing payment latency.
 	OptimizationConfig OptimizationConfig
+	// Configuration for automatic conversion of Bitcoin to stable tokens.
+	//
+	// When set, received sats will be automatically converted to the specified token
+	// once the balance exceeds the threshold.
+	StableBalanceConfig *StableBalanceConfig
 }
 
 func (r *Config) Destroy() {
@@ -11248,6 +11264,7 @@ func (r *Config) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(r.RealTimeSyncServerUrl)
 	FfiDestroyerBool{}.Destroy(r.PrivateEnabledDefault)
 	FfiDestroyerOptimizationConfig{}.Destroy(r.OptimizationConfig)
+	FfiDestroyerOptionalStableBalanceConfig{}.Destroy(r.StableBalanceConfig)
 }
 
 type FfiConverterConfig struct{}
@@ -11271,6 +11288,7 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterOptimizationConfigINSTANCE.Read(reader),
+		FfiConverterOptionalStableBalanceConfigINSTANCE.Read(reader),
 	}
 }
 
@@ -11290,6 +11308,7 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RealTimeSyncServerUrl)
 	FfiConverterBoolINSTANCE.Write(writer, value.PrivateEnabledDefault)
 	FfiConverterOptimizationConfigINSTANCE.Write(writer, value.OptimizationConfig)
+	FfiConverterOptionalStableBalanceConfigINSTANCE.Write(writer, value.StableBalanceConfig)
 }
 
 type FfiDestroyerConfig struct{}
@@ -16313,6 +16332,77 @@ func (_ FfiDestroyerSparkStatus) Destroy(value SparkStatus) {
 	value.Destroy()
 }
 
+// Configuration for automatic conversion of Bitcoin to stable tokens.
+//
+// When configured, the SDK automatically monitors the Bitcoin balance after each
+// wallet sync. When the balance exceeds the configured threshold plus the reserved
+// amount, the SDK automatically converts the excess balance (above the reserve)
+// to the specified stable token.
+//
+// When the balance is held in a stable token, Bitcoin payments can still be sent.
+// The SDK automatically detects when there's not enough Bitcoin balance to cover a
+// payment and auto-populates the token-to-Bitcoin conversion options to facilitate
+// the payment.
+type StableBalanceConfig struct {
+	// The token identifier to convert Bitcoin to (required).
+	TokenIdentifier string
+	// The minimum sats balance that triggers auto-conversion.
+	//
+	// If not provided, uses the minimum from conversion limits.
+	// If provided but less than the conversion limit minimum, the limit minimum is used.
+	ThresholdSats *uint64
+	// Maximum slippage in basis points (1/100 of a percent).
+	//
+	// Defaults to 50 bps (0.5%) if not set.
+	MaxSlippageBps *uint32
+	// Amount of sats to keep as Bitcoin and not convert to stable tokens.
+	//
+	// This reserve ensures you can send Bitcoin payments without hitting
+	// the minimum conversion limit. Defaults to the conversion minimum if not set.
+	ReservedSats *uint64
+}
+
+func (r *StableBalanceConfig) Destroy() {
+	FfiDestroyerString{}.Destroy(r.TokenIdentifier)
+	FfiDestroyerOptionalUint64{}.Destroy(r.ThresholdSats)
+	FfiDestroyerOptionalUint32{}.Destroy(r.MaxSlippageBps)
+	FfiDestroyerOptionalUint64{}.Destroy(r.ReservedSats)
+}
+
+type FfiConverterStableBalanceConfig struct{}
+
+var FfiConverterStableBalanceConfigINSTANCE = FfiConverterStableBalanceConfig{}
+
+func (c FfiConverterStableBalanceConfig) Lift(rb RustBufferI) StableBalanceConfig {
+	return LiftFromRustBuffer[StableBalanceConfig](c, rb)
+}
+
+func (c FfiConverterStableBalanceConfig) Read(reader io.Reader) StableBalanceConfig {
+	return StableBalanceConfig{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterOptionalUint64INSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+		FfiConverterOptionalUint64INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterStableBalanceConfig) Lower(value StableBalanceConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[StableBalanceConfig](c, value)
+}
+
+func (c FfiConverterStableBalanceConfig) Write(writer io.Writer, value StableBalanceConfig) {
+	FfiConverterStringINSTANCE.Write(writer, value.TokenIdentifier)
+	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ThresholdSats)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxSlippageBps)
+	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ReservedSats)
+}
+
+type FfiDestroyerStableBalanceConfig struct{}
+
+func (_ FfiDestroyerStableBalanceConfig) Destroy(value StableBalanceConfig) {
+	value.Destroy()
+}
+
 // Settings for the symbol representation of a currency
 type Symbol struct {
 	Grapheme *string
@@ -17329,6 +17419,13 @@ type ConversionPurposeSelfTransfer struct {
 func (e ConversionPurposeSelfTransfer) Destroy() {
 }
 
+// Conversion triggered automatically
+type ConversionPurposeAutoConversion struct {
+}
+
+func (e ConversionPurposeAutoConversion) Destroy() {
+}
+
 type FfiConverterConversionPurpose struct{}
 
 var FfiConverterConversionPurposeINSTANCE = FfiConverterConversionPurpose{}
@@ -17349,6 +17446,8 @@ func (FfiConverterConversionPurpose) Read(reader io.Reader) ConversionPurpose {
 		}
 	case 2:
 		return ConversionPurposeSelfTransfer{}
+	case 3:
+		return ConversionPurposeAutoConversion{}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterConversionPurpose.Read()", id))
 	}
@@ -17361,6 +17460,8 @@ func (FfiConverterConversionPurpose) Write(writer io.Writer, value ConversionPur
 		FfiConverterStringINSTANCE.Write(writer, variant_value.PaymentRequest)
 	case ConversionPurposeSelfTransfer:
 		writeInt32(writer, 2)
+	case ConversionPurposeAutoConversion:
+		writeInt32(writer, 3)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterConversionPurpose.Write", value))
@@ -18466,10 +18567,9 @@ func (e PaymentDetailsToken) Destroy() {
 
 type PaymentDetailsLightning struct {
 	Description          *string
-	Preimage             *string
 	Invoice              string
-	PaymentHash          string
 	DestinationPubkey    string
+	HtlcDetails          SparkHtlcDetails
 	LnurlPayInfo         *LnurlPayInfo
 	LnurlWithdrawInfo    *LnurlWithdrawInfo
 	LnurlReceiveMetadata *LnurlReceiveMetadata
@@ -18477,10 +18577,9 @@ type PaymentDetailsLightning struct {
 
 func (e PaymentDetailsLightning) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(e.Description)
-	FfiDestroyerOptionalString{}.Destroy(e.Preimage)
 	FfiDestroyerString{}.Destroy(e.Invoice)
-	FfiDestroyerString{}.Destroy(e.PaymentHash)
 	FfiDestroyerString{}.Destroy(e.DestinationPubkey)
+	FfiDestroyerSparkHtlcDetails{}.Destroy(e.HtlcDetails)
 	FfiDestroyerOptionalLnurlPayInfo{}.Destroy(e.LnurlPayInfo)
 	FfiDestroyerOptionalLnurlWithdrawInfo{}.Destroy(e.LnurlWithdrawInfo)
 	FfiDestroyerOptionalLnurlReceiveMetadata{}.Destroy(e.LnurlReceiveMetadata)
@@ -18533,10 +18632,9 @@ func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 	case 3:
 		return PaymentDetailsLightning{
 			FfiConverterOptionalStringINSTANCE.Read(reader),
-			FfiConverterOptionalStringINSTANCE.Read(reader),
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterStringINSTANCE.Read(reader),
-			FfiConverterStringINSTANCE.Read(reader),
+			FfiConverterSparkHtlcDetailsINSTANCE.Read(reader),
 			FfiConverterOptionalLnurlPayInfoINSTANCE.Read(reader),
 			FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Read(reader),
 			FfiConverterOptionalLnurlReceiveMetadataINSTANCE.Read(reader),
@@ -18571,10 +18669,9 @@ func (FfiConverterPaymentDetails) Write(writer io.Writer, value PaymentDetails) 
 	case PaymentDetailsLightning:
 		writeInt32(writer, 3)
 		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.Description)
-		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.Preimage)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Invoice)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.PaymentHash)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.DestinationPubkey)
+		FfiConverterSparkHtlcDetailsINSTANCE.Write(writer, variant_value.HtlcDetails)
 		FfiConverterOptionalLnurlPayInfoINSTANCE.Write(writer, variant_value.LnurlPayInfo)
 		FfiConverterOptionalLnurlWithdrawInfoINSTANCE.Write(writer, variant_value.LnurlWithdrawInfo)
 		FfiConverterOptionalLnurlReceiveMetadataINSTANCE.Write(writer, variant_value.LnurlReceiveMetadata)
@@ -18621,6 +18718,14 @@ func (e PaymentDetailsFilterToken) Destroy() {
 	FfiDestroyerOptionalTokenTransactionType{}.Destroy(e.TxType)
 }
 
+type PaymentDetailsFilterLightning struct {
+	HtlcStatus *[]SparkHtlcStatus
+}
+
+func (e PaymentDetailsFilterLightning) Destroy() {
+	FfiDestroyerOptionalSequenceSparkHtlcStatus{}.Destroy(e.HtlcStatus)
+}
+
 type FfiConverterPaymentDetailsFilter struct{}
 
 var FfiConverterPaymentDetailsFilterINSTANCE = FfiConverterPaymentDetailsFilter{}
@@ -18646,6 +18751,10 @@ func (FfiConverterPaymentDetailsFilter) Read(reader io.Reader) PaymentDetailsFil
 			FfiConverterOptionalStringINSTANCE.Read(reader),
 			FfiConverterOptionalTokenTransactionTypeINSTANCE.Read(reader),
 		}
+	case 3:
+		return PaymentDetailsFilterLightning{
+			FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE.Read(reader),
+		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterPaymentDetailsFilter.Read()", id))
 	}
@@ -18662,6 +18771,9 @@ func (FfiConverterPaymentDetailsFilter) Write(writer io.Writer, value PaymentDet
 		FfiConverterOptionalBoolINSTANCE.Write(writer, variant_value.ConversionRefundNeeded)
 		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.TxHash)
 		FfiConverterOptionalTokenTransactionTypeINSTANCE.Write(writer, variant_value.TxType)
+	case PaymentDetailsFilterLightning:
+		writeInt32(writer, 3)
+		FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE.Write(writer, variant_value.HtlcStatus)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterPaymentDetailsFilter.Write", value))
@@ -19098,12 +19210,14 @@ type ReceivePaymentMethodBolt11Invoice struct {
 	Description string
 	AmountSats  *uint64
 	ExpirySecs  *uint32
+	PaymentHash *string
 }
 
 func (e ReceivePaymentMethodBolt11Invoice) Destroy() {
 	FfiDestroyerString{}.Destroy(e.Description)
 	FfiDestroyerOptionalUint64{}.Destroy(e.AmountSats)
 	FfiDestroyerOptionalUint32{}.Destroy(e.ExpirySecs)
+	FfiDestroyerOptionalString{}.Destroy(e.PaymentHash)
 }
 
 type FfiConverterReceivePaymentMethod struct{}
@@ -19137,6 +19251,7 @@ func (FfiConverterReceivePaymentMethod) Read(reader io.Reader) ReceivePaymentMet
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterOptionalUint64INSTANCE.Read(reader),
 			FfiConverterOptionalUint32INSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
 		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterReceivePaymentMethod.Read()", id))
@@ -19161,6 +19276,7 @@ func (FfiConverterReceivePaymentMethod) Write(writer io.Writer, value ReceivePay
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Description)
 		FfiConverterOptionalUint64INSTANCE.Write(writer, variant_value.AmountSats)
 		FfiConverterOptionalUint32INSTANCE.Write(writer, variant_value.ExpirySecs)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.PaymentHash)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterReceivePaymentMethod.Write", value))
@@ -22458,6 +22574,43 @@ type FfiDestroyerOptionalSparkInvoicePaymentDetails struct{}
 func (_ FfiDestroyerOptionalSparkInvoicePaymentDetails) Destroy(value *SparkInvoicePaymentDetails) {
 	if value != nil {
 		FfiDestroyerSparkInvoicePaymentDetails{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalStableBalanceConfig struct{}
+
+var FfiConverterOptionalStableBalanceConfigINSTANCE = FfiConverterOptionalStableBalanceConfig{}
+
+func (c FfiConverterOptionalStableBalanceConfig) Lift(rb RustBufferI) *StableBalanceConfig {
+	return LiftFromRustBuffer[*StableBalanceConfig](c, rb)
+}
+
+func (_ FfiConverterOptionalStableBalanceConfig) Read(reader io.Reader) *StableBalanceConfig {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterStableBalanceConfigINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalStableBalanceConfig) Lower(value *StableBalanceConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[*StableBalanceConfig](c, value)
+}
+
+func (_ FfiConverterOptionalStableBalanceConfig) Write(writer io.Writer, value *StableBalanceConfig) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterStableBalanceConfigINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalStableBalanceConfig struct{}
+
+func (_ FfiDestroyerOptionalStableBalanceConfig) Destroy(value *StableBalanceConfig) {
+	if value != nil {
+		FfiDestroyerStableBalanceConfig{}.Destroy(*value)
 	}
 }
 
