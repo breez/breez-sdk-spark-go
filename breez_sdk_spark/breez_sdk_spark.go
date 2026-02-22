@@ -11250,6 +11250,10 @@ type Config struct {
 	// When set, received sats will be automatically converted to the specified token
 	// once the balance exceeds the threshold.
 	StableBalanceConfig *StableBalanceConfig
+	// Maximum number of concurrent transfer claims.
+	//
+	// Default is 4. Increase for server environments with high incoming payment volume.
+	MaxConcurrentClaims uint32
 }
 
 func (r *Config) Destroy() {
@@ -11265,6 +11269,7 @@ func (r *Config) Destroy() {
 	FfiDestroyerBool{}.Destroy(r.PrivateEnabledDefault)
 	FfiDestroyerOptimizationConfig{}.Destroy(r.OptimizationConfig)
 	FfiDestroyerOptionalStableBalanceConfig{}.Destroy(r.StableBalanceConfig)
+	FfiDestroyerUint32{}.Destroy(r.MaxConcurrentClaims)
 }
 
 type FfiConverterConfig struct{}
@@ -11289,6 +11294,7 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterOptimizationConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStableBalanceConfigINSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
 	}
 }
 
@@ -11309,6 +11315,7 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterBoolINSTANCE.Write(writer, value.PrivateEnabledDefault)
 	FfiConverterOptimizationConfigINSTANCE.Write(writer, value.OptimizationConfig)
 	FfiConverterOptionalStableBalanceConfigINSTANCE.Write(writer, value.StableBalanceConfig)
+	FfiConverterUint32INSTANCE.Write(writer, value.MaxConcurrentClaims)
 }
 
 type FfiDestroyerConfig struct{}
@@ -14385,11 +14392,15 @@ type OptimizationConfig struct {
 	//
 	// Default value is true.
 	AutoEnabled bool
-	// The desired multiplicity for the leaf set. Acceptable values are 0-5.
+	// The desired multiplicity for the leaf set.
 	//
 	// Setting this to 0 will optimize for maximizing unilateral exit.
 	// Higher values will optimize for minimizing transfer swaps, with higher values
-	// being more aggressive.
+	// being more aggressive and allowing better TPS rates.
+	//
+	// For end-user wallets, values of 1-5 are recommended. Values above 5 are
+	// intended for high-throughput server environments and are not recommended
+	// for end-user wallets due to significantly higher unilateral exit costs.
 	//
 	// Default value is 1.
 	Multiplicity uint8
