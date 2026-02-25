@@ -378,15 +378,6 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_func_create_postgres_storage()
-		})
-		if checksum != 17676 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_create_postgres_storage: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_default_config()
 		})
 		if checksum != 62194 {
@@ -1107,6 +1098,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_storage()
+		})
+		if checksum != 4625 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_storage: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_rest_chain_service()
 		})
 		if checksum != 63155 {
@@ -1154,7 +1154,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_list_payments()
 		})
-		if checksum != 19728 {
+		if checksum != 51078 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_list_payments: UniFFI API checksum mismatch")
 		}
@@ -6958,6 +6958,11 @@ type SdkBuilderInterface interface {
 	// Arguments:
 	// - `payment_observer`: The payment observer to be used.
 	WithPaymentObserver(paymentObserver PaymentObserver)
+	// Sets `PostgreSQL` storage to be used by the SDK.
+	// The storage instance will be created during `build()`.
+	// Arguments:
+	// - `config`: The `PostgreSQL` storage configuration.
+	WithPostgresStorage(config PostgresStorageConfig)
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
 	// - `url`: The base URL of the REST API.
@@ -7188,6 +7193,36 @@ func (_self *SdkBuilder) WithPaymentObserver(paymentObserver PaymentObserver) {
 
 }
 
+// Sets `PostgreSQL` storage to be used by the SDK.
+// The storage instance will be created during `build()`.
+// Arguments:
+// - `config`: The `PostgreSQL` storage configuration.
+func (_self *SdkBuilder) WithPostgresStorage(config PostgresStorageConfig) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_storage(
+			_pointer, FfiConverterPostgresStorageConfigINSTANCE.Lower(config)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
 // Sets the REST chain service to be used by the SDK.
 // Arguments:
 // - `url`: The base URL of the REST API.
@@ -7310,7 +7345,7 @@ type Storage interface {
 	// # Returns
 	//
 	// A vector of payments or a `StorageError`
-	ListPayments(request ListPaymentsRequest) ([]Payment, error)
+	ListPayments(request StorageListPaymentsRequest) ([]Payment, error)
 	// Inserts a payment into storage
 	//
 	// # Arguments
@@ -7519,7 +7554,7 @@ func (_self *StorageImpl) SetCachedItem(key string, value string) error {
 // # Returns
 //
 // A vector of payments or a `StorageError`
-func (_self *StorageImpl) ListPayments(request ListPaymentsRequest) ([]Payment, error) {
+func (_self *StorageImpl) ListPayments(request StorageListPaymentsRequest) ([]Payment, error) {
 	_pointer := _self.ffiObject.incrementPointer("Storage")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[StorageError](
@@ -7536,7 +7571,7 @@ func (_self *StorageImpl) ListPayments(request ListPaymentsRequest) ([]Payment, 
 			return FfiConverterSequencePaymentINSTANCE.Lift(ffi)
 		},
 		C.uniffi_breez_sdk_spark_fn_method_storage_list_payments(
-			_pointer, FfiConverterListPaymentsRequestINSTANCE.Lower(request)),
+			_pointer, FfiConverterStorageListPaymentsRequestINSTANCE.Lower(request)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -8462,7 +8497,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3(uniffiHandle C.
 
 		res, err :=
 			uniffiObj.ListPayments(
-				FfiConverterListPaymentsRequestINSTANCE.Lift(GoRustBuffer{
+				FfiConverterStorageListPaymentsRequestINSTANCE.Lift(GoRustBuffer{
 					inner: request,
 				}),
 			)
@@ -11254,6 +11289,9 @@ type Config struct {
 	//
 	// Default is 4. Increase for server environments with high incoming payment volume.
 	MaxConcurrentClaims uint32
+	// When true, enables LNURL verify support (LUD-21) and zap receipts (NIP-57).
+	// When false (default), these features are disabled for privacy.
+	SupportLnurlVerify bool
 }
 
 func (r *Config) Destroy() {
@@ -11270,6 +11308,7 @@ func (r *Config) Destroy() {
 	FfiDestroyerOptimizationConfig{}.Destroy(r.OptimizationConfig)
 	FfiDestroyerOptionalStableBalanceConfig{}.Destroy(r.StableBalanceConfig)
 	FfiDestroyerUint32{}.Destroy(r.MaxConcurrentClaims)
+	FfiDestroyerBool{}.Destroy(r.SupportLnurlVerify)
 }
 
 type FfiConverterConfig struct{}
@@ -11295,6 +11334,7 @@ func (c FfiConverterConfig) Read(reader io.Reader) Config {
 		FfiConverterOptimizationConfigINSTANCE.Read(reader),
 		FfiConverterOptionalStableBalanceConfigINSTANCE.Read(reader),
 		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterBoolINSTANCE.Read(reader),
 	}
 }
 
@@ -11316,6 +11356,7 @@ func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterOptimizationConfigINSTANCE.Write(writer, value.OptimizationConfig)
 	FfiConverterOptionalStableBalanceConfigINSTANCE.Write(writer, value.StableBalanceConfig)
 	FfiConverterUint32INSTANCE.Write(writer, value.MaxConcurrentClaims)
+	FfiConverterBoolINSTANCE.Write(writer, value.SupportLnurlVerify)
 }
 
 type FfiDestroyerConfig struct{}
@@ -15873,6 +15914,7 @@ type SetLnurlMetadataItem struct {
 	SenderComment   *string
 	NostrZapRequest *string
 	NostrZapReceipt *string
+	Preimage        *string
 }
 
 func (r *SetLnurlMetadataItem) Destroy() {
@@ -15880,6 +15922,7 @@ func (r *SetLnurlMetadataItem) Destroy() {
 	FfiDestroyerOptionalString{}.Destroy(r.SenderComment)
 	FfiDestroyerOptionalString{}.Destroy(r.NostrZapRequest)
 	FfiDestroyerOptionalString{}.Destroy(r.NostrZapReceipt)
+	FfiDestroyerOptionalString{}.Destroy(r.Preimage)
 }
 
 type FfiConverterSetLnurlMetadataItem struct{}
@@ -15896,6 +15939,7 @@ func (c FfiConverterSetLnurlMetadataItem) Read(reader io.Reader) SetLnurlMetadat
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
 	}
 }
 
@@ -15908,6 +15952,7 @@ func (c FfiConverterSetLnurlMetadataItem) Write(writer io.Writer, value SetLnurl
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.SenderComment)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrZapRequest)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrZapReceipt)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Preimage)
 }
 
 type FfiDestroyerSetLnurlMetadataItem struct{}
@@ -16411,6 +16456,76 @@ func (c FfiConverterStableBalanceConfig) Write(writer io.Writer, value StableBal
 type FfiDestroyerStableBalanceConfig struct{}
 
 func (_ FfiDestroyerStableBalanceConfig) Destroy(value StableBalanceConfig) {
+	value.Destroy()
+}
+
+// Storage-internal variant of [`ListPaymentsRequest`] that uses
+// [`StoragePaymentDetailsFilter`] instead of the public [`PaymentDetailsFilter`].
+type StorageListPaymentsRequest struct {
+	TypeFilter           *[]PaymentType
+	StatusFilter         *[]PaymentStatus
+	AssetFilter          *AssetFilter
+	PaymentDetailsFilter *[]StoragePaymentDetailsFilter
+	FromTimestamp        *uint64
+	ToTimestamp          *uint64
+	Offset               *uint32
+	Limit                *uint32
+	SortAscending        *bool
+}
+
+func (r *StorageListPaymentsRequest) Destroy() {
+	FfiDestroyerOptionalSequencePaymentType{}.Destroy(r.TypeFilter)
+	FfiDestroyerOptionalSequencePaymentStatus{}.Destroy(r.StatusFilter)
+	FfiDestroyerOptionalAssetFilter{}.Destroy(r.AssetFilter)
+	FfiDestroyerOptionalSequenceStoragePaymentDetailsFilter{}.Destroy(r.PaymentDetailsFilter)
+	FfiDestroyerOptionalUint64{}.Destroy(r.FromTimestamp)
+	FfiDestroyerOptionalUint64{}.Destroy(r.ToTimestamp)
+	FfiDestroyerOptionalUint32{}.Destroy(r.Offset)
+	FfiDestroyerOptionalUint32{}.Destroy(r.Limit)
+	FfiDestroyerOptionalBool{}.Destroy(r.SortAscending)
+}
+
+type FfiConverterStorageListPaymentsRequest struct{}
+
+var FfiConverterStorageListPaymentsRequestINSTANCE = FfiConverterStorageListPaymentsRequest{}
+
+func (c FfiConverterStorageListPaymentsRequest) Lift(rb RustBufferI) StorageListPaymentsRequest {
+	return LiftFromRustBuffer[StorageListPaymentsRequest](c, rb)
+}
+
+func (c FfiConverterStorageListPaymentsRequest) Read(reader io.Reader) StorageListPaymentsRequest {
+	return StorageListPaymentsRequest{
+		FfiConverterOptionalSequencePaymentTypeINSTANCE.Read(reader),
+		FfiConverterOptionalSequencePaymentStatusINSTANCE.Read(reader),
+		FfiConverterOptionalAssetFilterINSTANCE.Read(reader),
+		FfiConverterOptionalSequenceStoragePaymentDetailsFilterINSTANCE.Read(reader),
+		FfiConverterOptionalUint64INSTANCE.Read(reader),
+		FfiConverterOptionalUint64INSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterStorageListPaymentsRequest) Lower(value StorageListPaymentsRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[StorageListPaymentsRequest](c, value)
+}
+
+func (c FfiConverterStorageListPaymentsRequest) Write(writer io.Writer, value StorageListPaymentsRequest) {
+	FfiConverterOptionalSequencePaymentTypeINSTANCE.Write(writer, value.TypeFilter)
+	FfiConverterOptionalSequencePaymentStatusINSTANCE.Write(writer, value.StatusFilter)
+	FfiConverterOptionalAssetFilterINSTANCE.Write(writer, value.AssetFilter)
+	FfiConverterOptionalSequenceStoragePaymentDetailsFilterINSTANCE.Write(writer, value.PaymentDetailsFilter)
+	FfiConverterOptionalUint64INSTANCE.Write(writer, value.FromTimestamp)
+	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ToTimestamp)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.Offset)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.Limit)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.SortAscending)
+}
+
+type FfiDestroyerStorageListPaymentsRequest struct{}
+
+func (_ FfiDestroyerStorageListPaymentsRequest) Destroy(value StorageListPaymentsRequest) {
 	value.Destroy()
 }
 
@@ -21367,6 +21482,106 @@ func (_ FfiDestroyerStorageError) Destroy(value *StorageError) {
 	}
 }
 
+// Storage-internal variant of [`PaymentDetailsFilter`] that includes the
+// `has_lnurl_preimage` field on the `Lightning` variant, which is not exposed
+// in the public API.
+type StoragePaymentDetailsFilter interface {
+	Destroy()
+}
+type StoragePaymentDetailsFilterSpark struct {
+	HtlcStatus             *[]SparkHtlcStatus
+	ConversionRefundNeeded *bool
+}
+
+func (e StoragePaymentDetailsFilterSpark) Destroy() {
+	FfiDestroyerOptionalSequenceSparkHtlcStatus{}.Destroy(e.HtlcStatus)
+	FfiDestroyerOptionalBool{}.Destroy(e.ConversionRefundNeeded)
+}
+
+type StoragePaymentDetailsFilterToken struct {
+	ConversionRefundNeeded *bool
+	TxHash                 *string
+	TxType                 *TokenTransactionType
+}
+
+func (e StoragePaymentDetailsFilterToken) Destroy() {
+	FfiDestroyerOptionalBool{}.Destroy(e.ConversionRefundNeeded)
+	FfiDestroyerOptionalString{}.Destroy(e.TxHash)
+	FfiDestroyerOptionalTokenTransactionType{}.Destroy(e.TxType)
+}
+
+type StoragePaymentDetailsFilterLightning struct {
+	HtlcStatus       *[]SparkHtlcStatus
+	HasLnurlPreimage *bool
+}
+
+func (e StoragePaymentDetailsFilterLightning) Destroy() {
+	FfiDestroyerOptionalSequenceSparkHtlcStatus{}.Destroy(e.HtlcStatus)
+	FfiDestroyerOptionalBool{}.Destroy(e.HasLnurlPreimage)
+}
+
+type FfiConverterStoragePaymentDetailsFilter struct{}
+
+var FfiConverterStoragePaymentDetailsFilterINSTANCE = FfiConverterStoragePaymentDetailsFilter{}
+
+func (c FfiConverterStoragePaymentDetailsFilter) Lift(rb RustBufferI) StoragePaymentDetailsFilter {
+	return LiftFromRustBuffer[StoragePaymentDetailsFilter](c, rb)
+}
+
+func (c FfiConverterStoragePaymentDetailsFilter) Lower(value StoragePaymentDetailsFilter) C.RustBuffer {
+	return LowerIntoRustBuffer[StoragePaymentDetailsFilter](c, value)
+}
+func (FfiConverterStoragePaymentDetailsFilter) Read(reader io.Reader) StoragePaymentDetailsFilter {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return StoragePaymentDetailsFilterSpark{
+			FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE.Read(reader),
+			FfiConverterOptionalBoolINSTANCE.Read(reader),
+		}
+	case 2:
+		return StoragePaymentDetailsFilterToken{
+			FfiConverterOptionalBoolINSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
+			FfiConverterOptionalTokenTransactionTypeINSTANCE.Read(reader),
+		}
+	case 3:
+		return StoragePaymentDetailsFilterLightning{
+			FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE.Read(reader),
+			FfiConverterOptionalBoolINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterStoragePaymentDetailsFilter.Read()", id))
+	}
+}
+
+func (FfiConverterStoragePaymentDetailsFilter) Write(writer io.Writer, value StoragePaymentDetailsFilter) {
+	switch variant_value := value.(type) {
+	case StoragePaymentDetailsFilterSpark:
+		writeInt32(writer, 1)
+		FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE.Write(writer, variant_value.HtlcStatus)
+		FfiConverterOptionalBoolINSTANCE.Write(writer, variant_value.ConversionRefundNeeded)
+	case StoragePaymentDetailsFilterToken:
+		writeInt32(writer, 2)
+		FfiConverterOptionalBoolINSTANCE.Write(writer, variant_value.ConversionRefundNeeded)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.TxHash)
+		FfiConverterOptionalTokenTransactionTypeINSTANCE.Write(writer, variant_value.TxType)
+	case StoragePaymentDetailsFilterLightning:
+		writeInt32(writer, 3)
+		FfiConverterOptionalSequenceSparkHtlcStatusINSTANCE.Write(writer, variant_value.HtlcStatus)
+		FfiConverterOptionalBoolINSTANCE.Write(writer, variant_value.HasLnurlPreimage)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterStoragePaymentDetailsFilter.Write", value))
+	}
+}
+
+type FfiDestroyerStoragePaymentDetailsFilter struct{}
+
+func (_ FfiDestroyerStoragePaymentDetailsFilter) Destroy(value StoragePaymentDetailsFilter) {
+	value.Destroy()
+}
+
 // Supported success action types
 //
 // Receiving any other (unsupported) success action type will result in a failed parsing,
@@ -23365,6 +23580,43 @@ func (_ FfiDestroyerOptionalSequenceSparkHtlcStatus) Destroy(value *[]SparkHtlcS
 	}
 }
 
+type FfiConverterOptionalSequenceStoragePaymentDetailsFilter struct{}
+
+var FfiConverterOptionalSequenceStoragePaymentDetailsFilterINSTANCE = FfiConverterOptionalSequenceStoragePaymentDetailsFilter{}
+
+func (c FfiConverterOptionalSequenceStoragePaymentDetailsFilter) Lift(rb RustBufferI) *[]StoragePaymentDetailsFilter {
+	return LiftFromRustBuffer[*[]StoragePaymentDetailsFilter](c, rb)
+}
+
+func (_ FfiConverterOptionalSequenceStoragePaymentDetailsFilter) Read(reader io.Reader) *[]StoragePaymentDetailsFilter {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterSequenceStoragePaymentDetailsFilterINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalSequenceStoragePaymentDetailsFilter) Lower(value *[]StoragePaymentDetailsFilter) C.RustBuffer {
+	return LowerIntoRustBuffer[*[]StoragePaymentDetailsFilter](c, value)
+}
+
+func (_ FfiConverterOptionalSequenceStoragePaymentDetailsFilter) Write(writer io.Writer, value *[]StoragePaymentDetailsFilter) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterSequenceStoragePaymentDetailsFilterINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalSequenceStoragePaymentDetailsFilter struct{}
+
+func (_ FfiDestroyerOptionalSequenceStoragePaymentDetailsFilter) Destroy(value *[]StoragePaymentDetailsFilter) {
+	if value != nil {
+		FfiDestroyerSequenceStoragePaymentDetailsFilter{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalMapStringString struct{}
 
 var FfiConverterOptionalMapStringStringINSTANCE = FfiConverterOptionalMapStringString{}
@@ -24686,6 +24938,49 @@ func (FfiDestroyerSequenceSparkHtlcStatus) Destroy(sequence []SparkHtlcStatus) {
 	}
 }
 
+type FfiConverterSequenceStoragePaymentDetailsFilter struct{}
+
+var FfiConverterSequenceStoragePaymentDetailsFilterINSTANCE = FfiConverterSequenceStoragePaymentDetailsFilter{}
+
+func (c FfiConverterSequenceStoragePaymentDetailsFilter) Lift(rb RustBufferI) []StoragePaymentDetailsFilter {
+	return LiftFromRustBuffer[[]StoragePaymentDetailsFilter](c, rb)
+}
+
+func (c FfiConverterSequenceStoragePaymentDetailsFilter) Read(reader io.Reader) []StoragePaymentDetailsFilter {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]StoragePaymentDetailsFilter, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterStoragePaymentDetailsFilterINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceStoragePaymentDetailsFilter) Lower(value []StoragePaymentDetailsFilter) C.RustBuffer {
+	return LowerIntoRustBuffer[[]StoragePaymentDetailsFilter](c, value)
+}
+
+func (c FfiConverterSequenceStoragePaymentDetailsFilter) Write(writer io.Writer, value []StoragePaymentDetailsFilter) {
+	if len(value) > math.MaxInt32 {
+		panic("[]StoragePaymentDetailsFilter is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterStoragePaymentDetailsFilterINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceStoragePaymentDetailsFilter struct{}
+
+func (FfiDestroyerSequenceStoragePaymentDetailsFilter) Destroy(sequence []StoragePaymentDetailsFilter) {
+	for _, value := range sequence {
+		FfiDestroyerStoragePaymentDetailsFilter{}.Destroy(value)
+	}
+}
+
 type FfiConverterMapStringString struct{}
 
 var FfiConverterMapStringStringINSTANCE = FfiConverterMapStringString{}
@@ -24986,54 +25281,6 @@ func ConnectWithSigner(request ConnectWithSignerRequest) (*BreezSdk, error) {
 			return FfiConverterBreezSdkINSTANCE.Lift(ffi)
 		},
 		C.uniffi_breez_sdk_spark_fn_func_connect_with_signer(FfiConverterConnectWithSignerRequestINSTANCE.Lower(request)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_pointer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_pointer(handle)
-		},
-	)
-
-	return res, err
-}
-
-// Creates a `PostgreSQL` storage instance for use with the SDK builder.
-//
-// Returns a `Storage` trait object backed by the `PostgreSQL` connection pool.
-//
-// # Arguments
-//
-// * `config` - Configuration for the `PostgreSQL` connection pool
-//
-// # Example
-//
-// ```ignore
-// use breez_sdk_core::{create_postgres_storage, default_postgres_storage_config};
-//
-// let storage = create_postgres_storage(default_postgres_storage_config(
-// "host=localhost user=postgres dbname=spark".to_string()
-// )).await?;
-//
-// let sdk = SdkBuilder::new(config, seed)
-// .with_storage(storage)
-// .build()
-// .await?;
-// ```
-func CreatePostgresStorage(config PostgresStorageConfig) (Storage, error) {
-	res, err := uniffiRustCallAsync[StorageError](
-		FfiConverterStorageErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) unsafe.Pointer {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_pointer(handle, status)
-			return res
-		},
-		// liftFn
-		func(ffi unsafe.Pointer) Storage {
-			return FfiConverterStorageINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_func_create_postgres_storage(FfiConverterPostgresStorageConfigINSTANCE.Lower(config)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_pointer(handle, continuation, data)
