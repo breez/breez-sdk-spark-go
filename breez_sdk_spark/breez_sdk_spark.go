@@ -34,7 +34,29 @@ type RustBufferI interface {
 	Capacity() uint64
 }
 
-func RustBufferFromExternal(b RustBufferI) GoRustBuffer {
+// C.RustBuffer fields exposed as an interface so they can be accessed in different Go packages.
+// See https://github.com/golang/go/issues/13467
+type ExternalCRustBuffer interface {
+	Data() unsafe.Pointer
+	Len() uint64
+	Capacity() uint64
+}
+
+func RustBufferFromC(b C.RustBuffer) ExternalCRustBuffer {
+	return GoRustBuffer{
+		inner: b,
+	}
+}
+
+func CFromRustBuffer(b ExternalCRustBuffer) C.RustBuffer {
+	return C.RustBuffer{
+		capacity: C.uint64_t(b.Capacity()),
+		len:      C.uint64_t(b.Len()),
+		data:     (*C.uchar)(b.Data()),
+	}
+}
+
+func RustBufferFromExternal(b ExternalCRustBuffer) GoRustBuffer {
 	return GoRustBuffer{
 		inner: C.RustBuffer{
 			capacity: C.uint64_t(b.Capacity()),
@@ -349,7 +371,7 @@ func init() {
 
 func uniffiCheckChecksums() {
 	// Get the bindings contract version from our ComponentInterface
-	bindingsContractVersion := 26
+	bindingsContractVersion := 29
 	// Get the scaffolding contract version by calling the into the dylib
 	scaffoldingContractVersion := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint32_t {
 		return C.ffi_breez_sdk_spark_uniffi_contract_version()
@@ -468,6 +490,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_add_contact()
+		})
+		if checksum != 26497 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_add_contact: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_add_event_listener()
 		})
 		if checksum != 37737 {
@@ -527,6 +558,15 @@ func uniffiCheckChecksums() {
 		if checksum != 57587 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_htlc_payment: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_delete_contact()
+		})
+		if checksum != 15670 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_delete_contact: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -617,6 +657,15 @@ func uniffiCheckChecksums() {
 		if checksum != 38537 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_get_user_settings: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_list_contacts()
+		})
+		if checksum != 2729 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_list_contacts: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -788,6 +837,15 @@ func uniffiCheckChecksums() {
 		if checksum != 30368 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_sync_wallet: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_update_contact()
+		})
+		if checksum != 21170 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_update_contact: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1107,6 +1165,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_tree_store()
+		})
+		if checksum != 39974 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_tree_store: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_rest_chain_service()
 		})
 		if checksum != 63155 {
@@ -1251,9 +1318,45 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_storage_list_contacts()
+		})
+		if checksum != 10490 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_list_contacts: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_storage_get_contact()
+		})
+		if checksum != 19980 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_get_contact: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_storage_insert_contact()
+		})
+		if checksum != 38342 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_insert_contact: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_storage_delete_contact()
+		})
+		if checksum != 50274 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_delete_contact: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_add_outgoing_change()
 		})
-		if checksum != 50774 {
+		if checksum != 1304 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_add_outgoing_change: UniFFI API checksum mismatch")
 		}
@@ -1262,7 +1365,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_complete_outgoing_sync()
 		})
-		if checksum != 8796 {
+		if checksum != 7860 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_complete_outgoing_sync: UniFFI API checksum mismatch")
 		}
@@ -1271,7 +1374,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_get_pending_outgoing_changes()
 		})
-		if checksum != 20314 {
+		if checksum != 30862 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_get_pending_outgoing_changes: UniFFI API checksum mismatch")
 		}
@@ -1280,7 +1383,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_get_last_revision()
 		})
-		if checksum != 48442 {
+		if checksum != 6931 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_get_last_revision: UniFFI API checksum mismatch")
 		}
@@ -1289,7 +1392,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_insert_incoming_records()
 		})
-		if checksum != 38174 {
+		if checksum != 59522 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_insert_incoming_records: UniFFI API checksum mismatch")
 		}
@@ -1298,7 +1401,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_delete_incoming_record()
 		})
-		if checksum != 26412 {
+		if checksum != 19643 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_delete_incoming_record: UniFFI API checksum mismatch")
 		}
@@ -1307,7 +1410,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_get_incoming_records()
 		})
-		if checksum != 13705 {
+		if checksum != 28540 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_get_incoming_records: UniFFI API checksum mismatch")
 		}
@@ -1316,7 +1419,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_get_latest_outgoing_change()
 		})
-		if checksum != 41859 {
+		if checksum != 41369 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_get_latest_outgoing_change: UniFFI API checksum mismatch")
 		}
@@ -1325,7 +1428,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_storage_update_record_from_incoming()
 		})
-		if checksum != 54499 {
+		if checksum != 18793 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_update_record_from_incoming: UniFFI API checksum mismatch")
 		}
@@ -1604,6 +1707,10 @@ func (FfiConverterString) Lower(value string) C.RustBuffer {
 	return stringToRustBuffer(value)
 }
 
+func (c FfiConverterString) LowerExternal(value string) ExternalCRustBuffer {
+	return RustBufferFromC(stringToRustBuffer(value))
+}
+
 func (FfiConverterString) Write(writer io.Writer, value string) {
 	if len(value) > math.MaxInt32 {
 		panic("String is too large to fit into Int32")
@@ -1629,6 +1736,10 @@ var FfiConverterBytesINSTANCE = FfiConverterBytes{}
 
 func (c FfiConverterBytes) Lower(value []byte) C.RustBuffer {
 	return LowerIntoRustBuffer[[]byte](c, value)
+}
+
+func (c FfiConverterBytes) LowerExternal(value []byte) ExternalCRustBuffer {
+	return RustBufferFromC(c.Lower(value))
 }
 
 func (c FfiConverterBytes) Write(writer io.Writer, value []byte) {
@@ -1769,6 +1880,10 @@ func (_self *BitcoinChainServiceImpl) GetAddressUtxos(address string) ([]Utxo, e
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -1799,6 +1914,10 @@ func (_self *BitcoinChainServiceImpl) GetTransactionStatus(txid string) (TxStatu
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -1831,6 +1950,10 @@ func (_self *BitcoinChainServiceImpl) GetTransactionHex(txid string) (string, er
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -1857,6 +1980,10 @@ func (_self *BitcoinChainServiceImpl) BroadcastTransaction(tx string) error {
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -1888,6 +2015,10 @@ func (_self *BitcoinChainServiceImpl) RecommendedFees() (RecommendedFees, error)
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -2324,6 +2455,16 @@ func (c FfiConverterBitcoinChainService) register() {
 // `BreezSDK` is a wrapper around `SparkSDK` that provides a more structured API
 // with request/response objects and comprehensive error handling.
 type BreezSdkInterface interface {
+	// Adds a new contact.
+	//
+	// # Arguments
+	//
+	// * `request` - The request containing the contact details
+	//
+	// # Returns
+	//
+	// The created contact or an error
+	AddContact(request AddContactRequest) (Contact, error)
 	// Registers a listener to receive SDK events
 	//
 	// # Arguments
@@ -2364,6 +2505,16 @@ type BreezSdkInterface interface {
 	CheckMessage(request CheckMessageRequest) (CheckMessageResponse, error)
 	ClaimDeposit(request ClaimDepositRequest) (ClaimDepositResponse, error)
 	ClaimHtlcPayment(request ClaimHtlcPaymentRequest) (ClaimHtlcPaymentResponse, error)
+	// Deletes a contact by its ID.
+	//
+	// # Arguments
+	//
+	// * `id` - The ID of the contact to delete
+	//
+	// # Returns
+	//
+	// Success or an error
+	DeleteContact(id string) error
 	DeleteLightningAddress() error
 	// Stops the SDK's background tasks
 	//
@@ -2394,6 +2545,16 @@ type BreezSdkInterface interface {
 	//
 	// Some settings are fetched from the Spark network so network requests are performed.
 	GetUserSettings() (UserSettings, error)
+	// Lists contacts with optional pagination.
+	//
+	// # Arguments
+	//
+	// * `request` - The request containing optional pagination parameters
+	//
+	// # Returns
+	//
+	// A list of contacts or an error
+	ListContacts(request ListContactsRequest) ([]Contact, error)
 	// List fiat currencies for which there is a known exchange rate,
 	// sorted by the canonical name of the currency.
 	ListFiatCurrencies() (ListFiatCurrenciesResponse, error)
@@ -2478,6 +2639,16 @@ type BreezSdkInterface interface {
 	StartLeafOptimization()
 	// Synchronizes the wallet with the Spark network
 	SyncWallet(request SyncWalletRequest) (SyncWalletResponse, error)
+	// Updates an existing contact.
+	//
+	// # Arguments
+	//
+	// * `request` - The request containing the updated contact details
+	//
+	// # Returns
+	//
+	// The updated contact or an error
+	UpdateContact(request UpdateContactRequest) (Contact, error)
 	// Updates the user settings for the wallet.
 	//
 	// Some settings are updated on the Spark network so network requests may be performed.
@@ -2488,6 +2659,50 @@ type BreezSdkInterface interface {
 // with request/response objects and comprehensive error handling.
 type BreezSdk struct {
 	ffiObject FfiObject
+}
+
+// Adds a new contact.
+//
+// # Arguments
+//
+// * `request` - The request containing the contact details
+//
+// # Returns
+//
+// The created contact or an error
+func (_self *BreezSdk) AddContact(request AddContactRequest) (Contact, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) Contact {
+			return FfiConverterContactINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_add_contact(
+			_pointer, FfiConverterAddContactRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
 }
 
 // Registers a listener to receive SDK events
@@ -2571,6 +2786,10 @@ func (_self *BreezSdk) BuyBitcoin(request BuyBitcoinRequest) (BuyBitcoinResponse
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -2606,6 +2825,10 @@ func (_self *BreezSdk) CancelLeafOptimization() error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -2634,6 +2857,10 @@ func (_self *BreezSdk) CheckLightningAddressAvailable(req CheckLightningAddressR
 			C.ffi_breez_sdk_spark_rust_future_free_i8(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -2669,6 +2896,10 @@ func (_self *BreezSdk) CheckMessage(request CheckMessageRequest) (CheckMessageRe
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -2699,6 +2930,10 @@ func (_self *BreezSdk) ClaimDeposit(request ClaimDepositRequest) (ClaimDepositRe
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -2731,7 +2966,51 @@ func (_self *BreezSdk) ClaimHtlcPayment(request ClaimHtlcPaymentRequest) (ClaimH
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
+}
+
+// Deletes a contact by its ID.
+//
+// # Arguments
+//
+// * `id` - The ID of the contact to delete
+//
+// # Returns
+//
+// Success or an error
+func (_self *BreezSdk) DeleteContact(id string) error {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_delete_contact(
+			_pointer, FfiConverterStringINSTANCE.Lower(id)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
 }
 
 func (_self *BreezSdk) DeleteLightningAddress() error {
@@ -2757,6 +3036,10 @@ func (_self *BreezSdk) DeleteLightningAddress() error {
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -2793,6 +3076,10 @@ func (_self *BreezSdk) Disconnect() error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -2823,6 +3110,10 @@ func (_self *BreezSdk) FetchConversionLimits(request FetchConversionLimitsReques
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -2855,6 +3146,10 @@ func (_self *BreezSdk) GetInfo(request GetInfoRequest) (GetInfoResponse, error) 
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -2899,6 +3194,10 @@ func (_self *BreezSdk) GetLightningAddress() (*LightningAddressInfo, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -2929,6 +3228,10 @@ func (_self *BreezSdk) GetPayment(request GetPaymentRequest) (GetPaymentResponse
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -2977,6 +3280,10 @@ func (_self *BreezSdk) GetTokensMetadata(request GetTokensMetadataRequest) (GetT
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3011,6 +3318,54 @@ func (_self *BreezSdk) GetUserSettings() (UserSettings, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Lists contacts with optional pagination.
+//
+// # Arguments
+//
+// * `request` - The request containing optional pagination parameters
+//
+// # Returns
+//
+// A list of contacts or an error
+func (_self *BreezSdk) ListContacts(request ListContactsRequest) ([]Contact, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []Contact {
+			return FfiConverterSequenceContactINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_list_contacts(
+			_pointer, FfiConverterListContactsRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3044,6 +3399,10 @@ func (_self *BreezSdk) ListFiatCurrencies() (ListFiatCurrenciesResponse, error) 
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3075,6 +3434,10 @@ func (_self *BreezSdk) ListFiatRates() (ListFiatRatesResponse, error) {
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3120,6 +3483,10 @@ func (_self *BreezSdk) ListPayments(request ListPaymentsRequest) (ListPaymentsRe
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3150,6 +3517,10 @@ func (_self *BreezSdk) ListUnclaimedDeposits(request ListUnclaimedDepositsReques
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3187,6 +3558,10 @@ func (_self *BreezSdk) LnurlAuth(requestData LnurlAuthRequestDetails) (LnurlCall
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3217,6 +3592,10 @@ func (_self *BreezSdk) LnurlPay(request LnurlPayRequest) (LnurlPayResponse, erro
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3274,6 +3653,10 @@ func (_self *BreezSdk) LnurlWithdraw(request LnurlWithdrawRequest) (LnurlWithdra
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3304,6 +3687,10 @@ func (_self *BreezSdk) Parse(input string) (InputType, error) {
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3336,6 +3723,10 @@ func (_self *BreezSdk) PrepareLnurlPay(request PrepareLnurlPayRequest) (PrepareL
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3367,6 +3758,10 @@ func (_self *BreezSdk) PrepareSendPayment(request PrepareSendPaymentRequest) (Pr
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3397,6 +3792,10 @@ func (_self *BreezSdk) ReceivePayment(request ReceivePaymentRequest) (ReceivePay
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3430,6 +3829,10 @@ func (_self *BreezSdk) RecommendedFees() (RecommendedFees, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3461,6 +3864,10 @@ func (_self *BreezSdk) RefundDeposit(request RefundDepositRequest) (RefundDeposi
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3491,6 +3898,10 @@ func (_self *BreezSdk) RegisterLightningAddress(request RegisterLightningAddress
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3561,6 +3972,10 @@ func (_self *BreezSdk) SendPayment(request SendPaymentRequest) (SendPaymentRespo
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3594,6 +4009,10 @@ func (_self *BreezSdk) SignMessage(request SignMessageRequest) (SignMessageRespo
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -3642,6 +4061,54 @@ func (_self *BreezSdk) SyncWallet(request SyncWalletRequest) (SyncWalletResponse
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Updates an existing contact.
+//
+// # Arguments
+//
+// * `request` - The request containing the updated contact details
+//
+// # Returns
+//
+// The updated contact or an error
+func (_self *BreezSdk) UpdateContact(request UpdateContactRequest) (Contact, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) Contact {
+			return FfiConverterContactINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_update_contact(
+			_pointer, FfiConverterUpdateContactRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -3671,6 +4138,10 @@ func (_self *BreezSdk) UpdateUserSettings(request UpdateUserSettingsRequest) err
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -4013,6 +4484,10 @@ func (_self *ExternalSignerImpl) DerivePublicKey(path string) (PublicKeyBytes, e
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4053,6 +4528,10 @@ func (_self *ExternalSignerImpl) SignEcdsa(message MessageBytes, path string) (E
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -4095,6 +4574,10 @@ func (_self *ExternalSignerImpl) SignEcdsaRecoverable(message MessageBytes, path
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4133,6 +4616,10 @@ func (_self *ExternalSignerImpl) EncryptEcies(message []byte, path string) ([]by
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -4175,6 +4662,10 @@ func (_self *ExternalSignerImpl) DecryptEcies(message []byte, path string) ([]by
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4213,6 +4704,10 @@ func (_self *ExternalSignerImpl) SignHashSchnorr(hash []byte, path string) (Schn
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -4255,6 +4750,10 @@ func (_self *ExternalSignerImpl) HmacSha256(message []byte, path string) (Hashed
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4291,6 +4790,10 @@ func (_self *ExternalSignerImpl) GenerateRandomSigningCommitment() (ExternalFros
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -4329,6 +4832,10 @@ func (_self *ExternalSignerImpl) GetPublicKeyForNode(id ExternalTreeNodeId) (Pub
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -4378,6 +4885,10 @@ func (_self *ExternalSignerImpl) GenerateRandomSecret() (ExternalEncryptedSecret
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4417,6 +4928,10 @@ func (_self *ExternalSignerImpl) StaticDepositSecretEncrypted(index uint32) (Ext
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -4458,6 +4973,10 @@ func (_self *ExternalSignerImpl) StaticDepositSecret(index uint32) (SecretBytes,
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4497,6 +5016,10 @@ func (_self *ExternalSignerImpl) StaticDepositSigningKey(index uint32) (PublicKe
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -4542,6 +5065,10 @@ func (_self *ExternalSignerImpl) SubtractSecrets(signingKey ExternalSecretSource
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4584,6 +5111,10 @@ func (_self *ExternalSignerImpl) SplitSecretWithProofs(secret ExternalSecretToSp
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4622,6 +5153,10 @@ func (_self *ExternalSignerImpl) EncryptSecretForReceiver(encryptedSecret Extern
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -4663,6 +5198,10 @@ func (_self *ExternalSignerImpl) PublicKeyFromSecret(secret ExternalSecretSource
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4703,6 +5242,10 @@ func (_self *ExternalSignerImpl) SignFrost(request ExternalSignFrostRequest) (Ex
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -4742,6 +5285,10 @@ func (_self *ExternalSignerImpl) AggregateFrost(request ExternalAggregateFrostRe
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -6118,6 +6665,10 @@ func (_self *FiatServiceImpl) FetchFiatCurrencies() ([]FiatCurrency, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -6149,6 +6700,10 @@ func (_self *FiatServiceImpl) FetchFiatRates() ([]Rate, error) {
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -6380,6 +6935,10 @@ func (_self *PaymentObserverImpl) BeforeSend(payments []ProvisionalPayment) erro
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 func (object *PaymentObserverImpl) Destroy() {
@@ -6580,6 +7139,10 @@ func (_self *RestClientImpl) GetRequest(url string, headers *map[string]string) 
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -6616,6 +7179,10 @@ func (_self *RestClientImpl) PostRequest(url string, headers *map[string]string,
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -6651,6 +7218,10 @@ func (_self *RestClientImpl) DeleteRequest(url string, headers *map[string]strin
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -6963,6 +7534,14 @@ type SdkBuilderInterface interface {
 	// Arguments:
 	// - `config`: The `PostgreSQL` storage configuration.
 	WithPostgresStorage(config PostgresStorageConfig)
+	// Sets a `PostgreSQL`-backed tree store for persistent tree storage.
+	//
+	// This is suitable for server-side deployments where tree state
+	// needs to persist across restarts.
+	//
+	// # Arguments
+	// - `config`: Configuration for the `PostgreSQL` connection pool.
+	WithPostgresTreeStore(config PostgresStorageConfig)
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
 	// - `url`: The base URL of the REST API.
@@ -7016,6 +7595,10 @@ func (_self *SdkBuilder) Build() (*BreezSdk, error) {
 			C.ffi_breez_sdk_spark_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -7210,6 +7793,39 @@ func (_self *SdkBuilder) WithPostgresStorage(config PostgresStorageConfig) {
 		// liftFn
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_storage(
+			_pointer, FfiConverterPostgresStorageConfigINSTANCE.Lower(config)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets a `PostgreSQL`-backed tree store for persistent tree storage.
+//
+// This is suitable for server-side deployments where tree state
+// needs to persist across restarts.
+//
+// # Arguments
+// - `config`: Configuration for the `PostgreSQL` connection pool.
+func (_self *SdkBuilder) WithPostgresTreeStore(config PostgresStorageConfig) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_tree_store(
 			_pointer, FfiConverterPostgresStorageConfigINSTANCE.Lower(config)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -7433,6 +8049,15 @@ type Storage interface {
 	// Success or a `StorageError`
 	UpdateDeposit(txid string, vout uint32, payload UpdateDepositPayload) error
 	SetLnurlMetadata(metadata []SetLnurlMetadataItem) error
+	// Lists contacts from storage with optional pagination
+	ListContacts(request ListContactsRequest) ([]Contact, error)
+	// Gets a single contact by its ID
+	GetContact(id string) (Contact, error)
+	// Inserts or updates a contact in storage (upsert by id).
+	// Preserves `created_at` on update.
+	InsertContact(contact Contact) error
+	// Deletes a contact by its ID
+	DeleteContact(id string) error
 	AddOutgoingChange(record UnversionedRecordChange) (uint64, error)
 	CompleteOutgoingSync(record Record, localRevision uint64) error
 	GetPendingOutgoingChanges(limit uint32) ([]OutgoingChange, error)
@@ -7484,6 +8109,10 @@ func (_self *StorageImpl) DeleteCachedItem(key string) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -7515,6 +8144,10 @@ func (_self *StorageImpl) GetCachedItem(key string) (*string, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -7541,6 +8174,10 @@ func (_self *StorageImpl) SetCachedItem(key string, value string) error {
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -7582,6 +8219,10 @@ func (_self *StorageImpl) ListPayments(request StorageListPaymentsRequest) ([]Pa
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -7617,6 +8258,10 @@ func (_self *StorageImpl) InsertPayment(payment Payment) error {
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -7654,6 +8299,10 @@ func (_self *StorageImpl) InsertPaymentMetadata(paymentId string, metadata Payme
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -7694,6 +8343,10 @@ func (_self *StorageImpl) GetPaymentById(id string) (Payment, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -7731,6 +8384,10 @@ func (_self *StorageImpl) GetPaymentByInvoice(invoice string) (*Payment, error) 
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -7773,6 +8430,10 @@ func (_self *StorageImpl) GetPaymentsByParentIds(parentPaymentIds []string) (map
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -7810,6 +8471,10 @@ func (_self *StorageImpl) AddDeposit(txid string, vout uint32, amountSats uint64
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -7846,6 +8511,10 @@ func (_self *StorageImpl) DeleteDeposit(txid string, vout uint32) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -7880,6 +8549,10 @@ func (_self *StorageImpl) ListDeposits() ([]DepositInfo, error) {
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -7918,6 +8591,10 @@ func (_self *StorageImpl) UpdateDeposit(txid string, vout uint32, payload Update
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -7944,6 +8621,147 @@ func (_self *StorageImpl) SetLnurlMetadata(metadata []SetLnurlMetadataItem) erro
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Lists contacts from storage with optional pagination
+func (_self *StorageImpl) ListContacts(request ListContactsRequest) ([]Contact, error) {
+	_pointer := _self.ffiObject.incrementPointer("Storage")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[StorageError](
+		FfiConverterStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []Contact {
+			return FfiConverterSequenceContactINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_storage_list_contacts(
+			_pointer, FfiConverterListContactsRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Gets a single contact by its ID
+func (_self *StorageImpl) GetContact(id string) (Contact, error) {
+	_pointer := _self.ffiObject.incrementPointer("Storage")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[StorageError](
+		FfiConverterStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) Contact {
+			return FfiConverterContactINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_storage_get_contact(
+			_pointer, FfiConverterStringINSTANCE.Lower(id)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Inserts or updates a contact in storage (upsert by id).
+// Preserves `created_at` on update.
+func (_self *StorageImpl) InsertContact(contact Contact) error {
+	_pointer := _self.ffiObject.incrementPointer("Storage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[StorageError](
+		FfiConverterStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_storage_insert_contact(
+			_pointer, FfiConverterContactINSTANCE.Lower(contact)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Deletes a contact by its ID
+func (_self *StorageImpl) DeleteContact(id string) error {
+	_pointer := _self.ffiObject.incrementPointer("Storage")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[StorageError](
+		FfiConverterStorageErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_storage_delete_contact(
+			_pointer, FfiConverterStringINSTANCE.Lower(id)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -7974,6 +8792,10 @@ func (_self *StorageImpl) AddOutgoingChange(record UnversionedRecordChange) (uin
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -8000,6 +8822,10 @@ func (_self *StorageImpl) CompleteOutgoingSync(record Record, localRevision uint
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -8031,6 +8857,10 @@ func (_self *StorageImpl) GetPendingOutgoingChanges(limit uint32) ([]OutgoingCha
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -8067,6 +8897,10 @@ func (_self *StorageImpl) GetLastRevision() (uint64, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -8095,6 +8929,10 @@ func (_self *StorageImpl) InsertIncomingRecords(records []Record) error {
 		},
 	)
 
+	if err == nil {
+		return nil
+	}
+
 	return err
 }
 
@@ -8122,6 +8960,10 @@ func (_self *StorageImpl) DeleteIncomingRecord(record Record) error {
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -8155,6 +8997,10 @@ func (_self *StorageImpl) GetIncomingRecords(limit uint32) ([]IncomingChange, er
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -8187,6 +9033,10 @@ func (_self *StorageImpl) GetLatestOutgoingChange() (*OutgoingChange, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -8214,6 +9064,10 @@ func (_self *StorageImpl) UpdateRecordFromIncoming(record Record) error {
 			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
 		},
 	)
+
+	if err == nil {
+		return nil
+	}
 
 	return err
 }
@@ -9149,7 +10003,255 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod13(uniffiHandle C
 }
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod14
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod14(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteU64, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod14(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.ListContacts(
+				FfiConverterListContactsRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *StorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterSequenceContactINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15(uniffiHandle C.uint64_t, id C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.GetContact(
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: id,
+				}),
+			)
+
+		if err != nil {
+			var actualError *StorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterContactINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16(uniffiHandle C.uint64_t, contact C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.InsertContact(
+				FfiConverterContactINSTANCE.Lift(GoRustBuffer{
+					inner: contact,
+				}),
+			)
+
+		if err != nil {
+			var actualError *StorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17(uniffiHandle C.uint64_t, id C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.DeleteContact(
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: id,
+				}),
+			)
+
+		if err != nil {
+			var actualError *StorageError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterStorageErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteU64, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9211,8 +10313,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod14(uniffiHandle C
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15(uniffiHandle C.uint64_t, record C.RustBuffer, localRevision C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19(uniffiHandle C.uint64_t, record C.RustBuffer, localRevision C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9273,8 +10375,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15(uniffiHandle C
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16(uniffiHandle C.uint64_t, limit C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20(uniffiHandle C.uint64_t, limit C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9334,8 +10436,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16(uniffiHandle C
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteU64, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteU64, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9393,8 +10495,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17(uniffiHandle C
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18(uniffiHandle C.uint64_t, records C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22(uniffiHandle C.uint64_t, records C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9454,8 +10556,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18(uniffiHandle C
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod23
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod23(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9515,8 +10617,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19(uniffiHandle C
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20(uniffiHandle C.uint64_t, limit C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod24
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod24(uniffiHandle C.uint64_t, limit C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9576,8 +10678,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20(uniffiHandle C
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod25
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod25(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9635,8 +10737,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21(uniffiHandle C
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod26
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod26(uniffiHandle C.uint64_t, record C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9711,15 +10813,19 @@ var UniffiVTableCallbackInterfaceStorageINSTANCE = C.UniffiVTableCallbackInterfa
 	listDeposits:              (C.UniffiCallbackInterfaceStorageMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod11),
 	updateDeposit:             (C.UniffiCallbackInterfaceStorageMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod12),
 	setLnurlMetadata:          (C.UniffiCallbackInterfaceStorageMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod13),
-	addOutgoingChange:         (C.UniffiCallbackInterfaceStorageMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod14),
-	completeOutgoingSync:      (C.UniffiCallbackInterfaceStorageMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15),
-	getPendingOutgoingChanges: (C.UniffiCallbackInterfaceStorageMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16),
-	getLastRevision:           (C.UniffiCallbackInterfaceStorageMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17),
-	insertIncomingRecords:     (C.UniffiCallbackInterfaceStorageMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18),
-	deleteIncomingRecord:      (C.UniffiCallbackInterfaceStorageMethod19)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19),
-	getIncomingRecords:        (C.UniffiCallbackInterfaceStorageMethod20)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20),
-	getLatestOutgoingChange:   (C.UniffiCallbackInterfaceStorageMethod21)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21),
-	updateRecordFromIncoming:  (C.UniffiCallbackInterfaceStorageMethod22)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22),
+	listContacts:              (C.UniffiCallbackInterfaceStorageMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod14),
+	getContact:                (C.UniffiCallbackInterfaceStorageMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15),
+	insertContact:             (C.UniffiCallbackInterfaceStorageMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16),
+	deleteContact:             (C.UniffiCallbackInterfaceStorageMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17),
+	addOutgoingChange:         (C.UniffiCallbackInterfaceStorageMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18),
+	completeOutgoingSync:      (C.UniffiCallbackInterfaceStorageMethod19)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19),
+	getPendingOutgoingChanges: (C.UniffiCallbackInterfaceStorageMethod20)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20),
+	getLastRevision:           (C.UniffiCallbackInterfaceStorageMethod21)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21),
+	insertIncomingRecords:     (C.UniffiCallbackInterfaceStorageMethod22)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22),
+	deleteIncomingRecord:      (C.UniffiCallbackInterfaceStorageMethod23)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod23),
+	getIncomingRecords:        (C.UniffiCallbackInterfaceStorageMethod24)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod24),
+	getLatestOutgoingChange:   (C.UniffiCallbackInterfaceStorageMethod25)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod25),
+	updateRecordFromIncoming:  (C.UniffiCallbackInterfaceStorageMethod26)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod26),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree),
 }
@@ -9854,6 +10960,10 @@ func (_self *TokenIssuer) BurnIssuerToken(request BurnIssuerTokenRequest) (Payme
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -9895,6 +11005,10 @@ func (_self *TokenIssuer) CreateIssuerToken(request CreateIssuerTokenRequest) (T
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -9938,6 +11052,10 @@ func (_self *TokenIssuer) FreezeIssuerToken(request FreezeIssuerTokenRequest) (F
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -9976,6 +11094,10 @@ func (_self *TokenIssuer) GetIssuerTokenBalance() (TokenBalance, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -10013,6 +11135,10 @@ func (_self *TokenIssuer) GetIssuerTokenMetadata() (TokenMetadata, error) {
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -10056,6 +11182,10 @@ func (_self *TokenIssuer) MintIssuerToken(request MintIssuerTokenRequest) (Payme
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -10097,6 +11227,10 @@ func (_self *TokenIssuer) UnfreezeIssuerToken(request UnfreezeIssuerTokenRequest
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -10149,6 +11283,52 @@ func (_ FfiDestroyerTokenIssuer) Destroy(value *TokenIssuer) {
 	value.Destroy()
 }
 
+// Request to add a new contact.
+type AddContactRequest struct {
+	Name string
+	// A Lightning address (user@domain).
+	PaymentIdentifier string
+}
+
+func (r *AddContactRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Name)
+	FfiDestroyerString{}.Destroy(r.PaymentIdentifier)
+}
+
+type FfiConverterAddContactRequest struct{}
+
+var FfiConverterAddContactRequestINSTANCE = FfiConverterAddContactRequest{}
+
+func (c FfiConverterAddContactRequest) Lift(rb RustBufferI) AddContactRequest {
+	return LiftFromRustBuffer[AddContactRequest](c, rb)
+}
+
+func (c FfiConverterAddContactRequest) Read(reader io.Reader) AddContactRequest {
+	return AddContactRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterAddContactRequest) Lower(value AddContactRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[AddContactRequest](c, value)
+}
+
+func (c FfiConverterAddContactRequest) LowerExternal(value AddContactRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[AddContactRequest](c, value))
+}
+
+func (c FfiConverterAddContactRequest) Write(writer io.Writer, value AddContactRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Name)
+	FfiConverterStringINSTANCE.Write(writer, value.PaymentIdentifier)
+}
+
+type FfiDestroyerAddContactRequest struct{}
+
+func (_ FfiDestroyerAddContactRequest) Destroy(value AddContactRequest) {
+	value.Destroy()
+}
+
 // Payload of the AES success action, as received from the LNURL endpoint
 //
 // See [`AesSuccessActionDataDecrypted`] for a similar wrapper containing the decrypted payload
@@ -10185,6 +11365,10 @@ func (c FfiConverterAesSuccessActionData) Read(reader io.Reader) AesSuccessActio
 
 func (c FfiConverterAesSuccessActionData) Lower(value AesSuccessActionData) C.RustBuffer {
 	return LowerIntoRustBuffer[AesSuccessActionData](c, value)
+}
+
+func (c FfiConverterAesSuccessActionData) LowerExternal(value AesSuccessActionData) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[AesSuccessActionData](c, value))
 }
 
 func (c FfiConverterAesSuccessActionData) Write(writer io.Writer, value AesSuccessActionData) {
@@ -10229,6 +11413,10 @@ func (c FfiConverterAesSuccessActionDataDecrypted) Read(reader io.Reader) AesSuc
 
 func (c FfiConverterAesSuccessActionDataDecrypted) Lower(value AesSuccessActionDataDecrypted) C.RustBuffer {
 	return LowerIntoRustBuffer[AesSuccessActionDataDecrypted](c, value)
+}
+
+func (c FfiConverterAesSuccessActionDataDecrypted) LowerExternal(value AesSuccessActionDataDecrypted) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[AesSuccessActionDataDecrypted](c, value))
 }
 
 func (c FfiConverterAesSuccessActionDataDecrypted) Write(writer io.Writer, value AesSuccessActionDataDecrypted) {
@@ -10286,6 +11474,10 @@ func (c FfiConverterBip21Details) Lower(value Bip21Details) C.RustBuffer {
 	return LowerIntoRustBuffer[Bip21Details](c, value)
 }
 
+func (c FfiConverterBip21Details) LowerExternal(value Bip21Details) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bip21Details](c, value))
+}
+
 func (c FfiConverterBip21Details) Write(writer io.Writer, value Bip21Details) {
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.AmountSat)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.AssetId)
@@ -10331,6 +11523,10 @@ func (c FfiConverterBip21Extra) Lower(value Bip21Extra) C.RustBuffer {
 	return LowerIntoRustBuffer[Bip21Extra](c, value)
 }
 
+func (c FfiConverterBip21Extra) LowerExternal(value Bip21Extra) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bip21Extra](c, value))
+}
+
 func (c FfiConverterBip21Extra) Write(writer io.Writer, value Bip21Extra) {
 	FfiConverterStringINSTANCE.Write(writer, value.Key)
 	FfiConverterStringINSTANCE.Write(writer, value.Value)
@@ -10374,6 +11570,10 @@ func (c FfiConverterBitcoinAddressDetails) Lower(value BitcoinAddressDetails) C.
 	return LowerIntoRustBuffer[BitcoinAddressDetails](c, value)
 }
 
+func (c FfiConverterBitcoinAddressDetails) LowerExternal(value BitcoinAddressDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BitcoinAddressDetails](c, value))
+}
+
 func (c FfiConverterBitcoinAddressDetails) Write(writer io.Writer, value BitcoinAddressDetails) {
 	FfiConverterStringINSTANCE.Write(writer, value.Address)
 	FfiConverterBitcoinNetworkINSTANCE.Write(writer, value.Network)
@@ -10413,6 +11613,10 @@ func (c FfiConverterBolt11Invoice) Read(reader io.Reader) Bolt11Invoice {
 
 func (c FfiConverterBolt11Invoice) Lower(value Bolt11Invoice) C.RustBuffer {
 	return LowerIntoRustBuffer[Bolt11Invoice](c, value)
+}
+
+func (c FfiConverterBolt11Invoice) LowerExternal(value Bolt11Invoice) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt11Invoice](c, value))
 }
 
 func (c FfiConverterBolt11Invoice) Write(writer io.Writer, value Bolt11Invoice) {
@@ -10485,6 +11689,10 @@ func (c FfiConverterBolt11InvoiceDetails) Lower(value Bolt11InvoiceDetails) C.Ru
 	return LowerIntoRustBuffer[Bolt11InvoiceDetails](c, value)
 }
 
+func (c FfiConverterBolt11InvoiceDetails) LowerExternal(value Bolt11InvoiceDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt11InvoiceDetails](c, value))
+}
+
 func (c FfiConverterBolt11InvoiceDetails) Write(writer io.Writer, value Bolt11InvoiceDetails) {
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.AmountMsat)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Description)
@@ -10530,6 +11738,10 @@ func (c FfiConverterBolt11RouteHint) Read(reader io.Reader) Bolt11RouteHint {
 
 func (c FfiConverterBolt11RouteHint) Lower(value Bolt11RouteHint) C.RustBuffer {
 	return LowerIntoRustBuffer[Bolt11RouteHint](c, value)
+}
+
+func (c FfiConverterBolt11RouteHint) LowerExternal(value Bolt11RouteHint) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt11RouteHint](c, value))
 }
 
 func (c FfiConverterBolt11RouteHint) Write(writer io.Writer, value Bolt11RouteHint) {
@@ -10592,6 +11804,10 @@ func (c FfiConverterBolt11RouteHintHop) Lower(value Bolt11RouteHintHop) C.RustBu
 	return LowerIntoRustBuffer[Bolt11RouteHintHop](c, value)
 }
 
+func (c FfiConverterBolt11RouteHintHop) LowerExternal(value Bolt11RouteHintHop) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt11RouteHintHop](c, value))
+}
+
 func (c FfiConverterBolt11RouteHintHop) Write(writer io.Writer, value Bolt11RouteHintHop) {
 	FfiConverterStringINSTANCE.Write(writer, value.SrcNodeId)
 	FfiConverterStringINSTANCE.Write(writer, value.ShortChannelId)
@@ -10637,6 +11853,10 @@ func (c FfiConverterBolt12Invoice) Lower(value Bolt12Invoice) C.RustBuffer {
 	return LowerIntoRustBuffer[Bolt12Invoice](c, value)
 }
 
+func (c FfiConverterBolt12Invoice) LowerExternal(value Bolt12Invoice) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt12Invoice](c, value))
+}
+
 func (c FfiConverterBolt12Invoice) Write(writer io.Writer, value Bolt12Invoice) {
 	FfiConverterStringINSTANCE.Write(writer, value.Invoice)
 	FfiConverterPaymentRequestSourceINSTANCE.Write(writer, value.Source)
@@ -10677,6 +11897,10 @@ func (c FfiConverterBolt12InvoiceDetails) Lower(value Bolt12InvoiceDetails) C.Ru
 	return LowerIntoRustBuffer[Bolt12InvoiceDetails](c, value)
 }
 
+func (c FfiConverterBolt12InvoiceDetails) LowerExternal(value Bolt12InvoiceDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt12InvoiceDetails](c, value))
+}
+
 func (c FfiConverterBolt12InvoiceDetails) Write(writer io.Writer, value Bolt12InvoiceDetails) {
 	FfiConverterUint64INSTANCE.Write(writer, value.AmountMsat)
 	FfiConverterBolt12InvoiceINSTANCE.Write(writer, value.Invoice)
@@ -10708,6 +11932,10 @@ func (c FfiConverterBolt12InvoiceRequestDetails) Read(reader io.Reader) Bolt12In
 
 func (c FfiConverterBolt12InvoiceRequestDetails) Lower(value Bolt12InvoiceRequestDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[Bolt12InvoiceRequestDetails](c, value)
+}
+
+func (c FfiConverterBolt12InvoiceRequestDetails) LowerExternal(value Bolt12InvoiceRequestDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt12InvoiceRequestDetails](c, value))
 }
 
 func (c FfiConverterBolt12InvoiceRequestDetails) Write(writer io.Writer, value Bolt12InvoiceRequestDetails) {
@@ -10748,6 +11976,10 @@ func (c FfiConverterBolt12Offer) Lower(value Bolt12Offer) C.RustBuffer {
 	return LowerIntoRustBuffer[Bolt12Offer](c, value)
 }
 
+func (c FfiConverterBolt12Offer) LowerExternal(value Bolt12Offer) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt12Offer](c, value))
+}
+
 func (c FfiConverterBolt12Offer) Write(writer io.Writer, value Bolt12Offer) {
 	FfiConverterStringINSTANCE.Write(writer, value.Offer)
 	FfiConverterPaymentRequestSourceINSTANCE.Write(writer, value.Source)
@@ -10783,6 +12015,10 @@ func (c FfiConverterBolt12OfferBlindedPath) Read(reader io.Reader) Bolt12OfferBl
 
 func (c FfiConverterBolt12OfferBlindedPath) Lower(value Bolt12OfferBlindedPath) C.RustBuffer {
 	return LowerIntoRustBuffer[Bolt12OfferBlindedPath](c, value)
+}
+
+func (c FfiConverterBolt12OfferBlindedPath) LowerExternal(value Bolt12OfferBlindedPath) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt12OfferBlindedPath](c, value))
 }
 
 func (c FfiConverterBolt12OfferBlindedPath) Write(writer io.Writer, value Bolt12OfferBlindedPath) {
@@ -10842,6 +12078,10 @@ func (c FfiConverterBolt12OfferDetails) Lower(value Bolt12OfferDetails) C.RustBu
 	return LowerIntoRustBuffer[Bolt12OfferDetails](c, value)
 }
 
+func (c FfiConverterBolt12OfferDetails) LowerExternal(value Bolt12OfferDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Bolt12OfferDetails](c, value))
+}
+
 func (c FfiConverterBolt12OfferDetails) Write(writer io.Writer, value Bolt12OfferDetails) {
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.AbsoluteExpiry)
 	FfiConverterSequenceStringINSTANCE.Write(writer, value.Chains)
@@ -10883,6 +12123,10 @@ func (c FfiConverterBurnIssuerTokenRequest) Read(reader io.Reader) BurnIssuerTok
 
 func (c FfiConverterBurnIssuerTokenRequest) Lower(value BurnIssuerTokenRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[BurnIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterBurnIssuerTokenRequest) LowerExternal(value BurnIssuerTokenRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BurnIssuerTokenRequest](c, value))
 }
 
 func (c FfiConverterBurnIssuerTokenRequest) Write(writer io.Writer, value BurnIssuerTokenRequest) {
@@ -10928,6 +12172,10 @@ func (c FfiConverterBuyBitcoinRequest) Lower(value BuyBitcoinRequest) C.RustBuff
 	return LowerIntoRustBuffer[BuyBitcoinRequest](c, value)
 }
 
+func (c FfiConverterBuyBitcoinRequest) LowerExternal(value BuyBitcoinRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BuyBitcoinRequest](c, value))
+}
+
 func (c FfiConverterBuyBitcoinRequest) Write(writer io.Writer, value BuyBitcoinRequest) {
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.LockedAmountSat)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.RedirectUrl)
@@ -10967,6 +12215,10 @@ func (c FfiConverterBuyBitcoinResponse) Lower(value BuyBitcoinResponse) C.RustBu
 	return LowerIntoRustBuffer[BuyBitcoinResponse](c, value)
 }
 
+func (c FfiConverterBuyBitcoinResponse) LowerExternal(value BuyBitcoinResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BuyBitcoinResponse](c, value))
+}
+
 func (c FfiConverterBuyBitcoinResponse) Write(writer io.Writer, value BuyBitcoinResponse) {
 	FfiConverterStringINSTANCE.Write(writer, value.Url)
 }
@@ -11001,6 +12253,10 @@ func (c FfiConverterCheckLightningAddressRequest) Read(reader io.Reader) CheckLi
 
 func (c FfiConverterCheckLightningAddressRequest) Lower(value CheckLightningAddressRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[CheckLightningAddressRequest](c, value)
+}
+
+func (c FfiConverterCheckLightningAddressRequest) LowerExternal(value CheckLightningAddressRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[CheckLightningAddressRequest](c, value))
 }
 
 func (c FfiConverterCheckLightningAddressRequest) Write(writer io.Writer, value CheckLightningAddressRequest) {
@@ -11048,6 +12304,10 @@ func (c FfiConverterCheckMessageRequest) Lower(value CheckMessageRequest) C.Rust
 	return LowerIntoRustBuffer[CheckMessageRequest](c, value)
 }
 
+func (c FfiConverterCheckMessageRequest) LowerExternal(value CheckMessageRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[CheckMessageRequest](c, value))
+}
+
 func (c FfiConverterCheckMessageRequest) Write(writer io.Writer, value CheckMessageRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.Message)
 	FfiConverterStringINSTANCE.Write(writer, value.Pubkey)
@@ -11084,6 +12344,10 @@ func (c FfiConverterCheckMessageResponse) Read(reader io.Reader) CheckMessageRes
 
 func (c FfiConverterCheckMessageResponse) Lower(value CheckMessageResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[CheckMessageResponse](c, value)
+}
+
+func (c FfiConverterCheckMessageResponse) LowerExternal(value CheckMessageResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[CheckMessageResponse](c, value))
 }
 
 func (c FfiConverterCheckMessageResponse) Write(writer io.Writer, value CheckMessageResponse) {
@@ -11128,6 +12392,10 @@ func (c FfiConverterClaimDepositRequest) Lower(value ClaimDepositRequest) C.Rust
 	return LowerIntoRustBuffer[ClaimDepositRequest](c, value)
 }
 
+func (c FfiConverterClaimDepositRequest) LowerExternal(value ClaimDepositRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ClaimDepositRequest](c, value))
+}
+
 func (c FfiConverterClaimDepositRequest) Write(writer io.Writer, value ClaimDepositRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.Txid)
 	FfiConverterUint32INSTANCE.Write(writer, value.Vout)
@@ -11166,6 +12434,10 @@ func (c FfiConverterClaimDepositResponse) Lower(value ClaimDepositResponse) C.Ru
 	return LowerIntoRustBuffer[ClaimDepositResponse](c, value)
 }
 
+func (c FfiConverterClaimDepositResponse) LowerExternal(value ClaimDepositResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ClaimDepositResponse](c, value))
+}
+
 func (c FfiConverterClaimDepositResponse) Write(writer io.Writer, value ClaimDepositResponse) {
 	FfiConverterPaymentINSTANCE.Write(writer, value.Payment)
 }
@@ -11202,6 +12474,10 @@ func (c FfiConverterClaimHtlcPaymentRequest) Lower(value ClaimHtlcPaymentRequest
 	return LowerIntoRustBuffer[ClaimHtlcPaymentRequest](c, value)
 }
 
+func (c FfiConverterClaimHtlcPaymentRequest) LowerExternal(value ClaimHtlcPaymentRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ClaimHtlcPaymentRequest](c, value))
+}
+
 func (c FfiConverterClaimHtlcPaymentRequest) Write(writer io.Writer, value ClaimHtlcPaymentRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.Preimage)
 }
@@ -11236,6 +12512,10 @@ func (c FfiConverterClaimHtlcPaymentResponse) Read(reader io.Reader) ClaimHtlcPa
 
 func (c FfiConverterClaimHtlcPaymentResponse) Lower(value ClaimHtlcPaymentResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[ClaimHtlcPaymentResponse](c, value)
+}
+
+func (c FfiConverterClaimHtlcPaymentResponse) LowerExternal(value ClaimHtlcPaymentResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ClaimHtlcPaymentResponse](c, value))
 }
 
 func (c FfiConverterClaimHtlcPaymentResponse) Write(writer io.Writer, value ClaimHtlcPaymentResponse) {
@@ -11342,6 +12622,10 @@ func (c FfiConverterConfig) Lower(value Config) C.RustBuffer {
 	return LowerIntoRustBuffer[Config](c, value)
 }
 
+func (c FfiConverterConfig) LowerExternal(value Config) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Config](c, value))
+}
+
 func (c FfiConverterConfig) Write(writer io.Writer, value Config) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.ApiKey)
 	FfiConverterNetworkINSTANCE.Write(writer, value.Network)
@@ -11397,6 +12681,10 @@ func (c FfiConverterConnectRequest) Lower(value ConnectRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[ConnectRequest](c, value)
 }
 
+func (c FfiConverterConnectRequest) LowerExternal(value ConnectRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConnectRequest](c, value))
+}
+
 func (c FfiConverterConnectRequest) Write(writer io.Writer, value ConnectRequest) {
 	FfiConverterConfigINSTANCE.Write(writer, value.Config)
 	FfiConverterSeedINSTANCE.Write(writer, value.Seed)
@@ -11444,6 +12732,10 @@ func (c FfiConverterConnectWithSignerRequest) Lower(value ConnectWithSignerReque
 	return LowerIntoRustBuffer[ConnectWithSignerRequest](c, value)
 }
 
+func (c FfiConverterConnectWithSignerRequest) LowerExternal(value ConnectWithSignerRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConnectWithSignerRequest](c, value))
+}
+
 func (c FfiConverterConnectWithSignerRequest) Write(writer io.Writer, value ConnectWithSignerRequest) {
 	FfiConverterConfigINSTANCE.Write(writer, value.Config)
 	FfiConverterExternalSignerINSTANCE.Write(writer, value.Signer)
@@ -11453,6 +12745,64 @@ func (c FfiConverterConnectWithSignerRequest) Write(writer io.Writer, value Conn
 type FfiDestroyerConnectWithSignerRequest struct{}
 
 func (_ FfiDestroyerConnectWithSignerRequest) Destroy(value ConnectWithSignerRequest) {
+	value.Destroy()
+}
+
+// A contact entry containing a name and payment identifier.
+type Contact struct {
+	Id   string
+	Name string
+	// A Lightning address (user@domain).
+	PaymentIdentifier string
+	CreatedAt         uint64
+	UpdatedAt         uint64
+}
+
+func (r *Contact) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Id)
+	FfiDestroyerString{}.Destroy(r.Name)
+	FfiDestroyerString{}.Destroy(r.PaymentIdentifier)
+	FfiDestroyerUint64{}.Destroy(r.CreatedAt)
+	FfiDestroyerUint64{}.Destroy(r.UpdatedAt)
+}
+
+type FfiConverterContact struct{}
+
+var FfiConverterContactINSTANCE = FfiConverterContact{}
+
+func (c FfiConverterContact) Lift(rb RustBufferI) Contact {
+	return LiftFromRustBuffer[Contact](c, rb)
+}
+
+func (c FfiConverterContact) Read(reader io.Reader) Contact {
+	return Contact{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterContact) Lower(value Contact) C.RustBuffer {
+	return LowerIntoRustBuffer[Contact](c, value)
+}
+
+func (c FfiConverterContact) LowerExternal(value Contact) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Contact](c, value))
+}
+
+func (c FfiConverterContact) Write(writer io.Writer, value Contact) {
+	FfiConverterStringINSTANCE.Write(writer, value.Id)
+	FfiConverterStringINSTANCE.Write(writer, value.Name)
+	FfiConverterStringINSTANCE.Write(writer, value.PaymentIdentifier)
+	FfiConverterUint64INSTANCE.Write(writer, value.CreatedAt)
+	FfiConverterUint64INSTANCE.Write(writer, value.UpdatedAt)
+}
+
+type FfiDestroyerContact struct{}
+
+func (_ FfiDestroyerContact) Destroy(value Contact) {
 	value.Destroy()
 }
 
@@ -11486,6 +12836,10 @@ func (c FfiConverterConversionDetails) Read(reader io.Reader) ConversionDetails 
 
 func (c FfiConverterConversionDetails) Lower(value ConversionDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[ConversionDetails](c, value)
+}
+
+func (c FfiConverterConversionDetails) LowerExternal(value ConversionDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConversionDetails](c, value))
 }
 
 func (c FfiConverterConversionDetails) Write(writer io.Writer, value ConversionDetails) {
@@ -11535,6 +12889,10 @@ func (c FfiConverterConversionEstimate) Read(reader io.Reader) ConversionEstimat
 
 func (c FfiConverterConversionEstimate) Lower(value ConversionEstimate) C.RustBuffer {
 	return LowerIntoRustBuffer[ConversionEstimate](c, value)
+}
+
+func (c FfiConverterConversionEstimate) LowerExternal(value ConversionEstimate) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConversionEstimate](c, value))
 }
 
 func (c FfiConverterConversionEstimate) Write(writer io.Writer, value ConversionEstimate) {
@@ -11591,6 +12949,10 @@ func (c FfiConverterConversionInfo) Read(reader io.Reader) ConversionInfo {
 
 func (c FfiConverterConversionInfo) Lower(value ConversionInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[ConversionInfo](c, value)
+}
+
+func (c FfiConverterConversionInfo) LowerExternal(value ConversionInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConversionInfo](c, value))
 }
 
 func (c FfiConverterConversionInfo) Write(writer io.Writer, value ConversionInfo) {
@@ -11651,6 +13013,10 @@ func (c FfiConverterConversionOptions) Lower(value ConversionOptions) C.RustBuff
 	return LowerIntoRustBuffer[ConversionOptions](c, value)
 }
 
+func (c FfiConverterConversionOptions) LowerExternal(value ConversionOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConversionOptions](c, value))
+}
+
 func (c FfiConverterConversionOptions) Write(writer io.Writer, value ConversionOptions) {
 	FfiConverterConversionTypeINSTANCE.Write(writer, value.ConversionType)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.MaxSlippageBps)
@@ -11708,6 +13074,10 @@ func (c FfiConverterConversionStep) Lower(value ConversionStep) C.RustBuffer {
 	return LowerIntoRustBuffer[ConversionStep](c, value)
 }
 
+func (c FfiConverterConversionStep) LowerExternal(value ConversionStep) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConversionStep](c, value))
+}
+
 func (c FfiConverterConversionStep) Write(writer io.Writer, value ConversionStep) {
 	FfiConverterStringINSTANCE.Write(writer, value.PaymentId)
 	FfiConverterTypeu128INSTANCE.Write(writer, value.Amount)
@@ -11760,6 +13130,10 @@ func (c FfiConverterCreateIssuerTokenRequest) Lower(value CreateIssuerTokenReque
 	return LowerIntoRustBuffer[CreateIssuerTokenRequest](c, value)
 }
 
+func (c FfiConverterCreateIssuerTokenRequest) LowerExternal(value CreateIssuerTokenRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[CreateIssuerTokenRequest](c, value))
+}
+
 func (c FfiConverterCreateIssuerTokenRequest) Write(writer io.Writer, value CreateIssuerTokenRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.Name)
 	FfiConverterStringINSTANCE.Write(writer, value.Ticker)
@@ -11801,6 +13175,10 @@ func (c FfiConverterCredentials) Read(reader io.Reader) Credentials {
 
 func (c FfiConverterCredentials) Lower(value Credentials) C.RustBuffer {
 	return LowerIntoRustBuffer[Credentials](c, value)
+}
+
+func (c FfiConverterCredentials) LowerExternal(value Credentials) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Credentials](c, value))
 }
 
 func (c FfiConverterCredentials) Write(writer io.Writer, value Credentials) {
@@ -11857,6 +13235,10 @@ func (c FfiConverterCurrencyInfo) Read(reader io.Reader) CurrencyInfo {
 
 func (c FfiConverterCurrencyInfo) Lower(value CurrencyInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[CurrencyInfo](c, value)
+}
+
+func (c FfiConverterCurrencyInfo) LowerExternal(value CurrencyInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[CurrencyInfo](c, value))
 }
 
 func (c FfiConverterCurrencyInfo) Write(writer io.Writer, value CurrencyInfo) {
@@ -11916,6 +13298,10 @@ func (c FfiConverterDepositInfo) Lower(value DepositInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[DepositInfo](c, value)
 }
 
+func (c FfiConverterDepositInfo) LowerExternal(value DepositInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[DepositInfo](c, value))
+}
+
 func (c FfiConverterDepositInfo) Write(writer io.Writer, value DepositInfo) {
 	FfiConverterStringINSTANCE.Write(writer, value.Txid)
 	FfiConverterUint32INSTANCE.Write(writer, value.Vout)
@@ -11956,6 +13342,10 @@ func (c FfiConverterEcdsaSignatureBytes) Read(reader io.Reader) EcdsaSignatureBy
 
 func (c FfiConverterEcdsaSignatureBytes) Lower(value EcdsaSignatureBytes) C.RustBuffer {
 	return LowerIntoRustBuffer[EcdsaSignatureBytes](c, value)
+}
+
+func (c FfiConverterEcdsaSignatureBytes) LowerExternal(value EcdsaSignatureBytes) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[EcdsaSignatureBytes](c, value))
 }
 
 func (c FfiConverterEcdsaSignatureBytes) Write(writer io.Writer, value EcdsaSignatureBytes) {
@@ -12028,6 +13418,10 @@ func (c FfiConverterExternalAggregateFrostRequest) Lower(value ExternalAggregate
 	return LowerIntoRustBuffer[ExternalAggregateFrostRequest](c, value)
 }
 
+func (c FfiConverterExternalAggregateFrostRequest) LowerExternal(value ExternalAggregateFrostRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalAggregateFrostRequest](c, value))
+}
+
 func (c FfiConverterExternalAggregateFrostRequest) Write(writer io.Writer, value ExternalAggregateFrostRequest) {
 	FfiConverterBytesINSTANCE.Write(writer, value.Message)
 	FfiConverterSequenceIdentifierSignaturePairINSTANCE.Write(writer, value.StatechainSignatures)
@@ -12072,6 +13466,10 @@ func (c FfiConverterExternalEncryptedSecret) Read(reader io.Reader) ExternalEncr
 
 func (c FfiConverterExternalEncryptedSecret) Lower(value ExternalEncryptedSecret) C.RustBuffer {
 	return LowerIntoRustBuffer[ExternalEncryptedSecret](c, value)
+}
+
+func (c FfiConverterExternalEncryptedSecret) LowerExternal(value ExternalEncryptedSecret) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalEncryptedSecret](c, value))
 }
 
 func (c FfiConverterExternalEncryptedSecret) Write(writer io.Writer, value ExternalEncryptedSecret) {
@@ -12120,6 +13518,10 @@ func (c FfiConverterExternalFrostCommitments) Lower(value ExternalFrostCommitmen
 	return LowerIntoRustBuffer[ExternalFrostCommitments](c, value)
 }
 
+func (c FfiConverterExternalFrostCommitments) LowerExternal(value ExternalFrostCommitments) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalFrostCommitments](c, value))
+}
+
 func (c FfiConverterExternalFrostCommitments) Write(writer io.Writer, value ExternalFrostCommitments) {
 	FfiConverterBytesINSTANCE.Write(writer, value.HidingCommitment)
 	FfiConverterBytesINSTANCE.Write(writer, value.BindingCommitment)
@@ -12160,6 +13562,10 @@ func (c FfiConverterExternalFrostSignature) Lower(value ExternalFrostSignature) 
 	return LowerIntoRustBuffer[ExternalFrostSignature](c, value)
 }
 
+func (c FfiConverterExternalFrostSignature) LowerExternal(value ExternalFrostSignature) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalFrostSignature](c, value))
+}
+
 func (c FfiConverterExternalFrostSignature) Write(writer io.Writer, value ExternalFrostSignature) {
 	FfiConverterBytesINSTANCE.Write(writer, value.Bytes)
 }
@@ -12198,6 +13604,10 @@ func (c FfiConverterExternalFrostSignatureShare) Lower(value ExternalFrostSignat
 	return LowerIntoRustBuffer[ExternalFrostSignatureShare](c, value)
 }
 
+func (c FfiConverterExternalFrostSignatureShare) LowerExternal(value ExternalFrostSignatureShare) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalFrostSignatureShare](c, value))
+}
+
 func (c FfiConverterExternalFrostSignatureShare) Write(writer io.Writer, value ExternalFrostSignatureShare) {
 	FfiConverterBytesINSTANCE.Write(writer, value.Bytes)
 }
@@ -12234,6 +13644,10 @@ func (c FfiConverterExternalIdentifier) Read(reader io.Reader) ExternalIdentifie
 
 func (c FfiConverterExternalIdentifier) Lower(value ExternalIdentifier) C.RustBuffer {
 	return LowerIntoRustBuffer[ExternalIdentifier](c, value)
+}
+
+func (c FfiConverterExternalIdentifier) LowerExternal(value ExternalIdentifier) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalIdentifier](c, value))
 }
 
 func (c FfiConverterExternalIdentifier) Write(writer io.Writer, value ExternalIdentifier) {
@@ -12283,6 +13697,10 @@ func (c FfiConverterExternalInputParser) Lower(value ExternalInputParser) C.Rust
 	return LowerIntoRustBuffer[ExternalInputParser](c, value)
 }
 
+func (c FfiConverterExternalInputParser) LowerExternal(value ExternalInputParser) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalInputParser](c, value))
+}
+
 func (c FfiConverterExternalInputParser) Write(writer io.Writer, value ExternalInputParser) {
 	FfiConverterStringINSTANCE.Write(writer, value.ProviderId)
 	FfiConverterStringINSTANCE.Write(writer, value.InputRegex)
@@ -12321,6 +13739,10 @@ func (c FfiConverterExternalScalar) Read(reader io.Reader) ExternalScalar {
 
 func (c FfiConverterExternalScalar) Lower(value ExternalScalar) C.RustBuffer {
 	return LowerIntoRustBuffer[ExternalScalar](c, value)
+}
+
+func (c FfiConverterExternalScalar) LowerExternal(value ExternalScalar) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalScalar](c, value))
 }
 
 func (c FfiConverterExternalScalar) Write(writer io.Writer, value ExternalScalar) {
@@ -12367,6 +13789,10 @@ func (c FfiConverterExternalSecretShare) Read(reader io.Reader) ExternalSecretSh
 
 func (c FfiConverterExternalSecretShare) Lower(value ExternalSecretShare) C.RustBuffer {
 	return LowerIntoRustBuffer[ExternalSecretShare](c, value)
+}
+
+func (c FfiConverterExternalSecretShare) LowerExternal(value ExternalSecretShare) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSecretShare](c, value))
 }
 
 func (c FfiConverterExternalSecretShare) Write(writer io.Writer, value ExternalSecretShare) {
@@ -12433,6 +13859,10 @@ func (c FfiConverterExternalSignFrostRequest) Lower(value ExternalSignFrostReque
 	return LowerIntoRustBuffer[ExternalSignFrostRequest](c, value)
 }
 
+func (c FfiConverterExternalSignFrostRequest) LowerExternal(value ExternalSignFrostRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSignFrostRequest](c, value))
+}
+
 func (c FfiConverterExternalSignFrostRequest) Write(writer io.Writer, value ExternalSignFrostRequest) {
 	FfiConverterBytesINSTANCE.Write(writer, value.Message)
 	FfiConverterBytesINSTANCE.Write(writer, value.PublicKey)
@@ -12481,6 +13911,10 @@ func (c FfiConverterExternalSigningCommitments) Lower(value ExternalSigningCommi
 	return LowerIntoRustBuffer[ExternalSigningCommitments](c, value)
 }
 
+func (c FfiConverterExternalSigningCommitments) LowerExternal(value ExternalSigningCommitments) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSigningCommitments](c, value))
+}
+
 func (c FfiConverterExternalSigningCommitments) Write(writer io.Writer, value ExternalSigningCommitments) {
 	FfiConverterBytesINSTANCE.Write(writer, value.Hiding)
 	FfiConverterBytesINSTANCE.Write(writer, value.Binding)
@@ -12518,6 +13952,10 @@ func (c FfiConverterExternalTreeNodeId) Read(reader io.Reader) ExternalTreeNodeI
 
 func (c FfiConverterExternalTreeNodeId) Lower(value ExternalTreeNodeId) C.RustBuffer {
 	return LowerIntoRustBuffer[ExternalTreeNodeId](c, value)
+}
+
+func (c FfiConverterExternalTreeNodeId) LowerExternal(value ExternalTreeNodeId) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalTreeNodeId](c, value))
 }
 
 func (c FfiConverterExternalTreeNodeId) Write(writer io.Writer, value ExternalTreeNodeId) {
@@ -12562,6 +14000,10 @@ func (c FfiConverterExternalVerifiableSecretShare) Lower(value ExternalVerifiabl
 	return LowerIntoRustBuffer[ExternalVerifiableSecretShare](c, value)
 }
 
+func (c FfiConverterExternalVerifiableSecretShare) LowerExternal(value ExternalVerifiableSecretShare) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalVerifiableSecretShare](c, value))
+}
+
 func (c FfiConverterExternalVerifiableSecretShare) Write(writer io.Writer, value ExternalVerifiableSecretShare) {
 	FfiConverterExternalSecretShareINSTANCE.Write(writer, value.SecretShare)
 	FfiConverterSequenceBytesINSTANCE.Write(writer, value.Proofs)
@@ -12602,6 +14044,10 @@ func (c FfiConverterFetchConversionLimitsRequest) Read(reader io.Reader) FetchCo
 
 func (c FfiConverterFetchConversionLimitsRequest) Lower(value FetchConversionLimitsRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[FetchConversionLimitsRequest](c, value)
+}
+
+func (c FfiConverterFetchConversionLimitsRequest) LowerExternal(value FetchConversionLimitsRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FetchConversionLimitsRequest](c, value))
 }
 
 func (c FfiConverterFetchConversionLimitsRequest) Write(writer io.Writer, value FetchConversionLimitsRequest) {
@@ -12648,6 +14094,10 @@ func (c FfiConverterFetchConversionLimitsResponse) Lower(value FetchConversionLi
 	return LowerIntoRustBuffer[FetchConversionLimitsResponse](c, value)
 }
 
+func (c FfiConverterFetchConversionLimitsResponse) LowerExternal(value FetchConversionLimitsResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FetchConversionLimitsResponse](c, value))
+}
+
 func (c FfiConverterFetchConversionLimitsResponse) Write(writer io.Writer, value FetchConversionLimitsResponse) {
 	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.MinFromAmount)
 	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.MinToAmount)
@@ -12689,6 +14139,10 @@ func (c FfiConverterFiatCurrency) Lower(value FiatCurrency) C.RustBuffer {
 	return LowerIntoRustBuffer[FiatCurrency](c, value)
 }
 
+func (c FfiConverterFiatCurrency) LowerExternal(value FiatCurrency) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FiatCurrency](c, value))
+}
+
 func (c FfiConverterFiatCurrency) Write(writer io.Writer, value FiatCurrency) {
 	FfiConverterStringINSTANCE.Write(writer, value.Id)
 	FfiConverterCurrencyInfoINSTANCE.Write(writer, value.Info)
@@ -12724,6 +14178,10 @@ func (c FfiConverterFreezeIssuerTokenRequest) Read(reader io.Reader) FreezeIssue
 
 func (c FfiConverterFreezeIssuerTokenRequest) Lower(value FreezeIssuerTokenRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[FreezeIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterFreezeIssuerTokenRequest) LowerExternal(value FreezeIssuerTokenRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FreezeIssuerTokenRequest](c, value))
 }
 
 func (c FfiConverterFreezeIssuerTokenRequest) Write(writer io.Writer, value FreezeIssuerTokenRequest) {
@@ -12765,6 +14223,10 @@ func (c FfiConverterFreezeIssuerTokenResponse) Lower(value FreezeIssuerTokenResp
 	return LowerIntoRustBuffer[FreezeIssuerTokenResponse](c, value)
 }
 
+func (c FfiConverterFreezeIssuerTokenResponse) LowerExternal(value FreezeIssuerTokenResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FreezeIssuerTokenResponse](c, value))
+}
+
 func (c FfiConverterFreezeIssuerTokenResponse) Write(writer io.Writer, value FreezeIssuerTokenResponse) {
 	FfiConverterSequenceStringINSTANCE.Write(writer, value.ImpactedOutputIds)
 	FfiConverterTypeu128INSTANCE.Write(writer, value.ImpactedTokenAmount)
@@ -12801,6 +14263,10 @@ func (c FfiConverterGetInfoRequest) Read(reader io.Reader) GetInfoRequest {
 
 func (c FfiConverterGetInfoRequest) Lower(value GetInfoRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[GetInfoRequest](c, value)
+}
+
+func (c FfiConverterGetInfoRequest) LowerExternal(value GetInfoRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[GetInfoRequest](c, value))
 }
 
 func (c FfiConverterGetInfoRequest) Write(writer io.Writer, value GetInfoRequest) {
@@ -12849,6 +14315,10 @@ func (c FfiConverterGetInfoResponse) Lower(value GetInfoResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[GetInfoResponse](c, value)
 }
 
+func (c FfiConverterGetInfoResponse) LowerExternal(value GetInfoResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[GetInfoResponse](c, value))
+}
+
 func (c FfiConverterGetInfoResponse) Write(writer io.Writer, value GetInfoResponse) {
 	FfiConverterStringINSTANCE.Write(writer, value.IdentityPubkey)
 	FfiConverterUint64INSTANCE.Write(writer, value.BalanceSats)
@@ -12887,6 +14357,10 @@ func (c FfiConverterGetPaymentRequest) Lower(value GetPaymentRequest) C.RustBuff
 	return LowerIntoRustBuffer[GetPaymentRequest](c, value)
 }
 
+func (c FfiConverterGetPaymentRequest) LowerExternal(value GetPaymentRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[GetPaymentRequest](c, value))
+}
+
 func (c FfiConverterGetPaymentRequest) Write(writer io.Writer, value GetPaymentRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.PaymentId)
 }
@@ -12921,6 +14395,10 @@ func (c FfiConverterGetPaymentResponse) Read(reader io.Reader) GetPaymentRespons
 
 func (c FfiConverterGetPaymentResponse) Lower(value GetPaymentResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[GetPaymentResponse](c, value)
+}
+
+func (c FfiConverterGetPaymentResponse) LowerExternal(value GetPaymentResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[GetPaymentResponse](c, value))
 }
 
 func (c FfiConverterGetPaymentResponse) Write(writer io.Writer, value GetPaymentResponse) {
@@ -12959,6 +14437,10 @@ func (c FfiConverterGetTokensMetadataRequest) Lower(value GetTokensMetadataReque
 	return LowerIntoRustBuffer[GetTokensMetadataRequest](c, value)
 }
 
+func (c FfiConverterGetTokensMetadataRequest) LowerExternal(value GetTokensMetadataRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[GetTokensMetadataRequest](c, value))
+}
+
 func (c FfiConverterGetTokensMetadataRequest) Write(writer io.Writer, value GetTokensMetadataRequest) {
 	FfiConverterSequenceStringINSTANCE.Write(writer, value.TokenIdentifiers)
 }
@@ -12995,6 +14477,10 @@ func (c FfiConverterGetTokensMetadataResponse) Lower(value GetTokensMetadataResp
 	return LowerIntoRustBuffer[GetTokensMetadataResponse](c, value)
 }
 
+func (c FfiConverterGetTokensMetadataResponse) LowerExternal(value GetTokensMetadataResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[GetTokensMetadataResponse](c, value))
+}
+
 func (c FfiConverterGetTokensMetadataResponse) Write(writer io.Writer, value GetTokensMetadataResponse) {
 	FfiConverterSequenceTokenMetadataINSTANCE.Write(writer, value.TokensMetadata)
 }
@@ -13029,6 +14515,10 @@ func (c FfiConverterHashedMessageBytes) Read(reader io.Reader) HashedMessageByte
 
 func (c FfiConverterHashedMessageBytes) Lower(value HashedMessageBytes) C.RustBuffer {
 	return LowerIntoRustBuffer[HashedMessageBytes](c, value)
+}
+
+func (c FfiConverterHashedMessageBytes) LowerExternal(value HashedMessageBytes) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[HashedMessageBytes](c, value))
 }
 
 func (c FfiConverterHashedMessageBytes) Write(writer io.Writer, value HashedMessageBytes) {
@@ -13069,6 +14559,10 @@ func (c FfiConverterIdentifierCommitmentPair) Read(reader io.Reader) IdentifierC
 
 func (c FfiConverterIdentifierCommitmentPair) Lower(value IdentifierCommitmentPair) C.RustBuffer {
 	return LowerIntoRustBuffer[IdentifierCommitmentPair](c, value)
+}
+
+func (c FfiConverterIdentifierCommitmentPair) LowerExternal(value IdentifierCommitmentPair) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[IdentifierCommitmentPair](c, value))
 }
 
 func (c FfiConverterIdentifierCommitmentPair) Write(writer io.Writer, value IdentifierCommitmentPair) {
@@ -13112,6 +14606,10 @@ func (c FfiConverterIdentifierPublicKeyPair) Lower(value IdentifierPublicKeyPair
 	return LowerIntoRustBuffer[IdentifierPublicKeyPair](c, value)
 }
 
+func (c FfiConverterIdentifierPublicKeyPair) LowerExternal(value IdentifierPublicKeyPair) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[IdentifierPublicKeyPair](c, value))
+}
+
 func (c FfiConverterIdentifierPublicKeyPair) Write(writer io.Writer, value IdentifierPublicKeyPair) {
 	FfiConverterExternalIdentifierINSTANCE.Write(writer, value.Identifier)
 	FfiConverterBytesINSTANCE.Write(writer, value.PublicKey)
@@ -13153,6 +14651,10 @@ func (c FfiConverterIdentifierSignaturePair) Lower(value IdentifierSignaturePair
 	return LowerIntoRustBuffer[IdentifierSignaturePair](c, value)
 }
 
+func (c FfiConverterIdentifierSignaturePair) LowerExternal(value IdentifierSignaturePair) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[IdentifierSignaturePair](c, value))
+}
+
 func (c FfiConverterIdentifierSignaturePair) Write(writer io.Writer, value IdentifierSignaturePair) {
 	FfiConverterExternalIdentifierINSTANCE.Write(writer, value.Identifier)
 	FfiConverterExternalFrostSignatureShareINSTANCE.Write(writer, value.Signature)
@@ -13191,6 +14693,10 @@ func (c FfiConverterIncomingChange) Read(reader io.Reader) IncomingChange {
 
 func (c FfiConverterIncomingChange) Lower(value IncomingChange) C.RustBuffer {
 	return LowerIntoRustBuffer[IncomingChange](c, value)
+}
+
+func (c FfiConverterIncomingChange) LowerExternal(value IncomingChange) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[IncomingChange](c, value))
 }
 
 func (c FfiConverterIncomingChange) Write(writer io.Writer, value IncomingChange) {
@@ -13242,6 +14748,10 @@ func (c FfiConverterKeySetConfig) Lower(value KeySetConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[KeySetConfig](c, value)
 }
 
+func (c FfiConverterKeySetConfig) LowerExternal(value KeySetConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[KeySetConfig](c, value))
+}
+
 func (c FfiConverterKeySetConfig) Write(writer io.Writer, value KeySetConfig) {
 	FfiConverterKeySetTypeINSTANCE.Write(writer, value.KeySetType)
 	FfiConverterBoolINSTANCE.Write(writer, value.UseAddressIndex)
@@ -13281,6 +14791,10 @@ func (c FfiConverterLightningAddressDetails) Read(reader io.Reader) LightningAdd
 
 func (c FfiConverterLightningAddressDetails) Lower(value LightningAddressDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[LightningAddressDetails](c, value)
+}
+
+func (c FfiConverterLightningAddressDetails) LowerExternal(value LightningAddressDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LightningAddressDetails](c, value))
 }
 
 func (c FfiConverterLightningAddressDetails) Write(writer io.Writer, value LightningAddressDetails) {
@@ -13329,6 +14843,10 @@ func (c FfiConverterLightningAddressInfo) Lower(value LightningAddressInfo) C.Ru
 	return LowerIntoRustBuffer[LightningAddressInfo](c, value)
 }
 
+func (c FfiConverterLightningAddressInfo) LowerExternal(value LightningAddressInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LightningAddressInfo](c, value))
+}
+
 func (c FfiConverterLightningAddressInfo) Write(writer io.Writer, value LightningAddressInfo) {
 	FfiConverterStringINSTANCE.Write(writer, value.Description)
 	FfiConverterStringINSTANCE.Write(writer, value.LightningAddress)
@@ -13339,6 +14857,51 @@ func (c FfiConverterLightningAddressInfo) Write(writer io.Writer, value Lightnin
 type FfiDestroyerLightningAddressInfo struct{}
 
 func (_ FfiDestroyerLightningAddressInfo) Destroy(value LightningAddressInfo) {
+	value.Destroy()
+}
+
+// Request to list contacts with optional pagination.
+type ListContactsRequest struct {
+	Offset *uint32
+	Limit  *uint32
+}
+
+func (r *ListContactsRequest) Destroy() {
+	FfiDestroyerOptionalUint32{}.Destroy(r.Offset)
+	FfiDestroyerOptionalUint32{}.Destroy(r.Limit)
+}
+
+type FfiConverterListContactsRequest struct{}
+
+var FfiConverterListContactsRequestINSTANCE = FfiConverterListContactsRequest{}
+
+func (c FfiConverterListContactsRequest) Lift(rb RustBufferI) ListContactsRequest {
+	return LiftFromRustBuffer[ListContactsRequest](c, rb)
+}
+
+func (c FfiConverterListContactsRequest) Read(reader io.Reader) ListContactsRequest {
+	return ListContactsRequest{
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterListContactsRequest) Lower(value ListContactsRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ListContactsRequest](c, value)
+}
+
+func (c FfiConverterListContactsRequest) LowerExternal(value ListContactsRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ListContactsRequest](c, value))
+}
+
+func (c FfiConverterListContactsRequest) Write(writer io.Writer, value ListContactsRequest) {
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.Offset)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.Limit)
+}
+
+type FfiDestroyerListContactsRequest struct{}
+
+func (_ FfiDestroyerListContactsRequest) Destroy(value ListContactsRequest) {
 	value.Destroy()
 }
 
@@ -13368,6 +14931,10 @@ func (c FfiConverterListFiatCurrenciesResponse) Read(reader io.Reader) ListFiatC
 
 func (c FfiConverterListFiatCurrenciesResponse) Lower(value ListFiatCurrenciesResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[ListFiatCurrenciesResponse](c, value)
+}
+
+func (c FfiConverterListFiatCurrenciesResponse) LowerExternal(value ListFiatCurrenciesResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ListFiatCurrenciesResponse](c, value))
 }
 
 func (c FfiConverterListFiatCurrenciesResponse) Write(writer io.Writer, value ListFiatCurrenciesResponse) {
@@ -13406,6 +14973,10 @@ func (c FfiConverterListFiatRatesResponse) Read(reader io.Reader) ListFiatRatesR
 
 func (c FfiConverterListFiatRatesResponse) Lower(value ListFiatRatesResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[ListFiatRatesResponse](c, value)
+}
+
+func (c FfiConverterListFiatRatesResponse) LowerExternal(value ListFiatRatesResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ListFiatRatesResponse](c, value))
 }
 
 func (c FfiConverterListFiatRatesResponse) Write(writer io.Writer, value ListFiatRatesResponse) {
@@ -13474,6 +15045,10 @@ func (c FfiConverterListPaymentsRequest) Lower(value ListPaymentsRequest) C.Rust
 	return LowerIntoRustBuffer[ListPaymentsRequest](c, value)
 }
 
+func (c FfiConverterListPaymentsRequest) LowerExternal(value ListPaymentsRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ListPaymentsRequest](c, value))
+}
+
 func (c FfiConverterListPaymentsRequest) Write(writer io.Writer, value ListPaymentsRequest) {
 	FfiConverterOptionalSequencePaymentTypeINSTANCE.Write(writer, value.TypeFilter)
 	FfiConverterOptionalSequencePaymentStatusINSTANCE.Write(writer, value.StatusFilter)
@@ -13520,6 +15095,10 @@ func (c FfiConverterListPaymentsResponse) Lower(value ListPaymentsResponse) C.Ru
 	return LowerIntoRustBuffer[ListPaymentsResponse](c, value)
 }
 
+func (c FfiConverterListPaymentsResponse) LowerExternal(value ListPaymentsResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ListPaymentsResponse](c, value))
+}
+
 func (c FfiConverterListPaymentsResponse) Write(writer io.Writer, value ListPaymentsResponse) {
 	FfiConverterSequencePaymentINSTANCE.Write(writer, value.Payments)
 }
@@ -13550,6 +15129,10 @@ func (c FfiConverterListUnclaimedDepositsRequest) Read(reader io.Reader) ListUnc
 
 func (c FfiConverterListUnclaimedDepositsRequest) Lower(value ListUnclaimedDepositsRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[ListUnclaimedDepositsRequest](c, value)
+}
+
+func (c FfiConverterListUnclaimedDepositsRequest) LowerExternal(value ListUnclaimedDepositsRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ListUnclaimedDepositsRequest](c, value))
 }
 
 func (c FfiConverterListUnclaimedDepositsRequest) Write(writer io.Writer, value ListUnclaimedDepositsRequest) {
@@ -13585,6 +15168,10 @@ func (c FfiConverterListUnclaimedDepositsResponse) Read(reader io.Reader) ListUn
 
 func (c FfiConverterListUnclaimedDepositsResponse) Lower(value ListUnclaimedDepositsResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[ListUnclaimedDepositsResponse](c, value)
+}
+
+func (c FfiConverterListUnclaimedDepositsResponse) LowerExternal(value ListUnclaimedDepositsResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ListUnclaimedDepositsResponse](c, value))
 }
 
 func (c FfiConverterListUnclaimedDepositsResponse) Write(writer io.Writer, value ListUnclaimedDepositsResponse) {
@@ -13643,6 +15230,10 @@ func (c FfiConverterLnurlAuthRequestDetails) Lower(value LnurlAuthRequestDetails
 	return LowerIntoRustBuffer[LnurlAuthRequestDetails](c, value)
 }
 
+func (c FfiConverterLnurlAuthRequestDetails) LowerExternal(value LnurlAuthRequestDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlAuthRequestDetails](c, value))
+}
+
 func (c FfiConverterLnurlAuthRequestDetails) Write(writer io.Writer, value LnurlAuthRequestDetails) {
 	FfiConverterStringINSTANCE.Write(writer, value.K1)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Action)
@@ -13683,6 +15274,10 @@ func (c FfiConverterLnurlErrorDetails) Lower(value LnurlErrorDetails) C.RustBuff
 	return LowerIntoRustBuffer[LnurlErrorDetails](c, value)
 }
 
+func (c FfiConverterLnurlErrorDetails) LowerExternal(value LnurlErrorDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlErrorDetails](c, value))
+}
+
 func (c FfiConverterLnurlErrorDetails) Write(writer io.Writer, value LnurlErrorDetails) {
 	FfiConverterStringINSTANCE.Write(writer, value.Reason)
 }
@@ -13720,6 +15315,10 @@ func (c FfiConverterLnurlInfo) Read(reader io.Reader) LnurlInfo {
 
 func (c FfiConverterLnurlInfo) Lower(value LnurlInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[LnurlInfo](c, value)
+}
+
+func (c FfiConverterLnurlInfo) LowerExternal(value LnurlInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlInfo](c, value))
 }
 
 func (c FfiConverterLnurlInfo) Write(writer io.Writer, value LnurlInfo) {
@@ -13775,6 +15374,10 @@ func (c FfiConverterLnurlPayInfo) Lower(value LnurlPayInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[LnurlPayInfo](c, value)
 }
 
+func (c FfiConverterLnurlPayInfo) LowerExternal(value LnurlPayInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlPayInfo](c, value))
+}
+
 func (c FfiConverterLnurlPayInfo) Write(writer io.Writer, value LnurlPayInfo) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.LnAddress)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Comment)
@@ -13820,6 +15423,10 @@ func (c FfiConverterLnurlPayRequest) Read(reader io.Reader) LnurlPayRequest {
 
 func (c FfiConverterLnurlPayRequest) Lower(value LnurlPayRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[LnurlPayRequest](c, value)
+}
+
+func (c FfiConverterLnurlPayRequest) LowerExternal(value LnurlPayRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlPayRequest](c, value))
 }
 
 func (c FfiConverterLnurlPayRequest) Write(writer io.Writer, value LnurlPayRequest) {
@@ -13906,6 +15513,10 @@ func (c FfiConverterLnurlPayRequestDetails) Lower(value LnurlPayRequestDetails) 
 	return LowerIntoRustBuffer[LnurlPayRequestDetails](c, value)
 }
 
+func (c FfiConverterLnurlPayRequestDetails) LowerExternal(value LnurlPayRequestDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlPayRequestDetails](c, value))
+}
+
 func (c FfiConverterLnurlPayRequestDetails) Write(writer io.Writer, value LnurlPayRequestDetails) {
 	FfiConverterStringINSTANCE.Write(writer, value.Callback)
 	FfiConverterUint64INSTANCE.Write(writer, value.MinSendable)
@@ -13954,6 +15565,10 @@ func (c FfiConverterLnurlPayResponse) Lower(value LnurlPayResponse) C.RustBuffer
 	return LowerIntoRustBuffer[LnurlPayResponse](c, value)
 }
 
+func (c FfiConverterLnurlPayResponse) LowerExternal(value LnurlPayResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlPayResponse](c, value))
+}
+
 func (c FfiConverterLnurlPayResponse) Write(writer io.Writer, value LnurlPayResponse) {
 	FfiConverterPaymentINSTANCE.Write(writer, value.Payment)
 	FfiConverterOptionalSuccessActionProcessedINSTANCE.Write(writer, value.SuccessAction)
@@ -13997,6 +15612,10 @@ func (c FfiConverterLnurlReceiveMetadata) Lower(value LnurlReceiveMetadata) C.Ru
 	return LowerIntoRustBuffer[LnurlReceiveMetadata](c, value)
 }
 
+func (c FfiConverterLnurlReceiveMetadata) LowerExternal(value LnurlReceiveMetadata) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlReceiveMetadata](c, value))
+}
+
 func (c FfiConverterLnurlReceiveMetadata) Write(writer io.Writer, value LnurlReceiveMetadata) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrZapRequest)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.NostrZapReceipt)
@@ -14034,6 +15653,10 @@ func (c FfiConverterLnurlWithdrawInfo) Read(reader io.Reader) LnurlWithdrawInfo 
 
 func (c FfiConverterLnurlWithdrawInfo) Lower(value LnurlWithdrawInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[LnurlWithdrawInfo](c, value)
+}
+
+func (c FfiConverterLnurlWithdrawInfo) LowerExternal(value LnurlWithdrawInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlWithdrawInfo](c, value))
 }
 
 func (c FfiConverterLnurlWithdrawInfo) Write(writer io.Writer, value LnurlWithdrawInfo) {
@@ -14081,6 +15704,10 @@ func (c FfiConverterLnurlWithdrawRequest) Read(reader io.Reader) LnurlWithdrawRe
 
 func (c FfiConverterLnurlWithdrawRequest) Lower(value LnurlWithdrawRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[LnurlWithdrawRequest](c, value)
+}
+
+func (c FfiConverterLnurlWithdrawRequest) LowerExternal(value LnurlWithdrawRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlWithdrawRequest](c, value))
 }
 
 func (c FfiConverterLnurlWithdrawRequest) Write(writer io.Writer, value LnurlWithdrawRequest) {
@@ -14135,6 +15762,10 @@ func (c FfiConverterLnurlWithdrawRequestDetails) Lower(value LnurlWithdrawReques
 	return LowerIntoRustBuffer[LnurlWithdrawRequestDetails](c, value)
 }
 
+func (c FfiConverterLnurlWithdrawRequestDetails) LowerExternal(value LnurlWithdrawRequestDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlWithdrawRequestDetails](c, value))
+}
+
 func (c FfiConverterLnurlWithdrawRequestDetails) Write(writer io.Writer, value LnurlWithdrawRequestDetails) {
 	FfiConverterStringINSTANCE.Write(writer, value.Callback)
 	FfiConverterStringINSTANCE.Write(writer, value.K1)
@@ -14177,6 +15808,10 @@ func (c FfiConverterLnurlWithdrawResponse) Read(reader io.Reader) LnurlWithdrawR
 
 func (c FfiConverterLnurlWithdrawResponse) Lower(value LnurlWithdrawResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[LnurlWithdrawResponse](c, value)
+}
+
+func (c FfiConverterLnurlWithdrawResponse) LowerExternal(value LnurlWithdrawResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlWithdrawResponse](c, value))
 }
 
 func (c FfiConverterLnurlWithdrawResponse) Write(writer io.Writer, value LnurlWithdrawResponse) {
@@ -14223,6 +15858,10 @@ func (c FfiConverterLocaleOverrides) Lower(value LocaleOverrides) C.RustBuffer {
 	return LowerIntoRustBuffer[LocaleOverrides](c, value)
 }
 
+func (c FfiConverterLocaleOverrides) LowerExternal(value LocaleOverrides) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LocaleOverrides](c, value))
+}
+
 func (c FfiConverterLocaleOverrides) Write(writer io.Writer, value LocaleOverrides) {
 	FfiConverterStringINSTANCE.Write(writer, value.Locale)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.Spacing)
@@ -14265,6 +15904,10 @@ func (c FfiConverterLocalizedName) Lower(value LocalizedName) C.RustBuffer {
 	return LowerIntoRustBuffer[LocalizedName](c, value)
 }
 
+func (c FfiConverterLocalizedName) LowerExternal(value LocalizedName) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LocalizedName](c, value))
+}
+
 func (c FfiConverterLocalizedName) Write(writer io.Writer, value LocalizedName) {
 	FfiConverterStringINSTANCE.Write(writer, value.Locale)
 	FfiConverterStringINSTANCE.Write(writer, value.Name)
@@ -14305,6 +15948,10 @@ func (c FfiConverterLogEntry) Lower(value LogEntry) C.RustBuffer {
 	return LowerIntoRustBuffer[LogEntry](c, value)
 }
 
+func (c FfiConverterLogEntry) LowerExternal(value LogEntry) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LogEntry](c, value))
+}
+
 func (c FfiConverterLogEntry) Write(writer io.Writer, value LogEntry) {
 	FfiConverterStringINSTANCE.Write(writer, value.Line)
 	FfiConverterStringINSTANCE.Write(writer, value.Level)
@@ -14343,6 +15990,10 @@ func (c FfiConverterMessageBytes) Lower(value MessageBytes) C.RustBuffer {
 	return LowerIntoRustBuffer[MessageBytes](c, value)
 }
 
+func (c FfiConverterMessageBytes) LowerExternal(value MessageBytes) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[MessageBytes](c, value))
+}
+
 func (c FfiConverterMessageBytes) Write(writer io.Writer, value MessageBytes) {
 	FfiConverterBytesINSTANCE.Write(writer, value.Bytes)
 }
@@ -14379,6 +16030,10 @@ func (c FfiConverterMessageSuccessActionData) Lower(value MessageSuccessActionDa
 	return LowerIntoRustBuffer[MessageSuccessActionData](c, value)
 }
 
+func (c FfiConverterMessageSuccessActionData) LowerExternal(value MessageSuccessActionData) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[MessageSuccessActionData](c, value))
+}
+
 func (c FfiConverterMessageSuccessActionData) Write(writer io.Writer, value MessageSuccessActionData) {
 	FfiConverterStringINSTANCE.Write(writer, value.Message)
 }
@@ -14413,6 +16068,10 @@ func (c FfiConverterMintIssuerTokenRequest) Read(reader io.Reader) MintIssuerTok
 
 func (c FfiConverterMintIssuerTokenRequest) Lower(value MintIssuerTokenRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[MintIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterMintIssuerTokenRequest) LowerExternal(value MintIssuerTokenRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[MintIssuerTokenRequest](c, value))
 }
 
 func (c FfiConverterMintIssuerTokenRequest) Write(writer io.Writer, value MintIssuerTokenRequest) {
@@ -14471,6 +16130,10 @@ func (c FfiConverterOptimizationConfig) Lower(value OptimizationConfig) C.RustBu
 	return LowerIntoRustBuffer[OptimizationConfig](c, value)
 }
 
+func (c FfiConverterOptimizationConfig) LowerExternal(value OptimizationConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OptimizationConfig](c, value))
+}
+
 func (c FfiConverterOptimizationConfig) Write(writer io.Writer, value OptimizationConfig) {
 	FfiConverterBoolINSTANCE.Write(writer, value.AutoEnabled)
 	FfiConverterUint8INSTANCE.Write(writer, value.Multiplicity)
@@ -14514,6 +16177,10 @@ func (c FfiConverterOptimizationProgress) Lower(value OptimizationProgress) C.Ru
 	return LowerIntoRustBuffer[OptimizationProgress](c, value)
 }
 
+func (c FfiConverterOptimizationProgress) LowerExternal(value OptimizationProgress) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OptimizationProgress](c, value))
+}
+
 func (c FfiConverterOptimizationProgress) Write(writer io.Writer, value OptimizationProgress) {
 	FfiConverterBoolINSTANCE.Write(writer, value.IsRunning)
 	FfiConverterUint32INSTANCE.Write(writer, value.CurrentRound)
@@ -14553,6 +16220,10 @@ func (c FfiConverterOutgoingChange) Read(reader io.Reader) OutgoingChange {
 
 func (c FfiConverterOutgoingChange) Lower(value OutgoingChange) C.RustBuffer {
 	return LowerIntoRustBuffer[OutgoingChange](c, value)
+}
+
+func (c FfiConverterOutgoingChange) LowerExternal(value OutgoingChange) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OutgoingChange](c, value))
 }
 
 func (c FfiConverterOutgoingChange) Write(writer io.Writer, value OutgoingChange) {
@@ -14627,6 +16298,10 @@ func (c FfiConverterPayment) Lower(value Payment) C.RustBuffer {
 	return LowerIntoRustBuffer[Payment](c, value)
 }
 
+func (c FfiConverterPayment) LowerExternal(value Payment) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Payment](c, value))
+}
+
 func (c FfiConverterPayment) Write(writer io.Writer, value Payment) {
 	FfiConverterStringINSTANCE.Write(writer, value.Id)
 	FfiConverterPaymentTypeINSTANCE.Write(writer, value.PaymentType)
@@ -14684,6 +16359,10 @@ func (c FfiConverterPaymentMetadata) Lower(value PaymentMetadata) C.RustBuffer {
 	return LowerIntoRustBuffer[PaymentMetadata](c, value)
 }
 
+func (c FfiConverterPaymentMetadata) LowerExternal(value PaymentMetadata) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentMetadata](c, value))
+}
+
 func (c FfiConverterPaymentMetadata) Write(writer io.Writer, value PaymentMetadata) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.ParentPaymentId)
 	FfiConverterOptionalLnurlPayInfoINSTANCE.Write(writer, value.LnurlPayInfo)
@@ -14725,6 +16404,10 @@ func (c FfiConverterPaymentRequestSource) Read(reader io.Reader) PaymentRequestS
 
 func (c FfiConverterPaymentRequestSource) Lower(value PaymentRequestSource) C.RustBuffer {
 	return LowerIntoRustBuffer[PaymentRequestSource](c, value)
+}
+
+func (c FfiConverterPaymentRequestSource) LowerExternal(value PaymentRequestSource) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentRequestSource](c, value))
 }
 
 func (c FfiConverterPaymentRequestSource) Write(writer io.Writer, value PaymentRequestSource) {
@@ -14801,6 +16484,10 @@ func (c FfiConverterPostgresStorageConfig) Lower(value PostgresStorageConfig) C.
 	return LowerIntoRustBuffer[PostgresStorageConfig](c, value)
 }
 
+func (c FfiConverterPostgresStorageConfig) LowerExternal(value PostgresStorageConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PostgresStorageConfig](c, value))
+}
+
 func (c FfiConverterPostgresStorageConfig) Write(writer io.Writer, value PostgresStorageConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.ConnectionString)
 	FfiConverterUint32INSTANCE.Write(writer, value.MaxPoolSize)
@@ -14859,6 +16546,10 @@ func (c FfiConverterPrepareLnurlPayRequest) Read(reader io.Reader) PrepareLnurlP
 
 func (c FfiConverterPrepareLnurlPayRequest) Lower(value PrepareLnurlPayRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[PrepareLnurlPayRequest](c, value)
+}
+
+func (c FfiConverterPrepareLnurlPayRequest) LowerExternal(value PrepareLnurlPayRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PrepareLnurlPayRequest](c, value))
 }
 
 func (c FfiConverterPrepareLnurlPayRequest) Write(writer io.Writer, value PrepareLnurlPayRequest) {
@@ -14928,6 +16619,10 @@ func (c FfiConverterPrepareLnurlPayResponse) Lower(value PrepareLnurlPayResponse
 	return LowerIntoRustBuffer[PrepareLnurlPayResponse](c, value)
 }
 
+func (c FfiConverterPrepareLnurlPayResponse) LowerExternal(value PrepareLnurlPayResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PrepareLnurlPayResponse](c, value))
+}
+
 func (c FfiConverterPrepareLnurlPayResponse) Write(writer io.Writer, value PrepareLnurlPayResponse) {
 	FfiConverterUint64INSTANCE.Write(writer, value.AmountSats)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Comment)
@@ -14991,6 +16686,10 @@ func (c FfiConverterPrepareSendPaymentRequest) Lower(value PrepareSendPaymentReq
 	return LowerIntoRustBuffer[PrepareSendPaymentRequest](c, value)
 }
 
+func (c FfiConverterPrepareSendPaymentRequest) LowerExternal(value PrepareSendPaymentRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PrepareSendPaymentRequest](c, value))
+}
+
 func (c FfiConverterPrepareSendPaymentRequest) Write(writer io.Writer, value PrepareSendPaymentRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.PaymentRequest)
 	FfiConverterOptionalTypeu128INSTANCE.Write(writer, value.Amount)
@@ -15049,6 +16748,10 @@ func (c FfiConverterPrepareSendPaymentResponse) Lower(value PrepareSendPaymentRe
 	return LowerIntoRustBuffer[PrepareSendPaymentResponse](c, value)
 }
 
+func (c FfiConverterPrepareSendPaymentResponse) LowerExternal(value PrepareSendPaymentResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PrepareSendPaymentResponse](c, value))
+}
+
 func (c FfiConverterPrepareSendPaymentResponse) Write(writer io.Writer, value PrepareSendPaymentResponse) {
 	FfiConverterSendPaymentMethodINSTANCE.Write(writer, value.PaymentMethod)
 	FfiConverterTypeu128INSTANCE.Write(writer, value.Amount)
@@ -15098,6 +16801,10 @@ func (c FfiConverterProvisionalPayment) Lower(value ProvisionalPayment) C.RustBu
 	return LowerIntoRustBuffer[ProvisionalPayment](c, value)
 }
 
+func (c FfiConverterProvisionalPayment) LowerExternal(value ProvisionalPayment) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ProvisionalPayment](c, value))
+}
+
 func (c FfiConverterProvisionalPayment) Write(writer io.Writer, value ProvisionalPayment) {
 	FfiConverterStringINSTANCE.Write(writer, value.PaymentId)
 	FfiConverterTypeu128INSTANCE.Write(writer, value.Amount)
@@ -15135,6 +16842,10 @@ func (c FfiConverterPublicKeyBytes) Read(reader io.Reader) PublicKeyBytes {
 
 func (c FfiConverterPublicKeyBytes) Lower(value PublicKeyBytes) C.RustBuffer {
 	return LowerIntoRustBuffer[PublicKeyBytes](c, value)
+}
+
+func (c FfiConverterPublicKeyBytes) LowerExternal(value PublicKeyBytes) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PublicKeyBytes](c, value))
 }
 
 func (c FfiConverterPublicKeyBytes) Write(writer io.Writer, value PublicKeyBytes) {
@@ -15177,6 +16888,10 @@ func (c FfiConverterRate) Lower(value Rate) C.RustBuffer {
 	return LowerIntoRustBuffer[Rate](c, value)
 }
 
+func (c FfiConverterRate) LowerExternal(value Rate) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Rate](c, value))
+}
+
 func (c FfiConverterRate) Write(writer io.Writer, value Rate) {
 	FfiConverterStringINSTANCE.Write(writer, value.Coin)
 	FfiConverterFloat64INSTANCE.Write(writer, value.Value)
@@ -15212,6 +16927,10 @@ func (c FfiConverterReceivePaymentRequest) Read(reader io.Reader) ReceivePayment
 
 func (c FfiConverterReceivePaymentRequest) Lower(value ReceivePaymentRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[ReceivePaymentRequest](c, value)
+}
+
+func (c FfiConverterReceivePaymentRequest) LowerExternal(value ReceivePaymentRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ReceivePaymentRequest](c, value))
 }
 
 func (c FfiConverterReceivePaymentRequest) Write(writer io.Writer, value ReceivePaymentRequest) {
@@ -15253,6 +16972,10 @@ func (c FfiConverterReceivePaymentResponse) Read(reader io.Reader) ReceivePaymen
 
 func (c FfiConverterReceivePaymentResponse) Lower(value ReceivePaymentResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[ReceivePaymentResponse](c, value)
+}
+
+func (c FfiConverterReceivePaymentResponse) LowerExternal(value ReceivePaymentResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ReceivePaymentResponse](c, value))
 }
 
 func (c FfiConverterReceivePaymentResponse) Write(writer io.Writer, value ReceivePaymentResponse) {
@@ -15304,6 +17027,10 @@ func (c FfiConverterRecommendedFees) Lower(value RecommendedFees) C.RustBuffer {
 	return LowerIntoRustBuffer[RecommendedFees](c, value)
 }
 
+func (c FfiConverterRecommendedFees) LowerExternal(value RecommendedFees) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RecommendedFees](c, value))
+}
+
 func (c FfiConverterRecommendedFees) Write(writer io.Writer, value RecommendedFees) {
 	FfiConverterUint64INSTANCE.Write(writer, value.FastestFee)
 	FfiConverterUint64INSTANCE.Write(writer, value.HalfHourFee)
@@ -15351,6 +17078,10 @@ func (c FfiConverterRecord) Read(reader io.Reader) Record {
 
 func (c FfiConverterRecord) Lower(value Record) C.RustBuffer {
 	return LowerIntoRustBuffer[Record](c, value)
+}
+
+func (c FfiConverterRecord) LowerExternal(value Record) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Record](c, value))
 }
 
 func (c FfiConverterRecord) Write(writer io.Writer, value Record) {
@@ -15401,6 +17132,10 @@ func (c FfiConverterRecordChange) Lower(value RecordChange) C.RustBuffer {
 	return LowerIntoRustBuffer[RecordChange](c, value)
 }
 
+func (c FfiConverterRecordChange) LowerExternal(value RecordChange) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RecordChange](c, value))
+}
+
 func (c FfiConverterRecordChange) Write(writer io.Writer, value RecordChange) {
 	FfiConverterRecordIdINSTANCE.Write(writer, value.Id)
 	FfiConverterStringINSTANCE.Write(writer, value.SchemaVersion)
@@ -15443,6 +17178,10 @@ func (c FfiConverterRecordId) Lower(value RecordId) C.RustBuffer {
 	return LowerIntoRustBuffer[RecordId](c, value)
 }
 
+func (c FfiConverterRecordId) LowerExternal(value RecordId) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RecordId](c, value))
+}
+
 func (c FfiConverterRecordId) Write(writer io.Writer, value RecordId) {
 	FfiConverterStringINSTANCE.Write(writer, value.Type)
 	FfiConverterStringINSTANCE.Write(writer, value.DataId)
@@ -15479,6 +17218,10 @@ func (c FfiConverterRecoverableEcdsaSignatureBytes) Read(reader io.Reader) Recov
 
 func (c FfiConverterRecoverableEcdsaSignatureBytes) Lower(value RecoverableEcdsaSignatureBytes) C.RustBuffer {
 	return LowerIntoRustBuffer[RecoverableEcdsaSignatureBytes](c, value)
+}
+
+func (c FfiConverterRecoverableEcdsaSignatureBytes) LowerExternal(value RecoverableEcdsaSignatureBytes) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RecoverableEcdsaSignatureBytes](c, value))
 }
 
 func (c FfiConverterRecoverableEcdsaSignatureBytes) Write(writer io.Writer, value RecoverableEcdsaSignatureBytes) {
@@ -15526,6 +17269,10 @@ func (c FfiConverterRefundDepositRequest) Lower(value RefundDepositRequest) C.Ru
 	return LowerIntoRustBuffer[RefundDepositRequest](c, value)
 }
 
+func (c FfiConverterRefundDepositRequest) LowerExternal(value RefundDepositRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RefundDepositRequest](c, value))
+}
+
 func (c FfiConverterRefundDepositRequest) Write(writer io.Writer, value RefundDepositRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.Txid)
 	FfiConverterUint32INSTANCE.Write(writer, value.Vout)
@@ -15568,6 +17315,10 @@ func (c FfiConverterRefundDepositResponse) Lower(value RefundDepositResponse) C.
 	return LowerIntoRustBuffer[RefundDepositResponse](c, value)
 }
 
+func (c FfiConverterRefundDepositResponse) LowerExternal(value RefundDepositResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RefundDepositResponse](c, value))
+}
+
 func (c FfiConverterRefundDepositResponse) Write(writer io.Writer, value RefundDepositResponse) {
 	FfiConverterStringINSTANCE.Write(writer, value.TxId)
 	FfiConverterStringINSTANCE.Write(writer, value.TxHex)
@@ -15606,6 +17357,10 @@ func (c FfiConverterRegisterLightningAddressRequest) Read(reader io.Reader) Regi
 
 func (c FfiConverterRegisterLightningAddressRequest) Lower(value RegisterLightningAddressRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[RegisterLightningAddressRequest](c, value)
+}
+
+func (c FfiConverterRegisterLightningAddressRequest) LowerExternal(value RegisterLightningAddressRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RegisterLightningAddressRequest](c, value))
 }
 
 func (c FfiConverterRegisterLightningAddressRequest) Write(writer io.Writer, value RegisterLightningAddressRequest) {
@@ -15648,6 +17403,10 @@ func (c FfiConverterRestResponse) Lower(value RestResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[RestResponse](c, value)
 }
 
+func (c FfiConverterRestResponse) LowerExternal(value RestResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RestResponse](c, value))
+}
+
 func (c FfiConverterRestResponse) Write(writer io.Writer, value RestResponse) {
 	FfiConverterUint16INSTANCE.Write(writer, value.Status)
 	FfiConverterStringINSTANCE.Write(writer, value.Body)
@@ -15686,6 +17445,10 @@ func (c FfiConverterSchnorrSignatureBytes) Lower(value SchnorrSignatureBytes) C.
 	return LowerIntoRustBuffer[SchnorrSignatureBytes](c, value)
 }
 
+func (c FfiConverterSchnorrSignatureBytes) LowerExternal(value SchnorrSignatureBytes) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SchnorrSignatureBytes](c, value))
+}
+
 func (c FfiConverterSchnorrSignatureBytes) Write(writer io.Writer, value SchnorrSignatureBytes) {
 	FfiConverterBytesINSTANCE.Write(writer, value.Bytes)
 }
@@ -15721,6 +17484,10 @@ func (c FfiConverterSecretBytes) Read(reader io.Reader) SecretBytes {
 
 func (c FfiConverterSecretBytes) Lower(value SecretBytes) C.RustBuffer {
 	return LowerIntoRustBuffer[SecretBytes](c, value)
+}
+
+func (c FfiConverterSecretBytes) LowerExternal(value SecretBytes) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SecretBytes](c, value))
 }
 
 func (c FfiConverterSecretBytes) Write(writer io.Writer, value SecretBytes) {
@@ -15771,6 +17538,10 @@ func (c FfiConverterSendOnchainFeeQuote) Lower(value SendOnchainFeeQuote) C.Rust
 	return LowerIntoRustBuffer[SendOnchainFeeQuote](c, value)
 }
 
+func (c FfiConverterSendOnchainFeeQuote) LowerExternal(value SendOnchainFeeQuote) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SendOnchainFeeQuote](c, value))
+}
+
 func (c FfiConverterSendOnchainFeeQuote) Write(writer io.Writer, value SendOnchainFeeQuote) {
 	FfiConverterStringINSTANCE.Write(writer, value.Id)
 	FfiConverterUint64INSTANCE.Write(writer, value.ExpiresAt)
@@ -15812,6 +17583,10 @@ func (c FfiConverterSendOnchainSpeedFeeQuote) Read(reader io.Reader) SendOnchain
 
 func (c FfiConverterSendOnchainSpeedFeeQuote) Lower(value SendOnchainSpeedFeeQuote) C.RustBuffer {
 	return LowerIntoRustBuffer[SendOnchainSpeedFeeQuote](c, value)
+}
+
+func (c FfiConverterSendOnchainSpeedFeeQuote) LowerExternal(value SendOnchainSpeedFeeQuote) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SendOnchainSpeedFeeQuote](c, value))
 }
 
 func (c FfiConverterSendOnchainSpeedFeeQuote) Write(writer io.Writer, value SendOnchainSpeedFeeQuote) {
@@ -15861,6 +17636,10 @@ func (c FfiConverterSendPaymentRequest) Lower(value SendPaymentRequest) C.RustBu
 	return LowerIntoRustBuffer[SendPaymentRequest](c, value)
 }
 
+func (c FfiConverterSendPaymentRequest) LowerExternal(value SendPaymentRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SendPaymentRequest](c, value))
+}
+
 func (c FfiConverterSendPaymentRequest) Write(writer io.Writer, value SendPaymentRequest) {
 	FfiConverterPrepareSendPaymentResponseINSTANCE.Write(writer, value.PrepareResponse)
 	FfiConverterOptionalSendPaymentOptionsINSTANCE.Write(writer, value.Options)
@@ -15897,6 +17676,10 @@ func (c FfiConverterSendPaymentResponse) Read(reader io.Reader) SendPaymentRespo
 
 func (c FfiConverterSendPaymentResponse) Lower(value SendPaymentResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[SendPaymentResponse](c, value)
+}
+
+func (c FfiConverterSendPaymentResponse) LowerExternal(value SendPaymentResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SendPaymentResponse](c, value))
 }
 
 func (c FfiConverterSendPaymentResponse) Write(writer io.Writer, value SendPaymentResponse) {
@@ -15947,6 +17730,10 @@ func (c FfiConverterSetLnurlMetadataItem) Lower(value SetLnurlMetadataItem) C.Ru
 	return LowerIntoRustBuffer[SetLnurlMetadataItem](c, value)
 }
 
+func (c FfiConverterSetLnurlMetadataItem) LowerExternal(value SetLnurlMetadataItem) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SetLnurlMetadataItem](c, value))
+}
+
 func (c FfiConverterSetLnurlMetadataItem) Write(writer io.Writer, value SetLnurlMetadataItem) {
 	FfiConverterStringINSTANCE.Write(writer, value.PaymentHash)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.SenderComment)
@@ -15991,6 +17778,10 @@ func (c FfiConverterSignMessageRequest) Lower(value SignMessageRequest) C.RustBu
 	return LowerIntoRustBuffer[SignMessageRequest](c, value)
 }
 
+func (c FfiConverterSignMessageRequest) LowerExternal(value SignMessageRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SignMessageRequest](c, value))
+}
+
 func (c FfiConverterSignMessageRequest) Write(writer io.Writer, value SignMessageRequest) {
 	FfiConverterStringINSTANCE.Write(writer, value.Message)
 	FfiConverterBoolINSTANCE.Write(writer, value.Compact)
@@ -16030,6 +17821,10 @@ func (c FfiConverterSignMessageResponse) Read(reader io.Reader) SignMessageRespo
 
 func (c FfiConverterSignMessageResponse) Lower(value SignMessageResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[SignMessageResponse](c, value)
+}
+
+func (c FfiConverterSignMessageResponse) LowerExternal(value SignMessageResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SignMessageResponse](c, value))
 }
 
 func (c FfiConverterSignMessageResponse) Write(writer io.Writer, value SignMessageResponse) {
@@ -16073,6 +17868,10 @@ func (c FfiConverterSilentPaymentAddressDetails) Read(reader io.Reader) SilentPa
 
 func (c FfiConverterSilentPaymentAddressDetails) Lower(value SilentPaymentAddressDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[SilentPaymentAddressDetails](c, value)
+}
+
+func (c FfiConverterSilentPaymentAddressDetails) LowerExternal(value SilentPaymentAddressDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SilentPaymentAddressDetails](c, value))
 }
 
 func (c FfiConverterSilentPaymentAddressDetails) Write(writer io.Writer, value SilentPaymentAddressDetails) {
@@ -16122,6 +17921,10 @@ func (c FfiConverterSparkAddressDetails) Read(reader io.Reader) SparkAddressDeta
 
 func (c FfiConverterSparkAddressDetails) Lower(value SparkAddressDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[SparkAddressDetails](c, value)
+}
+
+func (c FfiConverterSparkAddressDetails) LowerExternal(value SparkAddressDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SparkAddressDetails](c, value))
 }
 
 func (c FfiConverterSparkAddressDetails) Write(writer io.Writer, value SparkAddressDetails) {
@@ -16176,6 +17979,10 @@ func (c FfiConverterSparkHtlcDetails) Lower(value SparkHtlcDetails) C.RustBuffer
 	return LowerIntoRustBuffer[SparkHtlcDetails](c, value)
 }
 
+func (c FfiConverterSparkHtlcDetails) LowerExternal(value SparkHtlcDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SparkHtlcDetails](c, value))
+}
+
 func (c FfiConverterSparkHtlcDetails) Write(writer io.Writer, value SparkHtlcDetails) {
 	FfiConverterStringINSTANCE.Write(writer, value.PaymentHash)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Preimage)
@@ -16219,6 +18026,10 @@ func (c FfiConverterSparkHtlcOptions) Read(reader io.Reader) SparkHtlcOptions {
 
 func (c FfiConverterSparkHtlcOptions) Lower(value SparkHtlcOptions) C.RustBuffer {
 	return LowerIntoRustBuffer[SparkHtlcOptions](c, value)
+}
+
+func (c FfiConverterSparkHtlcOptions) LowerExternal(value SparkHtlcOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SparkHtlcOptions](c, value))
 }
 
 func (c FfiConverterSparkHtlcOptions) Write(writer io.Writer, value SparkHtlcOptions) {
@@ -16286,6 +18097,10 @@ func (c FfiConverterSparkInvoiceDetails) Lower(value SparkInvoiceDetails) C.Rust
 	return LowerIntoRustBuffer[SparkInvoiceDetails](c, value)
 }
 
+func (c FfiConverterSparkInvoiceDetails) LowerExternal(value SparkInvoiceDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SparkInvoiceDetails](c, value))
+}
+
 func (c FfiConverterSparkInvoiceDetails) Write(writer io.Writer, value SparkInvoiceDetails) {
 	FfiConverterStringINSTANCE.Write(writer, value.Invoice)
 	FfiConverterStringINSTANCE.Write(writer, value.IdentityPublicKey)
@@ -16334,6 +18149,10 @@ func (c FfiConverterSparkInvoicePaymentDetails) Lower(value SparkInvoicePaymentD
 	return LowerIntoRustBuffer[SparkInvoicePaymentDetails](c, value)
 }
 
+func (c FfiConverterSparkInvoicePaymentDetails) LowerExternal(value SparkInvoicePaymentDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SparkInvoicePaymentDetails](c, value))
+}
+
 func (c FfiConverterSparkInvoicePaymentDetails) Write(writer io.Writer, value SparkInvoicePaymentDetails) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Description)
 	FfiConverterStringINSTANCE.Write(writer, value.Invoice)
@@ -16375,6 +18194,10 @@ func (c FfiConverterSparkStatus) Read(reader io.Reader) SparkStatus {
 
 func (c FfiConverterSparkStatus) Lower(value SparkStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[SparkStatus](c, value)
+}
+
+func (c FfiConverterSparkStatus) LowerExternal(value SparkStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SparkStatus](c, value))
 }
 
 func (c FfiConverterSparkStatus) Write(writer io.Writer, value SparkStatus) {
@@ -16446,6 +18269,10 @@ func (c FfiConverterStableBalanceConfig) Lower(value StableBalanceConfig) C.Rust
 	return LowerIntoRustBuffer[StableBalanceConfig](c, value)
 }
 
+func (c FfiConverterStableBalanceConfig) LowerExternal(value StableBalanceConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[StableBalanceConfig](c, value))
+}
+
 func (c FfiConverterStableBalanceConfig) Write(writer io.Writer, value StableBalanceConfig) {
 	FfiConverterStringINSTANCE.Write(writer, value.TokenIdentifier)
 	FfiConverterOptionalUint64INSTANCE.Write(writer, value.ThresholdSats)
@@ -16511,6 +18338,10 @@ func (c FfiConverterStorageListPaymentsRequest) Lower(value StorageListPaymentsR
 	return LowerIntoRustBuffer[StorageListPaymentsRequest](c, value)
 }
 
+func (c FfiConverterStorageListPaymentsRequest) LowerExternal(value StorageListPaymentsRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[StorageListPaymentsRequest](c, value))
+}
+
 func (c FfiConverterStorageListPaymentsRequest) Write(writer io.Writer, value StorageListPaymentsRequest) {
 	FfiConverterOptionalSequencePaymentTypeINSTANCE.Write(writer, value.TypeFilter)
 	FfiConverterOptionalSequencePaymentStatusINSTANCE.Write(writer, value.StatusFilter)
@@ -16565,6 +18396,10 @@ func (c FfiConverterSymbol) Lower(value Symbol) C.RustBuffer {
 	return LowerIntoRustBuffer[Symbol](c, value)
 }
 
+func (c FfiConverterSymbol) LowerExternal(value Symbol) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Symbol](c, value))
+}
+
 func (c FfiConverterSymbol) Write(writer io.Writer, value Symbol) {
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Grapheme)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.Template)
@@ -16601,6 +18436,10 @@ func (c FfiConverterSyncWalletRequest) Lower(value SyncWalletRequest) C.RustBuff
 	return LowerIntoRustBuffer[SyncWalletRequest](c, value)
 }
 
+func (c FfiConverterSyncWalletRequest) LowerExternal(value SyncWalletRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SyncWalletRequest](c, value))
+}
+
 func (c FfiConverterSyncWalletRequest) Write(writer io.Writer, value SyncWalletRequest) {
 }
 
@@ -16631,6 +18470,10 @@ func (c FfiConverterSyncWalletResponse) Read(reader io.Reader) SyncWalletRespons
 
 func (c FfiConverterSyncWalletResponse) Lower(value SyncWalletResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[SyncWalletResponse](c, value)
+}
+
+func (c FfiConverterSyncWalletResponse) LowerExternal(value SyncWalletResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SyncWalletResponse](c, value))
 }
 
 func (c FfiConverterSyncWalletResponse) Write(writer io.Writer, value SyncWalletResponse) {
@@ -16669,6 +18512,10 @@ func (c FfiConverterTokenBalance) Read(reader io.Reader) TokenBalance {
 
 func (c FfiConverterTokenBalance) Lower(value TokenBalance) C.RustBuffer {
 	return LowerIntoRustBuffer[TokenBalance](c, value)
+}
+
+func (c FfiConverterTokenBalance) LowerExternal(value TokenBalance) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TokenBalance](c, value))
 }
 
 func (c FfiConverterTokenBalance) Write(writer io.Writer, value TokenBalance) {
@@ -16728,6 +18575,10 @@ func (c FfiConverterTokenMetadata) Lower(value TokenMetadata) C.RustBuffer {
 	return LowerIntoRustBuffer[TokenMetadata](c, value)
 }
 
+func (c FfiConverterTokenMetadata) LowerExternal(value TokenMetadata) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TokenMetadata](c, value))
+}
+
 func (c FfiConverterTokenMetadata) Write(writer io.Writer, value TokenMetadata) {
 	FfiConverterStringINSTANCE.Write(writer, value.Identifier)
 	FfiConverterStringINSTANCE.Write(writer, value.IssuerPublicKey)
@@ -16776,6 +18627,10 @@ func (c FfiConverterTxStatus) Lower(value TxStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[TxStatus](c, value)
 }
 
+func (c FfiConverterTxStatus) LowerExternal(value TxStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TxStatus](c, value))
+}
+
 func (c FfiConverterTxStatus) Write(writer io.Writer, value TxStatus) {
 	FfiConverterBoolINSTANCE.Write(writer, value.Confirmed)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.BlockHeight)
@@ -16812,6 +18667,10 @@ func (c FfiConverterUnfreezeIssuerTokenRequest) Read(reader io.Reader) UnfreezeI
 
 func (c FfiConverterUnfreezeIssuerTokenRequest) Lower(value UnfreezeIssuerTokenRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[UnfreezeIssuerTokenRequest](c, value)
+}
+
+func (c FfiConverterUnfreezeIssuerTokenRequest) LowerExternal(value UnfreezeIssuerTokenRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[UnfreezeIssuerTokenRequest](c, value))
 }
 
 func (c FfiConverterUnfreezeIssuerTokenRequest) Write(writer io.Writer, value UnfreezeIssuerTokenRequest) {
@@ -16851,6 +18710,10 @@ func (c FfiConverterUnfreezeIssuerTokenResponse) Read(reader io.Reader) Unfreeze
 
 func (c FfiConverterUnfreezeIssuerTokenResponse) Lower(value UnfreezeIssuerTokenResponse) C.RustBuffer {
 	return LowerIntoRustBuffer[UnfreezeIssuerTokenResponse](c, value)
+}
+
+func (c FfiConverterUnfreezeIssuerTokenResponse) LowerExternal(value UnfreezeIssuerTokenResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[UnfreezeIssuerTokenResponse](c, value))
 }
 
 func (c FfiConverterUnfreezeIssuerTokenResponse) Write(writer io.Writer, value UnfreezeIssuerTokenResponse) {
@@ -16896,6 +18759,10 @@ func (c FfiConverterUnversionedRecordChange) Lower(value UnversionedRecordChange
 	return LowerIntoRustBuffer[UnversionedRecordChange](c, value)
 }
 
+func (c FfiConverterUnversionedRecordChange) LowerExternal(value UnversionedRecordChange) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[UnversionedRecordChange](c, value))
+}
+
 func (c FfiConverterUnversionedRecordChange) Write(writer io.Writer, value UnversionedRecordChange) {
 	FfiConverterRecordIdINSTANCE.Write(writer, value.Id)
 	FfiConverterStringINSTANCE.Write(writer, value.SchemaVersion)
@@ -16905,6 +18772,56 @@ func (c FfiConverterUnversionedRecordChange) Write(writer io.Writer, value Unver
 type FfiDestroyerUnversionedRecordChange struct{}
 
 func (_ FfiDestroyerUnversionedRecordChange) Destroy(value UnversionedRecordChange) {
+	value.Destroy()
+}
+
+// Request to update an existing contact.
+type UpdateContactRequest struct {
+	Id   string
+	Name string
+	// A Lightning address (user@domain).
+	PaymentIdentifier string
+}
+
+func (r *UpdateContactRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Id)
+	FfiDestroyerString{}.Destroy(r.Name)
+	FfiDestroyerString{}.Destroy(r.PaymentIdentifier)
+}
+
+type FfiConverterUpdateContactRequest struct{}
+
+var FfiConverterUpdateContactRequestINSTANCE = FfiConverterUpdateContactRequest{}
+
+func (c FfiConverterUpdateContactRequest) Lift(rb RustBufferI) UpdateContactRequest {
+	return LiftFromRustBuffer[UpdateContactRequest](c, rb)
+}
+
+func (c FfiConverterUpdateContactRequest) Read(reader io.Reader) UpdateContactRequest {
+	return UpdateContactRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterUpdateContactRequest) Lower(value UpdateContactRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[UpdateContactRequest](c, value)
+}
+
+func (c FfiConverterUpdateContactRequest) LowerExternal(value UpdateContactRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[UpdateContactRequest](c, value))
+}
+
+func (c FfiConverterUpdateContactRequest) Write(writer io.Writer, value UpdateContactRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Id)
+	FfiConverterStringINSTANCE.Write(writer, value.Name)
+	FfiConverterStringINSTANCE.Write(writer, value.PaymentIdentifier)
+}
+
+type FfiDestroyerUpdateContactRequest struct{}
+
+func (_ FfiDestroyerUpdateContactRequest) Destroy(value UpdateContactRequest) {
 	value.Destroy()
 }
 
@@ -16932,6 +18849,10 @@ func (c FfiConverterUpdateUserSettingsRequest) Read(reader io.Reader) UpdateUser
 
 func (c FfiConverterUpdateUserSettingsRequest) Lower(value UpdateUserSettingsRequest) C.RustBuffer {
 	return LowerIntoRustBuffer[UpdateUserSettingsRequest](c, value)
+}
+
+func (c FfiConverterUpdateUserSettingsRequest) LowerExternal(value UpdateUserSettingsRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[UpdateUserSettingsRequest](c, value))
 }
 
 func (c FfiConverterUpdateUserSettingsRequest) Write(writer io.Writer, value UpdateUserSettingsRequest) {
@@ -16981,6 +18902,10 @@ func (c FfiConverterUrlSuccessActionData) Lower(value UrlSuccessActionData) C.Ru
 	return LowerIntoRustBuffer[UrlSuccessActionData](c, value)
 }
 
+func (c FfiConverterUrlSuccessActionData) LowerExternal(value UrlSuccessActionData) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[UrlSuccessActionData](c, value))
+}
+
 func (c FfiConverterUrlSuccessActionData) Write(writer io.Writer, value UrlSuccessActionData) {
 	FfiConverterStringINSTANCE.Write(writer, value.Description)
 	FfiConverterStringINSTANCE.Write(writer, value.Url)
@@ -17017,6 +18942,10 @@ func (c FfiConverterUserSettings) Read(reader io.Reader) UserSettings {
 
 func (c FfiConverterUserSettings) Lower(value UserSettings) C.RustBuffer {
 	return LowerIntoRustBuffer[UserSettings](c, value)
+}
+
+func (c FfiConverterUserSettings) LowerExternal(value UserSettings) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[UserSettings](c, value))
 }
 
 func (c FfiConverterUserSettings) Write(writer io.Writer, value UserSettings) {
@@ -17064,6 +18993,10 @@ func (c FfiConverterUtxo) Lower(value Utxo) C.RustBuffer {
 	return LowerIntoRustBuffer[Utxo](c, value)
 }
 
+func (c FfiConverterUtxo) LowerExternal(value Utxo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Utxo](c, value))
+}
+
 func (c FfiConverterUtxo) Write(writer io.Writer, value Utxo) {
 	FfiConverterStringINSTANCE.Write(writer, value.Txid)
 	FfiConverterUint32INSTANCE.Write(writer, value.Vout)
@@ -17107,6 +19040,10 @@ func (c FfiConverterAesSuccessActionDataResult) Lift(rb RustBufferI) AesSuccessA
 
 func (c FfiConverterAesSuccessActionDataResult) Lower(value AesSuccessActionDataResult) C.RustBuffer {
 	return LowerIntoRustBuffer[AesSuccessActionDataResult](c, value)
+}
+
+func (c FfiConverterAesSuccessActionDataResult) LowerExternal(value AesSuccessActionDataResult) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[AesSuccessActionDataResult](c, value))
 }
 func (FfiConverterAesSuccessActionDataResult) Read(reader io.Reader) AesSuccessActionDataResult {
 	id := readInt32(reader)
@@ -17177,6 +19114,10 @@ func (c FfiConverterAmount) Lift(rb RustBufferI) Amount {
 func (c FfiConverterAmount) Lower(value Amount) C.RustBuffer {
 	return LowerIntoRustBuffer[Amount](c, value)
 }
+
+func (c FfiConverterAmount) LowerExternal(value Amount) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Amount](c, value))
+}
 func (FfiConverterAmount) Read(reader io.Reader) Amount {
 	id := readInt32(reader)
 	switch id {
@@ -17244,6 +19185,10 @@ func (c FfiConverterAssetFilter) Lift(rb RustBufferI) AssetFilter {
 func (c FfiConverterAssetFilter) Lower(value AssetFilter) C.RustBuffer {
 	return LowerIntoRustBuffer[AssetFilter](c, value)
 }
+
+func (c FfiConverterAssetFilter) LowerExternal(value AssetFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[AssetFilter](c, value))
+}
 func (FfiConverterAssetFilter) Read(reader io.Reader) AssetFilter {
 	id := readInt32(reader)
 	switch id {
@@ -17299,6 +19244,10 @@ func (c FfiConverterBitcoinNetwork) Lift(rb RustBufferI) BitcoinNetwork {
 func (c FfiConverterBitcoinNetwork) Lower(value BitcoinNetwork) C.RustBuffer {
 	return LowerIntoRustBuffer[BitcoinNetwork](c, value)
 }
+
+func (c FfiConverterBitcoinNetwork) LowerExternal(value BitcoinNetwork) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[BitcoinNetwork](c, value))
+}
 func (FfiConverterBitcoinNetwork) Read(reader io.Reader) BitcoinNetwork {
 	id := readInt32(reader)
 	return BitcoinNetwork(id)
@@ -17330,6 +19279,10 @@ func (c FfiConverterChainApiType) Lift(rb RustBufferI) ChainApiType {
 
 func (c FfiConverterChainApiType) Lower(value ChainApiType) C.RustBuffer {
 	return LowerIntoRustBuffer[ChainApiType](c, value)
+}
+
+func (c FfiConverterChainApiType) LowerExternal(value ChainApiType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ChainApiType](c, value))
 }
 func (FfiConverterChainApiType) Read(reader io.Reader) ChainApiType {
 	id := readInt32(reader)
@@ -17469,6 +19422,10 @@ func (c FfiConverterChainServiceError) Lower(value *ChainServiceError) C.RustBuf
 	return LowerIntoRustBuffer[*ChainServiceError](c, value)
 }
 
+func (c FfiConverterChainServiceError) LowerExternal(value *ChainServiceError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ChainServiceError](c, value))
+}
+
 func (c FfiConverterChainServiceError) Read(reader io.Reader) *ChainServiceError {
 	errorID := readUint32(reader)
 
@@ -17563,6 +19520,10 @@ func (c FfiConverterConversionPurpose) Lift(rb RustBufferI) ConversionPurpose {
 func (c FfiConverterConversionPurpose) Lower(value ConversionPurpose) C.RustBuffer {
 	return LowerIntoRustBuffer[ConversionPurpose](c, value)
 }
+
+func (c FfiConverterConversionPurpose) LowerExternal(value ConversionPurpose) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConversionPurpose](c, value))
+}
 func (FfiConverterConversionPurpose) Read(reader io.Reader) ConversionPurpose {
 	id := readInt32(reader)
 	switch id {
@@ -17624,6 +19585,10 @@ func (c FfiConverterConversionStatus) Lift(rb RustBufferI) ConversionStatus {
 func (c FfiConverterConversionStatus) Lower(value ConversionStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[ConversionStatus](c, value)
 }
+
+func (c FfiConverterConversionStatus) LowerExternal(value ConversionStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConversionStatus](c, value))
+}
 func (FfiConverterConversionStatus) Read(reader io.Reader) ConversionStatus {
 	id := readInt32(reader)
 	return ConversionStatus(id)
@@ -17668,6 +19633,10 @@ func (c FfiConverterConversionType) Lift(rb RustBufferI) ConversionType {
 
 func (c FfiConverterConversionType) Lower(value ConversionType) C.RustBuffer {
 	return LowerIntoRustBuffer[ConversionType](c, value)
+}
+
+func (c FfiConverterConversionType) LowerExternal(value ConversionType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConversionType](c, value))
 }
 func (FfiConverterConversionType) Read(reader io.Reader) ConversionType {
 	id := readInt32(reader)
@@ -17749,6 +19718,10 @@ func (c FfiConverterDepositClaimError) Lift(rb RustBufferI) DepositClaimError {
 
 func (c FfiConverterDepositClaimError) Lower(value DepositClaimError) C.RustBuffer {
 	return LowerIntoRustBuffer[DepositClaimError](c, value)
+}
+
+func (c FfiConverterDepositClaimError) LowerExternal(value DepositClaimError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[DepositClaimError](c, value))
 }
 func (FfiConverterDepositClaimError) Read(reader io.Reader) DepositClaimError {
 	id := readInt32(reader)
@@ -17837,6 +19810,10 @@ func (c FfiConverterExternalSecretSource) Lift(rb RustBufferI) ExternalSecretSou
 func (c FfiConverterExternalSecretSource) Lower(value ExternalSecretSource) C.RustBuffer {
 	return LowerIntoRustBuffer[ExternalSecretSource](c, value)
 }
+
+func (c FfiConverterExternalSecretSource) LowerExternal(value ExternalSecretSource) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSecretSource](c, value))
+}
 func (FfiConverterExternalSecretSource) Read(reader io.Reader) ExternalSecretSource {
 	id := readInt32(reader)
 	switch id {
@@ -17907,6 +19884,10 @@ func (c FfiConverterExternalSecretToSplit) Lift(rb RustBufferI) ExternalSecretTo
 func (c FfiConverterExternalSecretToSplit) Lower(value ExternalSecretToSplit) C.RustBuffer {
 	return LowerIntoRustBuffer[ExternalSecretToSplit](c, value)
 }
+
+func (c FfiConverterExternalSecretToSplit) LowerExternal(value ExternalSecretToSplit) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSecretToSplit](c, value))
+}
 func (FfiConverterExternalSecretToSplit) Read(reader io.Reader) ExternalSecretToSplit {
 	id := readInt32(reader)
 	switch id {
@@ -17973,6 +19954,10 @@ func (c FfiConverterFee) Lift(rb RustBufferI) Fee {
 func (c FfiConverterFee) Lower(value Fee) C.RustBuffer {
 	return LowerIntoRustBuffer[Fee](c, value)
 }
+
+func (c FfiConverterFee) LowerExternal(value Fee) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Fee](c, value))
+}
 func (FfiConverterFee) Read(reader io.Reader) Fee {
 	id := readInt32(reader)
 	switch id {
@@ -18031,6 +20016,10 @@ func (c FfiConverterFeePolicy) Lift(rb RustBufferI) FeePolicy {
 
 func (c FfiConverterFeePolicy) Lower(value FeePolicy) C.RustBuffer {
 	return LowerIntoRustBuffer[FeePolicy](c, value)
+}
+
+func (c FfiConverterFeePolicy) LowerExternal(value FeePolicy) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FeePolicy](c, value))
 }
 func (FfiConverterFeePolicy) Read(reader io.Reader) FeePolicy {
 	id := readInt32(reader)
@@ -18171,6 +20160,10 @@ func (c FfiConverterInputType) Lift(rb RustBufferI) InputType {
 
 func (c FfiConverterInputType) Lower(value InputType) C.RustBuffer {
 	return LowerIntoRustBuffer[InputType](c, value)
+}
+
+func (c FfiConverterInputType) LowerExternal(value InputType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[InputType](c, value))
 }
 func (FfiConverterInputType) Read(reader io.Reader) InputType {
 	id := readInt32(reader)
@@ -18313,6 +20306,10 @@ func (c FfiConverterKeySetType) Lift(rb RustBufferI) KeySetType {
 func (c FfiConverterKeySetType) Lower(value KeySetType) C.RustBuffer {
 	return LowerIntoRustBuffer[KeySetType](c, value)
 }
+
+func (c FfiConverterKeySetType) LowerExternal(value KeySetType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[KeySetType](c, value))
+}
 func (FfiConverterKeySetType) Read(reader io.Reader) KeySetType {
 	id := readInt32(reader)
 	return KeySetType(id)
@@ -18358,6 +20355,10 @@ func (c FfiConverterLnurlCallbackStatus) Lift(rb RustBufferI) LnurlCallbackStatu
 
 func (c FfiConverterLnurlCallbackStatus) Lower(value LnurlCallbackStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[LnurlCallbackStatus](c, value)
+}
+
+func (c FfiConverterLnurlCallbackStatus) LowerExternal(value LnurlCallbackStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[LnurlCallbackStatus](c, value))
 }
 func (FfiConverterLnurlCallbackStatus) Read(reader io.Reader) LnurlCallbackStatus {
 	id := readInt32(reader)
@@ -18430,6 +20431,10 @@ func (c FfiConverterMaxFee) Lift(rb RustBufferI) MaxFee {
 func (c FfiConverterMaxFee) Lower(value MaxFee) C.RustBuffer {
 	return LowerIntoRustBuffer[MaxFee](c, value)
 }
+
+func (c FfiConverterMaxFee) LowerExternal(value MaxFee) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[MaxFee](c, value))
+}
 func (FfiConverterMaxFee) Read(reader io.Reader) MaxFee {
 	id := readInt32(reader)
 	switch id {
@@ -18491,6 +20496,10 @@ func (c FfiConverterNetwork) Lift(rb RustBufferI) Network {
 func (c FfiConverterNetwork) Lower(value Network) C.RustBuffer {
 	return LowerIntoRustBuffer[Network](c, value)
 }
+
+func (c FfiConverterNetwork) LowerExternal(value Network) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Network](c, value))
+}
 func (FfiConverterNetwork) Read(reader io.Reader) Network {
 	id := readInt32(reader)
 	return Network(id)
@@ -18523,6 +20532,10 @@ func (c FfiConverterOnchainConfirmationSpeed) Lift(rb RustBufferI) OnchainConfir
 
 func (c FfiConverterOnchainConfirmationSpeed) Lower(value OnchainConfirmationSpeed) C.RustBuffer {
 	return LowerIntoRustBuffer[OnchainConfirmationSpeed](c, value)
+}
+
+func (c FfiConverterOnchainConfirmationSpeed) LowerExternal(value OnchainConfirmationSpeed) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OnchainConfirmationSpeed](c, value))
 }
 func (FfiConverterOnchainConfirmationSpeed) Read(reader io.Reader) OnchainConfirmationSpeed {
 	id := readInt32(reader)
@@ -18602,6 +20615,10 @@ func (c FfiConverterOptimizationEvent) Lift(rb RustBufferI) OptimizationEvent {
 
 func (c FfiConverterOptimizationEvent) Lower(value OptimizationEvent) C.RustBuffer {
 	return LowerIntoRustBuffer[OptimizationEvent](c, value)
+}
+
+func (c FfiConverterOptimizationEvent) LowerExternal(value OptimizationEvent) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OptimizationEvent](c, value))
 }
 func (FfiConverterOptimizationEvent) Read(reader io.Reader) OptimizationEvent {
 	id := readInt32(reader)
@@ -18738,6 +20755,10 @@ func (c FfiConverterPaymentDetails) Lift(rb RustBufferI) PaymentDetails {
 func (c FfiConverterPaymentDetails) Lower(value PaymentDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[PaymentDetails](c, value)
 }
+
+func (c FfiConverterPaymentDetails) LowerExternal(value PaymentDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentDetails](c, value))
+}
 func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 	id := readInt32(reader)
 	switch id {
@@ -18863,6 +20884,10 @@ func (c FfiConverterPaymentDetailsFilter) Lift(rb RustBufferI) PaymentDetailsFil
 func (c FfiConverterPaymentDetailsFilter) Lower(value PaymentDetailsFilter) C.RustBuffer {
 	return LowerIntoRustBuffer[PaymentDetailsFilter](c, value)
 }
+
+func (c FfiConverterPaymentDetailsFilter) LowerExternal(value PaymentDetailsFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentDetailsFilter](c, value))
+}
 func (FfiConverterPaymentDetailsFilter) Read(reader io.Reader) PaymentDetailsFilter {
 	id := readInt32(reader)
 	switch id {
@@ -18933,6 +20958,10 @@ func (c FfiConverterPaymentMethod) Lift(rb RustBufferI) PaymentMethod {
 
 func (c FfiConverterPaymentMethod) Lower(value PaymentMethod) C.RustBuffer {
 	return LowerIntoRustBuffer[PaymentMethod](c, value)
+}
+
+func (c FfiConverterPaymentMethod) LowerExternal(value PaymentMethod) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentMethod](c, value))
 }
 func (FfiConverterPaymentMethod) Read(reader io.Reader) PaymentMethod {
 	id := readInt32(reader)
@@ -19043,6 +21072,10 @@ func (c FfiConverterPaymentObserverError) Lower(value *PaymentObserverError) C.R
 	return LowerIntoRustBuffer[*PaymentObserverError](c, value)
 }
 
+func (c FfiConverterPaymentObserverError) LowerExternal(value *PaymentObserverError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*PaymentObserverError](c, value))
+}
+
 func (c FfiConverterPaymentObserverError) Read(reader io.Reader) *PaymentObserverError {
 	errorID := readUint32(reader)
 
@@ -19111,6 +21144,10 @@ func (c FfiConverterPaymentStatus) Lift(rb RustBufferI) PaymentStatus {
 func (c FfiConverterPaymentStatus) Lower(value PaymentStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[PaymentStatus](c, value)
 }
+
+func (c FfiConverterPaymentStatus) LowerExternal(value PaymentStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentStatus](c, value))
+}
 func (FfiConverterPaymentStatus) Read(reader io.Reader) PaymentStatus {
 	id := readInt32(reader)
 	return PaymentStatus(id)
@@ -19145,6 +21182,10 @@ func (c FfiConverterPaymentType) Lift(rb RustBufferI) PaymentType {
 
 func (c FfiConverterPaymentType) Lower(value PaymentType) C.RustBuffer {
 	return LowerIntoRustBuffer[PaymentType](c, value)
+}
+
+func (c FfiConverterPaymentType) LowerExternal(value PaymentType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentType](c, value))
 }
 func (FfiConverterPaymentType) Read(reader io.Reader) PaymentType {
 	id := readInt32(reader)
@@ -19186,6 +21227,10 @@ func (c FfiConverterPoolQueueMode) Lift(rb RustBufferI) PoolQueueMode {
 
 func (c FfiConverterPoolQueueMode) Lower(value PoolQueueMode) C.RustBuffer {
 	return LowerIntoRustBuffer[PoolQueueMode](c, value)
+}
+
+func (c FfiConverterPoolQueueMode) LowerExternal(value PoolQueueMode) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PoolQueueMode](c, value))
 }
 func (FfiConverterPoolQueueMode) Read(reader io.Reader) PoolQueueMode {
 	id := readInt32(reader)
@@ -19248,6 +21293,10 @@ func (c FfiConverterProvisionalPaymentDetails) Lift(rb RustBufferI) ProvisionalP
 
 func (c FfiConverterProvisionalPaymentDetails) Lower(value ProvisionalPaymentDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[ProvisionalPaymentDetails](c, value)
+}
+
+func (c FfiConverterProvisionalPaymentDetails) LowerExternal(value ProvisionalPaymentDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ProvisionalPaymentDetails](c, value))
 }
 func (FfiConverterProvisionalPaymentDetails) Read(reader io.Reader) ProvisionalPaymentDetails {
 	id := readInt32(reader)
@@ -19356,6 +21405,10 @@ func (c FfiConverterReceivePaymentMethod) Lift(rb RustBufferI) ReceivePaymentMet
 
 func (c FfiConverterReceivePaymentMethod) Lower(value ReceivePaymentMethod) C.RustBuffer {
 	return LowerIntoRustBuffer[ReceivePaymentMethod](c, value)
+}
+
+func (c FfiConverterReceivePaymentMethod) LowerExternal(value ReceivePaymentMethod) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ReceivePaymentMethod](c, value))
 }
 func (FfiConverterReceivePaymentMethod) Read(reader io.Reader) ReceivePaymentMethod {
 	id := readInt32(reader)
@@ -19832,6 +21885,10 @@ func (c FfiConverterSdkError) Lower(value *SdkError) C.RustBuffer {
 	return LowerIntoRustBuffer[*SdkError](c, value)
 }
 
+func (c FfiConverterSdkError) LowerExternal(value *SdkError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SdkError](c, value))
+}
+
 func (c FfiConverterSdkError) Read(reader io.Reader) *SdkError {
 	errorID := readUint32(reader)
 
@@ -20046,6 +22103,10 @@ func (c FfiConverterSdkEvent) Lift(rb RustBufferI) SdkEvent {
 func (c FfiConverterSdkEvent) Lower(value SdkEvent) C.RustBuffer {
 	return LowerIntoRustBuffer[SdkEvent](c, value)
 }
+
+func (c FfiConverterSdkEvent) LowerExternal(value SdkEvent) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SdkEvent](c, value))
+}
 func (FfiConverterSdkEvent) Read(reader io.Reader) SdkEvent {
 	id := readInt32(reader)
 	switch id {
@@ -20151,6 +22212,10 @@ func (c FfiConverterSeed) Lift(rb RustBufferI) Seed {
 func (c FfiConverterSeed) Lower(value Seed) C.RustBuffer {
 	return LowerIntoRustBuffer[Seed](c, value)
 }
+
+func (c FfiConverterSeed) LowerExternal(value Seed) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Seed](c, value))
+}
 func (FfiConverterSeed) Read(reader io.Reader) Seed {
 	id := readInt32(reader)
 	switch id {
@@ -20248,6 +22313,10 @@ func (c FfiConverterSendPaymentMethod) Lift(rb RustBufferI) SendPaymentMethod {
 
 func (c FfiConverterSendPaymentMethod) Lower(value SendPaymentMethod) C.RustBuffer {
 	return LowerIntoRustBuffer[SendPaymentMethod](c, value)
+}
+
+func (c FfiConverterSendPaymentMethod) LowerExternal(value SendPaymentMethod) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SendPaymentMethod](c, value))
 }
 func (FfiConverterSendPaymentMethod) Read(reader io.Reader) SendPaymentMethod {
 	id := readInt32(reader)
@@ -20352,6 +22421,10 @@ func (c FfiConverterSendPaymentOptions) Lift(rb RustBufferI) SendPaymentOptions 
 
 func (c FfiConverterSendPaymentOptions) Lower(value SendPaymentOptions) C.RustBuffer {
 	return LowerIntoRustBuffer[SendPaymentOptions](c, value)
+}
+
+func (c FfiConverterSendPaymentOptions) LowerExternal(value SendPaymentOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SendPaymentOptions](c, value))
 }
 func (FfiConverterSendPaymentOptions) Read(reader io.Reader) SendPaymentOptions {
 	id := readInt32(reader)
@@ -20732,6 +22805,10 @@ func (c FfiConverterServiceConnectivityError) Lower(value *ServiceConnectivityEr
 	return LowerIntoRustBuffer[*ServiceConnectivityError](c, value)
 }
 
+func (c FfiConverterServiceConnectivityError) LowerExternal(value *ServiceConnectivityError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ServiceConnectivityError](c, value))
+}
+
 func (c FfiConverterServiceConnectivityError) Read(reader io.Reader) *ServiceConnectivityError {
 	errorID := readUint32(reader)
 
@@ -20877,6 +22954,10 @@ func (c FfiConverterServiceStatus) Lift(rb RustBufferI) ServiceStatus {
 
 func (c FfiConverterServiceStatus) Lower(value ServiceStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[ServiceStatus](c, value)
+}
+
+func (c FfiConverterServiceStatus) LowerExternal(value ServiceStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ServiceStatus](c, value))
 }
 func (FfiConverterServiceStatus) Read(reader io.Reader) ServiceStatus {
 	id := readInt32(reader)
@@ -21133,6 +23214,10 @@ func (c FfiConverterSignerError) Lower(value *SignerError) C.RustBuffer {
 	return LowerIntoRustBuffer[*SignerError](c, value)
 }
 
+func (c FfiConverterSignerError) LowerExternal(value *SignerError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SignerError](c, value))
+}
+
 func (c FfiConverterSignerError) Read(reader io.Reader) *SignerError {
 	errorID := readUint32(reader)
 
@@ -21245,6 +23330,10 @@ func (c FfiConverterSparkHtlcStatus) Lift(rb RustBufferI) SparkHtlcStatus {
 func (c FfiConverterSparkHtlcStatus) Lower(value SparkHtlcStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[SparkHtlcStatus](c, value)
 }
+
+func (c FfiConverterSparkHtlcStatus) LowerExternal(value SparkHtlcStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SparkHtlcStatus](c, value))
+}
 func (FfiConverterSparkHtlcStatus) Read(reader io.Reader) SparkHtlcStatus {
 	id := readInt32(reader)
 	return SparkHtlcStatus(id)
@@ -21287,6 +23376,7 @@ var ErrStorageErrorConnection = fmt.Errorf("StorageErrorConnection")
 var ErrStorageErrorImplementation = fmt.Errorf("StorageErrorImplementation")
 var ErrStorageErrorInitializationError = fmt.Errorf("StorageErrorInitializationError")
 var ErrStorageErrorSerialization = fmt.Errorf("StorageErrorSerialization")
+var ErrStorageErrorNotFound = fmt.Errorf("StorageErrorNotFound")
 
 // Variant structs
 // Connection-related errors (pool exhaustion, timeouts, connection refused).
@@ -21407,6 +23497,24 @@ func (self StorageErrorSerialization) Is(target error) bool {
 	return target == ErrStorageErrorSerialization
 }
 
+type StorageErrorNotFound struct {
+}
+
+func NewStorageErrorNotFound() *StorageError {
+	return &StorageError{err: &StorageErrorNotFound{}}
+}
+
+func (e StorageErrorNotFound) destroy() {
+}
+
+func (err StorageErrorNotFound) Error() string {
+	return fmt.Sprint("NotFound")
+}
+
+func (self StorageErrorNotFound) Is(target error) bool {
+	return target == ErrStorageErrorNotFound
+}
+
 type FfiConverterStorageError struct{}
 
 var FfiConverterStorageErrorINSTANCE = FfiConverterStorageError{}
@@ -21417,6 +23525,10 @@ func (c FfiConverterStorageError) Lift(eb RustBufferI) *StorageError {
 
 func (c FfiConverterStorageError) Lower(value *StorageError) C.RustBuffer {
 	return LowerIntoRustBuffer[*StorageError](c, value)
+}
+
+func (c FfiConverterStorageError) LowerExternal(value *StorageError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*StorageError](c, value))
 }
 
 func (c FfiConverterStorageError) Read(reader io.Reader) *StorageError {
@@ -21439,6 +23551,8 @@ func (c FfiConverterStorageError) Read(reader io.Reader) *StorageError {
 		return &StorageError{&StorageErrorSerialization{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
+	case 5:
+		return &StorageError{&StorageErrorNotFound{}}
 	default:
 		panic(fmt.Sprintf("Unknown error code %d in FfiConverterStorageError.Read()", errorID))
 	}
@@ -21458,6 +23572,8 @@ func (c FfiConverterStorageError) Write(writer io.Writer, value *StorageError) {
 	case *StorageErrorSerialization:
 		writeInt32(writer, 4)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *StorageErrorNotFound:
+		writeInt32(writer, 5)
 	default:
 		_ = variantValue
 		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterStorageError.Write", value))
@@ -21475,6 +23591,8 @@ func (_ FfiDestroyerStorageError) Destroy(value *StorageError) {
 	case StorageErrorInitializationError:
 		variantValue.destroy()
 	case StorageErrorSerialization:
+		variantValue.destroy()
+	case StorageErrorNotFound:
 		variantValue.destroy()
 	default:
 		_ = variantValue
@@ -21530,6 +23648,10 @@ func (c FfiConverterStoragePaymentDetailsFilter) Lift(rb RustBufferI) StoragePay
 
 func (c FfiConverterStoragePaymentDetailsFilter) Lower(value StoragePaymentDetailsFilter) C.RustBuffer {
 	return LowerIntoRustBuffer[StoragePaymentDetailsFilter](c, value)
+}
+
+func (c FfiConverterStoragePaymentDetailsFilter) LowerExternal(value StoragePaymentDetailsFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[StoragePaymentDetailsFilter](c, value))
 }
 func (FfiConverterStoragePaymentDetailsFilter) Read(reader io.Reader) StoragePaymentDetailsFilter {
 	id := readInt32(reader)
@@ -21628,6 +23750,10 @@ func (c FfiConverterSuccessAction) Lift(rb RustBufferI) SuccessAction {
 func (c FfiConverterSuccessAction) Lower(value SuccessAction) C.RustBuffer {
 	return LowerIntoRustBuffer[SuccessAction](c, value)
 }
+
+func (c FfiConverterSuccessAction) LowerExternal(value SuccessAction) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SuccessAction](c, value))
+}
 func (FfiConverterSuccessAction) Read(reader io.Reader) SuccessAction {
 	id := readInt32(reader)
 	switch id {
@@ -21718,6 +23844,10 @@ func (c FfiConverterSuccessActionProcessed) Lift(rb RustBufferI) SuccessActionPr
 func (c FfiConverterSuccessActionProcessed) Lower(value SuccessActionProcessed) C.RustBuffer {
 	return LowerIntoRustBuffer[SuccessActionProcessed](c, value)
 }
+
+func (c FfiConverterSuccessActionProcessed) LowerExternal(value SuccessActionProcessed) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SuccessActionProcessed](c, value))
+}
 func (FfiConverterSuccessActionProcessed) Read(reader io.Reader) SuccessActionProcessed {
 	id := readInt32(reader)
 	switch id {
@@ -21780,6 +23910,10 @@ func (c FfiConverterTokenTransactionType) Lift(rb RustBufferI) TokenTransactionT
 func (c FfiConverterTokenTransactionType) Lower(value TokenTransactionType) C.RustBuffer {
 	return LowerIntoRustBuffer[TokenTransactionType](c, value)
 }
+
+func (c FfiConverterTokenTransactionType) LowerExternal(value TokenTransactionType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TokenTransactionType](c, value))
+}
 func (FfiConverterTokenTransactionType) Read(reader io.Reader) TokenTransactionType {
 	id := readInt32(reader)
 	return TokenTransactionType(id)
@@ -21825,6 +23959,10 @@ func (c FfiConverterUpdateDepositPayload) Lift(rb RustBufferI) UpdateDepositPayl
 
 func (c FfiConverterUpdateDepositPayload) Lower(value UpdateDepositPayload) C.RustBuffer {
 	return LowerIntoRustBuffer[UpdateDepositPayload](c, value)
+}
+
+func (c FfiConverterUpdateDepositPayload) LowerExternal(value UpdateDepositPayload) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[UpdateDepositPayload](c, value))
 }
 func (FfiConverterUpdateDepositPayload) Read(reader io.Reader) UpdateDepositPayload {
 	id := readInt32(reader)
@@ -22046,6 +24184,10 @@ func (c FfiConverterOptionalUint32) Lower(value *uint32) C.RustBuffer {
 	return LowerIntoRustBuffer[*uint32](c, value)
 }
 
+func (c FfiConverterOptionalUint32) LowerExternal(value *uint32) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*uint32](c, value))
+}
+
 func (_ FfiConverterOptionalUint32) Write(writer io.Writer, value *uint32) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22081,6 +24223,10 @@ func (_ FfiConverterOptionalUint64) Read(reader io.Reader) *uint64 {
 
 func (c FfiConverterOptionalUint64) Lower(value *uint64) C.RustBuffer {
 	return LowerIntoRustBuffer[*uint64](c, value)
+}
+
+func (c FfiConverterOptionalUint64) LowerExternal(value *uint64) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*uint64](c, value))
 }
 
 func (_ FfiConverterOptionalUint64) Write(writer io.Writer, value *uint64) {
@@ -22120,6 +24266,10 @@ func (c FfiConverterOptionalBool) Lower(value *bool) C.RustBuffer {
 	return LowerIntoRustBuffer[*bool](c, value)
 }
 
+func (c FfiConverterOptionalBool) LowerExternal(value *bool) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*bool](c, value))
+}
+
 func (_ FfiConverterOptionalBool) Write(writer io.Writer, value *bool) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22155,6 +24305,10 @@ func (_ FfiConverterOptionalString) Read(reader io.Reader) *string {
 
 func (c FfiConverterOptionalString) Lower(value *string) C.RustBuffer {
 	return LowerIntoRustBuffer[*string](c, value)
+}
+
+func (c FfiConverterOptionalString) LowerExternal(value *string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*string](c, value))
 }
 
 func (_ FfiConverterOptionalString) Write(writer io.Writer, value *string) {
@@ -22194,6 +24348,10 @@ func (c FfiConverterOptionalBytes) Lower(value *[]byte) C.RustBuffer {
 	return LowerIntoRustBuffer[*[]byte](c, value)
 }
 
+func (c FfiConverterOptionalBytes) LowerExternal(value *[]byte) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]byte](c, value))
+}
+
 func (_ FfiConverterOptionalBytes) Write(writer io.Writer, value *[]byte) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22229,6 +24387,10 @@ func (_ FfiConverterOptionalConversionDetails) Read(reader io.Reader) *Conversio
 
 func (c FfiConverterOptionalConversionDetails) Lower(value *ConversionDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[*ConversionDetails](c, value)
+}
+
+func (c FfiConverterOptionalConversionDetails) LowerExternal(value *ConversionDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ConversionDetails](c, value))
 }
 
 func (_ FfiConverterOptionalConversionDetails) Write(writer io.Writer, value *ConversionDetails) {
@@ -22268,6 +24430,10 @@ func (c FfiConverterOptionalConversionEstimate) Lower(value *ConversionEstimate)
 	return LowerIntoRustBuffer[*ConversionEstimate](c, value)
 }
 
+func (c FfiConverterOptionalConversionEstimate) LowerExternal(value *ConversionEstimate) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ConversionEstimate](c, value))
+}
+
 func (_ FfiConverterOptionalConversionEstimate) Write(writer io.Writer, value *ConversionEstimate) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22303,6 +24469,10 @@ func (_ FfiConverterOptionalConversionInfo) Read(reader io.Reader) *ConversionIn
 
 func (c FfiConverterOptionalConversionInfo) Lower(value *ConversionInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[*ConversionInfo](c, value)
+}
+
+func (c FfiConverterOptionalConversionInfo) LowerExternal(value *ConversionInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ConversionInfo](c, value))
 }
 
 func (_ FfiConverterOptionalConversionInfo) Write(writer io.Writer, value *ConversionInfo) {
@@ -22342,6 +24512,10 @@ func (c FfiConverterOptionalConversionOptions) Lower(value *ConversionOptions) C
 	return LowerIntoRustBuffer[*ConversionOptions](c, value)
 }
 
+func (c FfiConverterOptionalConversionOptions) LowerExternal(value *ConversionOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ConversionOptions](c, value))
+}
+
 func (_ FfiConverterOptionalConversionOptions) Write(writer io.Writer, value *ConversionOptions) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22377,6 +24551,10 @@ func (_ FfiConverterOptionalCredentials) Read(reader io.Reader) *Credentials {
 
 func (c FfiConverterOptionalCredentials) Lower(value *Credentials) C.RustBuffer {
 	return LowerIntoRustBuffer[*Credentials](c, value)
+}
+
+func (c FfiConverterOptionalCredentials) LowerExternal(value *Credentials) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*Credentials](c, value))
 }
 
 func (_ FfiConverterOptionalCredentials) Write(writer io.Writer, value *Credentials) {
@@ -22416,6 +24594,10 @@ func (c FfiConverterOptionalKeySetConfig) Lower(value *KeySetConfig) C.RustBuffe
 	return LowerIntoRustBuffer[*KeySetConfig](c, value)
 }
 
+func (c FfiConverterOptionalKeySetConfig) LowerExternal(value *KeySetConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*KeySetConfig](c, value))
+}
+
 func (_ FfiConverterOptionalKeySetConfig) Write(writer io.Writer, value *KeySetConfig) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22451,6 +24633,10 @@ func (_ FfiConverterOptionalLightningAddressInfo) Read(reader io.Reader) *Lightn
 
 func (c FfiConverterOptionalLightningAddressInfo) Lower(value *LightningAddressInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[*LightningAddressInfo](c, value)
+}
+
+func (c FfiConverterOptionalLightningAddressInfo) LowerExternal(value *LightningAddressInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*LightningAddressInfo](c, value))
 }
 
 func (_ FfiConverterOptionalLightningAddressInfo) Write(writer io.Writer, value *LightningAddressInfo) {
@@ -22490,6 +24676,10 @@ func (c FfiConverterOptionalLnurlPayInfo) Lower(value *LnurlPayInfo) C.RustBuffe
 	return LowerIntoRustBuffer[*LnurlPayInfo](c, value)
 }
 
+func (c FfiConverterOptionalLnurlPayInfo) LowerExternal(value *LnurlPayInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*LnurlPayInfo](c, value))
+}
+
 func (_ FfiConverterOptionalLnurlPayInfo) Write(writer io.Writer, value *LnurlPayInfo) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22525,6 +24715,10 @@ func (_ FfiConverterOptionalLnurlReceiveMetadata) Read(reader io.Reader) *LnurlR
 
 func (c FfiConverterOptionalLnurlReceiveMetadata) Lower(value *LnurlReceiveMetadata) C.RustBuffer {
 	return LowerIntoRustBuffer[*LnurlReceiveMetadata](c, value)
+}
+
+func (c FfiConverterOptionalLnurlReceiveMetadata) LowerExternal(value *LnurlReceiveMetadata) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*LnurlReceiveMetadata](c, value))
 }
 
 func (_ FfiConverterOptionalLnurlReceiveMetadata) Write(writer io.Writer, value *LnurlReceiveMetadata) {
@@ -22564,6 +24758,10 @@ func (c FfiConverterOptionalLnurlWithdrawInfo) Lower(value *LnurlWithdrawInfo) C
 	return LowerIntoRustBuffer[*LnurlWithdrawInfo](c, value)
 }
 
+func (c FfiConverterOptionalLnurlWithdrawInfo) LowerExternal(value *LnurlWithdrawInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*LnurlWithdrawInfo](c, value))
+}
+
 func (_ FfiConverterOptionalLnurlWithdrawInfo) Write(writer io.Writer, value *LnurlWithdrawInfo) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22599,6 +24797,10 @@ func (_ FfiConverterOptionalOutgoingChange) Read(reader io.Reader) *OutgoingChan
 
 func (c FfiConverterOptionalOutgoingChange) Lower(value *OutgoingChange) C.RustBuffer {
 	return LowerIntoRustBuffer[*OutgoingChange](c, value)
+}
+
+func (c FfiConverterOptionalOutgoingChange) LowerExternal(value *OutgoingChange) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*OutgoingChange](c, value))
 }
 
 func (_ FfiConverterOptionalOutgoingChange) Write(writer io.Writer, value *OutgoingChange) {
@@ -22638,6 +24840,10 @@ func (c FfiConverterOptionalPayment) Lower(value *Payment) C.RustBuffer {
 	return LowerIntoRustBuffer[*Payment](c, value)
 }
 
+func (c FfiConverterOptionalPayment) LowerExternal(value *Payment) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*Payment](c, value))
+}
+
 func (_ FfiConverterOptionalPayment) Write(writer io.Writer, value *Payment) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22673,6 +24879,10 @@ func (_ FfiConverterOptionalRecord) Read(reader io.Reader) *Record {
 
 func (c FfiConverterOptionalRecord) Lower(value *Record) C.RustBuffer {
 	return LowerIntoRustBuffer[*Record](c, value)
+}
+
+func (c FfiConverterOptionalRecord) LowerExternal(value *Record) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*Record](c, value))
 }
 
 func (_ FfiConverterOptionalRecord) Write(writer io.Writer, value *Record) {
@@ -22712,6 +24922,10 @@ func (c FfiConverterOptionalSparkHtlcDetails) Lower(value *SparkHtlcDetails) C.R
 	return LowerIntoRustBuffer[*SparkHtlcDetails](c, value)
 }
 
+func (c FfiConverterOptionalSparkHtlcDetails) LowerExternal(value *SparkHtlcDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SparkHtlcDetails](c, value))
+}
+
 func (_ FfiConverterOptionalSparkHtlcDetails) Write(writer io.Writer, value *SparkHtlcDetails) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22747,6 +24961,10 @@ func (_ FfiConverterOptionalSparkHtlcOptions) Read(reader io.Reader) *SparkHtlcO
 
 func (c FfiConverterOptionalSparkHtlcOptions) Lower(value *SparkHtlcOptions) C.RustBuffer {
 	return LowerIntoRustBuffer[*SparkHtlcOptions](c, value)
+}
+
+func (c FfiConverterOptionalSparkHtlcOptions) LowerExternal(value *SparkHtlcOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SparkHtlcOptions](c, value))
 }
 
 func (_ FfiConverterOptionalSparkHtlcOptions) Write(writer io.Writer, value *SparkHtlcOptions) {
@@ -22786,6 +25004,10 @@ func (c FfiConverterOptionalSparkInvoicePaymentDetails) Lower(value *SparkInvoic
 	return LowerIntoRustBuffer[*SparkInvoicePaymentDetails](c, value)
 }
 
+func (c FfiConverterOptionalSparkInvoicePaymentDetails) LowerExternal(value *SparkInvoicePaymentDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SparkInvoicePaymentDetails](c, value))
+}
+
 func (_ FfiConverterOptionalSparkInvoicePaymentDetails) Write(writer io.Writer, value *SparkInvoicePaymentDetails) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22821,6 +25043,10 @@ func (_ FfiConverterOptionalStableBalanceConfig) Read(reader io.Reader) *StableB
 
 func (c FfiConverterOptionalStableBalanceConfig) Lower(value *StableBalanceConfig) C.RustBuffer {
 	return LowerIntoRustBuffer[*StableBalanceConfig](c, value)
+}
+
+func (c FfiConverterOptionalStableBalanceConfig) LowerExternal(value *StableBalanceConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*StableBalanceConfig](c, value))
 }
 
 func (_ FfiConverterOptionalStableBalanceConfig) Write(writer io.Writer, value *StableBalanceConfig) {
@@ -22860,6 +25086,10 @@ func (c FfiConverterOptionalSymbol) Lower(value *Symbol) C.RustBuffer {
 	return LowerIntoRustBuffer[*Symbol](c, value)
 }
 
+func (c FfiConverterOptionalSymbol) LowerExternal(value *Symbol) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*Symbol](c, value))
+}
+
 func (_ FfiConverterOptionalSymbol) Write(writer io.Writer, value *Symbol) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22895,6 +25125,10 @@ func (_ FfiConverterOptionalTokenMetadata) Read(reader io.Reader) *TokenMetadata
 
 func (c FfiConverterOptionalTokenMetadata) Lower(value *TokenMetadata) C.RustBuffer {
 	return LowerIntoRustBuffer[*TokenMetadata](c, value)
+}
+
+func (c FfiConverterOptionalTokenMetadata) LowerExternal(value *TokenMetadata) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*TokenMetadata](c, value))
 }
 
 func (_ FfiConverterOptionalTokenMetadata) Write(writer io.Writer, value *TokenMetadata) {
@@ -22934,6 +25168,10 @@ func (c FfiConverterOptionalAmount) Lower(value *Amount) C.RustBuffer {
 	return LowerIntoRustBuffer[*Amount](c, value)
 }
 
+func (c FfiConverterOptionalAmount) LowerExternal(value *Amount) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*Amount](c, value))
+}
+
 func (_ FfiConverterOptionalAmount) Write(writer io.Writer, value *Amount) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -22969,6 +25207,10 @@ func (_ FfiConverterOptionalAssetFilter) Read(reader io.Reader) *AssetFilter {
 
 func (c FfiConverterOptionalAssetFilter) Lower(value *AssetFilter) C.RustBuffer {
 	return LowerIntoRustBuffer[*AssetFilter](c, value)
+}
+
+func (c FfiConverterOptionalAssetFilter) LowerExternal(value *AssetFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*AssetFilter](c, value))
 }
 
 func (_ FfiConverterOptionalAssetFilter) Write(writer io.Writer, value *AssetFilter) {
@@ -23008,6 +25250,10 @@ func (c FfiConverterOptionalConversionPurpose) Lower(value *ConversionPurpose) C
 	return LowerIntoRustBuffer[*ConversionPurpose](c, value)
 }
 
+func (c FfiConverterOptionalConversionPurpose) LowerExternal(value *ConversionPurpose) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*ConversionPurpose](c, value))
+}
+
 func (_ FfiConverterOptionalConversionPurpose) Write(writer io.Writer, value *ConversionPurpose) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23043,6 +25289,10 @@ func (_ FfiConverterOptionalDepositClaimError) Read(reader io.Reader) *DepositCl
 
 func (c FfiConverterOptionalDepositClaimError) Lower(value *DepositClaimError) C.RustBuffer {
 	return LowerIntoRustBuffer[*DepositClaimError](c, value)
+}
+
+func (c FfiConverterOptionalDepositClaimError) LowerExternal(value *DepositClaimError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*DepositClaimError](c, value))
 }
 
 func (_ FfiConverterOptionalDepositClaimError) Write(writer io.Writer, value *DepositClaimError) {
@@ -23082,6 +25332,10 @@ func (c FfiConverterOptionalFee) Lower(value *Fee) C.RustBuffer {
 	return LowerIntoRustBuffer[*Fee](c, value)
 }
 
+func (c FfiConverterOptionalFee) LowerExternal(value *Fee) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*Fee](c, value))
+}
+
 func (_ FfiConverterOptionalFee) Write(writer io.Writer, value *Fee) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23117,6 +25371,10 @@ func (_ FfiConverterOptionalFeePolicy) Read(reader io.Reader) *FeePolicy {
 
 func (c FfiConverterOptionalFeePolicy) Lower(value *FeePolicy) C.RustBuffer {
 	return LowerIntoRustBuffer[*FeePolicy](c, value)
+}
+
+func (c FfiConverterOptionalFeePolicy) LowerExternal(value *FeePolicy) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*FeePolicy](c, value))
 }
 
 func (_ FfiConverterOptionalFeePolicy) Write(writer io.Writer, value *FeePolicy) {
@@ -23156,6 +25414,10 @@ func (c FfiConverterOptionalMaxFee) Lower(value *MaxFee) C.RustBuffer {
 	return LowerIntoRustBuffer[*MaxFee](c, value)
 }
 
+func (c FfiConverterOptionalMaxFee) LowerExternal(value *MaxFee) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*MaxFee](c, value))
+}
+
 func (_ FfiConverterOptionalMaxFee) Write(writer io.Writer, value *MaxFee) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23191,6 +25453,10 @@ func (_ FfiConverterOptionalPaymentDetails) Read(reader io.Reader) *PaymentDetai
 
 func (c FfiConverterOptionalPaymentDetails) Lower(value *PaymentDetails) C.RustBuffer {
 	return LowerIntoRustBuffer[*PaymentDetails](c, value)
+}
+
+func (c FfiConverterOptionalPaymentDetails) LowerExternal(value *PaymentDetails) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*PaymentDetails](c, value))
 }
 
 func (_ FfiConverterOptionalPaymentDetails) Write(writer io.Writer, value *PaymentDetails) {
@@ -23230,6 +25496,10 @@ func (c FfiConverterOptionalSendPaymentOptions) Lower(value *SendPaymentOptions)
 	return LowerIntoRustBuffer[*SendPaymentOptions](c, value)
 }
 
+func (c FfiConverterOptionalSendPaymentOptions) LowerExternal(value *SendPaymentOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SendPaymentOptions](c, value))
+}
+
 func (_ FfiConverterOptionalSendPaymentOptions) Write(writer io.Writer, value *SendPaymentOptions) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23265,6 +25535,10 @@ func (_ FfiConverterOptionalSuccessAction) Read(reader io.Reader) *SuccessAction
 
 func (c FfiConverterOptionalSuccessAction) Lower(value *SuccessAction) C.RustBuffer {
 	return LowerIntoRustBuffer[*SuccessAction](c, value)
+}
+
+func (c FfiConverterOptionalSuccessAction) LowerExternal(value *SuccessAction) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SuccessAction](c, value))
 }
 
 func (_ FfiConverterOptionalSuccessAction) Write(writer io.Writer, value *SuccessAction) {
@@ -23304,6 +25578,10 @@ func (c FfiConverterOptionalSuccessActionProcessed) Lower(value *SuccessActionPr
 	return LowerIntoRustBuffer[*SuccessActionProcessed](c, value)
 }
 
+func (c FfiConverterOptionalSuccessActionProcessed) LowerExternal(value *SuccessActionProcessed) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SuccessActionProcessed](c, value))
+}
+
 func (_ FfiConverterOptionalSuccessActionProcessed) Write(writer io.Writer, value *SuccessActionProcessed) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23339,6 +25617,10 @@ func (_ FfiConverterOptionalTokenTransactionType) Read(reader io.Reader) *TokenT
 
 func (c FfiConverterOptionalTokenTransactionType) Lower(value *TokenTransactionType) C.RustBuffer {
 	return LowerIntoRustBuffer[*TokenTransactionType](c, value)
+}
+
+func (c FfiConverterOptionalTokenTransactionType) LowerExternal(value *TokenTransactionType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*TokenTransactionType](c, value))
 }
 
 func (_ FfiConverterOptionalTokenTransactionType) Write(writer io.Writer, value *TokenTransactionType) {
@@ -23378,6 +25660,10 @@ func (c FfiConverterOptionalCallbackInterfaceLogger) Lower(value *Logger) C.Rust
 	return LowerIntoRustBuffer[*Logger](c, value)
 }
 
+func (c FfiConverterOptionalCallbackInterfaceLogger) LowerExternal(value *Logger) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*Logger](c, value))
+}
+
 func (_ FfiConverterOptionalCallbackInterfaceLogger) Write(writer io.Writer, value *Logger) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23413,6 +25699,10 @@ func (_ FfiConverterOptionalSequenceExternalInputParser) Read(reader io.Reader) 
 
 func (c FfiConverterOptionalSequenceExternalInputParser) Lower(value *[]ExternalInputParser) C.RustBuffer {
 	return LowerIntoRustBuffer[*[]ExternalInputParser](c, value)
+}
+
+func (c FfiConverterOptionalSequenceExternalInputParser) LowerExternal(value *[]ExternalInputParser) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]ExternalInputParser](c, value))
 }
 
 func (_ FfiConverterOptionalSequenceExternalInputParser) Write(writer io.Writer, value *[]ExternalInputParser) {
@@ -23452,6 +25742,10 @@ func (c FfiConverterOptionalSequencePaymentDetailsFilter) Lower(value *[]Payment
 	return LowerIntoRustBuffer[*[]PaymentDetailsFilter](c, value)
 }
 
+func (c FfiConverterOptionalSequencePaymentDetailsFilter) LowerExternal(value *[]PaymentDetailsFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]PaymentDetailsFilter](c, value))
+}
+
 func (_ FfiConverterOptionalSequencePaymentDetailsFilter) Write(writer io.Writer, value *[]PaymentDetailsFilter) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23487,6 +25781,10 @@ func (_ FfiConverterOptionalSequencePaymentStatus) Read(reader io.Reader) *[]Pay
 
 func (c FfiConverterOptionalSequencePaymentStatus) Lower(value *[]PaymentStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[*[]PaymentStatus](c, value)
+}
+
+func (c FfiConverterOptionalSequencePaymentStatus) LowerExternal(value *[]PaymentStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]PaymentStatus](c, value))
 }
 
 func (_ FfiConverterOptionalSequencePaymentStatus) Write(writer io.Writer, value *[]PaymentStatus) {
@@ -23526,6 +25824,10 @@ func (c FfiConverterOptionalSequencePaymentType) Lower(value *[]PaymentType) C.R
 	return LowerIntoRustBuffer[*[]PaymentType](c, value)
 }
 
+func (c FfiConverterOptionalSequencePaymentType) LowerExternal(value *[]PaymentType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]PaymentType](c, value))
+}
+
 func (_ FfiConverterOptionalSequencePaymentType) Write(writer io.Writer, value *[]PaymentType) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23561,6 +25863,10 @@ func (_ FfiConverterOptionalSequenceSparkHtlcStatus) Read(reader io.Reader) *[]S
 
 func (c FfiConverterOptionalSequenceSparkHtlcStatus) Lower(value *[]SparkHtlcStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[*[]SparkHtlcStatus](c, value)
+}
+
+func (c FfiConverterOptionalSequenceSparkHtlcStatus) LowerExternal(value *[]SparkHtlcStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]SparkHtlcStatus](c, value))
 }
 
 func (_ FfiConverterOptionalSequenceSparkHtlcStatus) Write(writer io.Writer, value *[]SparkHtlcStatus) {
@@ -23600,6 +25906,10 @@ func (c FfiConverterOptionalSequenceStoragePaymentDetailsFilter) Lower(value *[]
 	return LowerIntoRustBuffer[*[]StoragePaymentDetailsFilter](c, value)
 }
 
+func (c FfiConverterOptionalSequenceStoragePaymentDetailsFilter) LowerExternal(value *[]StoragePaymentDetailsFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[]StoragePaymentDetailsFilter](c, value))
+}
+
 func (_ FfiConverterOptionalSequenceStoragePaymentDetailsFilter) Write(writer io.Writer, value *[]StoragePaymentDetailsFilter) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23637,6 +25947,10 @@ func (c FfiConverterOptionalMapStringString) Lower(value *map[string]string) C.R
 	return LowerIntoRustBuffer[*map[string]string](c, value)
 }
 
+func (c FfiConverterOptionalMapStringString) LowerExternal(value *map[string]string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*map[string]string](c, value))
+}
+
 func (_ FfiConverterOptionalMapStringString) Write(writer io.Writer, value *map[string]string) {
 	if value == nil {
 		writeInt8(writer, 0)
@@ -23672,6 +25986,10 @@ func (_ FfiConverterOptionalTypeu128) Read(reader io.Reader) *u128 {
 
 func (c FfiConverterOptionalTypeu128) Lower(value *u128) C.RustBuffer {
 	return LowerIntoRustBuffer[*u128](c, value)
+}
+
+func (c FfiConverterOptionalTypeu128) LowerExternal(value *u128) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*u128](c, value))
 }
 
 func (_ FfiConverterOptionalTypeu128) Write(writer io.Writer, value *u128) {
@@ -23713,6 +26031,10 @@ func (c FfiConverterSequenceString) Read(reader io.Reader) []string {
 
 func (c FfiConverterSequenceString) Lower(value []string) C.RustBuffer {
 	return LowerIntoRustBuffer[[]string](c, value)
+}
+
+func (c FfiConverterSequenceString) LowerExternal(value []string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]string](c, value))
 }
 
 func (c FfiConverterSequenceString) Write(writer io.Writer, value []string) {
@@ -23758,6 +26080,10 @@ func (c FfiConverterSequenceBytes) Lower(value [][]byte) C.RustBuffer {
 	return LowerIntoRustBuffer[[][]byte](c, value)
 }
 
+func (c FfiConverterSequenceBytes) LowerExternal(value [][]byte) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[][]byte](c, value))
+}
+
 func (c FfiConverterSequenceBytes) Write(writer io.Writer, value [][]byte) {
 	if len(value) > math.MaxInt32 {
 		panic("[][]byte is too large to fit into Int32")
@@ -23799,6 +26125,10 @@ func (c FfiConverterSequenceBip21Extra) Read(reader io.Reader) []Bip21Extra {
 
 func (c FfiConverterSequenceBip21Extra) Lower(value []Bip21Extra) C.RustBuffer {
 	return LowerIntoRustBuffer[[]Bip21Extra](c, value)
+}
+
+func (c FfiConverterSequenceBip21Extra) LowerExternal(value []Bip21Extra) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Bip21Extra](c, value))
 }
 
 func (c FfiConverterSequenceBip21Extra) Write(writer io.Writer, value []Bip21Extra) {
@@ -23844,6 +26174,10 @@ func (c FfiConverterSequenceBolt11RouteHint) Lower(value []Bolt11RouteHint) C.Ru
 	return LowerIntoRustBuffer[[]Bolt11RouteHint](c, value)
 }
 
+func (c FfiConverterSequenceBolt11RouteHint) LowerExternal(value []Bolt11RouteHint) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Bolt11RouteHint](c, value))
+}
+
 func (c FfiConverterSequenceBolt11RouteHint) Write(writer io.Writer, value []Bolt11RouteHint) {
 	if len(value) > math.MaxInt32 {
 		panic("[]Bolt11RouteHint is too large to fit into Int32")
@@ -23885,6 +26219,10 @@ func (c FfiConverterSequenceBolt11RouteHintHop) Read(reader io.Reader) []Bolt11R
 
 func (c FfiConverterSequenceBolt11RouteHintHop) Lower(value []Bolt11RouteHintHop) C.RustBuffer {
 	return LowerIntoRustBuffer[[]Bolt11RouteHintHop](c, value)
+}
+
+func (c FfiConverterSequenceBolt11RouteHintHop) LowerExternal(value []Bolt11RouteHintHop) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Bolt11RouteHintHop](c, value))
 }
 
 func (c FfiConverterSequenceBolt11RouteHintHop) Write(writer io.Writer, value []Bolt11RouteHintHop) {
@@ -23930,6 +26268,10 @@ func (c FfiConverterSequenceBolt12OfferBlindedPath) Lower(value []Bolt12OfferBli
 	return LowerIntoRustBuffer[[]Bolt12OfferBlindedPath](c, value)
 }
 
+func (c FfiConverterSequenceBolt12OfferBlindedPath) LowerExternal(value []Bolt12OfferBlindedPath) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Bolt12OfferBlindedPath](c, value))
+}
+
 func (c FfiConverterSequenceBolt12OfferBlindedPath) Write(writer io.Writer, value []Bolt12OfferBlindedPath) {
 	if len(value) > math.MaxInt32 {
 		panic("[]Bolt12OfferBlindedPath is too large to fit into Int32")
@@ -23946,6 +26288,53 @@ type FfiDestroyerSequenceBolt12OfferBlindedPath struct{}
 func (FfiDestroyerSequenceBolt12OfferBlindedPath) Destroy(sequence []Bolt12OfferBlindedPath) {
 	for _, value := range sequence {
 		FfiDestroyerBolt12OfferBlindedPath{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceContact struct{}
+
+var FfiConverterSequenceContactINSTANCE = FfiConverterSequenceContact{}
+
+func (c FfiConverterSequenceContact) Lift(rb RustBufferI) []Contact {
+	return LiftFromRustBuffer[[]Contact](c, rb)
+}
+
+func (c FfiConverterSequenceContact) Read(reader io.Reader) []Contact {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]Contact, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterContactINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceContact) Lower(value []Contact) C.RustBuffer {
+	return LowerIntoRustBuffer[[]Contact](c, value)
+}
+
+func (c FfiConverterSequenceContact) LowerExternal(value []Contact) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Contact](c, value))
+}
+
+func (c FfiConverterSequenceContact) Write(writer io.Writer, value []Contact) {
+	if len(value) > math.MaxInt32 {
+		panic("[]Contact is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterContactINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceContact struct{}
+
+func (FfiDestroyerSequenceContact) Destroy(sequence []Contact) {
+	for _, value := range sequence {
+		FfiDestroyerContact{}.Destroy(value)
 	}
 }
 
@@ -23971,6 +26360,10 @@ func (c FfiConverterSequenceDepositInfo) Read(reader io.Reader) []DepositInfo {
 
 func (c FfiConverterSequenceDepositInfo) Lower(value []DepositInfo) C.RustBuffer {
 	return LowerIntoRustBuffer[[]DepositInfo](c, value)
+}
+
+func (c FfiConverterSequenceDepositInfo) LowerExternal(value []DepositInfo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]DepositInfo](c, value))
 }
 
 func (c FfiConverterSequenceDepositInfo) Write(writer io.Writer, value []DepositInfo) {
@@ -24016,6 +26409,10 @@ func (c FfiConverterSequenceExternalInputParser) Lower(value []ExternalInputPars
 	return LowerIntoRustBuffer[[]ExternalInputParser](c, value)
 }
 
+func (c FfiConverterSequenceExternalInputParser) LowerExternal(value []ExternalInputParser) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalInputParser](c, value))
+}
+
 func (c FfiConverterSequenceExternalInputParser) Write(writer io.Writer, value []ExternalInputParser) {
 	if len(value) > math.MaxInt32 {
 		panic("[]ExternalInputParser is too large to fit into Int32")
@@ -24057,6 +26454,10 @@ func (c FfiConverterSequenceExternalVerifiableSecretShare) Read(reader io.Reader
 
 func (c FfiConverterSequenceExternalVerifiableSecretShare) Lower(value []ExternalVerifiableSecretShare) C.RustBuffer {
 	return LowerIntoRustBuffer[[]ExternalVerifiableSecretShare](c, value)
+}
+
+func (c FfiConverterSequenceExternalVerifiableSecretShare) LowerExternal(value []ExternalVerifiableSecretShare) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalVerifiableSecretShare](c, value))
 }
 
 func (c FfiConverterSequenceExternalVerifiableSecretShare) Write(writer io.Writer, value []ExternalVerifiableSecretShare) {
@@ -24102,6 +26503,10 @@ func (c FfiConverterSequenceFiatCurrency) Lower(value []FiatCurrency) C.RustBuff
 	return LowerIntoRustBuffer[[]FiatCurrency](c, value)
 }
 
+func (c FfiConverterSequenceFiatCurrency) LowerExternal(value []FiatCurrency) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]FiatCurrency](c, value))
+}
+
 func (c FfiConverterSequenceFiatCurrency) Write(writer io.Writer, value []FiatCurrency) {
 	if len(value) > math.MaxInt32 {
 		panic("[]FiatCurrency is too large to fit into Int32")
@@ -24143,6 +26548,10 @@ func (c FfiConverterSequenceIdentifierCommitmentPair) Read(reader io.Reader) []I
 
 func (c FfiConverterSequenceIdentifierCommitmentPair) Lower(value []IdentifierCommitmentPair) C.RustBuffer {
 	return LowerIntoRustBuffer[[]IdentifierCommitmentPair](c, value)
+}
+
+func (c FfiConverterSequenceIdentifierCommitmentPair) LowerExternal(value []IdentifierCommitmentPair) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]IdentifierCommitmentPair](c, value))
 }
 
 func (c FfiConverterSequenceIdentifierCommitmentPair) Write(writer io.Writer, value []IdentifierCommitmentPair) {
@@ -24188,6 +26597,10 @@ func (c FfiConverterSequenceIdentifierPublicKeyPair) Lower(value []IdentifierPub
 	return LowerIntoRustBuffer[[]IdentifierPublicKeyPair](c, value)
 }
 
+func (c FfiConverterSequenceIdentifierPublicKeyPair) LowerExternal(value []IdentifierPublicKeyPair) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]IdentifierPublicKeyPair](c, value))
+}
+
 func (c FfiConverterSequenceIdentifierPublicKeyPair) Write(writer io.Writer, value []IdentifierPublicKeyPair) {
 	if len(value) > math.MaxInt32 {
 		panic("[]IdentifierPublicKeyPair is too large to fit into Int32")
@@ -24229,6 +26642,10 @@ func (c FfiConverterSequenceIdentifierSignaturePair) Read(reader io.Reader) []Id
 
 func (c FfiConverterSequenceIdentifierSignaturePair) Lower(value []IdentifierSignaturePair) C.RustBuffer {
 	return LowerIntoRustBuffer[[]IdentifierSignaturePair](c, value)
+}
+
+func (c FfiConverterSequenceIdentifierSignaturePair) LowerExternal(value []IdentifierSignaturePair) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]IdentifierSignaturePair](c, value))
 }
 
 func (c FfiConverterSequenceIdentifierSignaturePair) Write(writer io.Writer, value []IdentifierSignaturePair) {
@@ -24274,6 +26691,10 @@ func (c FfiConverterSequenceIncomingChange) Lower(value []IncomingChange) C.Rust
 	return LowerIntoRustBuffer[[]IncomingChange](c, value)
 }
 
+func (c FfiConverterSequenceIncomingChange) LowerExternal(value []IncomingChange) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]IncomingChange](c, value))
+}
+
 func (c FfiConverterSequenceIncomingChange) Write(writer io.Writer, value []IncomingChange) {
 	if len(value) > math.MaxInt32 {
 		panic("[]IncomingChange is too large to fit into Int32")
@@ -24315,6 +26736,10 @@ func (c FfiConverterSequenceLocaleOverrides) Read(reader io.Reader) []LocaleOver
 
 func (c FfiConverterSequenceLocaleOverrides) Lower(value []LocaleOverrides) C.RustBuffer {
 	return LowerIntoRustBuffer[[]LocaleOverrides](c, value)
+}
+
+func (c FfiConverterSequenceLocaleOverrides) LowerExternal(value []LocaleOverrides) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]LocaleOverrides](c, value))
 }
 
 func (c FfiConverterSequenceLocaleOverrides) Write(writer io.Writer, value []LocaleOverrides) {
@@ -24360,6 +26785,10 @@ func (c FfiConverterSequenceLocalizedName) Lower(value []LocalizedName) C.RustBu
 	return LowerIntoRustBuffer[[]LocalizedName](c, value)
 }
 
+func (c FfiConverterSequenceLocalizedName) LowerExternal(value []LocalizedName) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]LocalizedName](c, value))
+}
+
 func (c FfiConverterSequenceLocalizedName) Write(writer io.Writer, value []LocalizedName) {
 	if len(value) > math.MaxInt32 {
 		panic("[]LocalizedName is too large to fit into Int32")
@@ -24401,6 +26830,10 @@ func (c FfiConverterSequenceOutgoingChange) Read(reader io.Reader) []OutgoingCha
 
 func (c FfiConverterSequenceOutgoingChange) Lower(value []OutgoingChange) C.RustBuffer {
 	return LowerIntoRustBuffer[[]OutgoingChange](c, value)
+}
+
+func (c FfiConverterSequenceOutgoingChange) LowerExternal(value []OutgoingChange) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]OutgoingChange](c, value))
 }
 
 func (c FfiConverterSequenceOutgoingChange) Write(writer io.Writer, value []OutgoingChange) {
@@ -24446,6 +26879,10 @@ func (c FfiConverterSequencePayment) Lower(value []Payment) C.RustBuffer {
 	return LowerIntoRustBuffer[[]Payment](c, value)
 }
 
+func (c FfiConverterSequencePayment) LowerExternal(value []Payment) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Payment](c, value))
+}
+
 func (c FfiConverterSequencePayment) Write(writer io.Writer, value []Payment) {
 	if len(value) > math.MaxInt32 {
 		panic("[]Payment is too large to fit into Int32")
@@ -24487,6 +26924,10 @@ func (c FfiConverterSequenceProvisionalPayment) Read(reader io.Reader) []Provisi
 
 func (c FfiConverterSequenceProvisionalPayment) Lower(value []ProvisionalPayment) C.RustBuffer {
 	return LowerIntoRustBuffer[[]ProvisionalPayment](c, value)
+}
+
+func (c FfiConverterSequenceProvisionalPayment) LowerExternal(value []ProvisionalPayment) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ProvisionalPayment](c, value))
 }
 
 func (c FfiConverterSequenceProvisionalPayment) Write(writer io.Writer, value []ProvisionalPayment) {
@@ -24532,6 +26973,10 @@ func (c FfiConverterSequenceRate) Lower(value []Rate) C.RustBuffer {
 	return LowerIntoRustBuffer[[]Rate](c, value)
 }
 
+func (c FfiConverterSequenceRate) LowerExternal(value []Rate) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Rate](c, value))
+}
+
 func (c FfiConverterSequenceRate) Write(writer io.Writer, value []Rate) {
 	if len(value) > math.MaxInt32 {
 		panic("[]Rate is too large to fit into Int32")
@@ -24573,6 +27018,10 @@ func (c FfiConverterSequenceRecord) Read(reader io.Reader) []Record {
 
 func (c FfiConverterSequenceRecord) Lower(value []Record) C.RustBuffer {
 	return LowerIntoRustBuffer[[]Record](c, value)
+}
+
+func (c FfiConverterSequenceRecord) LowerExternal(value []Record) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Record](c, value))
 }
 
 func (c FfiConverterSequenceRecord) Write(writer io.Writer, value []Record) {
@@ -24618,6 +27067,10 @@ func (c FfiConverterSequenceSetLnurlMetadataItem) Lower(value []SetLnurlMetadata
 	return LowerIntoRustBuffer[[]SetLnurlMetadataItem](c, value)
 }
 
+func (c FfiConverterSequenceSetLnurlMetadataItem) LowerExternal(value []SetLnurlMetadataItem) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]SetLnurlMetadataItem](c, value))
+}
+
 func (c FfiConverterSequenceSetLnurlMetadataItem) Write(writer io.Writer, value []SetLnurlMetadataItem) {
 	if len(value) > math.MaxInt32 {
 		panic("[]SetLnurlMetadataItem is too large to fit into Int32")
@@ -24659,6 +27112,10 @@ func (c FfiConverterSequenceTokenMetadata) Read(reader io.Reader) []TokenMetadat
 
 func (c FfiConverterSequenceTokenMetadata) Lower(value []TokenMetadata) C.RustBuffer {
 	return LowerIntoRustBuffer[[]TokenMetadata](c, value)
+}
+
+func (c FfiConverterSequenceTokenMetadata) LowerExternal(value []TokenMetadata) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]TokenMetadata](c, value))
 }
 
 func (c FfiConverterSequenceTokenMetadata) Write(writer io.Writer, value []TokenMetadata) {
@@ -24704,6 +27161,10 @@ func (c FfiConverterSequenceUtxo) Lower(value []Utxo) C.RustBuffer {
 	return LowerIntoRustBuffer[[]Utxo](c, value)
 }
 
+func (c FfiConverterSequenceUtxo) LowerExternal(value []Utxo) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]Utxo](c, value))
+}
+
 func (c FfiConverterSequenceUtxo) Write(writer io.Writer, value []Utxo) {
 	if len(value) > math.MaxInt32 {
 		panic("[]Utxo is too large to fit into Int32")
@@ -24745,6 +27206,10 @@ func (c FfiConverterSequenceInputType) Read(reader io.Reader) []InputType {
 
 func (c FfiConverterSequenceInputType) Lower(value []InputType) C.RustBuffer {
 	return LowerIntoRustBuffer[[]InputType](c, value)
+}
+
+func (c FfiConverterSequenceInputType) LowerExternal(value []InputType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]InputType](c, value))
 }
 
 func (c FfiConverterSequenceInputType) Write(writer io.Writer, value []InputType) {
@@ -24790,6 +27255,10 @@ func (c FfiConverterSequencePaymentDetailsFilter) Lower(value []PaymentDetailsFi
 	return LowerIntoRustBuffer[[]PaymentDetailsFilter](c, value)
 }
 
+func (c FfiConverterSequencePaymentDetailsFilter) LowerExternal(value []PaymentDetailsFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]PaymentDetailsFilter](c, value))
+}
+
 func (c FfiConverterSequencePaymentDetailsFilter) Write(writer io.Writer, value []PaymentDetailsFilter) {
 	if len(value) > math.MaxInt32 {
 		panic("[]PaymentDetailsFilter is too large to fit into Int32")
@@ -24831,6 +27300,10 @@ func (c FfiConverterSequencePaymentStatus) Read(reader io.Reader) []PaymentStatu
 
 func (c FfiConverterSequencePaymentStatus) Lower(value []PaymentStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[[]PaymentStatus](c, value)
+}
+
+func (c FfiConverterSequencePaymentStatus) LowerExternal(value []PaymentStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]PaymentStatus](c, value))
 }
 
 func (c FfiConverterSequencePaymentStatus) Write(writer io.Writer, value []PaymentStatus) {
@@ -24876,6 +27349,10 @@ func (c FfiConverterSequencePaymentType) Lower(value []PaymentType) C.RustBuffer
 	return LowerIntoRustBuffer[[]PaymentType](c, value)
 }
 
+func (c FfiConverterSequencePaymentType) LowerExternal(value []PaymentType) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]PaymentType](c, value))
+}
+
 func (c FfiConverterSequencePaymentType) Write(writer io.Writer, value []PaymentType) {
 	if len(value) > math.MaxInt32 {
 		panic("[]PaymentType is too large to fit into Int32")
@@ -24917,6 +27394,10 @@ func (c FfiConverterSequenceSparkHtlcStatus) Read(reader io.Reader) []SparkHtlcS
 
 func (c FfiConverterSequenceSparkHtlcStatus) Lower(value []SparkHtlcStatus) C.RustBuffer {
 	return LowerIntoRustBuffer[[]SparkHtlcStatus](c, value)
+}
+
+func (c FfiConverterSequenceSparkHtlcStatus) LowerExternal(value []SparkHtlcStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]SparkHtlcStatus](c, value))
 }
 
 func (c FfiConverterSequenceSparkHtlcStatus) Write(writer io.Writer, value []SparkHtlcStatus) {
@@ -24962,6 +27443,10 @@ func (c FfiConverterSequenceStoragePaymentDetailsFilter) Lower(value []StoragePa
 	return LowerIntoRustBuffer[[]StoragePaymentDetailsFilter](c, value)
 }
 
+func (c FfiConverterSequenceStoragePaymentDetailsFilter) LowerExternal(value []StoragePaymentDetailsFilter) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]StoragePaymentDetailsFilter](c, value))
+}
+
 func (c FfiConverterSequenceStoragePaymentDetailsFilter) Write(writer io.Writer, value []StoragePaymentDetailsFilter) {
 	if len(value) > math.MaxInt32 {
 		panic("[]StoragePaymentDetailsFilter is too large to fit into Int32")
@@ -25002,6 +27487,10 @@ func (_ FfiConverterMapStringString) Read(reader io.Reader) map[string]string {
 
 func (c FfiConverterMapStringString) Lower(value map[string]string) C.RustBuffer {
 	return LowerIntoRustBuffer[map[string]string](c, value)
+}
+
+func (c FfiConverterMapStringString) LowerExternal(value map[string]string) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[map[string]string](c, value))
 }
 
 func (_ FfiConverterMapStringString) Write(writer io.Writer, mapValue map[string]string) {
@@ -25048,6 +27537,10 @@ func (c FfiConverterMapStringTokenBalance) Lower(value map[string]TokenBalance) 
 	return LowerIntoRustBuffer[map[string]TokenBalance](c, value)
 }
 
+func (c FfiConverterMapStringTokenBalance) LowerExternal(value map[string]TokenBalance) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[map[string]TokenBalance](c, value))
+}
+
 func (_ FfiConverterMapStringTokenBalance) Write(writer io.Writer, mapValue map[string]TokenBalance) {
 	if len(mapValue) > math.MaxInt32 {
 		panic("map[string]TokenBalance is too large to fit into Int32")
@@ -25090,6 +27583,10 @@ func (_ FfiConverterMapStringSequencePayment) Read(reader io.Reader) map[string]
 
 func (c FfiConverterMapStringSequencePayment) Lower(value map[string][]Payment) C.RustBuffer {
 	return LowerIntoRustBuffer[map[string][]Payment](c, value)
+}
+
+func (c FfiConverterMapStringSequencePayment) LowerExternal(value map[string][]Payment) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[map[string][]Payment](c, value))
 }
 
 func (_ FfiConverterMapStringSequencePayment) Write(writer io.Writer, mapValue map[string][]Payment) {
@@ -25253,6 +27750,10 @@ func Connect(request ConnectRequest) (*BreezSdk, error) {
 		},
 	)
 
+	if err == nil {
+		return res, nil
+	}
+
 	return res, err
 }
 
@@ -25290,6 +27791,10 @@ func ConnectWithSigner(request ConnectWithSignerRequest) (*BreezSdk, error) {
 			C.ffi_breez_sdk_spark_rust_future_free_pointer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
@@ -25377,6 +27882,10 @@ func GetSparkStatus() (SparkStatus, error) {
 			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
+
+	if err == nil {
+		return res, nil
+	}
 
 	return res, err
 }
