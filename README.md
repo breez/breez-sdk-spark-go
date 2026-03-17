@@ -1,10 +1,10 @@
-# Breez SDK - Nodeless (*Spark Implementation*)
+# Breez SDK - Spark
 
-## **What Is the Breez SDK?**
+## **What is the Breez SDK?**
 
 The Breez SDK provides developers with an end-to-end solution for integrating self-custodial Lightning into their apps and services. It eliminates the need for third parties, simplifies the complexities of Bitcoin and Lightning, and enables seamless onboarding for billions of users to the future of value transfer.
 
-## **What Is the Breez SDK - Nodeless *(Spark Implementation)*?**
+## **What is the Breez SDK - Spark?**
 
 It’s a nodeless integration that offers a self-custodial, end-to-end solution for integrating Lightning payments, utilizing Spark with on-chain interoperability and third-party fiat on-ramps.
 
@@ -18,7 +18,7 @@ $ go get github.com/breez/breez-sdk-spark-go
 
 ### Supported platforms
 
-This package embeds the Breez SDK - Nodeless *(Spark Implementation)* runtime compiled as shared library objects, and uses [`cgo`](https://golang.org/cmd/cgo/) to consume it. A set of precompiled shared library objects are provided. Thus this package works (and is tested) on the following platforms:
+This package embeds the Breez SDK - Spark runtime compiled as shared library objects, and uses [`cgo`](https://golang.org/cmd/cgo/) to consume it. A set of precompiled shared library objects are provided. Thus this package works (and is tested) on the following platforms:
 
 <table>
   <thead>
@@ -95,7 +95,7 @@ This package embeds the Breez SDK - Nodeless *(Spark Implementation)* runtime co
 
 ## Usage
 
-Head over to the Breez SDK - Nodeless *(Spark Implementation)* [documentation](https://sdk-doc-spark.breez.technology/) to start implementing Lightning in your app.
+Head over to the Breez SDK - Spark [documentation](https://sdk-doc-spark.breez.technology/) to start implementing Lightning in your app.
 
 ```go
 package main
@@ -224,6 +224,6 @@ Have a question for the team? Join us on [Telegram](https://t.me/breezsdk) or em
 
 ## Information for Maintainers and Contributors
 
-This repository is used to publish a Go package providing Go bindings to the Breez SDK - Nodeless *(Spark Implementation)*'s [underlying Rust implementation](https://github.com/breez/spark-sdk). The Go bindings are generated using [UniFFi Bindgen Go](https://github.com/NordSecurity/uniffi-bindgen-go).
+This repository is used to publish a Go package providing Go bindings to the Breez SDK - Spark's [underlying Rust implementation](https://github.com/breez/spark-sdk). The Go bindings are generated using [UniFFi Bindgen Go](https://github.com/NordSecurity/uniffi-bindgen-go).
 
-Any changes to Breez SDK - Nodeless *(Spark Implementation)*, the Go bindings, and the configuration of this Go package must be made via the [spark-sdk](https://github.com/breez/spark-sdk) repository.
+Any changes to Breez SDK - Spark, the Go bindings, and the configuration of this Go package must be made via the [spark-sdk](https://github.com/breez/spark-sdk) repository.
