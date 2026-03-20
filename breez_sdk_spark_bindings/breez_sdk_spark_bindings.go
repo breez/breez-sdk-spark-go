@@ -28,29 +28,7 @@ type RustBufferI interface {
 	Capacity() uint64
 }
 
-// C.RustBuffer fields exposed as an interface so they can be accessed in different Go packages.
-// See https://github.com/golang/go/issues/13467
-type ExternalCRustBuffer interface {
-	Data() unsafe.Pointer
-	Len() uint64
-	Capacity() uint64
-}
-
-func RustBufferFromC(b C.RustBuffer) ExternalCRustBuffer {
-	return GoRustBuffer{
-		inner: b,
-	}
-}
-
-func CFromRustBuffer(b ExternalCRustBuffer) C.RustBuffer {
-	return C.RustBuffer{
-		capacity: C.uint64_t(b.Capacity()),
-		len:      C.uint64_t(b.Len()),
-		data:     (*C.uchar)(b.Data()),
-	}
-}
-
-func RustBufferFromExternal(b ExternalCRustBuffer) GoRustBuffer {
+func RustBufferFromExternal(b RustBufferI) GoRustBuffer {
 	return GoRustBuffer{
 		inner: C.RustBuffer{
 			capacity: C.uint64_t(b.Capacity()),
@@ -357,7 +335,7 @@ func init() {
 
 func uniffiCheckChecksums() {
 	// Get the bindings contract version from our ComponentInterface
-	bindingsContractVersion := 29
+	bindingsContractVersion := 26
 	// Get the scaffolding contract version by calling the into the dylib
 	scaffoldingContractVersion := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint32_t {
 		return C.ffi_breez_sdk_spark_bindings_uniffi_contract_version()
@@ -397,10 +375,6 @@ func (FfiConverterString) Read(reader io.Reader) string {
 
 func (FfiConverterString) Lower(value string) C.RustBuffer {
 	return stringToRustBuffer(value)
-}
-
-func (c FfiConverterString) LowerExternal(value string) ExternalCRustBuffer {
-	return RustBufferFromC(stringToRustBuffer(value))
 }
 
 func (FfiConverterString) Write(writer io.Writer, value string) {
