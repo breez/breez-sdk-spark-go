@@ -20650,14 +20650,19 @@ func (e BuyBitcoinRequestMoonpay) Destroy() {
 }
 
 // `CashApp`: Pay via the Lightning Network.
-// Generates a bolt11 invoice and returns a `cash.app` deep link.
-// Only available on mainnet.
+// Generates a bolt11 invoice for the given amount and returns a
+// `cash.app` deep link. Only available on mainnet.
+//
+// The amount is required. With an amountless invoice, Cash App only
+// lets the payer fund from their existing Cash App BTC balance. With
+// a fixed-amount invoice, Cash App opens up funding via fiat balance
+// and debit card.
 type BuyBitcoinRequestCashApp struct {
-	AmountSats *uint64
+	AmountSats uint64
 }
 
 func (e BuyBitcoinRequestCashApp) Destroy() {
-	FfiDestroyerOptionalUint64{}.Destroy(e.AmountSats)
+	FfiDestroyerUint64{}.Destroy(e.AmountSats)
 }
 
 type FfiConverterBuyBitcoinRequest struct{}
@@ -20685,7 +20690,7 @@ func (FfiConverterBuyBitcoinRequest) Read(reader io.Reader) BuyBitcoinRequest {
 		}
 	case 2:
 		return BuyBitcoinRequestCashApp{
-			FfiConverterOptionalUint64INSTANCE.Read(reader),
+			FfiConverterUint64INSTANCE.Read(reader),
 		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterBuyBitcoinRequest.Read()", id))
@@ -20700,7 +20705,7 @@ func (FfiConverterBuyBitcoinRequest) Write(writer io.Writer, value BuyBitcoinReq
 		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.RedirectUrl)
 	case BuyBitcoinRequestCashApp:
 		writeInt32(writer, 2)
-		FfiConverterOptionalUint64INSTANCE.Write(writer, variant_value.AmountSats)
+		FfiConverterUint64INSTANCE.Write(writer, variant_value.AmountSats)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterBuyBitcoinRequest.Write", value))
