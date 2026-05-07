@@ -419,6 +419,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_default_mysql_storage_config()
+		})
+		if checksum != 14529 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_default_mysql_storage_config: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_default_postgres_storage_config()
 		})
 		if checksum != 3515 {
@@ -1225,6 +1234,15 @@ func uniffiCheckChecksums() {
 		if checksum != 51060 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_lnurl_client: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_backend()
+		})
+		if checksum != 49953 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_backend: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -8355,6 +8373,11 @@ type SdkBuilderInterface interface {
 	// - `config`: Key set configuration containing the key set type, address index flag, and optional account number.
 	WithKeySet(config KeySetConfig)
 	WithLnurlClient(lnurlClient RestClient)
+	// Sets `MySQL` as the backend for all stores (storage, tree store, and token store).
+	// The store instances will be created during `build()`.
+	// Arguments:
+	// - `config`: The `MySQL` storage configuration.
+	WithMysqlBackend(config MysqlStorageConfig)
 	// Sets the payment observer to be used by the SDK.
 	// Arguments:
 	// - `payment_observer`: The payment observer to be used.
@@ -8557,6 +8580,36 @@ func (_self *SdkBuilder) WithLnurlClient(lnurlClient RestClient) {
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_lnurl_client(
 			_pointer, FfiConverterRestClientINSTANCE.Lower(lnurlClient)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets `MySQL` as the backend for all stores (storage, tree store, and token store).
+// The store instances will be created during `build()`.
+// Arguments:
+// - `config`: The `MySQL` storage configuration.
+func (_self *SdkBuilder) WithMysqlBackend(config MysqlStorageConfig) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_mysql_backend(
+			_pointer, FfiConverterMysqlStorageConfigINSTANCE.Lower(config)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -16863,6 +16916,69 @@ func (c FfiConverterMintIssuerTokenRequest) Write(writer io.Writer, value MintIs
 type FfiDestroyerMintIssuerTokenRequest struct{}
 
 func (_ FfiDestroyerMintIssuerTokenRequest) Destroy(value MintIssuerTokenRequest) {
+	value.Destroy()
+}
+
+// Configuration for `MySQL` storage connection pool.
+type MysqlStorageConfig struct {
+	// `MySQL` connection string (URL form).
+	//
+	// Supported format:
+	// - URL: `mysql://user:password@host:3306/dbname?ssl-mode=required`
+	ConnectionString string
+	// Maximum number of connections in the pool.
+	MaxPoolSize uint32
+	// Timeout in seconds before recycling an idle connection.
+	// `None` means connections are not recycled based on idle time.
+	RecycleTimeoutSecs *uint64
+	// Custom CA certificate(s) in PEM format for server verification.
+	// Only used when the connection string requests TLS
+	// (`ssl-mode=verify_ca` or `ssl-mode=verify_identity`).
+	RootCaPem *string
+}
+
+func (r *MysqlStorageConfig) Destroy() {
+	FfiDestroyerString{}.Destroy(r.ConnectionString)
+	FfiDestroyerUint32{}.Destroy(r.MaxPoolSize)
+	FfiDestroyerOptionalUint64{}.Destroy(r.RecycleTimeoutSecs)
+	FfiDestroyerOptionalString{}.Destroy(r.RootCaPem)
+}
+
+type FfiConverterMysqlStorageConfig struct{}
+
+var FfiConverterMysqlStorageConfigINSTANCE = FfiConverterMysqlStorageConfig{}
+
+func (c FfiConverterMysqlStorageConfig) Lift(rb RustBufferI) MysqlStorageConfig {
+	return LiftFromRustBuffer[MysqlStorageConfig](c, rb)
+}
+
+func (c FfiConverterMysqlStorageConfig) Read(reader io.Reader) MysqlStorageConfig {
+	return MysqlStorageConfig{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterOptionalUint64INSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterMysqlStorageConfig) Lower(value MysqlStorageConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[MysqlStorageConfig](c, value)
+}
+
+func (c FfiConverterMysqlStorageConfig) LowerExternal(value MysqlStorageConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[MysqlStorageConfig](c, value))
+}
+
+func (c FfiConverterMysqlStorageConfig) Write(writer io.Writer, value MysqlStorageConfig) {
+	FfiConverterStringINSTANCE.Write(writer, value.ConnectionString)
+	FfiConverterUint32INSTANCE.Write(writer, value.MaxPoolSize)
+	FfiConverterOptionalUint64INSTANCE.Write(writer, value.RecycleTimeoutSecs)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.RootCaPem)
+}
+
+type FfiDestroyerMysqlStorageConfig struct{}
+
+func (_ FfiDestroyerMysqlStorageConfig) Destroy(value MysqlStorageConfig) {
 	value.Destroy()
 }
 
@@ -30626,6 +30742,15 @@ func DefaultExternalSigner(mnemonic string, passphrase *string, network Network,
 	} else {
 		return FfiConverterExternalSignerINSTANCE.Lift(_uniffiRV), nil
 	}
+}
+
+// Creates a `MysqlStorageConfig` with the given connection string and default pool settings.
+func DefaultMysqlStorageConfig(connectionString string) MysqlStorageConfig {
+	return FfiConverterMysqlStorageConfigINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_breez_sdk_spark_fn_func_default_mysql_storage_config(FfiConverterStringINSTANCE.Lower(connectionString), _uniffiStatus),
+		}
+	}))
 }
 
 // Creates a `PostgresStorageConfig` with the given connection string and default pool settings.
