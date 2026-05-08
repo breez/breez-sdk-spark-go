@@ -868,6 +868,34 @@ static void call_UniffiCallbackInterfaceRestClientMethod2(
 
 
 #endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_MANAGER_METHOD0
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_MANAGER_METHOD0
+typedef void (*UniffiCallbackInterfaceSessionManagerMethod0)(uint64_t uniffi_handle, RustBuffer service_identity_key, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceSessionManagerMethod0(
+				UniffiCallbackInterfaceSessionManagerMethod0 cb, uint64_t uniffi_handle, RustBuffer service_identity_key, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, service_identity_key, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_MANAGER_METHOD1
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_SESSION_MANAGER_METHOD1
+typedef void (*UniffiCallbackInterfaceSessionManagerMethod1)(uint64_t uniffi_handle, RustBuffer service_identity_key, RustBuffer session, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceSessionManagerMethod1(
+				UniffiCallbackInterfaceSessionManagerMethod1 cb, uint64_t uniffi_handle, RustBuffer service_identity_key, RustBuffer session, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, service_identity_key, session, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD0
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD0
 typedef void (*UniffiCallbackInterfaceStorageMethod0)(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
@@ -1337,6 +1365,15 @@ typedef struct UniffiVTableCallbackInterfaceRestClient {
 } UniffiVTableCallbackInterfaceRestClient;
 
 #endif
+#ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_SESSION_MANAGER
+#define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_SESSION_MANAGER
+typedef struct UniffiVTableCallbackInterfaceSessionManager {
+    UniffiCallbackInterfaceSessionManagerMethod0 getSession;
+    UniffiCallbackInterfaceSessionManagerMethod1 setSession;
+    UniffiCallbackInterfaceFree uniffiFree;
+} UniffiVTableCallbackInterfaceSessionManager;
+
+#endif
 #ifndef UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_STORAGE
 #define UNIFFI_FFIDEF_V_TABLE_CALLBACK_INTERFACE_STORAGE
 typedef struct UniffiVTableCallbackInterfaceStorage {
@@ -1641,6 +1678,16 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_update_contact(void* ptr, Rus
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_update_user_settings(void* ptr, RustBuffer request
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_CONNECTIONMANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_CONNECTIONMANAGER
+void* uniffi_breez_sdk_spark_fn_clone_connectionmanager(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_CONNECTIONMANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_CONNECTIONMANAGER
+void uniffi_breez_sdk_spark_fn_free_connectionmanager(void* ptr, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_EXTERNALSIGNER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_EXTERNALSIGNER
 void* uniffi_breez_sdk_spark_fn_clone_externalsigner(void* ptr, RustCallStatus *out_status
@@ -1781,6 +1828,16 @@ uint64_t uniffi_breez_sdk_spark_fn_method_fiatservice_fetch_fiat_currencies(void
 uint64_t uniffi_breez_sdk_spark_fn_method_fiatservice_fetch_fiat_rates(void* ptr
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_MYSQLCONNECTIONPOOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_MYSQLCONNECTIONPOOL
+void* uniffi_breez_sdk_spark_fn_clone_mysqlconnectionpool(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_MYSQLCONNECTIONPOOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_MYSQLCONNECTIONPOOL
+void uniffi_breez_sdk_spark_fn_free_mysqlconnectionpool(void* ptr, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_PASSKEY
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_PASSKEY
 void* uniffi_breez_sdk_spark_fn_clone_passkey(void* ptr, RustCallStatus *out_status
@@ -1861,6 +1918,16 @@ void uniffi_breez_sdk_spark_fn_init_callback_vtable_paymentobserver(UniffiVTable
 uint64_t uniffi_breez_sdk_spark_fn_method_paymentobserver_before_send(void* ptr, RustBuffer payments
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_POSTGRESCONNECTIONPOOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_POSTGRESCONNECTIONPOOL
+void* uniffi_breez_sdk_spark_fn_clone_postgresconnectionpool(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_POSTGRESCONNECTIONPOOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_POSTGRESCONNECTIONPOOL
+void uniffi_breez_sdk_spark_fn_free_postgresconnectionpool(void* ptr, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_RESTCLIENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_RESTCLIENT
 void* uniffi_breez_sdk_spark_fn_clone_restclient(void* ptr, RustCallStatus *out_status
@@ -1916,6 +1983,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_build(void* ptr
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_chain_service(void* ptr, void* chain_service
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_CONNECTION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_CONNECTION_MANAGER
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_connection_manager(void* ptr, void* connection_manager
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_DEFAULT_STORAGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_DEFAULT_STORAGE
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_default_storage(void* ptr, RustBuffer storage_dir
@@ -1941,6 +2013,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_lnurl_client(void* ptr
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_mysql_backend(void* ptr, RustBuffer config
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_MYSQL_CONNECTION_POOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_MYSQL_CONNECTION_POOL
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_mysql_connection_pool(void* ptr, void* pool
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_PAYMENT_OBSERVER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_PAYMENT_OBSERVER
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_payment_observer(void* ptr, void* payment_observer
@@ -1951,14 +2028,64 @@ uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_payment_observer(void*
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_backend(void* ptr, RustBuffer config
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_POSTGRES_CONNECTION_POOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_POSTGRES_CONNECTION_POOL
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_connection_pool(void* ptr, void* pool
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_rest_chain_service(void* ptr, RustBuffer url, RustBuffer api_type, RustBuffer credentials
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_SESSION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_SESSION_MANAGER
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_session_manager(void* ptr, void* session_manager
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_SSP_CONNECTION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_SSP_CONNECTION_MANAGER
+uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_ssp_connection_manager(void* ptr, void* manager
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_STORAGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SDKBUILDER_WITH_STORAGE
 uint64_t uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_storage(void* ptr, void* storage
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SESSIONMANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SESSIONMANAGER
+void* uniffi_breez_sdk_spark_fn_clone_sessionmanager(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_SESSIONMANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_SESSIONMANAGER
+void uniffi_breez_sdk_spark_fn_free_sessionmanager(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_INIT_CALLBACK_VTABLE_SESSIONMANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_INIT_CALLBACK_VTABLE_SESSIONMANAGER
+void uniffi_breez_sdk_spark_fn_init_callback_vtable_sessionmanager(UniffiVTableCallbackInterfaceSessionManager* vtable
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SESSIONMANAGER_GET_SESSION
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SESSIONMANAGER_GET_SESSION
+uint64_t uniffi_breez_sdk_spark_fn_method_sessionmanager_get_session(void* ptr, RustBuffer service_identity_key
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SESSIONMANAGER_SET_SESSION
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_SESSIONMANAGER_SET_SESSION
+uint64_t uniffi_breez_sdk_spark_fn_method_sessionmanager_set_session(void* ptr, RustBuffer service_identity_key, RustBuffer session
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SSPCONNECTIONMANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_SSPCONNECTIONMANAGER
+void* uniffi_breez_sdk_spark_fn_clone_sspconnectionmanager(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_SSPCONNECTIONMANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FREE_SSPCONNECTIONMANAGER
+void uniffi_breez_sdk_spark_fn_free_sspconnectionmanager(void* ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_CLONE_STORAGE
@@ -2176,6 +2303,16 @@ uint64_t uniffi_breez_sdk_spark_fn_func_connect(RustBuffer request
 uint64_t uniffi_breez_sdk_spark_fn_func_connect_with_signer(RustBuffer request
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_CREATE_MYSQL_CONNECTION_POOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_CREATE_MYSQL_CONNECTION_POOL
+void* uniffi_breez_sdk_spark_fn_func_create_mysql_connection_pool(RustBuffer config, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_CREATE_POSTGRES_CONNECTION_POOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_CREATE_POSTGRES_CONNECTION_POOL
+void* uniffi_breez_sdk_spark_fn_func_create_postgres_connection_pool(RustBuffer config, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_CONFIG
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_DEFAULT_CONFIG
 RustBuffer uniffi_breez_sdk_spark_fn_func_default_config(RustBuffer network, RustCallStatus *out_status
@@ -2205,6 +2342,21 @@ uint64_t uniffi_breez_sdk_spark_fn_func_get_spark_status(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_INIT_LOGGING
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_INIT_LOGGING
 void uniffi_breez_sdk_spark_fn_func_init_logging(RustBuffer log_dir, RustBuffer app_logger, RustBuffer log_filter, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_CONNECTION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_CONNECTION_MANAGER
+void* uniffi_breez_sdk_spark_fn_func_new_connection_manager(RustBuffer connections_per_operator, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_REST_CHAIN_SERVICE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_REST_CHAIN_SERVICE
+void* uniffi_breez_sdk_spark_fn_func_new_rest_chain_service(RustBuffer url, RustBuffer network, RustBuffer api_type, RustBuffer credentials, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_SSP_CONNECTION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_SSP_CONNECTION_MANAGER
+void* uniffi_breez_sdk_spark_fn_func_new_ssp_connection_manager(RustBuffer user_agent, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_FFI_BREEZ_SDK_SPARK_RUSTBUFFER_ALLOC
@@ -2499,6 +2651,18 @@ uint16_t uniffi_breez_sdk_spark_checksum_func_connect_with_signer(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_CREATE_MYSQL_CONNECTION_POOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_CREATE_MYSQL_CONNECTION_POOL
+uint16_t uniffi_breez_sdk_spark_checksum_func_create_mysql_connection_pool(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_CREATE_POSTGRES_CONNECTION_POOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_CREATE_POSTGRES_CONNECTION_POOL
+uint16_t uniffi_breez_sdk_spark_checksum_func_create_postgres_connection_pool(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_DEFAULT_CONFIG
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_DEFAULT_CONFIG
 uint16_t uniffi_breez_sdk_spark_checksum_func_default_config(void
@@ -2532,6 +2696,24 @@ uint16_t uniffi_breez_sdk_spark_checksum_func_get_spark_status(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_INIT_LOGGING
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_INIT_LOGGING
 uint16_t uniffi_breez_sdk_spark_checksum_func_init_logging(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_NEW_CONNECTION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_NEW_CONNECTION_MANAGER
+uint16_t uniffi_breez_sdk_spark_checksum_func_new_connection_manager(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_NEW_REST_CHAIN_SERVICE
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_NEW_REST_CHAIN_SERVICE
+uint16_t uniffi_breez_sdk_spark_checksum_func_new_rest_chain_service(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_NEW_SSP_CONNECTION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_NEW_SSP_CONNECTION_MANAGER
+uint16_t uniffi_breez_sdk_spark_checksum_func_new_ssp_connection_manager(void
     
 );
 #endif
@@ -3033,6 +3215,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_chain_service(vo
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_CONNECTION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_CONNECTION_MANAGER
+uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_connection_manager(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_DEFAULT_STORAGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_DEFAULT_STORAGE
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_default_storage(void
@@ -3063,6 +3251,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_backend(vo
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_MYSQL_CONNECTION_POOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_MYSQL_CONNECTION_POOL
+uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_connection_pool(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_PAYMENT_OBSERVER
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_PAYMENT_OBSERVER
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_payment_observer(void
@@ -3075,15 +3269,45 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_backend
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_POSTGRES_CONNECTION_POOL
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_POSTGRES_CONNECTION_POOL
+uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_connection_pool(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_REST_CHAIN_SERVICE
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_rest_chain_service(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_SESSION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_SESSION_MANAGER
+uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_session_manager(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_SSP_CONNECTION_MANAGER
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_SSP_CONNECTION_MANAGER
+uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_ssp_connection_manager(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_STORAGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SDKBUILDER_WITH_STORAGE
 uint16_t uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_storage(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SESSIONMANAGER_GET_SESSION
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SESSIONMANAGER_GET_SESSION
+uint16_t uniffi_breez_sdk_spark_checksum_method_sessionmanager_get_session(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SESSIONMANAGER_SET_SESSION
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_SESSIONMANAGER_SET_SESSION
+uint16_t uniffi_breez_sdk_spark_checksum_method_sessionmanager_set_session(void
     
 );
 #endif
@@ -3361,6 +3585,9 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceRestClientMethod1(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, RustBuffer body, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceRestClientMethod2(uint64_t uniffi_handle, RustBuffer url, RustBuffer headers, RustBuffer body, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceRestClientFree(uint64_t handle);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0(uint64_t uniffi_handle, RustBuffer service_identity_key, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1(uint64_t uniffi_handle, RustBuffer service_identity_key, RustBuffer session, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerFree(uint64_t handle);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod0(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1(uint64_t uniffi_handle, RustBuffer key, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2(uint64_t uniffi_handle, RustBuffer key, RustBuffer value, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);

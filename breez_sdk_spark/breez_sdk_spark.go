@@ -364,6 +364,7 @@ func init() {
 	FfiConverterPasskeyPrfProviderINSTANCE.register()
 	FfiConverterPaymentObserverINSTANCE.register()
 	FfiConverterRestClientINSTANCE.register()
+	FfiConverterSessionManagerINSTANCE.register()
 	FfiConverterStorageINSTANCE.register()
 	FfiConverterCallbackInterfaceEventListenerINSTANCE.register()
 	FfiConverterCallbackInterfaceLoggerINSTANCE.register()
@@ -397,6 +398,24 @@ func uniffiCheckChecksums() {
 		if checksum != 1399 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_connect_with_signer: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_create_mysql_connection_pool()
+		})
+		if checksum != 44890 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_create_mysql_connection_pool: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_create_postgres_connection_pool()
+		})
+		if checksum != 41178 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_create_postgres_connection_pool: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -451,6 +470,33 @@ func uniffiCheckChecksums() {
 		if checksum != 8518 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_init_logging: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_new_connection_manager()
+		})
+		if checksum != 25164 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_new_connection_manager: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_new_rest_chain_service()
+		})
+		if checksum != 62980 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_new_rest_chain_service: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_new_ssp_connection_manager()
+		})
+		if checksum != 15222 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_new_ssp_connection_manager: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1202,6 +1248,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_connection_manager()
+		})
+		if checksum != 51797 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_connection_manager: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_default_storage()
 		})
 		if checksum != 14543 {
@@ -1240,9 +1295,18 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_backend()
 		})
-		if checksum != 49953 {
+		if checksum != 44903 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_backend: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_connection_pool()
+		})
+		if checksum != 54551 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_connection_pool: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1258,9 +1322,18 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_backend()
 		})
-		if checksum != 59296 {
+		if checksum != 13427 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_backend: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_connection_pool()
+		})
+		if checksum != 24378 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_connection_pool: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1274,11 +1347,47 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_session_manager()
+		})
+		if checksum != 64189 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_session_manager: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_ssp_connection_manager()
+		})
+		if checksum != 65505 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_ssp_connection_manager: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_storage()
 		})
 		if checksum != 59400 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_storage: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sessionmanager_get_session()
+		})
+		if checksum != 64481 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sessionmanager_get_session: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sessionmanager_set_session()
+		})
+		if checksum != 55262 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sessionmanager_set_session: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -4454,6 +4563,84 @@ func (_ FfiDestroyerBreezSdk) Destroy(value *BreezSdk) {
 	value.Destroy()
 }
 
+// A shareable manager for gRPC connections to the Spark operators.
+//
+// Construct one via [`new_connection_manager`] and pass the same `Arc` to
+// multiple [`SdkBuilder`](crate::SdkBuilder)s via
+// [`SdkBuilder::with_connection_manager`](crate::SdkBuilder::with_connection_manager).
+// Connections close when the last `Arc<ConnectionManager>` is dropped;
+// [`BreezSdk::disconnect`](crate::BreezSdk::disconnect) does not affect them.
+//
+// All SDK instances sharing a `ConnectionManager` must be configured for the
+// same network and operator pool. The TLS settings and user agent of the
+// first SDK to connect to a given operator are reused for everyone afterwards.
+type ConnectionManagerInterface interface {
+}
+
+// A shareable manager for gRPC connections to the Spark operators.
+//
+// Construct one via [`new_connection_manager`] and pass the same `Arc` to
+// multiple [`SdkBuilder`](crate::SdkBuilder)s via
+// [`SdkBuilder::with_connection_manager`](crate::SdkBuilder::with_connection_manager).
+// Connections close when the last `Arc<ConnectionManager>` is dropped;
+// [`BreezSdk::disconnect`](crate::BreezSdk::disconnect) does not affect them.
+//
+// All SDK instances sharing a `ConnectionManager` must be configured for the
+// same network and operator pool. The TLS settings and user agent of the
+// first SDK to connect to a given operator are reused for everyone afterwards.
+type ConnectionManager struct {
+	ffiObject FfiObject
+}
+
+func (object *ConnectionManager) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterConnectionManager struct{}
+
+var FfiConverterConnectionManagerINSTANCE = FfiConverterConnectionManager{}
+
+func (c FfiConverterConnectionManager) Lift(pointer unsafe.Pointer) *ConnectionManager {
+	result := &ConnectionManager{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_connectionmanager(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_connectionmanager(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*ConnectionManager).Destroy)
+	return result
+}
+
+func (c FfiConverterConnectionManager) Read(reader io.Reader) *ConnectionManager {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterConnectionManager) Lower(value *ConnectionManager) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*ConnectionManager")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterConnectionManager) Write(writer io.Writer, value *ConnectionManager) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerConnectionManager struct{}
+
+func (_ FfiDestroyerConnectionManager) Destroy(value *ConnectionManager) {
+	value.Destroy()
+}
+
 // External signer trait that can be implemented by users and passed to the SDK.
 //
 // This trait mirrors the `BreezSigner` trait but uses FFI-compatible types (bytes, strings)
@@ -7157,6 +7344,68 @@ func (c FfiConverterFiatService) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_fiatservice(&UniffiVTableCallbackInterfaceFiatServiceINSTANCE)
 }
 
+// A shareable `MySQL` connection pool. See
+// [`PostgresConnectionPool`](crate::PostgresConnectionPool) for sharing semantics and lifecycle.
+
+type MysqlConnectionPoolInterface interface {
+}
+
+// A shareable `MySQL` connection pool. See
+// [`PostgresConnectionPool`](crate::PostgresConnectionPool) for sharing semantics and lifecycle.
+
+type MysqlConnectionPool struct {
+	ffiObject FfiObject
+}
+
+func (object *MysqlConnectionPool) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterMysqlConnectionPool struct{}
+
+var FfiConverterMysqlConnectionPoolINSTANCE = FfiConverterMysqlConnectionPool{}
+
+func (c FfiConverterMysqlConnectionPool) Lift(pointer unsafe.Pointer) *MysqlConnectionPool {
+	result := &MysqlConnectionPool{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_mysqlconnectionpool(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_mysqlconnectionpool(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*MysqlConnectionPool).Destroy)
+	return result
+}
+
+func (c FfiConverterMysqlConnectionPool) Read(reader io.Reader) *MysqlConnectionPool {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterMysqlConnectionPool) Lower(value *MysqlConnectionPool) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*MysqlConnectionPool")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterMysqlConnectionPool) Write(writer io.Writer, value *MysqlConnectionPool) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerMysqlConnectionPool struct{}
+
+func (_ FfiDestroyerMysqlConnectionPool) Destroy(value *MysqlConnectionPool) {
+	value.Destroy()
+}
+
 // Orchestrates passkey-based wallet creation and restore operations.
 //
 // This struct coordinates between the platform's passkey PRF provider and
@@ -7921,6 +8170,84 @@ func (c FfiConverterPaymentObserver) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_paymentobserver(&UniffiVTableCallbackInterfacePaymentObserverINSTANCE)
 }
 
+// A shareable Postgres connection pool.
+//
+// Construct via [`create_postgres_connection_pool`] and pass the same `Arc` to multiple
+// [`SdkBuilder`](crate::SdkBuilder)s via
+// [`SdkBuilder::with_postgres_connection_pool`](crate::SdkBuilder::with_postgres_connection_pool).
+// All SDKs sharing a pool target the same database; per-tenant isolation is
+// derived from each SDK's seed (the identity public key scopes every row).
+//
+// The pool's lifecycle is owned by the integrator: it stays alive as long
+// as any `Arc<PostgresConnectionPool>` is held. [`BreezSdk::disconnect`](crate::BreezSdk::disconnect)
+// does **not** close the pool.
+type PostgresConnectionPoolInterface interface {
+}
+
+// A shareable Postgres connection pool.
+//
+// Construct via [`create_postgres_connection_pool`] and pass the same `Arc` to multiple
+// [`SdkBuilder`](crate::SdkBuilder)s via
+// [`SdkBuilder::with_postgres_connection_pool`](crate::SdkBuilder::with_postgres_connection_pool).
+// All SDKs sharing a pool target the same database; per-tenant isolation is
+// derived from each SDK's seed (the identity public key scopes every row).
+//
+// The pool's lifecycle is owned by the integrator: it stays alive as long
+// as any `Arc<PostgresConnectionPool>` is held. [`BreezSdk::disconnect`](crate::BreezSdk::disconnect)
+// does **not** close the pool.
+type PostgresConnectionPool struct {
+	ffiObject FfiObject
+}
+
+func (object *PostgresConnectionPool) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterPostgresConnectionPool struct{}
+
+var FfiConverterPostgresConnectionPoolINSTANCE = FfiConverterPostgresConnectionPool{}
+
+func (c FfiConverterPostgresConnectionPool) Lift(pointer unsafe.Pointer) *PostgresConnectionPool {
+	result := &PostgresConnectionPool{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_postgresconnectionpool(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_postgresconnectionpool(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*PostgresConnectionPool).Destroy)
+	return result
+}
+
+func (c FfiConverterPostgresConnectionPool) Read(reader io.Reader) *PostgresConnectionPool {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterPostgresConnectionPool) Lower(value *PostgresConnectionPool) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*PostgresConnectionPool")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterPostgresConnectionPool) Write(writer io.Writer, value *PostgresConnectionPool) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerPostgresConnectionPool struct{}
+
+func (_ FfiDestroyerPostgresConnectionPool) Destroy(value *PostgresConnectionPool) {
+	value.Destroy()
+}
+
 // REST client trait for making HTTP requests.
 //
 // This trait provides a way for users to supply their own HTTP client implementation
@@ -8358,6 +8685,10 @@ type SdkBuilderInterface interface {
 	// Arguments:
 	// - `chain_service`: The chain service to be used.
 	WithChainService(chainService BitcoinChainService)
+	// Sets a shared connection manager to be reused across SDK instances.
+	// Arguments:
+	// - `connection_manager`: The shared connection manager.
+	WithConnectionManager(connectionManager *ConnectionManager)
 	// Sets the root storage directory to initialize the default storage with.
 	// This initializes both storage and real-time sync storage with the
 	// default implementations.
@@ -8373,26 +8704,50 @@ type SdkBuilderInterface interface {
 	// - `config`: Key set configuration containing the key set type, address index flag, and optional account number.
 	WithKeySet(config KeySetConfig)
 	WithLnurlClient(lnurlClient RestClient)
+	// **Deprecated.** Call `with_mysql_connection_pool(&config)` and `with_mysql_connection_pool(pool) instead`.
+	//
 	// Sets `MySQL` as the backend for all stores (storage, tree store, and token store).
 	// The store instances will be created during `build()`.
 	// Arguments:
 	// - `config`: The `MySQL` storage configuration.
-	WithMysqlBackend(config MysqlStorageConfig)
+	WithMysqlBackend(config MysqlStorageConfig) error
+	// Sets a shared `MySQL` connection pool as the backend for all stores
+	// (storage, tree store, and token store). Construct the pool via
+	// [`create_mysql_connection_pool`](crate::create_mysql_connection_pool) and pass the same `Arc`
+	// to multiple builders to share connections across SDKs.
+	WithMysqlConnectionPool(pool *MysqlConnectionPool)
 	// Sets the payment observer to be used by the SDK.
 	// Arguments:
 	// - `payment_observer`: The payment observer to be used.
 	WithPaymentObserver(paymentObserver PaymentObserver)
+	// **Deprecated.** Call `with_postgres_connection_pool(&config)` and `with_postgres_connection_pool(pool) instead`.
+	//
 	// Sets `PostgreSQL` as the backend for all stores (storage, tree store, and token store).
 	// The store instances will be created during `build()`.
 	// Arguments:
 	// - `config`: The `PostgreSQL` storage configuration.
-	WithPostgresBackend(config PostgresStorageConfig)
+	WithPostgresBackend(config PostgresStorageConfig) error
+	// Sets a shared `PostgreSQL` connection pool as the backend for all
+	// stores (storage, tree store, and token store). Construct the pool
+	// via [`create_postgres_connection_pool`](crate::create_postgres_connection_pool) and pass the
+	// same `Arc` to multiple builders to share connections across SDKs.
+	WithPostgresConnectionPool(pool *PostgresConnectionPool)
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
 	// - `url`: The base URL of the REST API.
 	// - `api_type`: The API type to be used.
 	// - `credentials`: Optional credentials for basic authentication.
 	WithRestChainService(url string, apiType ChainApiType, credentials *Credentials)
+	// Sets a custom session manager used to persist authentication sessions.
+	//
+	// Provide a shared, persistent implementation (e.g. backed by `PostgreSQL`
+	// or Redis) to let multiple SDK instances share authentication state and
+	// bootstrap quickly. If not set, an in-memory session manager is used.
+	WithSessionManager(sessionManager SessionManager)
+	// Sets a shared SSP connection manager to be reused across SDK instances.
+	// Arguments:
+	// - `manager`: The shared SSP connection manager.
+	WithSspConnectionManager(manager *SspConnectionManager)
 	// Sets the storage implementation to be used by the SDK.
 	// Arguments:
 	// - `storage`: The storage implementation to be used.
@@ -8465,6 +8820,35 @@ func (_self *SdkBuilder) WithChainService(chainService BitcoinChainService) {
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_chain_service(
 			_pointer, FfiConverterBitcoinChainServiceINSTANCE.Lower(chainService)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets a shared connection manager to be reused across SDK instances.
+// Arguments:
+// - `connection_manager`: The shared connection manager.
+func (_self *SdkBuilder) WithConnectionManager(connectionManager *ConnectionManager) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_connection_manager(
+			_pointer, FfiConverterConnectionManagerINSTANCE.Lower(connectionManager)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -8592,11 +8976,48 @@ func (_self *SdkBuilder) WithLnurlClient(lnurlClient RestClient) {
 
 }
 
+// **Deprecated.** Call `with_mysql_connection_pool(&config)` and `with_mysql_connection_pool(pool) instead`.
+//
 // Sets `MySQL` as the backend for all stores (storage, tree store, and token store).
 // The store instances will be created during `build()`.
 // Arguments:
 // - `config`: The `MySQL` storage configuration.
-func (_self *SdkBuilder) WithMysqlBackend(config MysqlStorageConfig) {
+func (_self *SdkBuilder) WithMysqlBackend(config MysqlStorageConfig) error {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_mysql_backend(
+			_pointer, FfiConverterMysqlStorageConfigINSTANCE.Lower(config)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Sets a shared `MySQL` connection pool as the backend for all stores
+// (storage, tree store, and token store). Construct the pool via
+// [`create_mysql_connection_pool`](crate::create_mysql_connection_pool) and pass the same `Arc`
+// to multiple builders to share connections across SDKs.
+func (_self *SdkBuilder) WithMysqlConnectionPool(pool *MysqlConnectionPool) {
 	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
 	defer _self.ffiObject.decrementPointer()
 	uniffiRustCallAsync[error](
@@ -8608,8 +9029,8 @@ func (_self *SdkBuilder) WithMysqlBackend(config MysqlStorageConfig) {
 		},
 		// liftFn
 		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_mysql_backend(
-			_pointer, FfiConverterMysqlStorageConfigINSTANCE.Lower(config)),
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_mysql_connection_pool(
+			_pointer, FfiConverterMysqlConnectionPoolINSTANCE.Lower(pool)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -8651,11 +9072,48 @@ func (_self *SdkBuilder) WithPaymentObserver(paymentObserver PaymentObserver) {
 
 }
 
+// **Deprecated.** Call `with_postgres_connection_pool(&config)` and `with_postgres_connection_pool(pool) instead`.
+//
 // Sets `PostgreSQL` as the backend for all stores (storage, tree store, and token store).
 // The store instances will be created during `build()`.
 // Arguments:
 // - `config`: The `PostgreSQL` storage configuration.
-func (_self *SdkBuilder) WithPostgresBackend(config PostgresStorageConfig) {
+func (_self *SdkBuilder) WithPostgresBackend(config PostgresStorageConfig) error {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_backend(
+			_pointer, FfiConverterPostgresStorageConfigINSTANCE.Lower(config)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Sets a shared `PostgreSQL` connection pool as the backend for all
+// stores (storage, tree store, and token store). Construct the pool
+// via [`create_postgres_connection_pool`](crate::create_postgres_connection_pool) and pass the
+// same `Arc` to multiple builders to share connections across SDKs.
+func (_self *SdkBuilder) WithPostgresConnectionPool(pool *PostgresConnectionPool) {
 	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
 	defer _self.ffiObject.decrementPointer()
 	uniffiRustCallAsync[error](
@@ -8667,8 +9125,8 @@ func (_self *SdkBuilder) WithPostgresBackend(config PostgresStorageConfig) {
 		},
 		// liftFn
 		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_backend(
-			_pointer, FfiConverterPostgresStorageConfigINSTANCE.Lower(config)),
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_connection_pool(
+			_pointer, FfiConverterPostgresConnectionPoolINSTANCE.Lower(pool)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -8700,6 +9158,66 @@ func (_self *SdkBuilder) WithRestChainService(url string, apiType ChainApiType, 
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_rest_chain_service(
 			_pointer, FfiConverterStringINSTANCE.Lower(url), FfiConverterChainApiTypeINSTANCE.Lower(apiType), FfiConverterOptionalCredentialsINSTANCE.Lower(credentials)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets a custom session manager used to persist authentication sessions.
+//
+// Provide a shared, persistent implementation (e.g. backed by `PostgreSQL`
+// or Redis) to let multiple SDK instances share authentication state and
+// bootstrap quickly. If not set, an in-memory session manager is used.
+func (_self *SdkBuilder) WithSessionManager(sessionManager SessionManager) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_session_manager(
+			_pointer, FfiConverterSessionManagerINSTANCE.Lower(sessionManager)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets a shared SSP connection manager to be reused across SDK instances.
+// Arguments:
+// - `manager`: The shared SSP connection manager.
+func (_self *SdkBuilder) WithSspConnectionManager(manager *SspConnectionManager) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_ssp_connection_manager(
+			_pointer, FfiConverterSspConnectionManagerINSTANCE.Lower(manager)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -8786,6 +9304,373 @@ func (c FfiConverterSdkBuilder) Write(writer io.Writer, value *SdkBuilder) {
 type FfiDestroyerSdkBuilder struct{}
 
 func (_ FfiDestroyerSdkBuilder) Destroy(value *SdkBuilder) {
+	value.Destroy()
+}
+
+// Persistent storage for authentication sessions, keyed by the service's
+// identity public key. Implementations should be thread-safe and may be
+// backed by an in-memory map (default) or a shared database for cross-pod
+// auth sharing.
+type SessionManager interface {
+	GetSession(serviceIdentityKey PublicKey) (Session, error)
+	SetSession(serviceIdentityKey PublicKey, session Session) error
+}
+
+// Persistent storage for authentication sessions, keyed by the service's
+// identity public key. Implementations should be thread-safe and may be
+// backed by an in-memory map (default) or a shared database for cross-pod
+// auth sharing.
+type SessionManagerImpl struct {
+	ffiObject FfiObject
+}
+
+func (_self *SessionManagerImpl) GetSession(serviceIdentityKey PublicKey) (Session, error) {
+	_pointer := _self.ffiObject.incrementPointer("SessionManager")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SessionManagerError](
+		FfiConverterSessionManagerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) Session {
+			return FfiConverterSessionINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_sessionmanager_get_session(
+			_pointer, FfiConverterTypePublicKeyINSTANCE.Lower(serviceIdentityKey)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+func (_self *SessionManagerImpl) SetSession(serviceIdentityKey PublicKey, session Session) error {
+	_pointer := _self.ffiObject.incrementPointer("SessionManager")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[SessionManagerError](
+		FfiConverterSessionManagerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sessionmanager_set_session(
+			_pointer, FfiConverterTypePublicKeyINSTANCE.Lower(serviceIdentityKey), FfiConverterSessionINSTANCE.Lower(session)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+func (object *SessionManagerImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterSessionManager struct {
+	handleMap *concurrentHandleMap[SessionManager]
+}
+
+var FfiConverterSessionManagerINSTANCE = FfiConverterSessionManager{
+	handleMap: newConcurrentHandleMap[SessionManager](),
+}
+
+func (c FfiConverterSessionManager) Lift(pointer unsafe.Pointer) SessionManager {
+	result := &SessionManagerImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_sessionmanager(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_sessionmanager(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*SessionManagerImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterSessionManager) Read(reader io.Reader) SessionManager {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterSessionManager) Lower(value SessionManager) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterSessionManager) Write(writer io.Writer, value SessionManager) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerSessionManager struct{}
+
+func (_ FfiDestroyerSessionManager) Destroy(value SessionManager) {
+	if val, ok := value.(*SessionManagerImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *SessionManagerImpl")
+	}
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0(uniffiHandle C.uint64_t, serviceIdentityKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSessionManagerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.GetSession(
+				FfiConverterTypePublicKeyINSTANCE.Lift(GoRustBuffer{
+					inner: serviceIdentityKey,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SessionManagerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSessionManagerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterSessionINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1(uniffiHandle C.uint64_t, serviceIdentityKey C.RustBuffer, session C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterSessionManagerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.SetSession(
+				FfiConverterTypePublicKeyINSTANCE.Lift(GoRustBuffer{
+					inner: serviceIdentityKey,
+				}),
+				FfiConverterSessionINSTANCE.Lift(GoRustBuffer{
+					inner: session,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SessionManagerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSessionManagerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
+var UniffiVTableCallbackInterfaceSessionManagerINSTANCE = C.UniffiVTableCallbackInterfaceSessionManager{
+	getSession: (C.UniffiCallbackInterfaceSessionManagerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0),
+	setSession: (C.UniffiCallbackInterfaceSessionManagerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerFree),
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerFree
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerFree(handle C.uint64_t) {
+	FfiConverterSessionManagerINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterSessionManager) register() {
+	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_sessionmanager(&UniffiVTableCallbackInterfaceSessionManagerINSTANCE)
+}
+
+// A shared HTTP transport for SSP GraphQL traffic.
+//
+// All SDK instances that are built with the same `SspConnectionManager` send
+// SSP requests over the same pooled `reqwest::Client`. This means each
+// process opens at most one TCP+TLS+HTTP/2 connection to the SSP regardless
+// of how many wallets are loaded — useful for multi-tenant servers running
+// many SDK instances.
+//
+// # Caveats
+//
+// - The user-agent of the first SDK to construct this manager is reused for
+// all subsequent instances. This is rarely a problem since SDK instances
+// in one process typically share a build version.
+// - Connections close when the last `Arc<SspConnectionManager>` is dropped.
+// `BreezSdk::disconnect` does not close them.
+type SspConnectionManagerInterface interface {
+}
+
+// A shared HTTP transport for SSP GraphQL traffic.
+//
+// All SDK instances that are built with the same `SspConnectionManager` send
+// SSP requests over the same pooled `reqwest::Client`. This means each
+// process opens at most one TCP+TLS+HTTP/2 connection to the SSP regardless
+// of how many wallets are loaded — useful for multi-tenant servers running
+// many SDK instances.
+//
+// # Caveats
+//
+// - The user-agent of the first SDK to construct this manager is reused for
+// all subsequent instances. This is rarely a problem since SDK instances
+// in one process typically share a build version.
+// - Connections close when the last `Arc<SspConnectionManager>` is dropped.
+// `BreezSdk::disconnect` does not close them.
+type SspConnectionManager struct {
+	ffiObject FfiObject
+}
+
+func (object *SspConnectionManager) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterSspConnectionManager struct{}
+
+var FfiConverterSspConnectionManagerINSTANCE = FfiConverterSspConnectionManager{}
+
+func (c FfiConverterSspConnectionManager) Lift(pointer unsafe.Pointer) *SspConnectionManager {
+	result := &SspConnectionManager{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_sspconnectionmanager(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_sspconnectionmanager(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*SspConnectionManager).Destroy)
+	return result
+}
+
+func (c FfiConverterSspConnectionManager) Read(reader io.Reader) *SspConnectionManager {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterSspConnectionManager) Lower(value *SspConnectionManager) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*SspConnectionManager")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterSspConnectionManager) Write(writer io.Writer, value *SspConnectionManager) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerSspConnectionManager struct{}
+
+func (_ FfiDestroyerSspConnectionManager) Destroy(value *SspConnectionManager) {
 	value.Destroy()
 }
 
@@ -18751,6 +19636,51 @@ func (_ FfiDestroyerSendPaymentResponse) Destroy(value SendPaymentResponse) {
 	value.Destroy()
 }
 
+// Cached authentication session for a single backend service identity.
+type Session struct {
+	Token      string
+	Expiration uint64
+}
+
+func (r *Session) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Token)
+	FfiDestroyerUint64{}.Destroy(r.Expiration)
+}
+
+type FfiConverterSession struct{}
+
+var FfiConverterSessionINSTANCE = FfiConverterSession{}
+
+func (c FfiConverterSession) Lift(rb RustBufferI) Session {
+	return LiftFromRustBuffer[Session](c, rb)
+}
+
+func (c FfiConverterSession) Read(reader io.Reader) Session {
+	return Session{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSession) Lower(value Session) C.RustBuffer {
+	return LowerIntoRustBuffer[Session](c, value)
+}
+
+func (c FfiConverterSession) LowerExternal(value Session) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[Session](c, value))
+}
+
+func (c FfiConverterSession) Write(writer io.Writer, value Session) {
+	FfiConverterStringINSTANCE.Write(writer, value.Token)
+	FfiConverterUint64INSTANCE.Write(writer, value.Expiration)
+}
+
+type FfiDestroyerSession struct{}
+
+func (_ FfiDestroyerSession) Destroy(value Session) {
+	value.Destroy()
+}
+
 type SetLnurlMetadataItem struct {
 	PaymentHash     string
 	SenderComment   *string
@@ -25284,6 +26214,137 @@ type FfiDestroyerServiceStatus struct{}
 func (_ FfiDestroyerServiceStatus) Destroy(value ServiceStatus) {
 }
 
+type SessionManagerError struct {
+	err error
+}
+
+// Convience method to turn *SessionManagerError into error
+// Avoiding treating nil pointer as non nil error interface
+func (err *SessionManagerError) AsError() error {
+	if err == nil {
+		return nil
+	} else {
+		return err
+	}
+}
+
+func (err SessionManagerError) Error() string {
+	return fmt.Sprintf("SessionManagerError: %s", err.err.Error())
+}
+
+func (err SessionManagerError) Unwrap() error {
+	return err.err
+}
+
+// Err* are used for checking error type with `errors.Is`
+var ErrSessionManagerErrorNotFound = fmt.Errorf("SessionManagerErrorNotFound")
+var ErrSessionManagerErrorGeneric = fmt.Errorf("SessionManagerErrorGeneric")
+
+// Variant structs
+type SessionManagerErrorNotFound struct {
+}
+
+func NewSessionManagerErrorNotFound() *SessionManagerError {
+	return &SessionManagerError{err: &SessionManagerErrorNotFound{}}
+}
+
+func (e SessionManagerErrorNotFound) destroy() {
+}
+
+func (err SessionManagerErrorNotFound) Error() string {
+	return fmt.Sprint("NotFound")
+}
+
+func (self SessionManagerErrorNotFound) Is(target error) bool {
+	return target == ErrSessionManagerErrorNotFound
+}
+
+type SessionManagerErrorGeneric struct {
+	Field0 string
+}
+
+func NewSessionManagerErrorGeneric(
+	var0 string,
+) *SessionManagerError {
+	return &SessionManagerError{err: &SessionManagerErrorGeneric{
+		Field0: var0}}
+}
+
+func (e SessionManagerErrorGeneric) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err SessionManagerErrorGeneric) Error() string {
+	return fmt.Sprint("Generic",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self SessionManagerErrorGeneric) Is(target error) bool {
+	return target == ErrSessionManagerErrorGeneric
+}
+
+type FfiConverterSessionManagerError struct{}
+
+var FfiConverterSessionManagerErrorINSTANCE = FfiConverterSessionManagerError{}
+
+func (c FfiConverterSessionManagerError) Lift(eb RustBufferI) *SessionManagerError {
+	return LiftFromRustBuffer[*SessionManagerError](c, eb)
+}
+
+func (c FfiConverterSessionManagerError) Lower(value *SessionManagerError) C.RustBuffer {
+	return LowerIntoRustBuffer[*SessionManagerError](c, value)
+}
+
+func (c FfiConverterSessionManagerError) LowerExternal(value *SessionManagerError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SessionManagerError](c, value))
+}
+
+func (c FfiConverterSessionManagerError) Read(reader io.Reader) *SessionManagerError {
+	errorID := readUint32(reader)
+
+	switch errorID {
+	case 1:
+		return &SessionManagerError{&SessionManagerErrorNotFound{}}
+	case 2:
+		return &SessionManagerError{&SessionManagerErrorGeneric{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	default:
+		panic(fmt.Sprintf("Unknown error code %d in FfiConverterSessionManagerError.Read()", errorID))
+	}
+}
+
+func (c FfiConverterSessionManagerError) Write(writer io.Writer, value *SessionManagerError) {
+	switch variantValue := value.err.(type) {
+	case *SessionManagerErrorNotFound:
+		writeInt32(writer, 1)
+	case *SessionManagerErrorGeneric:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterSessionManagerError.Write", value))
+	}
+}
+
+type FfiDestroyerSessionManagerError struct{}
+
+func (_ FfiDestroyerSessionManagerError) Destroy(value *SessionManagerError) {
+	switch variantValue := value.err.(type) {
+	case SessionManagerErrorNotFound:
+		variantValue.destroy()
+	case SessionManagerErrorGeneric:
+		variantValue.destroy()
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerSessionManagerError.Destroy", value))
+	}
+}
+
 // Error type for signer operations
 type SignerError struct {
 	err error
@@ -30521,6 +31582,17 @@ func (_ FfiDestroyerMapStringSequencePayment) Destroy(mapValue map[string][]Paym
 }
 
 /**
+ * Typealias from the type name used in the UDL file to the builtin type.  This
+ * is needed because the UDL type name is used in function/method signatures.
+ * It's also what we have an external type that references a custom type.
+ */
+type PublicKey = string
+type FfiConverterTypePublicKey = FfiConverterString
+type FfiDestroyerTypePublicKey = FfiDestroyerString
+
+var FfiConverterTypePublicKeyINSTANCE = FfiConverterString{}
+
+/**
  * Typealias from the type name used in the UDL file to the custom type.  This
  * is needed because the UDL type name is used in function/method signatures.
  * It's also what we have an external type that references a custom type.
@@ -30709,6 +31781,40 @@ func ConnectWithSigner(request ConnectWithSignerRequest) (*BreezSdk, error) {
 	return res, err
 }
 
+// Creates a shareable `MySQL` connection pool from the given configuration.
+//
+// Hand the returned `Arc` to one or more
+// [`SdkBuilder::with_mysql_connection_pool`](crate::SdkBuilder::with_mysql_connection_pool)
+// calls to share a single pool across multiple SDK instances.
+func CreateMysqlConnectionPool(config MysqlStorageConfig) (*MysqlConnectionPool, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_create_mysql_connection_pool(FfiConverterMysqlStorageConfigINSTANCE.Lower(config), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *MysqlConnectionPool
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterMysqlConnectionPoolINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
+// Creates a shareable Postgres connection pool from the given configuration.
+//
+// Hand the returned `Arc` to one or more
+// [`SdkBuilder::with_postgres_connection_pool`](crate::SdkBuilder::with_postgres_connection_pool)
+// calls to share a single pool across multiple SDK instances.
+func CreatePostgresConnectionPool(config PostgresStorageConfig) (*PostgresConnectionPool, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_create_postgres_connection_pool(FfiConverterPostgresStorageConfigINSTANCE.Lower(config), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *PostgresConnectionPool
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterPostgresConnectionPoolINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
 func DefaultConfig(network Network) Config {
 	return FfiConverterConfigINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
 		return GoRustBuffer{
@@ -30804,4 +31910,43 @@ func InitLogging(logDir *string, appLogger *Logger, logFilter *string) error {
 		return false
 	})
 	return _uniffiErr.AsError()
+}
+
+// Creates a new shareable [`ConnectionManager`].
+//
+// `connections_per_operator` controls per-operator connection pooling:
+// `None` keeps a single connection per operator (suitable for almost every
+// deployment); `Some(n)` opens `n` connections per operator and balances
+// requests across them.
+func NewConnectionManager(connectionsPerOperator *uint32) *ConnectionManager {
+	return FfiConverterConnectionManagerINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_new_connection_manager(FfiConverterOptionalUint32INSTANCE.Lower(connectionsPerOperator), _uniffiStatus)
+	}))
+}
+
+// Constructs a shareable REST-based [`BitcoinChainService`].
+//
+// Pass the returned `Arc` to multiple [`SdkBuilder`](crate::SdkBuilder)s via
+// [`SdkBuilder::with_chain_service`](crate::SdkBuilder::with_chain_service)
+// to reuse a single underlying HTTP client (and its connection pool) across
+// SDK instances. All SDKs sharing the service must use the same `network`.
+//
+// For one-off, non-shared use, prefer
+// [`SdkBuilder::with_rest_chain_service`](crate::SdkBuilder::with_rest_chain_service).
+func NewRestChainService(url string, network Network, apiType ChainApiType, credentials *Credentials) BitcoinChainService {
+	return FfiConverterBitcoinChainServiceINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_new_rest_chain_service(FfiConverterStringINSTANCE.Lower(url), FfiConverterNetworkINSTANCE.Lower(network), FfiConverterChainApiTypeINSTANCE.Lower(apiType), FfiConverterOptionalCredentialsINSTANCE.Lower(credentials), _uniffiStatus)
+	}))
+}
+
+// Construct a new shared SSP connection manager.
+//
+// Pass the returned `Arc<SspConnectionManager>` to
+// [`SdkBuilder::with_ssp_connection_manager`](crate::SdkBuilder::with_ssp_connection_manager)
+// when building each SDK instance that should share the underlying HTTP
+// connection pool.
+func NewSspConnectionManager(userAgent *string) *SspConnectionManager {
+	return FfiConverterSspConnectionManagerINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_new_ssp_connection_manager(FfiConverterOptionalStringINSTANCE.Lower(userAgent), _uniffiStatus)
+	}))
 }
