@@ -485,7 +485,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_new_rest_chain_service()
 		})
-		if checksum != 62980 {
+		if checksum != 23177 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_new_rest_chain_service: UniFFI API checksum mismatch")
 		}
@@ -31934,9 +31934,29 @@ func NewConnectionManager(connectionsPerOperator *uint32) *ConnectionManager {
 // For one-off, non-shared use, prefer
 // [`SdkBuilder::with_rest_chain_service`](crate::SdkBuilder::with_rest_chain_service).
 func NewRestChainService(url string, network Network, apiType ChainApiType, credentials *Credentials) BitcoinChainService {
-	return FfiConverterBitcoinChainServiceINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
-		return C.uniffi_breez_sdk_spark_fn_func_new_rest_chain_service(FfiConverterStringINSTANCE.Lower(url), FfiConverterNetworkINSTANCE.Lower(network), FfiConverterChainApiTypeINSTANCE.Lower(apiType), FfiConverterOptionalCredentialsINSTANCE.Lower(credentials), _uniffiStatus)
-	}))
+	res, _ := uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) unsafe.Pointer {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_pointer(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi unsafe.Pointer) BitcoinChainService {
+			return FfiConverterBitcoinChainServiceINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_func_new_rest_chain_service(FfiConverterStringINSTANCE.Lower(url), FfiConverterNetworkINSTANCE.Lower(network), FfiConverterChainApiTypeINSTANCE.Lower(apiType), FfiConverterOptionalCredentialsINSTANCE.Lower(credentials)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_pointer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_pointer(handle)
+		},
+	)
+
+	return res
 }
 
 // Construct a new shared SSP connection manager.

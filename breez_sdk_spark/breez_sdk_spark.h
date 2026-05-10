@@ -2351,7 +2351,7 @@ void* uniffi_breez_sdk_spark_fn_func_new_connection_manager(RustBuffer connectio
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_REST_CHAIN_SERVICE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_REST_CHAIN_SERVICE
-void* uniffi_breez_sdk_spark_fn_func_new_rest_chain_service(RustBuffer url, RustBuffer network, RustBuffer api_type, RustBuffer credentials, RustCallStatus *out_status
+uint64_t uniffi_breez_sdk_spark_fn_func_new_rest_chain_service(RustBuffer url, RustBuffer network, RustBuffer api_type, RustBuffer credentials
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_NEW_SSP_CONNECTION_MANAGER
