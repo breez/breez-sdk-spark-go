@@ -359,12 +359,13 @@ func readFloat64(reader io.Reader) float64 {
 func init() {
 
 	FfiConverterBitcoinChainServiceINSTANCE.register()
-	FfiConverterExternalSignerINSTANCE.register()
+	FfiConverterExternalBreezSignerINSTANCE.register()
+	FfiConverterExternalSparkSignerINSTANCE.register()
 	FfiConverterFiatServiceINSTANCE.register()
-	FfiConverterPasskeyPrfProviderINSTANCE.register()
 	FfiConverterPaymentObserverINSTANCE.register()
+	FfiConverterPrfProviderINSTANCE.register()
 	FfiConverterRestClientINSTANCE.register()
-	FfiConverterSessionManagerINSTANCE.register()
+	FfiConverterSessionStoreINSTANCE.register()
 	FfiConverterStorageINSTANCE.register()
 	FfiConverterCallbackInterfaceEventListenerINSTANCE.register()
 	FfiConverterCallbackInterfaceLoggerINSTANCE.register()
@@ -402,20 +403,20 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_func_create_mysql_connection_pool()
+			return C.uniffi_breez_sdk_spark_checksum_func_create_turnkey_signer()
 		})
-		if checksum != 525 {
+		if checksum != 31659 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_create_mysql_connection_pool: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_create_turnkey_signer: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_func_create_postgres_connection_pool()
+			return C.uniffi_breez_sdk_spark_checksum_func_custom_storage()
 		})
-		if checksum != 5686 {
+		if checksum != 18116 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_create_postgres_connection_pool: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_custom_storage: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -429,11 +430,11 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_func_default_external_signer()
+			return C.uniffi_breez_sdk_spark_checksum_func_default_external_signers()
 		})
-		if checksum != 40694 {
+		if checksum != 58595 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_default_external_signer: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_default_external_signers: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -465,6 +466,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_default_storage()
+		})
+		if checksum != 56226 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_default_storage: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_get_spark_status()
 		})
 		if checksum != 62888 {
@@ -483,6 +493,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_mysql_storage()
+		})
+		if checksum != 49812 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_mysql_storage: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_new_rest_chain_service()
 		})
 		if checksum != 23177 {
@@ -494,9 +513,18 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_new_shared_sdk_context()
 		})
-		if checksum != 28438 {
+		if checksum != 7027 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_new_shared_sdk_context: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_postgres_storage()
+		})
+		if checksum != 6170 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_postgres_storage: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -557,9 +585,18 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_add_event_listener()
 		})
-		if checksum != 37737 {
+		if checksum != 19224 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_add_event_listener: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_authorize_lightning_address_transfer()
+		})
+		if checksum != 15257 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_authorize_lightning_address_transfer: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -569,15 +606,6 @@ func uniffiCheckChecksums() {
 		if checksum != 34179 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_buy_bitcoin: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_cancel_leaf_optimization()
-		})
-		if checksum != 56996 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_cancel_leaf_optimization: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -618,6 +646,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_lightning_address_transfer()
+		})
+		if checksum != 20680 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_claim_lightning_address_transfer: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_delete_contact()
 		})
 		if checksum != 15670 {
@@ -638,7 +675,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_disconnect()
 		})
-		if checksum != 330 {
+		if checksum != 20026 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_disconnect: UniFFI API checksum mismatch")
 		}
@@ -659,15 +696,6 @@ func uniffiCheckChecksums() {
 		if checksum != 6771 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_get_info: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_get_leaf_optimization_progress()
-		})
-		if checksum != 38008 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_get_leaf_optimization_progress: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -798,6 +826,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_optimize_leaves()
+		})
+		if checksum != 39254 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_optimize_leaves: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_parse()
 		})
 		if checksum != 14285 {
@@ -906,15 +943,6 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_start_leaf_optimization()
-		})
-		if checksum != 44923 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_start_leaf_optimization: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_sync_wallet()
 		})
 		if checksum != 30368 {
@@ -951,182 +979,200 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_identity_public_key()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_derive_public_key()
 		})
-		if checksum != 62941 {
+		if checksum != 26700 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_identity_public_key: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_derive_public_key: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_derive_public_key()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_sign_ecdsa()
 		})
-		if checksum != 23137 {
+		if checksum != 17969 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_derive_public_key: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_sign_ecdsa: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_ecdsa()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_sign_ecdsa_recoverable()
 		})
-		if checksum != 37648 {
+		if checksum != 45907 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_ecdsa: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_sign_ecdsa_recoverable: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_ecdsa_recoverable()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_encrypt_ecies()
 		})
-		if checksum != 3107 {
+		if checksum != 5296 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_ecdsa_recoverable: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_encrypt_ecies: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_ecies()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_decrypt_ecies()
 		})
-		if checksum != 60224 {
+		if checksum != 6089 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_ecies: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_decrypt_ecies: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_decrypt_ecies()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_sign_hash_schnorr()
 		})
-		if checksum != 59601 {
+		if checksum != 1766 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_decrypt_ecies: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_sign_hash_schnorr: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_hash_schnorr()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_hmac_sha256()
 		})
-		if checksum != 57220 {
+		if checksum != 65429 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_hash_schnorr: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_hmac_sha256: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_hmac_sha256()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_identity_public_key()
 		})
-		if checksum != 57517 {
+		if checksum != 38705 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_hmac_sha256: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_identity_public_key: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_signing_commitment()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_public_key_for_leaf()
 		})
-		if checksum != 31862 {
+		if checksum != 39015 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_signing_commitment: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_public_key_for_leaf: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_for_node()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_static_deposit_public_key()
 		})
-		if checksum != 37434 {
+		if checksum != 11994 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_get_public_key_for_node: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_static_deposit_public_key: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_secret()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_authentication_challenge()
 		})
-		if checksum != 26114 {
+		if checksum != 57313 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_generate_random_secret: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_authentication_challenge: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret_encrypted()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_message()
 		})
-		if checksum != 38925 {
+		if checksum != 56093 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret_encrypted: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_message: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_frost()
 		})
-		if checksum != 45280 {
+		if checksum != 44871 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_secret: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_frost: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_signing_key()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_transfer()
 		})
-		if checksum != 62519 {
+		if checksum != 42596 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_static_deposit_signing_key: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_transfer: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_subtract_secrets()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_claim()
 		})
-		if checksum != 45969 {
+		if checksum != 109 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_subtract_secrets: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_claim: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_split_secret_with_proofs()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_lightning_receive()
 		})
-		if checksum != 19489 {
+		if checksum != 49812 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_split_secret_with_proofs: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_lightning_receive: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_secret_for_receiver()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_static_deposit()
 		})
-		if checksum != 51627 {
+		if checksum != 119 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_encrypt_secret_for_receiver: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_static_deposit: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_public_key_from_secret()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_start_static_deposit_refund()
 		})
-		if checksum != 53055 {
+		if checksum != 22509 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_public_key_from_secret: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_start_static_deposit_refund: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_frost()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_static_deposit_refund()
 		})
-		if checksum != 20635 {
+		if checksum != 28885 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_sign_frost: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_static_deposit_refund: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_externalsigner_aggregate_frost()
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_spark_invoice()
 		})
-		if checksum != 53544 {
+		if checksum != 11535 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigner_aggregate_frost: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_spark_invoice: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_token_transaction()
+		})
+		if checksum != 58955 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_token_transaction: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_static_deposit_claim()
+		})
+		if checksum != 64724 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_static_deposit_claim: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1149,65 +1195,119 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_passkey_get_wallet()
+			return C.uniffi_breez_sdk_spark_checksum_method_passkeyclient_check_availability()
 		})
-		if checksum != 28830 {
+		if checksum != 35189 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkey_get_wallet: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeyclient_check_availability: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_passkey_is_available()
+			return C.uniffi_breez_sdk_spark_checksum_method_passkeyclient_connect_with_passkey()
 		})
-		if checksum != 31283 {
+		if checksum != 47815 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkey_is_available: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeyclient_connect_with_passkey: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_passkey_list_labels()
+			return C.uniffi_breez_sdk_spark_checksum_method_passkeyclient_labels()
 		})
-		if checksum != 5351 {
+		if checksum != 35849 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkey_list_labels: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeyclient_labels: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_passkey_store_label()
+			return C.uniffi_breez_sdk_spark_checksum_method_passkeyclient_register()
 		})
-		if checksum != 42949 {
+		if checksum != 18330 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkey_store_label: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeyclient_register: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_passkeyprfprovider_derive_prf_seed()
+			return C.uniffi_breez_sdk_spark_checksum_method_passkeyclient_sign_in()
 		})
-		if checksum != 44905 {
+		if checksum != 42245 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeyprfprovider_derive_prf_seed: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeyclient_sign_in: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_passkeyprfprovider_is_prf_available()
+			return C.uniffi_breez_sdk_spark_checksum_method_passkeylabels_list()
 		})
-		if checksum != 33931 {
+		if checksum != 54877 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeyprfprovider_is_prf_available: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeylabels_list: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_passkeylabels_store()
+		})
+		if checksum != 58514 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeylabels_store: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_paymentobserver_before_send()
 		})
-		if checksum != 30686 {
+		if checksum != 27806 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_paymentobserver_before_send: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_paymentobserver_after_send()
+		})
+		if checksum != 31673 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_paymentobserver_after_send: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_prfprovider_derive_seeds()
+		})
+		if checksum != 18550 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_prfprovider_derive_seeds: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_prfprovider_is_supported()
+		})
+		if checksum != 46331 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_prfprovider_is_supported: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_prfprovider_create_passkey()
+		})
+		if checksum != 1967 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_prfprovider_create_passkey: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_prfprovider_check_domain_association()
+		})
+		if checksum != 18713 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_prfprovider_check_domain_association: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1248,6 +1348,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_account_number()
+		})
+		if checksum != 6550 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_account_number: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_chain_service()
 		})
 		if checksum != 2848 {
@@ -1275,15 +1384,6 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set()
-		})
-		if checksum != 50052 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_key_set: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_lnurl_client()
 		})
 		if checksum != 51060 {
@@ -1295,18 +1395,9 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_backend()
 		})
-		if checksum != 37576 {
+		if checksum != 20878 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_backend: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_connection_pool()
-		})
-		if checksum != 28936 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_mysql_connection_pool: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1322,18 +1413,9 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_backend()
 		})
-		if checksum != 26901 {
+		if checksum != 61824 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_backend: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_connection_pool()
-		})
-		if checksum != 53944 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_postgres_connection_pool: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1358,27 +1440,36 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_storage()
 		})
-		if checksum != 59400 {
+		if checksum != 20369 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_storage: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_sessionmanager_get_session()
+			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_storage_backend()
 		})
-		if checksum != 64481 {
+		if checksum != 28545 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sessionmanager_get_session: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_storage_backend: UniFFI API checksum mismatch")
 		}
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_sessionmanager_set_session()
+			return C.uniffi_breez_sdk_spark_checksum_method_sessionstore_get_session()
 		})
-		if checksum != 55262 {
+		if checksum != 49546 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sessionmanager_set_session: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sessionstore_get_session: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_sessionstore_set_session()
+		})
+		if checksum != 13629 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sessionstore_set_session: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1419,11 +1510,11 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_method_storage_insert_payment()
+			return C.uniffi_breez_sdk_spark_checksum_method_storage_apply_payment_update()
 		})
-		if checksum != 28075 {
+		if checksum != 8631 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_insert_payment: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storage_apply_payment_update: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1626,6 +1717,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_storagebackend_create_stores()
+		})
+		if checksum != 51497 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_storagebackend_create_stores: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_tokenissuer_burn_issuer_token()
 		})
 		if checksum != 56056 {
@@ -1689,11 +1789,11 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_constructor_passkey_new()
+			return C.uniffi_breez_sdk_spark_checksum_constructor_passkeyclient_new()
 		})
-		if checksum != 25404 {
+		if checksum != 51278 {
 			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_constructor_passkey_new: UniFFI API checksum mismatch")
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_constructor_passkeyclient_new: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1703,6 +1803,15 @@ func uniffiCheckChecksums() {
 		if checksum != 65435 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_constructor_sdkbuilder_new: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_constructor_sdkbuilder_new_with_signer()
+		})
+		if checksum != 28871 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_constructor_sdkbuilder_new_with_signer: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -2667,6 +2776,11 @@ type BreezSdkInterface interface {
 	AddContact(request AddContactRequest) (Contact, error)
 	// Registers a listener to receive SDK events
 	//
+	// The SDK holds the listener until it is removed with
+	// `remove_event_listener` or until `disconnect` unregisters all
+	// listeners. A held listener that references the SDK instance keeps
+	// that instance alive.
+	//
 	// # Arguments
 	//
 	// * `listener` - An implementation of the `EventListener` trait
@@ -2675,6 +2789,12 @@ type BreezSdkInterface interface {
 	//
 	// A unique identifier for the listener, which can be used to remove it later
 	AddEventListener(listener EventListener) string
+	// Authorize transferring the current owner's registered lightning address
+	// username to `request.transferee_pubkey`. Returns a
+	// [`TransferAuthorization`] to hand to the new owner, who
+	// claims it via [`BreezSdk::claim_lightning_address_transfer`].
+	// Errors if the current owner has no lightning address registered.
+	AuthorizeLightningAddressTransfer(request AuthorizeTransferRequest) (TransferAuthorization, error)
 	// Initiates a Bitcoin purchase flow via an external provider.
 	//
 	// Returns a URL the user should open to complete the purchase.
@@ -2683,15 +2803,6 @@ type BreezSdkInterface interface {
 	// - [`BuyBitcoinRequest::Moonpay`]: Fiat-to-Bitcoin via on-chain deposit.
 	// - [`BuyBitcoinRequest::CashApp`]: Lightning invoice + `cash.app` deep link (mainnet only).
 	BuyBitcoin(request BuyBitcoinRequest) (BuyBitcoinResponse, error)
-	// Cancels the ongoing leaf optimization.
-	//
-	// This method cancels the ongoing optimization and waits for it to fully stop.
-	// The current round will complete before stopping. This method blocks
-	// until the optimization has fully stopped and leaves reserved for optimization
-	// are available again.
-	//
-	// If no optimization is running, this method returns immediately.
-	CancelLeafOptimization() error
 	CheckLightningAddressAvailable(req CheckLightningAddressRequest) (bool, error)
 	// Verifies a message signature against the provided public key. The message
 	// is SHA256 hashed before verification. The signature can be hex encoded
@@ -2699,6 +2810,11 @@ type BreezSdkInterface interface {
 	CheckMessage(request CheckMessageRequest) (CheckMessageResponse, error)
 	ClaimDeposit(request ClaimDepositRequest) (ClaimDepositResponse, error)
 	ClaimHtlcPayment(request ClaimHtlcPaymentRequest) (ClaimHtlcPaymentResponse, error)
+	// Claim a lightning address username handed over by its current owner,
+	// using the [`TransferAuthorization`] from
+	// [`BreezSdk::authorize_lightning_address_transfer`]. Completes the
+	// takeover and returns the newly-owned address.
+	ClaimLightningAddressTransfer(request ClaimTransferRequest) (LightningAddressInfo, error)
 	// Deletes a contact by its ID.
 	//
 	// # Arguments
@@ -2715,6 +2831,9 @@ type BreezSdkInterface interface {
 	// This method stops the background tasks started by the `start()` method.
 	// It should be called before your application terminates to ensure proper cleanup.
 	//
+	// It also unregisters all event listeners, so listeners that reference
+	// the SDK no longer keep it alive after this call.
+	//
 	// # Returns
 	//
 	// Result containing either success or an `SdkError` if the background task couldn't be stopped
@@ -2722,8 +2841,6 @@ type BreezSdkInterface interface {
 	FetchConversionLimits(request FetchConversionLimitsRequest) (FetchConversionLimitsResponse, error)
 	// Returns the balance of the wallet in satoshis
 	GetInfo(request GetInfoRequest) (GetInfoResponse, error)
-	// Returns the current optimization progress snapshot.
-	GetLeafOptimizationProgress() OptimizationProgress
 	GetLightningAddress() (*LightningAddressInfo, error)
 	GetPayment(request GetPaymentRequest) (GetPaymentResponse, error)
 	// Returns an instance of the [`TokenIssuer`] for managing token issuance.
@@ -2808,6 +2925,24 @@ type BreezSdkInterface interface {
 	// * `LnurlWithdrawResponse` - The payment details if the withdraw request was successful
 	// * `SdkError` - If there was an error during the withdraw process
 	LnurlWithdraw(request LnurlWithdrawRequest) (LnurlWithdrawResponse, error)
+	// Manually drives leaf optimization, blocking until the requested work
+	// is done.
+	//
+	// With [`OptimizationMode::Full`] (the default) the call runs the entire
+	// optimization in a single invocation. With
+	// [`OptimizationMode::SingleRound`] it executes one round and returns —
+	// the caller drives the loop by inspecting the
+	// [`OptimizeLeavesResponse::outcome`] and calling again until
+	// `InProgress` no longer appears.
+	//
+	// Returns an error if another optimization run (auto or manual) is
+	// already in flight ([`SdkError::OptimizationAlreadyRunning`]), or if
+	// the SDK preempted this run to free leaves for a payment
+	// ([`SdkError::OptimizationCancelled`]).
+	//
+	// Manual runs do not emit events; events ([`SdkEvent::AutoOptimization`])
+	// are reserved for the background auto-optimizer.
+	OptimizeLeaves(request OptimizeLeavesRequest) (OptimizeLeavesResponse, error)
 	Parse(input string) (InputType, error)
 	PrepareLnurlPay(request PrepareLnurlPayRequest) (PrepareLnurlPayResponse, error)
 	PrepareSendPayment(request PrepareSendPaymentRequest) (PrepareSendPaymentResponse, error)
@@ -2855,12 +2990,6 @@ type BreezSdkInterface interface {
 	// hashed before signing. The returned signature will be hex encoded in
 	// DER format by default, or compact format if specified.
 	SignMessage(request SignMessageRequest) (SignMessageResponse, error)
-	// Starts leaf optimization in the background.
-	//
-	// This method spawns the optimization work in a background task and returns
-	// immediately. Progress is reported via events.
-	// If optimization is already running, no new task will be started.
-	StartLeafOptimization()
 	// Synchronizes the wallet with the Spark network
 	SyncWallet(request SyncWalletRequest) (SyncWalletResponse, error)
 	// Unregisters a previously registered webhook.
@@ -2940,6 +3069,11 @@ func (_self *BreezSdk) AddContact(request AddContactRequest) (Contact, error) {
 
 // Registers a listener to receive SDK events
 //
+// The SDK holds the listener until it is removed with
+// `remove_event_listener` or until `disconnect` unregisters all
+// listeners. A held listener that references the SDK instance keeps
+// that instance alive.
+//
 // # Arguments
 //
 // * `listener` - An implementation of the `EventListener` trait
@@ -2976,6 +3110,46 @@ func (_self *BreezSdk) AddEventListener(listener EventListener) string {
 	)
 
 	return res
+}
+
+// Authorize transferring the current owner's registered lightning address
+// username to `request.transferee_pubkey`. Returns a
+// [`TransferAuthorization`] to hand to the new owner, who
+// claims it via [`BreezSdk::claim_lightning_address_transfer`].
+// Errors if the current owner has no lightning address registered.
+func (_self *BreezSdk) AuthorizeLightningAddressTransfer(request AuthorizeTransferRequest) (TransferAuthorization, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) TransferAuthorization {
+			return FfiConverterTransferAuthorizationINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_authorize_lightning_address_transfer(
+			_pointer, FfiConverterAuthorizeTransferRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
 }
 
 // Initiates a Bitcoin purchase flow via an external provider.
@@ -3018,45 +3192,6 @@ func (_self *BreezSdk) BuyBitcoin(request BuyBitcoinRequest) (BuyBitcoinResponse
 	}
 
 	return res, err
-}
-
-// Cancels the ongoing leaf optimization.
-//
-// This method cancels the ongoing optimization and waits for it to fully stop.
-// The current round will complete before stopping. This method blocks
-// until the optimization has fully stopped and leaves reserved for optimization
-// are available again.
-//
-// If no optimization is running, this method returns immediately.
-func (_self *BreezSdk) CancelLeafOptimization() error {
-	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
-	defer _self.ffiObject.decrementPointer()
-	_, err := uniffiRustCallAsync[SdkError](
-		FfiConverterSdkErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
-			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
-			return struct{}{}
-		},
-		// liftFn
-		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_breezsdk_cancel_leaf_optimization(
-			_pointer),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
-		},
-	)
-
-	if err == nil {
-		return nil
-	}
-
-	return err
 }
 
 func (_self *BreezSdk) CheckLightningAddressAvailable(req CheckLightningAddressRequest) (bool, error) {
@@ -3200,6 +3335,45 @@ func (_self *BreezSdk) ClaimHtlcPayment(request ClaimHtlcPaymentRequest) (ClaimH
 	return res, err
 }
 
+// Claim a lightning address username handed over by its current owner,
+// using the [`TransferAuthorization`] from
+// [`BreezSdk::authorize_lightning_address_transfer`]. Completes the
+// takeover and returns the newly-owned address.
+func (_self *BreezSdk) ClaimLightningAddressTransfer(request ClaimTransferRequest) (LightningAddressInfo, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) LightningAddressInfo {
+			return FfiConverterLightningAddressInfoINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_claim_lightning_address_transfer(
+			_pointer, FfiConverterClaimTransferRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
 // Deletes a contact by its ID.
 //
 // # Arguments
@@ -3275,6 +3449,9 @@ func (_self *BreezSdk) DeleteLightningAddress() error {
 //
 // This method stops the background tasks started by the `start()` method.
 // It should be called before your application terminates to ensure proper cleanup.
+//
+// It also unregisters all event listeners, so listeners that reference
+// the SDK no longer keep it alive after this call.
 //
 // # Returns
 //
@@ -3379,18 +3556,6 @@ func (_self *BreezSdk) GetInfo(request GetInfoRequest) (GetInfoResponse, error) 
 	}
 
 	return res, err
-}
-
-// Returns the current optimization progress snapshot.
-func (_self *BreezSdk) GetLeafOptimizationProgress() OptimizationProgress {
-	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
-	defer _self.ffiObject.decrementPointer()
-	return FfiConverterOptimizationProgressINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) RustBufferI {
-		return GoRustBuffer{
-			inner: C.uniffi_breez_sdk_spark_fn_method_breezsdk_get_leaf_optimization_progress(
-				_pointer, _uniffiStatus),
-		}
-	}))
 }
 
 func (_self *BreezSdk) GetLightningAddress() (*LightningAddressInfo, error) {
@@ -3927,6 +4092,58 @@ func (_self *BreezSdk) LnurlWithdraw(request LnurlWithdrawRequest) (LnurlWithdra
 	return res, err
 }
 
+// Manually drives leaf optimization, blocking until the requested work
+// is done.
+//
+// With [`OptimizationMode::Full`] (the default) the call runs the entire
+// optimization in a single invocation. With
+// [`OptimizationMode::SingleRound`] it executes one round and returns —
+// the caller drives the loop by inspecting the
+// [`OptimizeLeavesResponse::outcome`] and calling again until
+// `InProgress` no longer appears.
+//
+// Returns an error if another optimization run (auto or manual) is
+// already in flight ([`SdkError::OptimizationAlreadyRunning`]), or if
+// the SDK preempted this run to free leaves for a payment
+// ([`SdkError::OptimizationCancelled`]).
+//
+// Manual runs do not emit events; events ([`SdkEvent::AutoOptimization`])
+// are reserved for the background auto-optimizer.
+func (_self *BreezSdk) OptimizeLeaves(request OptimizeLeavesRequest) (OptimizeLeavesResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) OptimizeLeavesResponse {
+			return FfiConverterOptimizeLeavesResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_optimize_leaves(
+			_pointer, FfiConverterOptimizeLeavesRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
 func (_self *BreezSdk) Parse(input string) (InputType, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -4372,37 +4589,6 @@ func (_self *BreezSdk) SignMessage(request SignMessageRequest) (SignMessageRespo
 	return res, err
 }
 
-// Starts leaf optimization in the background.
-//
-// This method spawns the optimization work in a background task and returns
-// immediately. Progress is reported via events.
-// If optimization is already running, no new task will be started.
-func (_self *BreezSdk) StartLeafOptimization() {
-	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
-	defer _self.ffiObject.decrementPointer()
-	uniffiRustCallAsync[error](
-		nil,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
-			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
-			return struct{}{}
-		},
-		// liftFn
-		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_breezsdk_start_leaf_optimization(
-			_pointer),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
-		},
-	)
-
-}
-
 // Synchronizes the wallet with the Spark network
 func (_self *BreezSdk) SyncWallet(request SyncWalletRequest) (SyncWalletResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
@@ -4615,11 +4801,7 @@ func (_ FfiDestroyerBreezSdk) Destroy(value *BreezSdk) {
 // - Spark-specific types as serialized representations
 //
 // Errors are returned as `SignerError` for FFI compatibility.
-type ExternalSigner interface {
-	// Returns the identity public key as 33 bytes (compressed secp256k1 key).
-	//
-	// See also: [JavaScript `getIdentityPublicKey`](https://docs.spark.money/wallets/spark-signer#get-identity-public-key)
-	IdentityPublicKey() (PublicKeyBytes, error)
+type ExternalBreezSigner interface {
 	// Derives a public key for the given BIP32 derivation path.
 	//
 	// # Arguments
@@ -4692,134 +4874,6 @@ type ExternalSigner interface {
 	//
 	// See also: [JavaScript `htlcHMAC`](https://docs.spark.money/wallets/spark-signer#generate-htlc-hmac)
 	HmacSha256(message []byte, path string) (HashedMessageBytes, error)
-	// Generates Frost signing commitments for multi-party signing.
-	//
-	// # Returns
-	// Frost commitments with nonces, or a `SignerError`
-	//
-	// See also: [JavaScript `getRandomSigningCommitment`](https://docs.spark.money/wallets/spark-signer#get-random-signing-commitment)
-	GenerateRandomSigningCommitment() (ExternalFrostCommitments, error)
-	// Gets the public key for a specific tree node in the Spark wallet.
-	//
-	// # Arguments
-	// * `id` - The tree node identifier
-	//
-	// # Returns
-	// The public key for the node, or a `SignerError`
-	GetPublicKeyForNode(id ExternalTreeNodeId) (PublicKeyBytes, error)
-	// Generates a random secret that is encrypted and known only to the signer.
-	//
-	// This method creates a new random secret and returns it in encrypted form.
-	// The plaintext secret never leaves the signer boundary, providing a secure way
-	// to create secrets that can be referenced in subsequent operations without
-	// exposing them.
-	//
-	// This is conceptually similar to Spark's key derivation system where secrets
-	// are represented by opaque references (like tree node IDs or Random) rather than raw values.
-	// The encrypted secret can be passed to other signer methods that need to operate
-	// on it, while keeping the actual secret material protected within the signer.
-	//
-	// # Returns
-	// An encrypted secret that can be used in subsequent signer operations,
-	// or a `SignerError` if generation fails.
-	//
-	// See also: [Key Derivation System](https://docs.spark.money/wallets/spark-signer#the-keyderivation-system)
-	GenerateRandomSecret() (ExternalEncryptedSecret, error)
-	// Gets an encrypted static deposit secret by index.
-	//
-	// # Arguments
-	// * `index` - The index of the static deposit secret
-	//
-	// # Returns
-	// The encrypted secret, or a `SignerError`
-	//
-	// This is the encrypted version of: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
-	StaticDepositSecretEncrypted(index uint32) (ExternalSecretSource, error)
-	// Gets a static deposit secret by index.
-	//
-	// # Arguments
-	// * `index` - The index of the static deposit secret
-	//
-	// # Returns
-	// The 32-byte secret, or a `SignerError`
-	//
-	// See also: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
-	StaticDepositSecret(index uint32) (SecretBytes, error)
-	// Gets a static deposit signing public key by index.
-	//
-	// # Arguments
-	// * `index` - The index of the static deposit public signing key
-	//
-	// # Returns
-	// The 33-byte public key, or a `SignerError`
-	//
-	// See also: [JavaScript `getStaticDepositSigningKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-signing-key)
-	StaticDepositSigningKey(index uint32) (PublicKeyBytes, error)
-	// Subtracts one secret from another.
-	//
-	// This is a lower-level primitive used as part of key tweaking operations.
-	//
-	// # Arguments
-	// * `signing_key` - The first secret
-	// * `new_signing_key` - The second secret to subtract
-	//
-	// # Returns
-	// The resulting secret, or a `SignerError`
-	//
-	// See also: [JavaScript `subtractSplitAndEncrypt`](https://docs.spark.money/wallets/spark-signer#subtract,-split,-and-encrypt)
-	// (this method provides the subtraction step of that higher-level operation)
-	SubtractSecrets(signingKey ExternalSecretSource, newSigningKey ExternalSecretSource) (ExternalSecretSource, error)
-	// Splits a secret with proofs using Shamir's Secret Sharing.
-	//
-	// # Arguments
-	// * `secret` - The secret to split
-	// * `threshold` - Minimum number of shares needed to reconstruct
-	// * `num_shares` - Total number of shares to create
-	//
-	// # Returns
-	// Vector of verifiable secret shares, or a `SignerError`
-	//
-	// See also: [JavaScript `splitSecretWithProofs`](https://docs.spark.money/wallets/spark-signer#split-secret-with-proofs)
-	SplitSecretWithProofs(secret ExternalSecretToSplit, threshold uint32, numShares uint32) ([]ExternalVerifiableSecretShare, error)
-	// Encrypts a secret for a specific receiver's public key.
-	//
-	// # Arguments
-	// * `encrypted_secret` - The encrypted secret to re-encrypt
-	// * `receiver_public_key` - The receiver's 33-byte public key
-	//
-	// # Returns
-	// Encrypted data for the receiver, or a `SignerError`
-	EncryptSecretForReceiver(encryptedSecret ExternalEncryptedSecret, receiverPublicKey PublicKeyBytes) ([]byte, error)
-	// Gets the public key from a secret.
-	//
-	// # Arguments
-	// * `secret` - The secret
-	//
-	// # Returns
-	// The corresponding 33-byte public key, or a `SignerError`
-	//
-	// See also: [JavaScript `getPublicKeyFromDerivation`](https://docs.spark.money/wallets/spark-signer#get-public-key-from-derivation)
-	PublicKeyFromSecret(secret ExternalSecretSource) (PublicKeyBytes, error)
-	// Signs using Frost protocol (multi-party signing).
-	//
-	// # Arguments
-	// * `request` - The Frost signing request
-	//
-	// # Returns
-	// A signature share, or a `SignerError`
-	//
-	// See also: [JavaScript `signFrost`](https://docs.spark.money/wallets/spark-signer#frost-signing)
-	SignFrost(request ExternalSignFrostRequest) (ExternalFrostSignatureShare, error)
-	// Aggregates Frost signature shares into a final signature.
-	//
-	// # Arguments
-	// * `request` - The Frost aggregation request
-	//
-	// # Returns
-	// The aggregated Frost signature, or a `SignerError`
-	//
-	// See also: [JavaScript `aggregateFrost`](https://docs.spark.money/wallets/spark-signer#aggregate-frost-signatures)
-	AggregateFrost(request ExternalAggregateFrostRequest) (ExternalFrostSignature, error)
 }
 
 // External signer trait that can be implemented by users and passed to the SDK.
@@ -4833,28 +4887,8 @@ type ExternalSigner interface {
 // - Spark-specific types as serialized representations
 //
 // Errors are returned as `SignerError` for FFI compatibility.
-type ExternalSignerImpl struct {
+type ExternalBreezSignerImpl struct {
 	ffiObject FfiObject
-}
-
-// Returns the identity public key as 33 bytes (compressed secp256k1 key).
-//
-// See also: [JavaScript `getIdentityPublicKey`](https://docs.spark.money/wallets/spark-signer#get-identity-public-key)
-func (_self *ExternalSignerImpl) IdentityPublicKey() (PublicKeyBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	_uniffiRV, _uniffiErr := rustCallWithError[SignerError](FfiConverterSignerError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
-		return GoRustBuffer{
-			inner: C.uniffi_breez_sdk_spark_fn_method_externalsigner_identity_public_key(
-				_pointer, _uniffiStatus),
-		}
-	})
-	if _uniffiErr != nil {
-		var _uniffiDefaultValue PublicKeyBytes
-		return _uniffiDefaultValue, _uniffiErr
-	} else {
-		return FfiConverterPublicKeyBytesINSTANCE.Lift(_uniffiRV), nil
-	}
 }
 
 // Derives a public key for the given BIP32 derivation path.
@@ -4866,8 +4900,8 @@ func (_self *ExternalSignerImpl) IdentityPublicKey() (PublicKeyBytes, error) {
 // The derived public key as 33 bytes, or a `SignerError`
 //
 // See also: [JavaScript `getPublicKeyFromDerivation`](https://docs.spark.money/wallets/spark-signer#get-public-key-from-derivation)
-func (_self *ExternalSignerImpl) DerivePublicKey(path string) (PublicKeyBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
+func (_self *ExternalBreezSignerImpl) DerivePublicKey(path string) (PublicKeyBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalBreezSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
 		FfiConverterSignerErrorINSTANCE,
@@ -4882,7 +4916,7 @@ func (_self *ExternalSignerImpl) DerivePublicKey(path string) (PublicKeyBytes, e
 		func(ffi RustBufferI) PublicKeyBytes {
 			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_derive_public_key(
+		C.uniffi_breez_sdk_spark_fn_method_externalbreezsigner_derive_public_key(
 			_pointer, FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -4911,8 +4945,8 @@ func (_self *ExternalSignerImpl) DerivePublicKey(path string) (PublicKeyBytes, e
 //
 // # Returns
 // 64-byte compact ECDSA signature, or a `SignerError`
-func (_self *ExternalSignerImpl) SignEcdsa(message MessageBytes, path string) (EcdsaSignatureBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
+func (_self *ExternalBreezSignerImpl) SignEcdsa(message MessageBytes, path string) (EcdsaSignatureBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalBreezSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
 		FfiConverterSignerErrorINSTANCE,
@@ -4927,7 +4961,7 @@ func (_self *ExternalSignerImpl) SignEcdsa(message MessageBytes, path string) (E
 		func(ffi RustBufferI) EcdsaSignatureBytes {
 			return FfiConverterEcdsaSignatureBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_sign_ecdsa(
+		C.uniffi_breez_sdk_spark_fn_method_externalbreezsigner_sign_ecdsa(
 			_pointer, FfiConverterMessageBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -4956,8 +4990,8 @@ func (_self *ExternalSignerImpl) SignEcdsa(message MessageBytes, path string) (E
 //
 // # Returns
 // 65 bytes: recovery ID (31 + `recovery_id`) + 64-byte signature, or a `SignerError`
-func (_self *ExternalSignerImpl) SignEcdsaRecoverable(message MessageBytes, path string) (RecoverableEcdsaSignatureBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
+func (_self *ExternalBreezSignerImpl) SignEcdsaRecoverable(message MessageBytes, path string) (RecoverableEcdsaSignatureBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalBreezSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
 		FfiConverterSignerErrorINSTANCE,
@@ -4972,7 +5006,7 @@ func (_self *ExternalSignerImpl) SignEcdsaRecoverable(message MessageBytes, path
 		func(ffi RustBufferI) RecoverableEcdsaSignatureBytes {
 			return FfiConverterRecoverableEcdsaSignatureBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_sign_ecdsa_recoverable(
+		C.uniffi_breez_sdk_spark_fn_method_externalbreezsigner_sign_ecdsa_recoverable(
 			_pointer, FfiConverterMessageBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -4999,8 +5033,8 @@ func (_self *ExternalSignerImpl) SignEcdsaRecoverable(message MessageBytes, path
 //
 // # Returns
 // Encrypted data, or a `SignerError`
-func (_self *ExternalSignerImpl) EncryptEcies(message []byte, path string) ([]byte, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
+func (_self *ExternalBreezSignerImpl) EncryptEcies(message []byte, path string) ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalBreezSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
 		FfiConverterSignerErrorINSTANCE,
@@ -5015,7 +5049,7 @@ func (_self *ExternalSignerImpl) EncryptEcies(message []byte, path string) ([]by
 		func(ffi RustBufferI) []byte {
 			return FfiConverterBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_encrypt_ecies(
+		C.uniffi_breez_sdk_spark_fn_method_externalbreezsigner_encrypt_ecies(
 			_pointer, FfiConverterBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -5044,8 +5078,8 @@ func (_self *ExternalSignerImpl) EncryptEcies(message []byte, path string) ([]by
 // Decrypted data, or a `SignerError`
 //
 // See also: [JavaScript `decryptEcies`](https://docs.spark.money/wallets/spark-signer#decrypt-ecies)
-func (_self *ExternalSignerImpl) DecryptEcies(message []byte, path string) ([]byte, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
+func (_self *ExternalBreezSignerImpl) DecryptEcies(message []byte, path string) ([]byte, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalBreezSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
 		FfiConverterSignerErrorINSTANCE,
@@ -5060,7 +5094,7 @@ func (_self *ExternalSignerImpl) DecryptEcies(message []byte, path string) ([]by
 		func(ffi RustBufferI) []byte {
 			return FfiConverterBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_decrypt_ecies(
+		C.uniffi_breez_sdk_spark_fn_method_externalbreezsigner_decrypt_ecies(
 			_pointer, FfiConverterBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -5087,8 +5121,8 @@ func (_self *ExternalSignerImpl) DecryptEcies(message []byte, path string) ([]by
 //
 // # Returns
 // 64-byte Schnorr signature, or a `SignerError`
-func (_self *ExternalSignerImpl) SignHashSchnorr(hash []byte, path string) (SchnorrSignatureBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
+func (_self *ExternalBreezSignerImpl) SignHashSchnorr(hash []byte, path string) (SchnorrSignatureBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalBreezSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
 		FfiConverterSignerErrorINSTANCE,
@@ -5103,7 +5137,7 @@ func (_self *ExternalSignerImpl) SignHashSchnorr(hash []byte, path string) (Schn
 		func(ffi RustBufferI) SchnorrSignatureBytes {
 			return FfiConverterSchnorrSignatureBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_sign_hash_schnorr(
+		C.uniffi_breez_sdk_spark_fn_method_externalbreezsigner_sign_hash_schnorr(
 			_pointer, FfiConverterBytesINSTANCE.Lower(hash), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -5132,8 +5166,8 @@ func (_self *ExternalSignerImpl) SignHashSchnorr(hash []byte, path string) (Schn
 // 32-byte HMAC-SHA256, or a `SignerError`
 //
 // See also: [JavaScript `htlcHMAC`](https://docs.spark.money/wallets/spark-signer#generate-htlc-hmac)
-func (_self *ExternalSignerImpl) HmacSha256(message []byte, path string) (HashedMessageBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
+func (_self *ExternalBreezSignerImpl) HmacSha256(message []byte, path string) (HashedMessageBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalBreezSigner")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[SignerError](
 		FfiConverterSignerErrorINSTANCE,
@@ -5148,7 +5182,7 @@ func (_self *ExternalSignerImpl) HmacSha256(message []byte, path string) (Hashed
 		func(ffi RustBufferI) HashedMessageBytes {
 			return FfiConverterHashedMessageBytesINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_hmac_sha256(
+		C.uniffi_breez_sdk_spark_fn_method_externalbreezsigner_hmac_sha256(
 			_pointer, FfiConverterBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -5166,576 +5200,40 @@ func (_self *ExternalSignerImpl) HmacSha256(message []byte, path string) (Hashed
 
 	return res, err
 }
-
-// Generates Frost signing commitments for multi-party signing.
-//
-// # Returns
-// Frost commitments with nonces, or a `SignerError`
-//
-// See also: [JavaScript `getRandomSigningCommitment`](https://docs.spark.money/wallets/spark-signer#get-random-signing-commitment)
-func (_self *ExternalSignerImpl) GenerateRandomSigningCommitment() (ExternalFrostCommitments, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) ExternalFrostCommitments {
-			return FfiConverterExternalFrostCommitmentsINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_generate_random_signing_commitment(
-			_pointer),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Gets the public key for a specific tree node in the Spark wallet.
-//
-// # Arguments
-// * `id` - The tree node identifier
-//
-// # Returns
-// The public key for the node, or a `SignerError`
-func (_self *ExternalSignerImpl) GetPublicKeyForNode(id ExternalTreeNodeId) (PublicKeyBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) PublicKeyBytes {
-			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_get_public_key_for_node(
-			_pointer, FfiConverterExternalTreeNodeIdINSTANCE.Lower(id)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Generates a random secret that is encrypted and known only to the signer.
-//
-// This method creates a new random secret and returns it in encrypted form.
-// The plaintext secret never leaves the signer boundary, providing a secure way
-// to create secrets that can be referenced in subsequent operations without
-// exposing them.
-//
-// This is conceptually similar to Spark's key derivation system where secrets
-// are represented by opaque references (like tree node IDs or Random) rather than raw values.
-// The encrypted secret can be passed to other signer methods that need to operate
-// on it, while keeping the actual secret material protected within the signer.
-//
-// # Returns
-// An encrypted secret that can be used in subsequent signer operations,
-// or a `SignerError` if generation fails.
-//
-// See also: [Key Derivation System](https://docs.spark.money/wallets/spark-signer#the-keyderivation-system)
-func (_self *ExternalSignerImpl) GenerateRandomSecret() (ExternalEncryptedSecret, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) ExternalEncryptedSecret {
-			return FfiConverterExternalEncryptedSecretINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_generate_random_secret(
-			_pointer),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Gets an encrypted static deposit secret by index.
-//
-// # Arguments
-// * `index` - The index of the static deposit secret
-//
-// # Returns
-// The encrypted secret, or a `SignerError`
-//
-// This is the encrypted version of: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
-func (_self *ExternalSignerImpl) StaticDepositSecretEncrypted(index uint32) (ExternalSecretSource, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) ExternalSecretSource {
-			return FfiConverterExternalSecretSourceINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_static_deposit_secret_encrypted(
-			_pointer, FfiConverterUint32INSTANCE.Lower(index)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Gets a static deposit secret by index.
-//
-// # Arguments
-// * `index` - The index of the static deposit secret
-//
-// # Returns
-// The 32-byte secret, or a `SignerError`
-//
-// See also: [JavaScript `getStaticDepositSecretKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-secret-key)
-func (_self *ExternalSignerImpl) StaticDepositSecret(index uint32) (SecretBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) SecretBytes {
-			return FfiConverterSecretBytesINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_static_deposit_secret(
-			_pointer, FfiConverterUint32INSTANCE.Lower(index)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Gets a static deposit signing public key by index.
-//
-// # Arguments
-// * `index` - The index of the static deposit public signing key
-//
-// # Returns
-// The 33-byte public key, or a `SignerError`
-//
-// See also: [JavaScript `getStaticDepositSigningKey`](https://docs.spark.money/wallets/spark-signer#get-static-deposit-signing-key)
-func (_self *ExternalSignerImpl) StaticDepositSigningKey(index uint32) (PublicKeyBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) PublicKeyBytes {
-			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_static_deposit_signing_key(
-			_pointer, FfiConverterUint32INSTANCE.Lower(index)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Subtracts one secret from another.
-//
-// This is a lower-level primitive used as part of key tweaking operations.
-//
-// # Arguments
-// * `signing_key` - The first secret
-// * `new_signing_key` - The second secret to subtract
-//
-// # Returns
-// The resulting secret, or a `SignerError`
-//
-// See also: [JavaScript `subtractSplitAndEncrypt`](https://docs.spark.money/wallets/spark-signer#subtract,-split,-and-encrypt)
-// (this method provides the subtraction step of that higher-level operation)
-func (_self *ExternalSignerImpl) SubtractSecrets(signingKey ExternalSecretSource, newSigningKey ExternalSecretSource) (ExternalSecretSource, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) ExternalSecretSource {
-			return FfiConverterExternalSecretSourceINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_subtract_secrets(
-			_pointer, FfiConverterExternalSecretSourceINSTANCE.Lower(signingKey), FfiConverterExternalSecretSourceINSTANCE.Lower(newSigningKey)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Splits a secret with proofs using Shamir's Secret Sharing.
-//
-// # Arguments
-// * `secret` - The secret to split
-// * `threshold` - Minimum number of shares needed to reconstruct
-// * `num_shares` - Total number of shares to create
-//
-// # Returns
-// Vector of verifiable secret shares, or a `SignerError`
-//
-// See also: [JavaScript `splitSecretWithProofs`](https://docs.spark.money/wallets/spark-signer#split-secret-with-proofs)
-func (_self *ExternalSignerImpl) SplitSecretWithProofs(secret ExternalSecretToSplit, threshold uint32, numShares uint32) ([]ExternalVerifiableSecretShare, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) []ExternalVerifiableSecretShare {
-			return FfiConverterSequenceExternalVerifiableSecretShareINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_split_secret_with_proofs(
-			_pointer, FfiConverterExternalSecretToSplitINSTANCE.Lower(secret), FfiConverterUint32INSTANCE.Lower(threshold), FfiConverterUint32INSTANCE.Lower(numShares)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Encrypts a secret for a specific receiver's public key.
-//
-// # Arguments
-// * `encrypted_secret` - The encrypted secret to re-encrypt
-// * `receiver_public_key` - The receiver's 33-byte public key
-//
-// # Returns
-// Encrypted data for the receiver, or a `SignerError`
-func (_self *ExternalSignerImpl) EncryptSecretForReceiver(encryptedSecret ExternalEncryptedSecret, receiverPublicKey PublicKeyBytes) ([]byte, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) []byte {
-			return FfiConverterBytesINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_encrypt_secret_for_receiver(
-			_pointer, FfiConverterExternalEncryptedSecretINSTANCE.Lower(encryptedSecret), FfiConverterPublicKeyBytesINSTANCE.Lower(receiverPublicKey)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Gets the public key from a secret.
-//
-// # Arguments
-// * `secret` - The secret
-//
-// # Returns
-// The corresponding 33-byte public key, or a `SignerError`
-//
-// See also: [JavaScript `getPublicKeyFromDerivation`](https://docs.spark.money/wallets/spark-signer#get-public-key-from-derivation)
-func (_self *ExternalSignerImpl) PublicKeyFromSecret(secret ExternalSecretSource) (PublicKeyBytes, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) PublicKeyBytes {
-			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_public_key_from_secret(
-			_pointer, FfiConverterExternalSecretSourceINSTANCE.Lower(secret)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Signs using Frost protocol (multi-party signing).
-//
-// # Arguments
-// * `request` - The Frost signing request
-//
-// # Returns
-// A signature share, or a `SignerError`
-//
-// See also: [JavaScript `signFrost`](https://docs.spark.money/wallets/spark-signer#frost-signing)
-func (_self *ExternalSignerImpl) SignFrost(request ExternalSignFrostRequest) (ExternalFrostSignatureShare, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) ExternalFrostSignatureShare {
-			return FfiConverterExternalFrostSignatureShareINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_sign_frost(
-			_pointer, FfiConverterExternalSignFrostRequestINSTANCE.Lower(request)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Aggregates Frost signature shares into a final signature.
-//
-// # Arguments
-// * `request` - The Frost aggregation request
-//
-// # Returns
-// The aggregated Frost signature, or a `SignerError`
-//
-// See also: [JavaScript `aggregateFrost`](https://docs.spark.money/wallets/spark-signer#aggregate-frost-signatures)
-func (_self *ExternalSignerImpl) AggregateFrost(request ExternalAggregateFrostRequest) (ExternalFrostSignature, error) {
-	_pointer := _self.ffiObject.incrementPointer("ExternalSigner")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SignerError](
-		FfiConverterSignerErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) ExternalFrostSignature {
-			return FfiConverterExternalFrostSignatureINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_externalsigner_aggregate_frost(
-			_pointer, FfiConverterExternalAggregateFrostRequestINSTANCE.Lower(request)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-func (object *ExternalSignerImpl) Destroy() {
+func (object *ExternalBreezSignerImpl) Destroy() {
 	runtime.SetFinalizer(object, nil)
 	object.ffiObject.destroy()
 }
 
-type FfiConverterExternalSigner struct {
-	handleMap *concurrentHandleMap[ExternalSigner]
+type FfiConverterExternalBreezSigner struct {
+	handleMap *concurrentHandleMap[ExternalBreezSigner]
 }
 
-var FfiConverterExternalSignerINSTANCE = FfiConverterExternalSigner{
-	handleMap: newConcurrentHandleMap[ExternalSigner](),
+var FfiConverterExternalBreezSignerINSTANCE = FfiConverterExternalBreezSigner{
+	handleMap: newConcurrentHandleMap[ExternalBreezSigner](),
 }
 
-func (c FfiConverterExternalSigner) Lift(pointer unsafe.Pointer) ExternalSigner {
-	result := &ExternalSignerImpl{
+func (c FfiConverterExternalBreezSigner) Lift(pointer unsafe.Pointer) ExternalBreezSigner {
+	result := &ExternalBreezSignerImpl{
 		newFfiObject(
 			pointer,
 			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_breez_sdk_spark_fn_clone_externalsigner(pointer, status)
+				return C.uniffi_breez_sdk_spark_fn_clone_externalbreezsigner(pointer, status)
 			},
 			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_breez_sdk_spark_fn_free_externalsigner(pointer, status)
+				C.uniffi_breez_sdk_spark_fn_free_externalbreezsigner(pointer, status)
 			},
 		),
 	}
-	runtime.SetFinalizer(result, (*ExternalSignerImpl).Destroy)
+	runtime.SetFinalizer(result, (*ExternalBreezSignerImpl).Destroy)
 	return result
 }
 
-func (c FfiConverterExternalSigner) Read(reader io.Reader) ExternalSigner {
+func (c FfiConverterExternalBreezSigner) Read(reader io.Reader) ExternalBreezSigner {
 	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
 }
 
-func (c FfiConverterExternalSigner) Lower(value ExternalSigner) unsafe.Pointer {
+func (c FfiConverterExternalBreezSigner) Lower(value ExternalBreezSigner) unsafe.Pointer {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
 	// because the pointer will be decremented immediately after this function returns,
 	// and someone will be left holding onto a non-locked pointer.
@@ -5744,56 +5242,24 @@ func (c FfiConverterExternalSigner) Lower(value ExternalSigner) unsafe.Pointer {
 
 }
 
-func (c FfiConverterExternalSigner) Write(writer io.Writer, value ExternalSigner) {
+func (c FfiConverterExternalBreezSigner) Write(writer io.Writer, value ExternalBreezSigner) {
 	writeUint64(writer, uint64(uintptr(c.Lower(value))))
 }
 
-type FfiDestroyerExternalSigner struct{}
+type FfiDestroyerExternalBreezSigner struct{}
 
-func (_ FfiDestroyerExternalSigner) Destroy(value ExternalSigner) {
-	if val, ok := value.(*ExternalSignerImpl); ok {
+func (_ FfiDestroyerExternalBreezSigner) Destroy(value ExternalBreezSigner) {
+	if val, ok := value.(*ExternalBreezSignerImpl); ok {
 		val.Destroy()
 	} else {
-		panic("Expected *ExternalSignerImpl")
+		panic("Expected *ExternalBreezSignerImpl")
 	}
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod0
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod0(uniffiHandle C.uint64_t, uniffiOutReturn *C.RustBuffer, callStatus *C.RustCallStatus) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod0
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod0(uniffiHandle C.uint64_t, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
-	if !ok {
-		panic(fmt.Errorf("no callback in handle map: %d", handle))
-	}
-
-	res, err :=
-		uniffiObj.IdentityPublicKey()
-
-	if err != nil {
-		var actualError *SignerError
-		if errors.As(err, &actualError) {
-			if actualError != nil {
-				*callStatus = C.RustCallStatus{
-					code:     C.int8_t(uniffiCallbackResultError),
-					errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
-				}
-				return
-			}
-		} else {
-			*callStatus = C.RustCallStatus{
-				code: C.int8_t(uniffiCallbackUnexpectedResultError),
-			}
-			return
-		}
-	}
-
-	*uniffiOutReturn = FfiConverterPublicKeyBytesINSTANCE.Lower(res)
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod1
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod1(uniffiHandle C.uint64_t, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
-	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalBreezSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -5853,10 +5319,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod1(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod2
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod2(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod1
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod1(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalBreezSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -5919,10 +5385,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod2(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod3
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod3(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod2
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod2(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalBreezSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -5985,10 +5451,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod3(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod4
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod4(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod3
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod3(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalBreezSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6051,10 +5517,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod4(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod5
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod5(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod4
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod4(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalBreezSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6117,10 +5583,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod5(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod6
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod6(uniffiHandle C.uint64_t, hash C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod5
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod5(uniffiHandle C.uint64_t, hash C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalBreezSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6183,10 +5649,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod6(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod6
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod6(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalBreezSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6249,10 +5715,665 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+var UniffiVTableCallbackInterfaceExternalBreezSignerINSTANCE = C.UniffiVTableCallbackInterfaceExternalBreezSigner{
+	derivePublicKey:      (C.UniffiCallbackInterfaceExternalBreezSignerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod0),
+	signEcdsa:            (C.UniffiCallbackInterfaceExternalBreezSignerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod1),
+	signEcdsaRecoverable: (C.UniffiCallbackInterfaceExternalBreezSignerMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod2),
+	encryptEcies:         (C.UniffiCallbackInterfaceExternalBreezSignerMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod3),
+	decryptEcies:         (C.UniffiCallbackInterfaceExternalBreezSignerMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod4),
+	signHashSchnorr:      (C.UniffiCallbackInterfaceExternalBreezSignerMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod5),
+	hmacSha256:           (C.UniffiCallbackInterfaceExternalBreezSignerMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerMethod6),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerFree),
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerFree
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalBreezSignerFree(handle C.uint64_t) {
+	FfiConverterExternalBreezSignerINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterExternalBreezSigner) register() {
+	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_externalbreezsigner(&UniffiVTableCallbackInterfaceExternalBreezSignerINSTANCE)
+}
+
+// FFI-compatible mirror of `spark_wallet::SparkSigner`.
+type ExternalSparkSigner interface {
+	// The wallet identity public key (33 bytes compressed).
+	GetIdentityPublicKey() (PublicKeyBytes, error)
+	// The signing public key for a tree leaf.
+	GetPublicKeyForLeaf(leafId ExternalTreeNodeId) (PublicKeyBytes, error)
+	// The static-deposit signing public key at `index`.
+	GetStaticDepositPublicKey(index uint32) (PublicKeyBytes, error)
+	// ECDSA-sign a server authentication challenge with the identity key.
+	SignAuthenticationChallenge(challenge []byte) (EcdsaSignatureBytes, error)
+	// ECDSA-sign an arbitrary user message with the identity key.
+	SignMessage(message []byte) (EcdsaSignatureBytes, error)
+	// Produce FROST shares for a batch of jobs.
+	SignFrost(jobs []ExternalFrostJob) ([]ExternalFrostShareResult, error)
+	// Prepare an outbound transfer (key-tweak + packages + payload signature).
+	PrepareTransfer(request ExternalPrepareTransferRequest) (ExternalPreparedTransfer, error)
+	// Claim an inbound transfer (key-tweak step).
+	PrepareClaim(request ExternalPrepareClaimRequest) (ExternalPreparedClaim, error)
+	// Prepare a Lightning receive (in-enclave preimage + Feldman split).
+	PrepareLightningReceive(request ExternalPrepareLightningReceiveRequest) (ExternalPreparedLightningReceive, error)
+	// Prepare a static deposit (export secret to SSP + FROST-sign tree txs).
+	PrepareStaticDeposit(request ExternalPrepareStaticDepositRequest) (ExternalPreparedStaticDeposit, error)
+	// Begin a static-deposit refund (user-commits-first).
+	StartStaticDepositRefund(request ExternalStartStaticDepositRefundRequest) (ExternalStartedStaticDepositRefund, error)
+	// Finish a static-deposit refund (aggregate into the final signature).
+	SignStaticDepositRefund(request ExternalSignStaticDepositRefundRequest) (ExternalFrostSignature, error)
+	// Schnorr-sign a Spark invoice (sats or tokens) with the identity key.
+	SignSparkInvoice(request ExternalSignSparkInvoiceRequest) (ExternalSignedSparkInvoice, error)
+	// Schnorr-sign a token-transaction digest with the identity key.
+	PrepareTokenTransaction(request ExternalPrepareTokenTransactionRequest) (ExternalPreparedTokenTransaction, error)
+	// Prepare a static-deposit claim (export secret in the clear + sign).
+	PrepareStaticDepositClaim(request ExternalPrepareStaticDepositClaimRequest) (ExternalPreparedStaticDepositClaim, error)
+}
+
+// FFI-compatible mirror of `spark_wallet::SparkSigner`.
+type ExternalSparkSignerImpl struct {
+	ffiObject FfiObject
+}
+
+// The wallet identity public key (33 bytes compressed).
+func (_self *ExternalSparkSignerImpl) GetIdentityPublicKey() (PublicKeyBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) PublicKeyBytes {
+			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_get_identity_public_key(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// The signing public key for a tree leaf.
+func (_self *ExternalSparkSignerImpl) GetPublicKeyForLeaf(leafId ExternalTreeNodeId) (PublicKeyBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) PublicKeyBytes {
+			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_get_public_key_for_leaf(
+			_pointer, FfiConverterExternalTreeNodeIdINSTANCE.Lower(leafId)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// The static-deposit signing public key at `index`.
+func (_self *ExternalSparkSignerImpl) GetStaticDepositPublicKey(index uint32) (PublicKeyBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) PublicKeyBytes {
+			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_get_static_deposit_public_key(
+			_pointer, FfiConverterUint32INSTANCE.Lower(index)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// ECDSA-sign a server authentication challenge with the identity key.
+func (_self *ExternalSparkSignerImpl) SignAuthenticationChallenge(challenge []byte) (EcdsaSignatureBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) EcdsaSignatureBytes {
+			return FfiConverterEcdsaSignatureBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_sign_authentication_challenge(
+			_pointer, FfiConverterBytesINSTANCE.Lower(challenge)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// ECDSA-sign an arbitrary user message with the identity key.
+func (_self *ExternalSparkSignerImpl) SignMessage(message []byte) (EcdsaSignatureBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) EcdsaSignatureBytes {
+			return FfiConverterEcdsaSignatureBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_sign_message(
+			_pointer, FfiConverterBytesINSTANCE.Lower(message)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Produce FROST shares for a batch of jobs.
+func (_self *ExternalSparkSignerImpl) SignFrost(jobs []ExternalFrostJob) ([]ExternalFrostShareResult, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) []ExternalFrostShareResult {
+			return FfiConverterSequenceExternalFrostShareResultINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_sign_frost(
+			_pointer, FfiConverterSequenceExternalFrostJobINSTANCE.Lower(jobs)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Prepare an outbound transfer (key-tweak + packages + payload signature).
+func (_self *ExternalSparkSignerImpl) PrepareTransfer(request ExternalPrepareTransferRequest) (ExternalPreparedTransfer, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalPreparedTransfer {
+			return FfiConverterExternalPreparedTransferINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_prepare_transfer(
+			_pointer, FfiConverterExternalPrepareTransferRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Claim an inbound transfer (key-tweak step).
+func (_self *ExternalSparkSignerImpl) PrepareClaim(request ExternalPrepareClaimRequest) (ExternalPreparedClaim, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalPreparedClaim {
+			return FfiConverterExternalPreparedClaimINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_prepare_claim(
+			_pointer, FfiConverterExternalPrepareClaimRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Prepare a Lightning receive (in-enclave preimage + Feldman split).
+func (_self *ExternalSparkSignerImpl) PrepareLightningReceive(request ExternalPrepareLightningReceiveRequest) (ExternalPreparedLightningReceive, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalPreparedLightningReceive {
+			return FfiConverterExternalPreparedLightningReceiveINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_prepare_lightning_receive(
+			_pointer, FfiConverterExternalPrepareLightningReceiveRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Prepare a static deposit (export secret to SSP + FROST-sign tree txs).
+func (_self *ExternalSparkSignerImpl) PrepareStaticDeposit(request ExternalPrepareStaticDepositRequest) (ExternalPreparedStaticDeposit, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalPreparedStaticDeposit {
+			return FfiConverterExternalPreparedStaticDepositINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_prepare_static_deposit(
+			_pointer, FfiConverterExternalPrepareStaticDepositRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Begin a static-deposit refund (user-commits-first).
+func (_self *ExternalSparkSignerImpl) StartStaticDepositRefund(request ExternalStartStaticDepositRefundRequest) (ExternalStartedStaticDepositRefund, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalStartedStaticDepositRefund {
+			return FfiConverterExternalStartedStaticDepositRefundINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_start_static_deposit_refund(
+			_pointer, FfiConverterExternalStartStaticDepositRefundRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Finish a static-deposit refund (aggregate into the final signature).
+func (_self *ExternalSparkSignerImpl) SignStaticDepositRefund(request ExternalSignStaticDepositRefundRequest) (ExternalFrostSignature, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalFrostSignature {
+			return FfiConverterExternalFrostSignatureINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_sign_static_deposit_refund(
+			_pointer, FfiConverterExternalSignStaticDepositRefundRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Schnorr-sign a Spark invoice (sats or tokens) with the identity key.
+func (_self *ExternalSparkSignerImpl) SignSparkInvoice(request ExternalSignSparkInvoiceRequest) (ExternalSignedSparkInvoice, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalSignedSparkInvoice {
+			return FfiConverterExternalSignedSparkInvoiceINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_sign_spark_invoice(
+			_pointer, FfiConverterExternalSignSparkInvoiceRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Schnorr-sign a token-transaction digest with the identity key.
+func (_self *ExternalSparkSignerImpl) PrepareTokenTransaction(request ExternalPrepareTokenTransactionRequest) (ExternalPreparedTokenTransaction, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalPreparedTokenTransaction {
+			return FfiConverterExternalPreparedTokenTransactionINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_prepare_token_transaction(
+			_pointer, FfiConverterExternalPrepareTokenTransactionRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Prepare a static-deposit claim (export secret in the clear + sign).
+func (_self *ExternalSparkSignerImpl) PrepareStaticDepositClaim(request ExternalPrepareStaticDepositClaimRequest) (ExternalPreparedStaticDepositClaim, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalPreparedStaticDepositClaim {
+			return FfiConverterExternalPreparedStaticDepositClaimINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_prepare_static_deposit_claim(
+			_pointer, FfiConverterExternalPrepareStaticDepositClaimRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+func (object *ExternalSparkSignerImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterExternalSparkSigner struct {
+	handleMap *concurrentHandleMap[ExternalSparkSigner]
+}
+
+var FfiConverterExternalSparkSignerINSTANCE = FfiConverterExternalSparkSigner{
+	handleMap: newConcurrentHandleMap[ExternalSparkSigner](),
+}
+
+func (c FfiConverterExternalSparkSigner) Lift(pointer unsafe.Pointer) ExternalSparkSigner {
+	result := &ExternalSparkSignerImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_externalsparksigner(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_externalsparksigner(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*ExternalSparkSignerImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterExternalSparkSigner) Read(reader io.Reader) ExternalSparkSigner {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterExternalSparkSigner) Lower(value ExternalSparkSigner) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterExternalSparkSigner) Write(writer io.Writer, value ExternalSparkSigner) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerExternalSparkSigner struct{}
+
+func (_ FfiDestroyerExternalSparkSigner) Destroy(value ExternalSparkSigner) {
+	if val, ok := value.(*ExternalSparkSignerImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *ExternalSparkSignerImpl")
+	}
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod0
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod0(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6284,7 +6405,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8(uniffiHa
 		}()
 
 		res, err :=
-			uniffiObj.GenerateRandomSigningCommitment()
+			uniffiObj.GetIdentityPublicKey()
 
 		if err != nil {
 			var actualError *SignerError
@@ -6304,14 +6425,14 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8(uniffiHa
 			}
 		}
 
-		*uniffiOutReturn = FfiConverterExternalFrostCommitmentsINSTANCE.Lower(res)
+		*uniffiOutReturn = FfiConverterPublicKeyBytesINSTANCE.Lower(res)
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9(uniffiHandle C.uint64_t, id C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod1
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod1(uniffiHandle C.uint64_t, leafId C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6343,9 +6464,9 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9(uniffiHa
 		}()
 
 		res, err :=
-			uniffiObj.GetPublicKeyForNode(
+			uniffiObj.GetPublicKeyForLeaf(
 				FfiConverterExternalTreeNodeIdINSTANCE.Lift(GoRustBuffer{
-					inner: id,
+					inner: leafId,
 				}),
 			)
 
@@ -6371,10 +6492,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod2
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod2(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6406,188 +6527,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10(uniffiH
 		}()
 
 		res, err :=
-			uniffiObj.GenerateRandomSecret()
-
-		if err != nil {
-			var actualError *SignerError
-			if errors.As(err, &actualError) {
-				if actualError != nil {
-					*callStatus = C.RustCallStatus{
-						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
-					}
-					return
-				}
-			} else {
-				*callStatus = C.RustCallStatus{
-					code: C.int8_t(uniffiCallbackUnexpectedResultError),
-				}
-				return
-			}
-		}
-
-		*uniffiOutReturn = FfiConverterExternalEncryptedSecretINSTANCE.Lower(res)
-	}()
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
-	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
-	if !ok {
-		panic(fmt.Errorf("no callback in handle map: %d", handle))
-	}
-
-	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
-	cancel := make(chan struct{}, 1)
-	guardHandle := cgo.NewHandle(cancel)
-	*uniffiOutReturn = C.UniffiForeignFuture{
-		handle: C.uint64_t(guardHandle),
-		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
-	}
-
-	// Wait for compleation or cancel
-	go func() {
-		select {
-		case <-cancel:
-		case res := <-result:
-			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
-		}
-	}()
-
-	// Eval callback asynchroniously
-	go func() {
-		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
-		uniffiOutReturn := &asyncResult.returnValue
-		callStatus := &asyncResult.callStatus
-		defer func() {
-			result <- *asyncResult
-		}()
-
-		res, err :=
-			uniffiObj.StaticDepositSecretEncrypted(
-				FfiConverterUint32INSTANCE.Lift(index),
-			)
-
-		if err != nil {
-			var actualError *SignerError
-			if errors.As(err, &actualError) {
-				if actualError != nil {
-					*callStatus = C.RustCallStatus{
-						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
-					}
-					return
-				}
-			} else {
-				*callStatus = C.RustCallStatus{
-					code: C.int8_t(uniffiCallbackUnexpectedResultError),
-				}
-				return
-			}
-		}
-
-		*uniffiOutReturn = FfiConverterExternalSecretSourceINSTANCE.Lower(res)
-	}()
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
-	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
-	if !ok {
-		panic(fmt.Errorf("no callback in handle map: %d", handle))
-	}
-
-	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
-	cancel := make(chan struct{}, 1)
-	guardHandle := cgo.NewHandle(cancel)
-	*uniffiOutReturn = C.UniffiForeignFuture{
-		handle: C.uint64_t(guardHandle),
-		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
-	}
-
-	// Wait for compleation or cancel
-	go func() {
-		select {
-		case <-cancel:
-		case res := <-result:
-			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
-		}
-	}()
-
-	// Eval callback asynchroniously
-	go func() {
-		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
-		uniffiOutReturn := &asyncResult.returnValue
-		callStatus := &asyncResult.callStatus
-		defer func() {
-			result <- *asyncResult
-		}()
-
-		res, err :=
-			uniffiObj.StaticDepositSecret(
-				FfiConverterUint32INSTANCE.Lift(index),
-			)
-
-		if err != nil {
-			var actualError *SignerError
-			if errors.As(err, &actualError) {
-				if actualError != nil {
-					*callStatus = C.RustCallStatus{
-						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
-					}
-					return
-				}
-			} else {
-				*callStatus = C.RustCallStatus{
-					code: C.int8_t(uniffiCallbackUnexpectedResultError),
-				}
-				return
-			}
-		}
-
-		*uniffiOutReturn = FfiConverterSecretBytesINSTANCE.Lower(res)
-	}()
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
-	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
-	if !ok {
-		panic(fmt.Errorf("no callback in handle map: %d", handle))
-	}
-
-	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
-	cancel := make(chan struct{}, 1)
-	guardHandle := cgo.NewHandle(cancel)
-	*uniffiOutReturn = C.UniffiForeignFuture{
-		handle: C.uint64_t(guardHandle),
-		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
-	}
-
-	// Wait for compleation or cancel
-	go func() {
-		select {
-		case <-cancel:
-		case res := <-result:
-			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
-		}
-	}()
-
-	// Eval callback asynchroniously
-	go func() {
-		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
-		uniffiOutReturn := &asyncResult.returnValue
-		callStatus := &asyncResult.callStatus
-		defer func() {
-			result <- *asyncResult
-		}()
-
-		res, err :=
-			uniffiObj.StaticDepositSigningKey(
+			uniffiObj.GetStaticDepositPublicKey(
 				FfiConverterUint32INSTANCE.Lift(index),
 			)
 
@@ -6613,10 +6553,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13(uniffiH
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14(uniffiHandle C.uint64_t, signingKey C.RustBuffer, newSigningKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3(uniffiHandle C.uint64_t, challenge C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6648,12 +6588,9 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14(uniffiH
 		}()
 
 		res, err :=
-			uniffiObj.SubtractSecrets(
-				FfiConverterExternalSecretSourceINSTANCE.Lift(GoRustBuffer{
-					inner: signingKey,
-				}),
-				FfiConverterExternalSecretSourceINSTANCE.Lift(GoRustBuffer{
-					inner: newSigningKey,
+			uniffiObj.SignAuthenticationChallenge(
+				FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+					inner: challenge,
 				}),
 			)
 
@@ -6675,14 +6612,14 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14(uniffiH
 			}
 		}
 
-		*uniffiOutReturn = FfiConverterExternalSecretSourceINSTANCE.Lower(res)
+		*uniffiOutReturn = FfiConverterEcdsaSignatureBytesINSTANCE.Lower(res)
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15(uniffiHandle C.uint64_t, secret C.RustBuffer, threshold C.uint32_t, numShares C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4(uniffiHandle C.uint64_t, message C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6714,77 +6651,9 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15(uniffiH
 		}()
 
 		res, err :=
-			uniffiObj.SplitSecretWithProofs(
-				FfiConverterExternalSecretToSplitINSTANCE.Lift(GoRustBuffer{
-					inner: secret,
-				}),
-				FfiConverterUint32INSTANCE.Lift(threshold),
-				FfiConverterUint32INSTANCE.Lift(numShares),
-			)
-
-		if err != nil {
-			var actualError *SignerError
-			if errors.As(err, &actualError) {
-				if actualError != nil {
-					*callStatus = C.RustCallStatus{
-						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
-					}
-					return
-				}
-			} else {
-				*callStatus = C.RustCallStatus{
-					code: C.int8_t(uniffiCallbackUnexpectedResultError),
-				}
-				return
-			}
-		}
-
-		*uniffiOutReturn = FfiConverterSequenceExternalVerifiableSecretShareINSTANCE.Lower(res)
-	}()
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiHandle C.uint64_t, encryptedSecret C.RustBuffer, receiverPublicKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
-	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
-	if !ok {
-		panic(fmt.Errorf("no callback in handle map: %d", handle))
-	}
-
-	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
-	cancel := make(chan struct{}, 1)
-	guardHandle := cgo.NewHandle(cancel)
-	*uniffiOutReturn = C.UniffiForeignFuture{
-		handle: C.uint64_t(guardHandle),
-		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
-	}
-
-	// Wait for compleation or cancel
-	go func() {
-		select {
-		case <-cancel:
-		case res := <-result:
-			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
-		}
-	}()
-
-	// Eval callback asynchroniously
-	go func() {
-		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
-		uniffiOutReturn := &asyncResult.returnValue
-		callStatus := &asyncResult.callStatus
-		defer func() {
-			result <- *asyncResult
-		}()
-
-		res, err :=
-			uniffiObj.EncryptSecretForReceiver(
-				FfiConverterExternalEncryptedSecretINSTANCE.Lift(GoRustBuffer{
-					inner: encryptedSecret,
-				}),
-				FfiConverterPublicKeyBytesINSTANCE.Lift(GoRustBuffer{
-					inner: receiverPublicKey,
+			uniffiObj.SignMessage(
+				FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+					inner: message,
 				}),
 			)
 
@@ -6806,77 +6675,14 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16(uniffiH
 			}
 		}
 
-		*uniffiOutReturn = FfiConverterBytesINSTANCE.Lower(res)
+		*uniffiOutReturn = FfiConverterEcdsaSignatureBytesINSTANCE.Lower(res)
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17(uniffiHandle C.uint64_t, secret C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5(uniffiHandle C.uint64_t, jobs C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
-	if !ok {
-		panic(fmt.Errorf("no callback in handle map: %d", handle))
-	}
-
-	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
-	cancel := make(chan struct{}, 1)
-	guardHandle := cgo.NewHandle(cancel)
-	*uniffiOutReturn = C.UniffiForeignFuture{
-		handle: C.uint64_t(guardHandle),
-		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
-	}
-
-	// Wait for compleation or cancel
-	go func() {
-		select {
-		case <-cancel:
-		case res := <-result:
-			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
-		}
-	}()
-
-	// Eval callback asynchroniously
-	go func() {
-		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
-		uniffiOutReturn := &asyncResult.returnValue
-		callStatus := &asyncResult.callStatus
-		defer func() {
-			result <- *asyncResult
-		}()
-
-		res, err :=
-			uniffiObj.PublicKeyFromSecret(
-				FfiConverterExternalSecretSourceINSTANCE.Lift(GoRustBuffer{
-					inner: secret,
-				}),
-			)
-
-		if err != nil {
-			var actualError *SignerError
-			if errors.As(err, &actualError) {
-				if actualError != nil {
-					*callStatus = C.RustCallStatus{
-						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
-					}
-					return
-				}
-			} else {
-				*callStatus = C.RustCallStatus{
-					code: C.int8_t(uniffiCallbackUnexpectedResultError),
-				}
-				return
-			}
-		}
-
-		*uniffiOutReturn = FfiConverterPublicKeyBytesINSTANCE.Lower(res)
-	}()
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
-	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6909,8 +6715,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18(uniffiH
 
 		res, err :=
 			uniffiObj.SignFrost(
-				FfiConverterExternalSignFrostRequestINSTANCE.Lift(GoRustBuffer{
-					inner: request,
+				FfiConverterSequenceExternalFrostJobINSTANCE.Lift(GoRustBuffer{
+					inner: jobs,
 				}),
 			)
 
@@ -6932,14 +6738,14 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18(uniffiH
 			}
 		}
 
-		*uniffiOutReturn = FfiConverterExternalFrostSignatureShareINSTANCE.Lower(res)
+		*uniffiOutReturn = FfiConverterSequenceExternalFrostShareResultINSTANCE.Lower(res)
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterExternalSignerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -6971,8 +6777,323 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19(uniffiH
 		}()
 
 		res, err :=
-			uniffiObj.AggregateFrost(
-				FfiConverterExternalAggregateFrostRequestINSTANCE.Lift(GoRustBuffer{
+			uniffiObj.PrepareTransfer(
+				FfiConverterExternalPrepareTransferRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterExternalPreparedTransferINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.PrepareClaim(
+				FfiConverterExternalPrepareClaimRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterExternalPreparedClaimINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.PrepareLightningReceive(
+				FfiConverterExternalPrepareLightningReceiveRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterExternalPreparedLightningReceiveINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.PrepareStaticDeposit(
+				FfiConverterExternalPrepareStaticDepositRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterExternalPreparedStaticDepositINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.StartStaticDepositRefund(
+				FfiConverterExternalStartStaticDepositRefundRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterExternalStartedStaticDepositRefundINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.SignStaticDepositRefund(
+				FfiConverterExternalSignStaticDepositRefundRequestINSTANCE.Lift(GoRustBuffer{
 					inner: request,
 				}),
 			)
@@ -6999,38 +7120,222 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19(uniffiH
 	}()
 }
 
-var UniffiVTableCallbackInterfaceExternalSignerINSTANCE = C.UniffiVTableCallbackInterfaceExternalSigner{
-	identityPublicKey:               (C.UniffiCallbackInterfaceExternalSignerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod0),
-	derivePublicKey:                 (C.UniffiCallbackInterfaceExternalSignerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod1),
-	signEcdsa:                       (C.UniffiCallbackInterfaceExternalSignerMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod2),
-	signEcdsaRecoverable:            (C.UniffiCallbackInterfaceExternalSignerMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod3),
-	encryptEcies:                    (C.UniffiCallbackInterfaceExternalSignerMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod4),
-	decryptEcies:                    (C.UniffiCallbackInterfaceExternalSignerMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod5),
-	signHashSchnorr:                 (C.UniffiCallbackInterfaceExternalSignerMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod6),
-	hmacSha256:                      (C.UniffiCallbackInterfaceExternalSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod7),
-	generateRandomSigningCommitment: (C.UniffiCallbackInterfaceExternalSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod8),
-	getPublicKeyForNode:             (C.UniffiCallbackInterfaceExternalSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod9),
-	generateRandomSecret:            (C.UniffiCallbackInterfaceExternalSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod10),
-	staticDepositSecretEncrypted:    (C.UniffiCallbackInterfaceExternalSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod11),
-	staticDepositSecret:             (C.UniffiCallbackInterfaceExternalSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod12),
-	staticDepositSigningKey:         (C.UniffiCallbackInterfaceExternalSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod13),
-	subtractSecrets:                 (C.UniffiCallbackInterfaceExternalSignerMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod14),
-	splitSecretWithProofs:           (C.UniffiCallbackInterfaceExternalSignerMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod15),
-	encryptSecretForReceiver:        (C.UniffiCallbackInterfaceExternalSignerMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod16),
-	publicKeyFromSecret:             (C.UniffiCallbackInterfaceExternalSignerMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod17),
-	signFrost:                       (C.UniffiCallbackInterfaceExternalSignerMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod18),
-	aggregateFrost:                  (C.UniffiCallbackInterfaceExternalSignerMethod19)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerMethod19),
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
 
-	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerFree),
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.SignSparkInvoice(
+				FfiConverterExternalSignSparkInvoiceRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterExternalSignedSparkInvoiceINSTANCE.Lower(res)
+	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerFree
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSignerFree(handle C.uint64_t) {
-	FfiConverterExternalSignerINSTANCE.handleMap.remove(uint64(handle))
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.PrepareTokenTransaction(
+				FfiConverterExternalPrepareTokenTransactionRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterExternalPreparedTokenTransactionINSTANCE.Lower(res)
+	}()
 }
 
-func (c FfiConverterExternalSigner) register() {
-	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_externalsigner(&UniffiVTableCallbackInterfaceExternalSignerINSTANCE)
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.PrepareStaticDepositClaim(
+				FfiConverterExternalPrepareStaticDepositClaimRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterExternalPreparedStaticDepositClaimINSTANCE.Lower(res)
+	}()
+}
+
+var UniffiVTableCallbackInterfaceExternalSparkSignerINSTANCE = C.UniffiVTableCallbackInterfaceExternalSparkSigner{
+	getIdentityPublicKey:        (C.UniffiCallbackInterfaceExternalSparkSignerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod0),
+	getPublicKeyForLeaf:         (C.UniffiCallbackInterfaceExternalSparkSignerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod1),
+	getStaticDepositPublicKey:   (C.UniffiCallbackInterfaceExternalSparkSignerMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod2),
+	signAuthenticationChallenge: (C.UniffiCallbackInterfaceExternalSparkSignerMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3),
+	signMessage:                 (C.UniffiCallbackInterfaceExternalSparkSignerMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4),
+	signFrost:                   (C.UniffiCallbackInterfaceExternalSparkSignerMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5),
+	prepareTransfer:             (C.UniffiCallbackInterfaceExternalSparkSignerMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6),
+	prepareClaim:                (C.UniffiCallbackInterfaceExternalSparkSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7),
+	prepareLightningReceive:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8),
+	prepareStaticDeposit:        (C.UniffiCallbackInterfaceExternalSparkSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9),
+	startStaticDepositRefund:    (C.UniffiCallbackInterfaceExternalSparkSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10),
+	signStaticDepositRefund:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11),
+	signSparkInvoice:            (C.UniffiCallbackInterfaceExternalSparkSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12),
+	prepareTokenTransaction:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13),
+	prepareStaticDepositClaim:   (C.UniffiCallbackInterfaceExternalSparkSignerMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerFree),
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerFree
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerFree(handle C.uint64_t) {
+	FfiConverterExternalSparkSignerINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterExternalSparkSigner) register() {
+	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_externalsparksigner(&UniffiVTableCallbackInterfaceExternalSparkSignerINSTANCE)
 }
 
 // Trait covering fiat-related functionality
@@ -7307,144 +7612,91 @@ func (c FfiConverterFiatService) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_fiatservice(&UniffiVTableCallbackInterfaceFiatServiceINSTANCE)
 }
 
-// A shareable `MySQL` connection pool. See
-// [`PostgresConnectionPool`](crate::PostgresConnectionPool) for sharing semantics and lifecycle.
+// High-level orchestration over a [`PrfProvider`] and the internal
+// Nostr-backed label store. Two named flows match the real onboarding
+// states:
 //
-// Snapshots the `foreign_key_mode` from the originating config so every SDK
-// instance built on top of this pool migrates with the same FK policy.
-type MysqlConnectionPoolInterface interface {
+// - [`Self::register`]: first-time setup (create credential + derive
+// wallet + publish label) in one ceremony where the platform
+// supports dual-salt PRF.
+// - [`Self::sign_in`]: returning user. Fast path when the host has
+// the label cached locally; cold-restore-with-discovery when not.
+//
+// Label management hangs off the [`Self::labels`] sub-object.
+//
+// The `breez_api_key` is the Breez relay key used for authenticated
+// (NIP-42) label storage. Hosts that already construct the SDK
+// [`crate::Config`] can use [`Self::from_config`] to forward it.
+type PasskeyClientInterface interface {
+	// One-shot capability + configuration probe. Collapses
+	// [`PrfProvider::is_supported`] and
+	// [`PrfProvider::check_domain_association`] into a single value
+	// hosts can branch on.
+	CheckAvailability() (PasskeyAvailability, error)
+	// Single-CTA onboarding: silent sign-in, falling through to
+	// registration when no credential exists on the device. The returned
+	// [`ConnectFlow`] tells the caller which path ran.
+	//
+	// The silent sign-in pins `prefer_immediately_available_credentials =
+	// true` regardless of [`SignInRequest`]: the fallback depends on the OS
+	// fast-failing with [`PrfProviderError::CredentialNotFound`] when no
+	// local credential exists. Only `CredentialNotFound` flips to the
+	// register path; every other error (`Cancel`, `Timeout`, ...) propagates
+	// unchanged.
+	//
+	// Mobile-only: meant for iOS 18+ / Android 9+ where
+	// `preferImmediatelyAvailableCredentials` is honored. The web
+	// equivalent (`mediation: 'immediate'`) is not yet stable
+	// cross-browser, so this is not surfaced on WASM; web hosts call
+	// [`Self::sign_in`] and catch `CredentialNotFound` themselves.
+	ConnectWithPasskey(request ConnectWithPasskeyRequest) (ConnectWithPasskeyResponse, error)
+	// Label sub-object. List or publish labels for this passkey's
+	// identity.
+	Labels() *PasskeyLabels
+	// First-time setup. Drives [`PrfProvider::create_passkey`] (one
+	// ceremony) followed by the wallet-derivation flow that backs
+	// [`Passkey::setup_wallet`] (one ceremony, dual-salt where
+	// supported). The label is always published on success.
+	Register(request RegisterRequest) (RegisterResponse, error)
+	// Returning-user sign-in. Fast path (`label` set) skips the
+	// label-store query; discovery path (`label = None`) derives
+	// the configured default label and lists the user's labels in
+	// the same ceremony. Never re-publishes the label.
+	SignIn(request SignInRequest) (SignInResponse, error)
 }
 
-// A shareable `MySQL` connection pool. See
-// [`PostgresConnectionPool`](crate::PostgresConnectionPool) for sharing semantics and lifecycle.
+// High-level orchestration over a [`PrfProvider`] and the internal
+// Nostr-backed label store. Two named flows match the real onboarding
+// states:
 //
-// Snapshots the `foreign_key_mode` from the originating config so every SDK
-// instance built on top of this pool migrates with the same FK policy.
-type MysqlConnectionPool struct {
+// - [`Self::register`]: first-time setup (create credential + derive
+// wallet + publish label) in one ceremony where the platform
+// supports dual-salt PRF.
+// - [`Self::sign_in`]: returning user. Fast path when the host has
+// the label cached locally; cold-restore-with-discovery when not.
+//
+// Label management hangs off the [`Self::labels`] sub-object.
+//
+// The `breez_api_key` is the Breez relay key used for authenticated
+// (NIP-42) label storage. Hosts that already construct the SDK
+// [`crate::Config`] can use [`Self::from_config`] to forward it.
+type PasskeyClient struct {
 	ffiObject FfiObject
 }
 
-func (object *MysqlConnectionPool) Destroy() {
-	runtime.SetFinalizer(object, nil)
-	object.ffiObject.destroy()
-}
-
-type FfiConverterMysqlConnectionPool struct{}
-
-var FfiConverterMysqlConnectionPoolINSTANCE = FfiConverterMysqlConnectionPool{}
-
-func (c FfiConverterMysqlConnectionPool) Lift(pointer unsafe.Pointer) *MysqlConnectionPool {
-	result := &MysqlConnectionPool{
-		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_breez_sdk_spark_fn_clone_mysqlconnectionpool(pointer, status)
-			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_breez_sdk_spark_fn_free_mysqlconnectionpool(pointer, status)
-			},
-		),
-	}
-	runtime.SetFinalizer(result, (*MysqlConnectionPool).Destroy)
-	return result
-}
-
-func (c FfiConverterMysqlConnectionPool) Read(reader io.Reader) *MysqlConnectionPool {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
-}
-
-func (c FfiConverterMysqlConnectionPool) Lower(value *MysqlConnectionPool) unsafe.Pointer {
-	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*MysqlConnectionPool")
-	defer value.ffiObject.decrementPointer()
-	return pointer
-
-}
-
-func (c FfiConverterMysqlConnectionPool) Write(writer io.Writer, value *MysqlConnectionPool) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
-}
-
-type FfiDestroyerMysqlConnectionPool struct{}
-
-func (_ FfiDestroyerMysqlConnectionPool) Destroy(value *MysqlConnectionPool) {
-	value.Destroy()
-}
-
-// Orchestrates passkey-based wallet creation and restore operations.
-//
-// This struct coordinates between the platform's passkey PRF provider and
-// Nostr relays to derive wallet mnemonics and manage labels.
-//
-// The Nostr identity (derived from the passkey's magic salt) is cached after
-// the first derivation so that subsequent calls to [`Passkey::list_labels`]
-// and [`Passkey::store_label`] do not require additional PRF interactions.
-type PasskeyInterface interface {
-	// Derive a wallet for a given label.
-	//
-	// Uses the passkey PRF to derive a 12-word BIP39 mnemonic from the label
-	// and returns it as a [`Wallet`] containing the seed and resolved label.
-	// This works for both creating a new wallet and restoring an existing one.
-	//
-	// # Arguments
-	// * `label` - A user-chosen label (e.g., "personal", "business").
-	// If `None`, defaults to [`DEFAULT_LABEL`].
-	GetWallet(label *string) (Wallet, error)
-	// Check if passkey PRF is available on this device.
-	//
-	// Delegates to the platform's `PasskeyPrfProvider` implementation.
-	IsAvailable() (bool, error)
-	// List all labels published to Nostr for this passkey's identity.
-	//
-	// Queries Nostr relays for all labels associated with the Nostr identity
-	// derived from this passkey. Requires 1 PRF call.
-	ListLabels() ([]string, error)
-	// Publish a label to Nostr relays for this passkey's identity.
-	//
-	// Idempotent: if the label already exists, it is not published again.
-	// Requires 1 PRF call.
-	//
-	// # Arguments
-	// * `label` - A user-chosen label (e.g., "personal", "business")
-	StoreLabel(label string) error
-}
-
-// Orchestrates passkey-based wallet creation and restore operations.
-//
-// This struct coordinates between the platform's passkey PRF provider and
-// Nostr relays to derive wallet mnemonics and manage labels.
-//
-// The Nostr identity (derived from the passkey's magic salt) is cached after
-// the first derivation so that subsequent calls to [`Passkey::list_labels`]
-// and [`Passkey::store_label`] do not require additional PRF interactions.
-type Passkey struct {
-	ffiObject FfiObject
-}
-
-// Create a new `Passkey` instance.
-//
-// # Arguments
-// * `prf_provider` - Platform implementation of passkey PRF operations
-// * `relay_config` - Optional configuration for Nostr relay connections (uses default if None)
-func NewPasskey(prfProvider PasskeyPrfProvider, relayConfig *NostrRelayConfig) *Passkey {
-	return FfiConverterPasskeyINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
-		return C.uniffi_breez_sdk_spark_fn_constructor_passkey_new(FfiConverterPasskeyPrfProviderINSTANCE.Lower(prfProvider), FfiConverterOptionalNostrRelayConfigINSTANCE.Lower(relayConfig), _uniffiStatus)
+// Construct with the default Nostr-backed label store.
+func NewPasskeyClient(prfProvider PrfProvider, breezApiKey *string, config *PasskeyConfig) *PasskeyClient {
+	return FfiConverterPasskeyClientINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_constructor_passkeyclient_new(FfiConverterPrfProviderINSTANCE.Lower(prfProvider), FfiConverterOptionalStringINSTANCE.Lower(breezApiKey), FfiConverterOptionalPasskeyConfigINSTANCE.Lower(config), _uniffiStatus)
 	}))
 }
 
-// Derive a wallet for a given label.
-//
-// Uses the passkey PRF to derive a 12-word BIP39 mnemonic from the label
-// and returns it as a [`Wallet`] containing the seed and resolved label.
-// This works for both creating a new wallet and restoring an existing one.
-//
-// # Arguments
-// * `label` - A user-chosen label (e.g., "personal", "business").
-// If `None`, defaults to [`DEFAULT_LABEL`].
-func (_self *Passkey) GetWallet(label *string) (Wallet, error) {
-	_pointer := _self.ffiObject.incrementPointer("*Passkey")
+// One-shot capability + configuration probe. Collapses
+// [`PrfProvider::is_supported`] and
+// [`PrfProvider::check_domain_association`] into a single value
+// hosts can branch on.
+func (_self *PasskeyClient) CheckAvailability() (PasskeyAvailability, error) {
+	_pointer := _self.ffiObject.incrementPointer("*PasskeyClient")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[PasskeyError](
 		FfiConverterPasskeyErrorINSTANCE,
@@ -7456,11 +7708,11 @@ func (_self *Passkey) GetWallet(label *string) (Wallet, error) {
 			}
 		},
 		// liftFn
-		func(ffi RustBufferI) Wallet {
-			return FfiConverterWalletINSTANCE.Lift(ffi)
+		func(ffi RustBufferI) PasskeyAvailability {
+			return FfiConverterPasskeyAvailabilityINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_passkey_get_wallet(
-			_pointer, FfiConverterOptionalStringINSTANCE.Lower(label)),
+		C.uniffi_breez_sdk_spark_fn_method_passkeyclient_check_availability(
+			_pointer),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -7478,32 +7730,47 @@ func (_self *Passkey) GetWallet(label *string) (Wallet, error) {
 	return res, err
 }
 
-// Check if passkey PRF is available on this device.
+// Single-CTA onboarding: silent sign-in, falling through to
+// registration when no credential exists on the device. The returned
+// [`ConnectFlow`] tells the caller which path ran.
 //
-// Delegates to the platform's `PasskeyPrfProvider` implementation.
-func (_self *Passkey) IsAvailable() (bool, error) {
-	_pointer := _self.ffiObject.incrementPointer("*Passkey")
+// The silent sign-in pins `prefer_immediately_available_credentials =
+// true` regardless of [`SignInRequest`]: the fallback depends on the OS
+// fast-failing with [`PrfProviderError::CredentialNotFound`] when no
+// local credential exists. Only `CredentialNotFound` flips to the
+// register path; every other error (`Cancel`, `Timeout`, ...) propagates
+// unchanged.
+//
+// Mobile-only: meant for iOS 18+ / Android 9+ where
+// `preferImmediatelyAvailableCredentials` is honored. The web
+// equivalent (`mediation: 'immediate'`) is not yet stable
+// cross-browser, so this is not surfaced on WASM; web hosts call
+// [`Self::sign_in`] and catch `CredentialNotFound` themselves.
+func (_self *PasskeyClient) ConnectWithPasskey(request ConnectWithPasskeyRequest) (ConnectWithPasskeyResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*PasskeyClient")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[PasskeyError](
 		FfiConverterPasskeyErrorINSTANCE,
 		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) C.int8_t {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_i8(handle, status)
-			return res
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
 		},
 		// liftFn
-		func(ffi C.int8_t) bool {
-			return FfiConverterBoolINSTANCE.Lift(ffi)
+		func(ffi RustBufferI) ConnectWithPasskeyResponse {
+			return FfiConverterConnectWithPasskeyResponseINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_passkey_is_available(
-			_pointer),
+		C.uniffi_breez_sdk_spark_fn_method_passkeyclient_connect_with_passkey(
+			_pointer, FfiConverterConnectWithPasskeyRequestINSTANCE.Lower(request)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_i8(handle, continuation, data)
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
 		},
 		// freeFn
 		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_i8(handle)
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
 		},
 	)
 
@@ -7514,12 +7781,161 @@ func (_self *Passkey) IsAvailable() (bool, error) {
 	return res, err
 }
 
-// List all labels published to Nostr for this passkey's identity.
-//
-// Queries Nostr relays for all labels associated with the Nostr identity
-// derived from this passkey. Requires 1 PRF call.
-func (_self *Passkey) ListLabels() ([]string, error) {
-	_pointer := _self.ffiObject.incrementPointer("*Passkey")
+// Label sub-object. List or publish labels for this passkey's
+// identity.
+func (_self *PasskeyClient) Labels() *PasskeyLabels {
+	_pointer := _self.ffiObject.incrementPointer("*PasskeyClient")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterPasskeyLabelsINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_method_passkeyclient_labels(
+			_pointer, _uniffiStatus)
+	}))
+}
+
+// First-time setup. Drives [`PrfProvider::create_passkey`] (one
+// ceremony) followed by the wallet-derivation flow that backs
+// [`Passkey::setup_wallet`] (one ceremony, dual-salt where
+// supported). The label is always published on success.
+func (_self *PasskeyClient) Register(request RegisterRequest) (RegisterResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*PasskeyClient")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[PasskeyError](
+		FfiConverterPasskeyErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) RegisterResponse {
+			return FfiConverterRegisterResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_passkeyclient_register(
+			_pointer, FfiConverterRegisterRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Returning-user sign-in. Fast path (`label` set) skips the
+// label-store query; discovery path (`label = None`) derives
+// the configured default label and lists the user's labels in
+// the same ceremony. Never re-publishes the label.
+func (_self *PasskeyClient) SignIn(request SignInRequest) (SignInResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*PasskeyClient")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[PasskeyError](
+		FfiConverterPasskeyErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) SignInResponse {
+			return FfiConverterSignInResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_passkeyclient_sign_in(
+			_pointer, FfiConverterSignInRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+func (object *PasskeyClient) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterPasskeyClient struct{}
+
+var FfiConverterPasskeyClientINSTANCE = FfiConverterPasskeyClient{}
+
+func (c FfiConverterPasskeyClient) Lift(pointer unsafe.Pointer) *PasskeyClient {
+	result := &PasskeyClient{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_passkeyclient(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_passkeyclient(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*PasskeyClient).Destroy)
+	return result
+}
+
+func (c FfiConverterPasskeyClient) Read(reader io.Reader) *PasskeyClient {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterPasskeyClient) Lower(value *PasskeyClient) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*PasskeyClient")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterPasskeyClient) Write(writer io.Writer, value *PasskeyClient) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerPasskeyClient struct{}
+
+func (_ FfiDestroyerPasskeyClient) Destroy(value *PasskeyClient) {
+	value.Destroy()
+}
+
+// Label sub-object surfaced from [`PasskeyClient::labels`]. Holds a
+// clone of the parent [`Passkey`] so calls re-use its cached identity.
+type PasskeyLabelsInterface interface {
+	// List labels published for this passkey's identity.
+	List() ([]string, error)
+	// Idempotently publish `label` for this passkey's identity.
+	Store(label string) error
+}
+
+// Label sub-object surfaced from [`PasskeyClient::labels`]. Holds a
+// clone of the parent [`Passkey`] so calls re-use its cached identity.
+type PasskeyLabels struct {
+	ffiObject FfiObject
+}
+
+// List labels published for this passkey's identity.
+func (_self *PasskeyLabels) List() ([]string, error) {
+	_pointer := _self.ffiObject.incrementPointer("*PasskeyLabels")
 	defer _self.ffiObject.decrementPointer()
 	res, err := uniffiRustCallAsync[PasskeyError](
 		FfiConverterPasskeyErrorINSTANCE,
@@ -7534,7 +7950,7 @@ func (_self *Passkey) ListLabels() ([]string, error) {
 		func(ffi RustBufferI) []string {
 			return FfiConverterSequenceStringINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_passkey_list_labels(
+		C.uniffi_breez_sdk_spark_fn_method_passkeylabels_list(
 			_pointer),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -7553,15 +7969,9 @@ func (_self *Passkey) ListLabels() ([]string, error) {
 	return res, err
 }
 
-// Publish a label to Nostr relays for this passkey's identity.
-//
-// Idempotent: if the label already exists, it is not published again.
-// Requires 1 PRF call.
-//
-// # Arguments
-// * `label` - A user-chosen label (e.g., "personal", "business")
-func (_self *Passkey) StoreLabel(label string) error {
-	_pointer := _self.ffiObject.incrementPointer("*Passkey")
+// Idempotently publish `label` for this passkey's identity.
+func (_self *PasskeyLabels) Store(label string) error {
+	_pointer := _self.ffiObject.incrementPointer("*PasskeyLabels")
 	defer _self.ffiObject.decrementPointer()
 	_, err := uniffiRustCallAsync[PasskeyError](
 		FfiConverterPasskeyErrorINSTANCE,
@@ -7572,7 +7982,7 @@ func (_self *Passkey) StoreLabel(label string) error {
 		},
 		// liftFn
 		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_passkey_store_label(
+		C.uniffi_breez_sdk_spark_fn_method_passkeylabels_store(
 			_pointer, FfiConverterStringINSTANCE.Lower(label)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -7590,391 +8000,78 @@ func (_self *Passkey) StoreLabel(label string) error {
 
 	return err
 }
-func (object *Passkey) Destroy() {
+func (object *PasskeyLabels) Destroy() {
 	runtime.SetFinalizer(object, nil)
 	object.ffiObject.destroy()
 }
 
-type FfiConverterPasskey struct{}
+type FfiConverterPasskeyLabels struct{}
 
-var FfiConverterPasskeyINSTANCE = FfiConverterPasskey{}
+var FfiConverterPasskeyLabelsINSTANCE = FfiConverterPasskeyLabels{}
 
-func (c FfiConverterPasskey) Lift(pointer unsafe.Pointer) *Passkey {
-	result := &Passkey{
+func (c FfiConverterPasskeyLabels) Lift(pointer unsafe.Pointer) *PasskeyLabels {
+	result := &PasskeyLabels{
 		newFfiObject(
 			pointer,
 			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_breez_sdk_spark_fn_clone_passkey(pointer, status)
+				return C.uniffi_breez_sdk_spark_fn_clone_passkeylabels(pointer, status)
 			},
 			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_breez_sdk_spark_fn_free_passkey(pointer, status)
+				C.uniffi_breez_sdk_spark_fn_free_passkeylabels(pointer, status)
 			},
 		),
 	}
-	runtime.SetFinalizer(result, (*Passkey).Destroy)
+	runtime.SetFinalizer(result, (*PasskeyLabels).Destroy)
 	return result
 }
 
-func (c FfiConverterPasskey) Read(reader io.Reader) *Passkey {
+func (c FfiConverterPasskeyLabels) Read(reader io.Reader) *PasskeyLabels {
 	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
 }
 
-func (c FfiConverterPasskey) Lower(value *Passkey) unsafe.Pointer {
+func (c FfiConverterPasskeyLabels) Lower(value *PasskeyLabels) unsafe.Pointer {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
 	// because the pointer will be decremented immediately after this function returns,
 	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*Passkey")
+	pointer := value.ffiObject.incrementPointer("*PasskeyLabels")
 	defer value.ffiObject.decrementPointer()
 	return pointer
 
 }
 
-func (c FfiConverterPasskey) Write(writer io.Writer, value *Passkey) {
+func (c FfiConverterPasskeyLabels) Write(writer io.Writer, value *PasskeyLabels) {
 	writeUint64(writer, uint64(uintptr(c.Lower(value))))
 }
 
-type FfiDestroyerPasskey struct{}
+type FfiDestroyerPasskeyLabels struct{}
 
-func (_ FfiDestroyerPasskey) Destroy(value *Passkey) {
+func (_ FfiDestroyerPasskeyLabels) Destroy(value *PasskeyLabels) {
 	value.Destroy()
 }
 
-// Trait for passkey PRF (Pseudo-Random Function) operations.
+// This interface is used to observe outgoing Lightning, Spark, onchain Bitcoin and token payments.
 //
-// Platforms must implement this trait to provide passkey PRF functionality.
-// The implementation is responsible for:
-// - Authenticating the user via platform-specific passkey APIs (`WebAuthn`, native passkey managers)
-// - Evaluating the PRF extension with the provided salt
-// - Returning the 32-byte PRF output
-type PasskeyPrfProvider interface {
-	// Derive a 32-byte seed from passkey PRF with the given salt.
-	//
-	// The platform authenticates the user via passkey and evaluates the PRF extension.
-	// The salt is used as input to the PRF to derive a deterministic output.
-	//
-	// # Arguments
-	// * `salt` - The salt string to use for PRF evaluation
-	//
-	// # Returns
-	// * `Ok(Vec<u8>)` - The 32-byte PRF output
-	// * `Err(PasskeyPrfError)` - If authentication fails or PRF is not supported
-	DerivePrfSeed(salt string) ([]byte, error)
-	// Check if a PRF-capable passkey is available on this device.
-	//
-	// This allows applications to gracefully degrade if passkey PRF is not supported.
-	//
-	// # Returns
-	// * `Ok(true)` - PRF-capable passkey is available
-	// * `Ok(false)` - No PRF-capable passkey available
-	// * `Err(PasskeyPrfError)` - If the check fails
-	IsPrfAvailable() (bool, error)
-}
-
-// Trait for passkey PRF (Pseudo-Random Function) operations.
-//
-// Platforms must implement this trait to provide passkey PRF functionality.
-// The implementation is responsible for:
-// - Authenticating the user via platform-specific passkey APIs (`WebAuthn`, native passkey managers)
-// - Evaluating the PRF extension with the provided salt
-// - Returning the 32-byte PRF output
-type PasskeyPrfProviderImpl struct {
-	ffiObject FfiObject
-}
-
-// Derive a 32-byte seed from passkey PRF with the given salt.
-//
-// The platform authenticates the user via passkey and evaluates the PRF extension.
-// The salt is used as input to the PRF to derive a deterministic output.
-//
-// # Arguments
-// * `salt` - The salt string to use for PRF evaluation
-//
-// # Returns
-// * `Ok(Vec<u8>)` - The 32-byte PRF output
-// * `Err(PasskeyPrfError)` - If authentication fails or PRF is not supported
-func (_self *PasskeyPrfProviderImpl) DerivePrfSeed(salt string) ([]byte, error) {
-	_pointer := _self.ffiObject.incrementPointer("PasskeyPrfProvider")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[PasskeyPrfError](
-		FfiConverterPasskeyPrfErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
-			return GoRustBuffer{
-				inner: res,
-			}
-		},
-		// liftFn
-		func(ffi RustBufferI) []byte {
-			return FfiConverterBytesINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_passkeyprfprovider_derive_prf_seed(
-			_pointer, FfiConverterStringINSTANCE.Lower(salt)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-
-// Check if a PRF-capable passkey is available on this device.
-//
-// This allows applications to gracefully degrade if passkey PRF is not supported.
-//
-// # Returns
-// * `Ok(true)` - PRF-capable passkey is available
-// * `Ok(false)` - No PRF-capable passkey available
-// * `Err(PasskeyPrfError)` - If the check fails
-func (_self *PasskeyPrfProviderImpl) IsPrfAvailable() (bool, error) {
-	_pointer := _self.ffiObject.incrementPointer("PasskeyPrfProvider")
-	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[PasskeyPrfError](
-		FfiConverterPasskeyPrfErrorINSTANCE,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) C.int8_t {
-			res := C.ffi_breez_sdk_spark_rust_future_complete_i8(handle, status)
-			return res
-		},
-		// liftFn
-		func(ffi C.int8_t) bool {
-			return FfiConverterBoolINSTANCE.Lift(ffi)
-		},
-		C.uniffi_breez_sdk_spark_fn_method_passkeyprfprovider_is_prf_available(
-			_pointer),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_i8(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_i8(handle)
-		},
-	)
-
-	if err == nil {
-		return res, nil
-	}
-
-	return res, err
-}
-func (object *PasskeyPrfProviderImpl) Destroy() {
-	runtime.SetFinalizer(object, nil)
-	object.ffiObject.destroy()
-}
-
-type FfiConverterPasskeyPrfProvider struct {
-	handleMap *concurrentHandleMap[PasskeyPrfProvider]
-}
-
-var FfiConverterPasskeyPrfProviderINSTANCE = FfiConverterPasskeyPrfProvider{
-	handleMap: newConcurrentHandleMap[PasskeyPrfProvider](),
-}
-
-func (c FfiConverterPasskeyPrfProvider) Lift(pointer unsafe.Pointer) PasskeyPrfProvider {
-	result := &PasskeyPrfProviderImpl{
-		newFfiObject(
-			pointer,
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_breez_sdk_spark_fn_clone_passkeyprfprovider(pointer, status)
-			},
-			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_breez_sdk_spark_fn_free_passkeyprfprovider(pointer, status)
-			},
-		),
-	}
-	runtime.SetFinalizer(result, (*PasskeyPrfProviderImpl).Destroy)
-	return result
-}
-
-func (c FfiConverterPasskeyPrfProvider) Read(reader io.Reader) PasskeyPrfProvider {
-	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
-}
-
-func (c FfiConverterPasskeyPrfProvider) Lower(value PasskeyPrfProvider) unsafe.Pointer {
-	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
-	// because the pointer will be decremented immediately after this function returns,
-	// and someone will be left holding onto a non-locked pointer.
-	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
-	return pointer
-
-}
-
-func (c FfiConverterPasskeyPrfProvider) Write(writer io.Writer, value PasskeyPrfProvider) {
-	writeUint64(writer, uint64(uintptr(c.Lower(value))))
-}
-
-type FfiDestroyerPasskeyPrfProvider struct{}
-
-func (_ FfiDestroyerPasskeyPrfProvider) Destroy(value PasskeyPrfProvider) {
-	if val, ok := value.(*PasskeyPrfProviderImpl); ok {
-		val.Destroy()
-	} else {
-		panic("Expected *PasskeyPrfProviderImpl")
-	}
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderMethod0
-func breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderMethod0(uniffiHandle C.uint64_t, salt C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
-	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterPasskeyPrfProviderINSTANCE.handleMap.tryGet(handle)
-	if !ok {
-		panic(fmt.Errorf("no callback in handle map: %d", handle))
-	}
-
-	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
-	cancel := make(chan struct{}, 1)
-	guardHandle := cgo.NewHandle(cancel)
-	*uniffiOutReturn = C.UniffiForeignFuture{
-		handle: C.uint64_t(guardHandle),
-		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
-	}
-
-	// Wait for compleation or cancel
-	go func() {
-		select {
-		case <-cancel:
-		case res := <-result:
-			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
-		}
-	}()
-
-	// Eval callback asynchroniously
-	go func() {
-		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
-		uniffiOutReturn := &asyncResult.returnValue
-		callStatus := &asyncResult.callStatus
-		defer func() {
-			result <- *asyncResult
-		}()
-
-		res, err :=
-			uniffiObj.DerivePrfSeed(
-				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
-					inner: salt,
-				}),
-			)
-
-		if err != nil {
-			var actualError *PasskeyPrfError
-			if errors.As(err, &actualError) {
-				if actualError != nil {
-					*callStatus = C.RustCallStatus{
-						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterPasskeyPrfErrorINSTANCE.Lower(actualError),
-					}
-					return
-				}
-			} else {
-				*callStatus = C.RustCallStatus{
-					code: C.int8_t(uniffiCallbackUnexpectedResultError),
-				}
-				return
-			}
-		}
-
-		*uniffiOutReturn = FfiConverterBytesINSTANCE.Lower(res)
-	}()
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderMethod1
-func breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderMethod1(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteI8, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
-	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterPasskeyPrfProviderINSTANCE.handleMap.tryGet(handle)
-	if !ok {
-		panic(fmt.Errorf("no callback in handle map: %d", handle))
-	}
-
-	result := make(chan C.UniffiForeignFutureStructI8, 1)
-	cancel := make(chan struct{}, 1)
-	guardHandle := cgo.NewHandle(cancel)
-	*uniffiOutReturn = C.UniffiForeignFuture{
-		handle: C.uint64_t(guardHandle),
-		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
-	}
-
-	// Wait for compleation or cancel
-	go func() {
-		select {
-		case <-cancel:
-		case res := <-result:
-			C.call_UniffiForeignFutureCompleteI8(uniffiFutureCallback, uniffiCallbackData, res)
-		}
-	}()
-
-	// Eval callback asynchroniously
-	go func() {
-		asyncResult := &C.UniffiForeignFutureStructI8{}
-		uniffiOutReturn := &asyncResult.returnValue
-		callStatus := &asyncResult.callStatus
-		defer func() {
-			result <- *asyncResult
-		}()
-
-		res, err :=
-			uniffiObj.IsPrfAvailable()
-
-		if err != nil {
-			var actualError *PasskeyPrfError
-			if errors.As(err, &actualError) {
-				if actualError != nil {
-					*callStatus = C.RustCallStatus{
-						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterPasskeyPrfErrorINSTANCE.Lower(actualError),
-					}
-					return
-				}
-			} else {
-				*callStatus = C.RustCallStatus{
-					code: C.int8_t(uniffiCallbackUnexpectedResultError),
-				}
-				return
-			}
-		}
-
-		*uniffiOutReturn = FfiConverterBoolINSTANCE.Lower(res)
-	}()
-}
-
-var UniffiVTableCallbackInterfacePasskeyPrfProviderINSTANCE = C.UniffiVTableCallbackInterfacePasskeyPrfProvider{
-	derivePrfSeed:  (C.UniffiCallbackInterfacePasskeyPrfProviderMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderMethod0),
-	isPrfAvailable: (C.UniffiCallbackInterfacePasskeyPrfProviderMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderMethod1),
-
-	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderFree),
-}
-
-//export breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderFree
-func breez_sdk_spark_cgo_dispatchCallbackInterfacePasskeyPrfProviderFree(handle C.uint64_t) {
-	FfiConverterPasskeyPrfProviderINSTANCE.handleMap.remove(uint64(handle))
-}
-
-func (c FfiConverterPasskeyPrfProvider) register() {
-	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_passkeyprfprovider(&UniffiVTableCallbackInterfacePasskeyPrfProviderINSTANCE)
-}
-
-// This interface is used to observe outgoing payments before Lightning, Spark and onchain Bitcoin payments.
-// If the implementation returns an error, the payment is cancelled.
+// `before_send` is called before a payment is made; if the implementation returns an error the
+// payment is cancelled. `after_send` is called after a token payment has been broadcast to report
+// its final payment id; it cannot cancel the payment and any error it returns is ignored.
 type PaymentObserver interface {
-	// Called before Lightning, Spark or onchain Bitcoin payments are made
+	// Called before Lightning, Spark, onchain Bitcoin or token payments are made
 	BeforeSend(payments []ProvisionalPayment) error
+	// Called after a token payment has been broadcast, mapping each provisional payment id
+	// reported by `before_send` to its final payment id
+	AfterSend(updates []PaymentIdUpdate) error
 }
 
-// This interface is used to observe outgoing payments before Lightning, Spark and onchain Bitcoin payments.
-// If the implementation returns an error, the payment is cancelled.
+// This interface is used to observe outgoing Lightning, Spark, onchain Bitcoin and token payments.
+//
+// `before_send` is called before a payment is made; if the implementation returns an error the
+// payment is cancelled. `after_send` is called after a token payment has been broadcast to report
+// its final payment id; it cannot cancel the payment and any error it returns is ignored.
 type PaymentObserverImpl struct {
 	ffiObject FfiObject
 }
 
-// Called before Lightning, Spark or onchain Bitcoin payments are made
+// Called before Lightning, Spark, onchain Bitcoin or token payments are made
 func (_self *PaymentObserverImpl) BeforeSend(payments []ProvisionalPayment) error {
 	_pointer := _self.ffiObject.incrementPointer("PaymentObserver")
 	defer _self.ffiObject.decrementPointer()
@@ -7989,6 +8086,39 @@ func (_self *PaymentObserverImpl) BeforeSend(payments []ProvisionalPayment) erro
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_paymentobserver_before_send(
 			_pointer, FfiConverterSequenceProvisionalPaymentINSTANCE.Lower(payments)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+	if err == nil {
+		return nil
+	}
+
+	return err
+}
+
+// Called after a token payment has been broadcast, mapping each provisional payment id
+// reported by `before_send` to its final payment id
+func (_self *PaymentObserverImpl) AfterSend(updates []PaymentIdUpdate) error {
+	_pointer := _self.ffiObject.incrementPointer("PaymentObserver")
+	defer _self.ffiObject.decrementPointer()
+	_, err := uniffiRustCallAsync[PaymentObserverError](
+		FfiConverterPaymentObserverErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_paymentobserver_after_send(
+			_pointer, FfiConverterSequencePaymentIdUpdateINSTANCE.Lower(updates)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -8122,8 +8252,70 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod0(uniffiH
 	}()
 }
 
+//export breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod1
+func breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod1(uniffiHandle C.uint64_t, updates C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterPaymentObserverINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		err :=
+			uniffiObj.AfterSend(
+				FfiConverterSequencePaymentIdUpdateINSTANCE.Lift(GoRustBuffer{
+					inner: updates,
+				}),
+			)
+
+		if err != nil {
+			var actualError *PaymentObserverError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterPaymentObserverErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+	}()
+}
+
 var UniffiVTableCallbackInterfacePaymentObserverINSTANCE = C.UniffiVTableCallbackInterfacePaymentObserver{
 	beforeSend: (C.UniffiCallbackInterfacePaymentObserverMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod0),
+	afterSend:  (C.UniffiCallbackInterfacePaymentObserverMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverMethod1),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePaymentObserverFree),
 }
@@ -8137,83 +8329,617 @@ func (c FfiConverterPaymentObserver) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_paymentobserver(&UniffiVTableCallbackInterfacePaymentObserverINSTANCE)
 }
 
-// A shareable Postgres connection pool.
+// Trait for PRF (Pseudo-Random Function) operations backing a
+// passkey-derived wallet seed.
 //
-// Typically owned by an [`SdkContext`](crate::SdkContext): supply a
-// `PostgresStorageConfig` to [`new_shared_sdk_context`](crate::new_shared_sdk_context) and
-// the context builds the pool internally. All SDKs sharing the same context
-// target the same database; per-tenant isolation is derived from each SDK's
-// seed (the identity public key scopes every row).
-//
-// The pool's lifecycle follows its containing `SdkContext`: connections
-// close when the last `Arc<SdkContext>` is dropped.
-// [`BreezSdk::disconnect`](crate::BreezSdk::disconnect) does **not** close
-// the pool.
-type PostgresConnectionPoolInterface interface {
+// Each platform's built-in `PasskeyProvider` implements this by
+// authenticating with a platform passkey and evaluating the `WebAuthn`
+// PRF extension. Custom providers (CLI tools backed by `YubiKey`, FIDO2
+// hmac-secret, on-disk key material, HSMs) implement the same contract:
+// anything that deterministically derives 32 bytes from a salt qualifies.
+type PrfProvider interface {
+	// Derive 32-byte PRF outputs for `request.salts` in as few
+	// authenticator ceremonies as the platform supports, preserving input
+	// order. Empty `salts` returns an empty vec without prompting. Built-in
+	// providers pair salts via `WebAuthn`'s `prf.eval.first` + `.second`
+	// (halving prompts); custom providers without bulk support loop.
+	//
+	// `request.allow_credentials` and
+	// `request.prefer_immediately_available_credentials` shape this single
+	// ceremony; providers that don't model them (file-backed, `YubiKey`)
+	// ignore them. Returns the seeds plus the credential ID observed in the
+	// same assertion, absent when the provider does not surface it.
+	DeriveSeeds(request DeriveSeedsRequest) (DeriveSeedsOutput, error)
+	// Whether this provider can produce PRF outputs on the current
+	// device. Hosts gate UX on the result.
+	IsSupported() (bool, error)
+	// Explicit registration. Platform passkey providers override this to
+	// drive the OS create ceremony and surface the credential metadata
+	// hosts need for `exclude_credentials` bookkeeping. CLI / hardware
+	// providers register lazily in [`Self::derive_seeds`] and inherit the
+	// default `PrfNotSupported`.
+	//
+	// `exclude_credentials` lists already-registered IDs and surfaces
+	// duplicates as `CredentialAlreadyExists`. The `user.id` is always
+	// provider-minted and returned on `PasskeyCredential.user_id`.
+	CreatePasskey(excludeCredentials [][]byte) (PasskeyCredential, error)
+	// Advisory check against the platform's out-of-band verification
+	// source (iOS AASA / Android assetlinks / browser rpId scope).
+	// The SDK never gates internally; hosts pick their own policy.
+	//
+	// Built-in providers override:
+	// - **iOS/macOS**: AASA `webcredentials.apps` lookup. May be stale.
+	// - **Android**: Digital Asset Links query. Degrades `NotAssociated`
+	// to `Skipped` because `CredentialManager` runs its own check.
+	// - **Browser**: `rpId` is a registrable suffix of `window.location.hostname`.
+	//
+	// Custom providers without a verification source inherit the
+	// `Skipped` default.
+	CheckDomainAssociation() (DomainAssociation, error)
 }
 
-// A shareable Postgres connection pool.
+// Trait for PRF (Pseudo-Random Function) operations backing a
+// passkey-derived wallet seed.
 //
-// Typically owned by an [`SdkContext`](crate::SdkContext): supply a
-// `PostgresStorageConfig` to [`new_shared_sdk_context`](crate::new_shared_sdk_context) and
-// the context builds the pool internally. All SDKs sharing the same context
-// target the same database; per-tenant isolation is derived from each SDK's
-// seed (the identity public key scopes every row).
-//
-// The pool's lifecycle follows its containing `SdkContext`: connections
-// close when the last `Arc<SdkContext>` is dropped.
-// [`BreezSdk::disconnect`](crate::BreezSdk::disconnect) does **not** close
-// the pool.
-type PostgresConnectionPool struct {
+// Each platform's built-in `PasskeyProvider` implements this by
+// authenticating with a platform passkey and evaluating the `WebAuthn`
+// PRF extension. Custom providers (CLI tools backed by `YubiKey`, FIDO2
+// hmac-secret, on-disk key material, HSMs) implement the same contract:
+// anything that deterministically derives 32 bytes from a salt qualifies.
+type PrfProviderImpl struct {
 	ffiObject FfiObject
 }
 
-func (object *PostgresConnectionPool) Destroy() {
+// Derive 32-byte PRF outputs for `request.salts` in as few
+// authenticator ceremonies as the platform supports, preserving input
+// order. Empty `salts` returns an empty vec without prompting. Built-in
+// providers pair salts via `WebAuthn`'s `prf.eval.first` + `.second`
+// (halving prompts); custom providers without bulk support loop.
+//
+// `request.allow_credentials` and
+// `request.prefer_immediately_available_credentials` shape this single
+// ceremony; providers that don't model them (file-backed, `YubiKey`)
+// ignore them. Returns the seeds plus the credential ID observed in the
+// same assertion, absent when the provider does not surface it.
+func (_self *PrfProviderImpl) DeriveSeeds(request DeriveSeedsRequest) (DeriveSeedsOutput, error) {
+	_pointer := _self.ffiObject.incrementPointer("PrfProvider")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[PrfProviderError](
+		FfiConverterPrfProviderErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) DeriveSeedsOutput {
+			return FfiConverterDeriveSeedsOutputINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_prfprovider_derive_seeds(
+			_pointer, FfiConverterDeriveSeedsRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Whether this provider can produce PRF outputs on the current
+// device. Hosts gate UX on the result.
+func (_self *PrfProviderImpl) IsSupported() (bool, error) {
+	_pointer := _self.ffiObject.incrementPointer("PrfProvider")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[PrfProviderError](
+		FfiConverterPrfProviderErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) C.int8_t {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_i8(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi C.int8_t) bool {
+			return FfiConverterBoolINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_prfprovider_is_supported(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_i8(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_i8(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Explicit registration. Platform passkey providers override this to
+// drive the OS create ceremony and surface the credential metadata
+// hosts need for `exclude_credentials` bookkeeping. CLI / hardware
+// providers register lazily in [`Self::derive_seeds`] and inherit the
+// default `PrfNotSupported`.
+//
+// `exclude_credentials` lists already-registered IDs and surfaces
+// duplicates as `CredentialAlreadyExists`. The `user.id` is always
+// provider-minted and returned on `PasskeyCredential.user_id`.
+func (_self *PrfProviderImpl) CreatePasskey(excludeCredentials [][]byte) (PasskeyCredential, error) {
+	_pointer := _self.ffiObject.incrementPointer("PrfProvider")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[PrfProviderError](
+		FfiConverterPrfProviderErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) PasskeyCredential {
+			return FfiConverterPasskeyCredentialINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_prfprovider_create_passkey(
+			_pointer, FfiConverterSequenceBytesINSTANCE.Lower(excludeCredentials)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Advisory check against the platform's out-of-band verification
+// source (iOS AASA / Android assetlinks / browser rpId scope).
+// The SDK never gates internally; hosts pick their own policy.
+//
+// Built-in providers override:
+// - **iOS/macOS**: AASA `webcredentials.apps` lookup. May be stale.
+// - **Android**: Digital Asset Links query. Degrades `NotAssociated`
+// to `Skipped` because `CredentialManager` runs its own check.
+// - **Browser**: `rpId` is a registrable suffix of `window.location.hostname`.
+//
+// Custom providers without a verification source inherit the
+// `Skipped` default.
+func (_self *PrfProviderImpl) CheckDomainAssociation() (DomainAssociation, error) {
+	_pointer := _self.ffiObject.incrementPointer("PrfProvider")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[PrfProviderError](
+		FfiConverterPrfProviderErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) DomainAssociation {
+			return FfiConverterDomainAssociationINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_prfprovider_check_domain_association(
+			_pointer),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+func (object *PrfProviderImpl) Destroy() {
 	runtime.SetFinalizer(object, nil)
 	object.ffiObject.destroy()
 }
 
-type FfiConverterPostgresConnectionPool struct{}
+type FfiConverterPrfProvider struct {
+	handleMap *concurrentHandleMap[PrfProvider]
+}
 
-var FfiConverterPostgresConnectionPoolINSTANCE = FfiConverterPostgresConnectionPool{}
+var FfiConverterPrfProviderINSTANCE = FfiConverterPrfProvider{
+	handleMap: newConcurrentHandleMap[PrfProvider](),
+}
 
-func (c FfiConverterPostgresConnectionPool) Lift(pointer unsafe.Pointer) *PostgresConnectionPool {
-	result := &PostgresConnectionPool{
+func (c FfiConverterPrfProvider) Lift(pointer unsafe.Pointer) PrfProvider {
+	result := &PrfProviderImpl{
 		newFfiObject(
 			pointer,
 			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_breez_sdk_spark_fn_clone_postgresconnectionpool(pointer, status)
+				return C.uniffi_breez_sdk_spark_fn_clone_prfprovider(pointer, status)
 			},
 			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_breez_sdk_spark_fn_free_postgresconnectionpool(pointer, status)
+				C.uniffi_breez_sdk_spark_fn_free_prfprovider(pointer, status)
 			},
 		),
 	}
-	runtime.SetFinalizer(result, (*PostgresConnectionPool).Destroy)
+	runtime.SetFinalizer(result, (*PrfProviderImpl).Destroy)
 	return result
 }
 
-func (c FfiConverterPostgresConnectionPool) Read(reader io.Reader) *PostgresConnectionPool {
+func (c FfiConverterPrfProvider) Read(reader io.Reader) PrfProvider {
 	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
 }
 
-func (c FfiConverterPostgresConnectionPool) Lower(value *PostgresConnectionPool) unsafe.Pointer {
+func (c FfiConverterPrfProvider) Lower(value PrfProvider) unsafe.Pointer {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
 	// because the pointer will be decremented immediately after this function returns,
 	// and someone will be left holding onto a non-locked pointer.
-	pointer := value.ffiObject.incrementPointer("*PostgresConnectionPool")
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterPrfProvider) Write(writer io.Writer, value PrfProvider) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerPrfProvider struct{}
+
+func (_ FfiDestroyerPrfProvider) Destroy(value PrfProvider) {
+	if val, ok := value.(*PrfProviderImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *PrfProviderImpl")
+	}
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod0
+func breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod0(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterPrfProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.DeriveSeeds(
+				FfiConverterDeriveSeedsRequestINSTANCE.Lift(GoRustBuffer{
+					inner: request,
+				}),
+			)
+
+		if err != nil {
+			var actualError *PrfProviderError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterPrfProviderErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterDeriveSeedsOutputINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod1
+func breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod1(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteI8, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterPrfProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructI8, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteI8(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructI8{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.IsSupported()
+
+		if err != nil {
+			var actualError *PrfProviderError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterPrfProviderErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterBoolINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod2
+func breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod2(uniffiHandle C.uint64_t, excludeCredentials C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterPrfProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.CreatePasskey(
+				FfiConverterSequenceBytesINSTANCE.Lift(GoRustBuffer{
+					inner: excludeCredentials,
+				}),
+			)
+
+		if err != nil {
+			var actualError *PrfProviderError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterPrfProviderErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterPasskeyCredentialINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod3
+func breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod3(uniffiHandle C.uint64_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterPrfProviderINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.CheckDomainAssociation()
+
+		if err != nil {
+			var actualError *PrfProviderError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterPrfProviderErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterDomainAssociationINSTANCE.Lower(res)
+	}()
+}
+
+var UniffiVTableCallbackInterfacePrfProviderINSTANCE = C.UniffiVTableCallbackInterfacePrfProvider{
+	deriveSeeds:            (C.UniffiCallbackInterfacePrfProviderMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod0),
+	isSupported:            (C.UniffiCallbackInterfacePrfProviderMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod1),
+	createPasskey:          (C.UniffiCallbackInterfacePrfProviderMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod2),
+	checkDomainAssociation: (C.UniffiCallbackInterfacePrfProviderMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderMethod3),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderFree),
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderFree
+func breez_sdk_spark_cgo_dispatchCallbackInterfacePrfProviderFree(handle C.uint64_t) {
+	FfiConverterPrfProviderINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterPrfProvider) register() {
+	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_prfprovider(&UniffiVTableCallbackInterfacePrfProviderINSTANCE)
+}
+
+// The four per-tenant stores produced by a [`StorageBackend`].
+//
+// An opaque handle: the SDK reads its stores internally; the fields never
+// cross the FFI boundary.
+type ResolvedStoresInterface interface {
+}
+
+// The four per-tenant stores produced by a [`StorageBackend`].
+//
+// An opaque handle: the SDK reads its stores internally; the fields never
+// cross the FFI boundary.
+type ResolvedStores struct {
+	ffiObject FfiObject
+}
+
+func (object *ResolvedStores) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterResolvedStores struct{}
+
+var FfiConverterResolvedStoresINSTANCE = FfiConverterResolvedStores{}
+
+func (c FfiConverterResolvedStores) Lift(pointer unsafe.Pointer) *ResolvedStores {
+	result := &ResolvedStores{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_resolvedstores(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_resolvedstores(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*ResolvedStores).Destroy)
+	return result
+}
+
+func (c FfiConverterResolvedStores) Read(reader io.Reader) *ResolvedStores {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterResolvedStores) Lower(value *ResolvedStores) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*ResolvedStores")
 	defer value.ffiObject.decrementPointer()
 	return pointer
 
 }
 
-func (c FfiConverterPostgresConnectionPool) Write(writer io.Writer, value *PostgresConnectionPool) {
+func (c FfiConverterResolvedStores) Write(writer io.Writer, value *ResolvedStores) {
 	writeUint64(writer, uint64(uintptr(c.Lower(value))))
 }
 
-type FfiDestroyerPostgresConnectionPool struct{}
+type FfiDestroyerResolvedStores struct{}
 
-func (_ FfiDestroyerPostgresConnectionPool) Destroy(value *PostgresConnectionPool) {
+func (_ FfiDestroyerResolvedStores) Destroy(value *ResolvedStores) {
 	value.Destroy()
 }
 
@@ -8650,6 +9376,13 @@ func (c FfiConverterRestClient) register() {
 type SdkBuilderInterface interface {
 	// Builds the `BreezSdk` instance with the configured components.
 	Build() (*BreezSdk, error)
+	// Sets the account number for key derivation. All wallet keys derive from
+	// the seed at `m/8797555'/<account number>'`, so each account number
+	// yields an independent wallet from the same seed. Defaults to 0 on
+	// Regtest and 1 on all other networks when unset.
+	// Arguments:
+	// - `account_number`: The account number in the derivation path.
+	WithAccountNumber(accountNumber uint32)
 	// Sets the chain service to be used by the SDK.
 	// Arguments:
 	// - `chain_service`: The chain service to be used.
@@ -8664,37 +9397,17 @@ type SdkBuilderInterface interface {
 	// Arguments:
 	// - `fiat_service`: The fiat service to be used.
 	WithFiatService(fiatService FiatService)
-	// Sets the key set type to be used by the SDK.
-	// Arguments:
-	// - `config`: Key set configuration containing the key set type, address index flag, and optional account number.
-	WithKeySet(config KeySetConfig)
 	WithLnurlClient(lnurlClient RestClient)
-	// **Deprecated.** Call `create_mysql_connection_pool(&config)` and
-	// `with_mysql_connection_pool(pool)` instead.
+	// **Deprecated.** Use [`with_storage`](SdkBuilder::with_storage) with
+	// [`mysql_storage`](crate::mysql_storage).
 	WithMysqlBackend(config MysqlStorageConfig) error
-	// Sets a shared `MySQL` connection pool as the backend for all stores
-	// (storage, tree store, and token store). Construct the pool via
-	// [`create_mysql_connection_pool`](crate::create_mysql_connection_pool) and pass the same `Arc`
-	// to multiple builders to share connections across SDKs.
-	//
-	// If the same builder also receives an [`SdkContext`](crate::SdkContext)
-	// carrying a `MySQL` pool, `build()` will error — pick one source.
-	WithMysqlConnectionPool(pool *MysqlConnectionPool)
 	// Sets the payment observer to be used by the SDK.
 	// Arguments:
 	// - `payment_observer`: The payment observer to be used.
 	WithPaymentObserver(paymentObserver PaymentObserver)
-	// **Deprecated.** Call `create_postgres_connection_pool(&config)` and
-	// `with_postgres_connection_pool(pool)` instead.
+	// **Deprecated.** Use [`with_storage`](SdkBuilder::with_storage) with
+	// [`postgres_storage`](crate::postgres_storage).
 	WithPostgresBackend(config PostgresStorageConfig) error
-	// Sets a shared `PostgreSQL` connection pool as the backend for all
-	// stores (storage, tree store, and token store). Construct the pool
-	// via [`create_postgres_connection_pool`](crate::create_postgres_connection_pool) and pass the
-	// same `Arc` to multiple builders to share connections across SDKs.
-	//
-	// If the same builder also receives an [`SdkContext`](crate::SdkContext)
-	// carrying a Postgres pool, `build()` will error — pick one source.
-	WithPostgresConnectionPool(pool *PostgresConnectionPool)
 	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
 	// - `url`: The base URL of the REST API.
@@ -8708,10 +9421,22 @@ type SdkBuilderInterface interface {
 	// same `Arc` to every `SdkBuilder` whose SDKs should share its resources
 	// (operator gRPC channels, SSP HTTP client, database pool).
 	WithSharedContext(context *SdkContext)
-	// Sets the storage implementation to be used by the SDK.
+	// **Deprecated.** Use
+	// [`with_storage_backend`](SdkBuilder::with_storage_backend) with
+	// [`custom_storage`](crate::custom_storage).
 	// Arguments:
 	// - `storage`: The storage implementation to be used.
 	WithStorage(storage Storage)
+	// Sets the storage backend to be used by the SDK.
+	//
+	// Build the [`StorageBackend`](crate::StorageBackend) via
+	// [`default_storage`](crate::default_storage),
+	// [`postgres_storage`](crate::postgres_storage),
+	// [`mysql_storage`](crate::mysql_storage) or
+	// [`custom_storage`](crate::custom_storage).
+	// Arguments:
+	// - `storage`: The storage backend to be used.
+	WithStorageBackend(storage *StorageBackend)
 }
 
 // Builder for creating `BreezSdk` instances with customizable components.
@@ -8726,6 +9451,21 @@ type SdkBuilder struct {
 func NewSdkBuilder(config Config, seed Seed) *SdkBuilder {
 	return FfiConverterSdkBuilderINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
 		return C.uniffi_breez_sdk_spark_fn_constructor_sdkbuilder_new(FfiConverterConfigINSTANCE.Lower(config), FfiConverterSeedINSTANCE.Lower(seed), _uniffiStatus)
+	}))
+}
+
+// Creates a new `SdkBuilder` with the provided configuration and external
+// signers (e.g. from `create_turnkey_signer`), so signer-based SDKs can be
+// composed with any storage backend or shared context, unlike
+// `connect_with_signer` which is fixed to the default storage.
+// Arguments:
+// - `config`: The configuration to be used.
+// - `breez_signer`: External signer for non-Spark SDK signing (LNURL-auth,
+// sync, message signing, ECIES).
+// - `spark_signer`: External high-level Spark signer for the Spark wallet.
+func SdkBuilderNewWithSigner(config Config, breezSigner ExternalBreezSigner, sparkSigner ExternalSparkSigner) *SdkBuilder {
+	return FfiConverterSdkBuilderINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_constructor_sdkbuilder_new_with_signer(FfiConverterConfigINSTANCE.Lower(config), FfiConverterExternalBreezSignerINSTANCE.Lower(breezSigner), FfiConverterExternalSparkSignerINSTANCE.Lower(sparkSigner), _uniffiStatus)
 	}))
 }
 
@@ -8761,6 +9501,38 @@ func (_self *SdkBuilder) Build() (*BreezSdk, error) {
 	}
 
 	return res, err
+}
+
+// Sets the account number for key derivation. All wallet keys derive from
+// the seed at `m/8797555'/<account number>'`, so each account number
+// yields an independent wallet from the same seed. Defaults to 0 on
+// Regtest and 1 on all other networks when unset.
+// Arguments:
+// - `account_number`: The account number in the derivation path.
+func (_self *SdkBuilder) WithAccountNumber(accountNumber uint32) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_account_number(
+			_pointer, FfiConverterUint32INSTANCE.Lower(accountNumber)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
 }
 
 // Sets the chain service to be used by the SDK.
@@ -8852,35 +9624,6 @@ func (_self *SdkBuilder) WithFiatService(fiatService FiatService) {
 
 }
 
-// Sets the key set type to be used by the SDK.
-// Arguments:
-// - `config`: Key set configuration containing the key set type, address index flag, and optional account number.
-func (_self *SdkBuilder) WithKeySet(config KeySetConfig) {
-	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
-	defer _self.ffiObject.decrementPointer()
-	uniffiRustCallAsync[error](
-		nil,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
-			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
-			return struct{}{}
-		},
-		// liftFn
-		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_key_set(
-			_pointer, FfiConverterKeySetConfigINSTANCE.Lower(config)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
-		},
-	)
-
-}
-
 func (_self *SdkBuilder) WithLnurlClient(lnurlClient RestClient) {
 	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
 	defer _self.ffiObject.decrementPointer()
@@ -8907,8 +9650,8 @@ func (_self *SdkBuilder) WithLnurlClient(lnurlClient RestClient) {
 
 }
 
-// **Deprecated.** Call `create_mysql_connection_pool(&config)` and
-// `with_mysql_connection_pool(pool)` instead.
+// **Deprecated.** Use [`with_storage`](SdkBuilder::with_storage) with
+// [`mysql_storage`](crate::mysql_storage).
 func (_self *SdkBuilder) WithMysqlBackend(config MysqlStorageConfig) error {
 	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
 	defer _self.ffiObject.decrementPointer()
@@ -8940,39 +9683,6 @@ func (_self *SdkBuilder) WithMysqlBackend(config MysqlStorageConfig) error {
 	return err
 }
 
-// Sets a shared `MySQL` connection pool as the backend for all stores
-// (storage, tree store, and token store). Construct the pool via
-// [`create_mysql_connection_pool`](crate::create_mysql_connection_pool) and pass the same `Arc`
-// to multiple builders to share connections across SDKs.
-//
-// If the same builder also receives an [`SdkContext`](crate::SdkContext)
-// carrying a `MySQL` pool, `build()` will error — pick one source.
-func (_self *SdkBuilder) WithMysqlConnectionPool(pool *MysqlConnectionPool) {
-	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
-	defer _self.ffiObject.decrementPointer()
-	uniffiRustCallAsync[error](
-		nil,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
-			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
-			return struct{}{}
-		},
-		// liftFn
-		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_mysql_connection_pool(
-			_pointer, FfiConverterMysqlConnectionPoolINSTANCE.Lower(pool)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
-		},
-	)
-
-}
-
 // Sets the payment observer to be used by the SDK.
 // Arguments:
 // - `payment_observer`: The payment observer to be used.
@@ -9002,8 +9712,8 @@ func (_self *SdkBuilder) WithPaymentObserver(paymentObserver PaymentObserver) {
 
 }
 
-// **Deprecated.** Call `create_postgres_connection_pool(&config)` and
-// `with_postgres_connection_pool(pool)` instead.
+// **Deprecated.** Use [`with_storage`](SdkBuilder::with_storage) with
+// [`postgres_storage`](crate::postgres_storage).
 func (_self *SdkBuilder) WithPostgresBackend(config PostgresStorageConfig) error {
 	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
 	defer _self.ffiObject.decrementPointer()
@@ -9033,39 +9743,6 @@ func (_self *SdkBuilder) WithPostgresBackend(config PostgresStorageConfig) error
 	}
 
 	return err
-}
-
-// Sets a shared `PostgreSQL` connection pool as the backend for all
-// stores (storage, tree store, and token store). Construct the pool
-// via [`create_postgres_connection_pool`](crate::create_postgres_connection_pool) and pass the
-// same `Arc` to multiple builders to share connections across SDKs.
-//
-// If the same builder also receives an [`SdkContext`](crate::SdkContext)
-// carrying a Postgres pool, `build()` will error — pick one source.
-func (_self *SdkBuilder) WithPostgresConnectionPool(pool *PostgresConnectionPool) {
-	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
-	defer _self.ffiObject.decrementPointer()
-	uniffiRustCallAsync[error](
-		nil,
-		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
-			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
-			return struct{}{}
-		},
-		// liftFn
-		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_postgres_connection_pool(
-			_pointer, FfiConverterPostgresConnectionPoolINSTANCE.Lower(pool)),
-		// pollFn
-		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
-		},
-		// freeFn
-		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
-		},
-	)
-
 }
 
 // Sets the REST chain service to be used by the SDK.
@@ -9131,7 +9808,9 @@ func (_self *SdkBuilder) WithSharedContext(context *SdkContext) {
 
 }
 
-// Sets the storage implementation to be used by the SDK.
+// **Deprecated.** Use
+// [`with_storage_backend`](SdkBuilder::with_storage_backend) with
+// [`custom_storage`](crate::custom_storage).
 // Arguments:
 // - `storage`: The storage implementation to be used.
 func (_self *SdkBuilder) WithStorage(storage Storage) {
@@ -9148,6 +9827,41 @@ func (_self *SdkBuilder) WithStorage(storage Storage) {
 		func(_ struct{}) struct{} { return struct{}{} },
 		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_storage(
 			_pointer, FfiConverterStorageINSTANCE.Lower(storage)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+		},
+	)
+
+}
+
+// Sets the storage backend to be used by the SDK.
+//
+// Build the [`StorageBackend`](crate::StorageBackend) via
+// [`default_storage`](crate::default_storage),
+// [`postgres_storage`](crate::postgres_storage),
+// [`mysql_storage`](crate::mysql_storage) or
+// [`custom_storage`](crate::custom_storage).
+// Arguments:
+// - `storage`: The storage backend to be used.
+func (_self *SdkBuilder) WithStorageBackend(storage *StorageBackend) {
+	_pointer := _self.ffiObject.incrementPointer("*SdkBuilder")
+	defer _self.ffiObject.decrementPointer()
+	uniffiRustCallAsync[error](
+		nil,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
+			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
+			return struct{}{}
+		},
+		// liftFn
+		func(_ struct{}) struct{} { return struct{}{} },
+		C.uniffi_breez_sdk_spark_fn_method_sdkbuilder_with_storage_backend(
+			_pointer, FfiConverterStorageBackendINSTANCE.Lower(storage)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
@@ -9213,14 +9927,17 @@ func (_ FfiDestroyerSdkBuilder) Destroy(value *SdkBuilder) {
 // Construct one with [`new_shared_sdk_context`] and pass the same `Arc` to every
 // [`SdkBuilder`](crate::SdkBuilder) whose SDKs should share those resources
 // (a single HTTP client across SSP / chain / LNURL / JWT / etc., a gRPC
-// channel pool to the Spark operators, the Breez backend gRPC client, a
-// database connection pool, …). Useful for multi-tenant servers that load
-// many wallets in one process.
+// channel pool to the Spark operators, the Breez backend gRPC client, …).
+// Useful for multi-tenant servers that load many wallets in one process.
+//
+// To share a database connection pool across SDKs, pass a
+// [`StorageBackend`](crate::StorageBackend) as
+// [`SdkContextConfig::storage`]: every SDK built from the context reuses it.
 //
 // The struct is intentionally opaque — all fields are crate-private. There
 // is no way to inject pre-built sub-components: the factory builds them
-// from settings so callers don't need to know about session managers,
-// connection-manager wiring, or pool plumbing.
+// from settings so callers don't need to know about session stores or
+// connection-manager wiring.
 type SdkContextInterface interface {
 }
 
@@ -9229,14 +9946,17 @@ type SdkContextInterface interface {
 // Construct one with [`new_shared_sdk_context`] and pass the same `Arc` to every
 // [`SdkBuilder`](crate::SdkBuilder) whose SDKs should share those resources
 // (a single HTTP client across SSP / chain / LNURL / JWT / etc., a gRPC
-// channel pool to the Spark operators, the Breez backend gRPC client, a
-// database connection pool, …). Useful for multi-tenant servers that load
-// many wallets in one process.
+// channel pool to the Spark operators, the Breez backend gRPC client, …).
+// Useful for multi-tenant servers that load many wallets in one process.
+//
+// To share a database connection pool across SDKs, pass a
+// [`StorageBackend`](crate::StorageBackend) as
+// [`SdkContextConfig::storage`]: every SDK built from the context reuses it.
 //
 // The struct is intentionally opaque — all fields are crate-private. There
 // is no way to inject pre-built sub-components: the factory builds them
-// from settings so callers don't need to know about session managers,
-// connection-manager wiring, or pool plumbing.
+// from settings so callers don't need to know about session stores or
+// connection-manager wiring.
 type SdkContext struct {
 	ffiObject FfiObject
 }
@@ -9294,7 +10014,7 @@ func (_ FfiDestroyerSdkContext) Destroy(value *SdkContext) {
 // identity public key. Implementations should be thread-safe and may be
 // backed by an in-memory map (default) or a shared database for cross-pod
 // auth sharing.
-type SessionManager interface {
+type SessionStore interface {
 	GetSession(serviceIdentityKey PublicKey) (Session, error)
 	SetSession(serviceIdentityKey PublicKey, session Session) error
 }
@@ -9303,15 +10023,15 @@ type SessionManager interface {
 // identity public key. Implementations should be thread-safe and may be
 // backed by an in-memory map (default) or a shared database for cross-pod
 // auth sharing.
-type SessionManagerImpl struct {
+type SessionStoreImpl struct {
 	ffiObject FfiObject
 }
 
-func (_self *SessionManagerImpl) GetSession(serviceIdentityKey PublicKey) (Session, error) {
-	_pointer := _self.ffiObject.incrementPointer("SessionManager")
+func (_self *SessionStoreImpl) GetSession(serviceIdentityKey PublicKey) (Session, error) {
+	_pointer := _self.ffiObject.incrementPointer("SessionStore")
 	defer _self.ffiObject.decrementPointer()
-	res, err := uniffiRustCallAsync[SessionManagerError](
-		FfiConverterSessionManagerErrorINSTANCE,
+	res, err := uniffiRustCallAsync[SessionStoreError](
+		FfiConverterSessionStoreErrorINSTANCE,
 		// completeFn
 		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
 			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
@@ -9323,7 +10043,7 @@ func (_self *SessionManagerImpl) GetSession(serviceIdentityKey PublicKey) (Sessi
 		func(ffi RustBufferI) Session {
 			return FfiConverterSessionINSTANCE.Lift(ffi)
 		},
-		C.uniffi_breez_sdk_spark_fn_method_sessionmanager_get_session(
+		C.uniffi_breez_sdk_spark_fn_method_sessionstore_get_session(
 			_pointer, FfiConverterTypePublicKeyINSTANCE.Lower(serviceIdentityKey)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -9342,11 +10062,11 @@ func (_self *SessionManagerImpl) GetSession(serviceIdentityKey PublicKey) (Sessi
 	return res, err
 }
 
-func (_self *SessionManagerImpl) SetSession(serviceIdentityKey PublicKey, session Session) error {
-	_pointer := _self.ffiObject.incrementPointer("SessionManager")
+func (_self *SessionStoreImpl) SetSession(serviceIdentityKey PublicKey, session Session) error {
+	_pointer := _self.ffiObject.incrementPointer("SessionStore")
 	defer _self.ffiObject.decrementPointer()
-	_, err := uniffiRustCallAsync[SessionManagerError](
-		FfiConverterSessionManagerErrorINSTANCE,
+	_, err := uniffiRustCallAsync[SessionStoreError](
+		FfiConverterSessionStoreErrorINSTANCE,
 		// completeFn
 		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
 			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
@@ -9354,7 +10074,7 @@ func (_self *SessionManagerImpl) SetSession(serviceIdentityKey PublicKey, sessio
 		},
 		// liftFn
 		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_sessionmanager_set_session(
+		C.uniffi_breez_sdk_spark_fn_method_sessionstore_set_session(
 			_pointer, FfiConverterTypePublicKeyINSTANCE.Lower(serviceIdentityKey), FfiConverterSessionINSTANCE.Lower(session)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
@@ -9372,40 +10092,40 @@ func (_self *SessionManagerImpl) SetSession(serviceIdentityKey PublicKey, sessio
 
 	return err
 }
-func (object *SessionManagerImpl) Destroy() {
+func (object *SessionStoreImpl) Destroy() {
 	runtime.SetFinalizer(object, nil)
 	object.ffiObject.destroy()
 }
 
-type FfiConverterSessionManager struct {
-	handleMap *concurrentHandleMap[SessionManager]
+type FfiConverterSessionStore struct {
+	handleMap *concurrentHandleMap[SessionStore]
 }
 
-var FfiConverterSessionManagerINSTANCE = FfiConverterSessionManager{
-	handleMap: newConcurrentHandleMap[SessionManager](),
+var FfiConverterSessionStoreINSTANCE = FfiConverterSessionStore{
+	handleMap: newConcurrentHandleMap[SessionStore](),
 }
 
-func (c FfiConverterSessionManager) Lift(pointer unsafe.Pointer) SessionManager {
-	result := &SessionManagerImpl{
+func (c FfiConverterSessionStore) Lift(pointer unsafe.Pointer) SessionStore {
+	result := &SessionStoreImpl{
 		newFfiObject(
 			pointer,
 			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
-				return C.uniffi_breez_sdk_spark_fn_clone_sessionmanager(pointer, status)
+				return C.uniffi_breez_sdk_spark_fn_clone_sessionstore(pointer, status)
 			},
 			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
-				C.uniffi_breez_sdk_spark_fn_free_sessionmanager(pointer, status)
+				C.uniffi_breez_sdk_spark_fn_free_sessionstore(pointer, status)
 			},
 		),
 	}
-	runtime.SetFinalizer(result, (*SessionManagerImpl).Destroy)
+	runtime.SetFinalizer(result, (*SessionStoreImpl).Destroy)
 	return result
 }
 
-func (c FfiConverterSessionManager) Read(reader io.Reader) SessionManager {
+func (c FfiConverterSessionStore) Read(reader io.Reader) SessionStore {
 	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
 }
 
-func (c FfiConverterSessionManager) Lower(value SessionManager) unsafe.Pointer {
+func (c FfiConverterSessionStore) Lower(value SessionStore) unsafe.Pointer {
 	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
 	// because the pointer will be decremented immediately after this function returns,
 	// and someone will be left holding onto a non-locked pointer.
@@ -9414,24 +10134,24 @@ func (c FfiConverterSessionManager) Lower(value SessionManager) unsafe.Pointer {
 
 }
 
-func (c FfiConverterSessionManager) Write(writer io.Writer, value SessionManager) {
+func (c FfiConverterSessionStore) Write(writer io.Writer, value SessionStore) {
 	writeUint64(writer, uint64(uintptr(c.Lower(value))))
 }
 
-type FfiDestroyerSessionManager struct{}
+type FfiDestroyerSessionStore struct{}
 
-func (_ FfiDestroyerSessionManager) Destroy(value SessionManager) {
-	if val, ok := value.(*SessionManagerImpl); ok {
+func (_ FfiDestroyerSessionStore) Destroy(value SessionStore) {
+	if val, ok := value.(*SessionStoreImpl); ok {
 		val.Destroy()
 	} else {
-		panic("Expected *SessionManagerImpl")
+		panic("Expected *SessionStoreImpl")
 	}
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0(uniffiHandle C.uint64_t, serviceIdentityKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreMethod0
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreMethod0(uniffiHandle C.uint64_t, serviceIdentityKey C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterSessionManagerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterSessionStoreINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -9470,12 +10190,12 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0(uniffiHa
 			)
 
 		if err != nil {
-			var actualError *SessionManagerError
+			var actualError *SessionStoreError
 			if errors.As(err, &actualError) {
 				if actualError != nil {
 					*callStatus = C.RustCallStatus{
 						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterSessionManagerErrorINSTANCE.Lower(actualError),
+						errorBuf: FfiConverterSessionStoreErrorINSTANCE.Lower(actualError),
 					}
 					return
 				}
@@ -9491,10 +10211,10 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0(uniffiHa
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1(uniffiHandle C.uint64_t, serviceIdentityKey C.RustBuffer, session C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreMethod1
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreMethod1(uniffiHandle C.uint64_t, serviceIdentityKey C.RustBuffer, session C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
-	uniffiObj, ok := FfiConverterSessionManagerINSTANCE.handleMap.tryGet(handle)
+	uniffiObj, ok := FfiConverterSessionStoreINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
@@ -9535,12 +10255,12 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1(uniffiHa
 			)
 
 		if err != nil {
-			var actualError *SessionManagerError
+			var actualError *SessionStoreError
 			if errors.As(err, &actualError) {
 				if actualError != nil {
 					*callStatus = C.RustCallStatus{
 						code:     C.int8_t(uniffiCallbackResultError),
-						errorBuf: FfiConverterSessionManagerErrorINSTANCE.Lower(actualError),
+						errorBuf: FfiConverterSessionStoreErrorINSTANCE.Lower(actualError),
 					}
 					return
 				}
@@ -9555,20 +10275,20 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1(uniffiHa
 	}()
 }
 
-var UniffiVTableCallbackInterfaceSessionManagerINSTANCE = C.UniffiVTableCallbackInterfaceSessionManager{
-	getSession: (C.UniffiCallbackInterfaceSessionManagerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod0),
-	setSession: (C.UniffiCallbackInterfaceSessionManagerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerMethod1),
+var UniffiVTableCallbackInterfaceSessionStoreINSTANCE = C.UniffiVTableCallbackInterfaceSessionStore{
+	getSession: (C.UniffiCallbackInterfaceSessionStoreMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreMethod0),
+	setSession: (C.UniffiCallbackInterfaceSessionStoreMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreMethod1),
 
-	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerFree),
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreFree),
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerFree
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionManagerFree(handle C.uint64_t) {
-	FfiConverterSessionManagerINSTANCE.handleMap.remove(uint64(handle))
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreFree
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceSessionStoreFree(handle C.uint64_t) {
+	FfiConverterSessionStoreINSTANCE.handleMap.remove(uint64(handle))
 }
 
-func (c FfiConverterSessionManager) register() {
-	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_sessionmanager(&UniffiVTableCallbackInterfaceSessionManagerINSTANCE)
+func (c FfiConverterSessionStore) register() {
+	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_sessionstore(&UniffiVTableCallbackInterfaceSessionStoreINSTANCE)
 }
 
 // Trait for persistent storage
@@ -9586,16 +10306,15 @@ type Storage interface {
 	//
 	// A vector of payments or a `StorageError`
 	ListPayments(request StorageListPaymentsRequest) ([]Payment, error)
-	// Inserts a payment into storage
+	// Inserts or updates a payment unless it would replace a terminal status.
 	//
-	// # Arguments
+	// Same-status updates are still persisted so details can be enriched.
 	//
-	// * `payment` - The payment to insert
-	//
-	// # Returns
-	//
-	// Success or a `StorageError`
-	InsertPayment(payment Payment) error
+	// Returns `true` if the caller should emit a payment event (new payment was
+	// inserted, or status transitioned). Returns `false` for redundant
+	// same-status updates and for rejected updates against a terminal stored
+	// status
+	ApplyPaymentUpdate(payment Payment) (bool, error)
 	// Inserts payment metadata into storage
 	//
 	// # Arguments
@@ -9851,44 +10570,45 @@ func (_self *StorageImpl) ListPayments(request StorageListPaymentsRequest) ([]Pa
 	return res, err
 }
 
-// Inserts a payment into storage
+// Inserts or updates a payment unless it would replace a terminal status.
 //
-// # Arguments
+// Same-status updates are still persisted so details can be enriched.
 //
-// * `payment` - The payment to insert
-//
-// # Returns
-//
-// Success or a `StorageError`
-func (_self *StorageImpl) InsertPayment(payment Payment) error {
+// Returns `true` if the caller should emit a payment event (new payment was
+// inserted, or status transitioned). Returns `false` for redundant
+// same-status updates and for rejected updates against a terminal stored
+// status
+func (_self *StorageImpl) ApplyPaymentUpdate(payment Payment) (bool, error) {
 	_pointer := _self.ffiObject.incrementPointer("Storage")
 	defer _self.ffiObject.decrementPointer()
-	_, err := uniffiRustCallAsync[StorageError](
+	res, err := uniffiRustCallAsync[StorageError](
 		FfiConverterStorageErrorINSTANCE,
 		// completeFn
-		func(handle C.uint64_t, status *C.RustCallStatus) struct{} {
-			C.ffi_breez_sdk_spark_rust_future_complete_void(handle, status)
-			return struct{}{}
+		func(handle C.uint64_t, status *C.RustCallStatus) C.int8_t {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_i8(handle, status)
+			return res
 		},
 		// liftFn
-		func(_ struct{}) struct{} { return struct{}{} },
-		C.uniffi_breez_sdk_spark_fn_method_storage_insert_payment(
+		func(ffi C.int8_t) bool {
+			return FfiConverterBoolINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_storage_apply_payment_update(
 			_pointer, FfiConverterPaymentINSTANCE.Lower(payment)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_poll_void(handle, continuation, data)
+			C.ffi_breez_sdk_spark_rust_future_poll_i8(handle, continuation, data)
 		},
 		// freeFn
 		func(handle C.uint64_t) {
-			C.ffi_breez_sdk_spark_rust_future_free_void(handle)
+			C.ffi_breez_sdk_spark_rust_future_free_i8(handle)
 		},
 	)
 
 	if err == nil {
-		return nil
+		return res, nil
 	}
 
-	return err
+	return res, err
 }
 
 // Inserts payment metadata into storage
@@ -11005,14 +11725,14 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3(uniffiHandle C.
 }
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4(uniffiHandle C.uint64_t, payment C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteVoid, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4(uniffiHandle C.uint64_t, payment C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteI8, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterStorageINSTANCE.handleMap.tryGet(handle)
 	if !ok {
 		panic(fmt.Errorf("no callback in handle map: %d", handle))
 	}
 
-	result := make(chan C.UniffiForeignFutureStructVoid, 1)
+	result := make(chan C.UniffiForeignFutureStructI8, 1)
 	cancel := make(chan struct{}, 1)
 	guardHandle := cgo.NewHandle(cancel)
 	*uniffiOutReturn = C.UniffiForeignFuture{
@@ -11025,20 +11745,21 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4(uniffiHandle C.
 		select {
 		case <-cancel:
 		case res := <-result:
-			C.call_UniffiForeignFutureCompleteVoid(uniffiFutureCallback, uniffiCallbackData, res)
+			C.call_UniffiForeignFutureCompleteI8(uniffiFutureCallback, uniffiCallbackData, res)
 		}
 	}()
 
 	// Eval callback asynchroniously
 	go func() {
-		asyncResult := &C.UniffiForeignFutureStructVoid{}
+		asyncResult := &C.UniffiForeignFutureStructI8{}
+		uniffiOutReturn := &asyncResult.returnValue
 		callStatus := &asyncResult.callStatus
 		defer func() {
 			result <- *asyncResult
 		}()
 
-		err :=
-			uniffiObj.InsertPayment(
+		res, err :=
+			uniffiObj.ApplyPaymentUpdate(
 				FfiConverterPaymentINSTANCE.Lift(GoRustBuffer{
 					inner: payment,
 				}),
@@ -11062,6 +11783,7 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4(uniffiHandle C.
 			}
 		}
 
+		*uniffiOutReturn = FfiConverterBoolINSTANCE.Lower(res)
 	}()
 }
 
@@ -12430,7 +13152,7 @@ var UniffiVTableCallbackInterfaceStorageINSTANCE = C.UniffiVTableCallbackInterfa
 	getCachedItem:             (C.UniffiCallbackInterfaceStorageMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod1),
 	setCachedItem:             (C.UniffiCallbackInterfaceStorageMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod2),
 	listPayments:              (C.UniffiCallbackInterfaceStorageMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod3),
-	insertPayment:             (C.UniffiCallbackInterfaceStorageMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4),
+	applyPaymentUpdate:        (C.UniffiCallbackInterfaceStorageMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod4),
 	insertPaymentMetadata:     (C.UniffiCallbackInterfaceStorageMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod5),
 	getPaymentById:            (C.UniffiCallbackInterfaceStorageMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod6),
 	getPaymentByInvoice:       (C.UniffiCallbackInterfaceStorageMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod7),
@@ -12464,6 +13186,107 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree(handle C.uint64_t)
 
 func (c FfiConverterStorage) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_storage(&UniffiVTableCallbackInterfaceStorageINSTANCE)
+}
+
+// A factory for a tenant's storage.
+//
+// A single backend may back many SDK instances; each
+// [`create_stores`](Self::create_stores) call yields the store set scoped to
+// one tenant `identity` (a serialized public key). `network` lets file-based
+// backends segregate tenants by network; database backends ignore it.
+type StorageBackendInterface interface {
+	CreateStores(network Network, identity []byte) (*ResolvedStores, error)
+}
+
+// A factory for a tenant's storage.
+//
+// A single backend may back many SDK instances; each
+// [`create_stores`](Self::create_stores) call yields the store set scoped to
+// one tenant `identity` (a serialized public key). `network` lets file-based
+// backends segregate tenants by network; database backends ignore it.
+type StorageBackend struct {
+	ffiObject FfiObject
+}
+
+func (_self *StorageBackend) CreateStores(network Network, identity []byte) (*ResolvedStores, error) {
+	_pointer := _self.ffiObject.incrementPointer("*StorageBackend")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) unsafe.Pointer {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_pointer(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi unsafe.Pointer) *ResolvedStores {
+			return FfiConverterResolvedStoresINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_storagebackend_create_stores(
+			_pointer, FfiConverterNetworkINSTANCE.Lower(network), FfiConverterBytesINSTANCE.Lower(identity)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_pointer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_pointer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+func (object *StorageBackend) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterStorageBackend struct{}
+
+var FfiConverterStorageBackendINSTANCE = FfiConverterStorageBackend{}
+
+func (c FfiConverterStorageBackend) Lift(pointer unsafe.Pointer) *StorageBackend {
+	result := &StorageBackend{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_storagebackend(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_storagebackend(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*StorageBackend).Destroy)
+	return result
+}
+
+func (c FfiConverterStorageBackend) Read(reader io.Reader) *StorageBackend {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterStorageBackend) Lower(value *StorageBackend) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := value.ffiObject.incrementPointer("*StorageBackend")
+	defer value.ffiObject.decrementPointer()
+	return pointer
+
+}
+
+func (c FfiConverterStorageBackend) Write(writer io.Writer, value *StorageBackend) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerStorageBackend struct{}
+
+func (_ FfiDestroyerStorageBackend) Destroy(value *StorageBackend) {
+	value.Destroy()
 }
 
 type TokenIssuerInterface interface {
@@ -13054,6 +13877,50 @@ func (c FfiConverterAesSuccessActionDataDecrypted) Write(writer io.Writer, value
 type FfiDestroyerAesSuccessActionDataDecrypted struct{}
 
 func (_ FfiDestroyerAesSuccessActionDataDecrypted) Destroy(value AesSuccessActionDataDecrypted) {
+	value.Destroy()
+}
+
+// Request for [`BreezSdk::authorize_lightning_address_transfer`]. Called by
+// the *current owner* to authorize handing their registered username over to
+// `transferee_pubkey`.
+type AuthorizeTransferRequest struct {
+	// The new owner's identity public key.
+	TransfereePubkey string
+}
+
+func (r *AuthorizeTransferRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.TransfereePubkey)
+}
+
+type FfiConverterAuthorizeTransferRequest struct{}
+
+var FfiConverterAuthorizeTransferRequestINSTANCE = FfiConverterAuthorizeTransferRequest{}
+
+func (c FfiConverterAuthorizeTransferRequest) Lift(rb RustBufferI) AuthorizeTransferRequest {
+	return LiftFromRustBuffer[AuthorizeTransferRequest](c, rb)
+}
+
+func (c FfiConverterAuthorizeTransferRequest) Read(reader io.Reader) AuthorizeTransferRequest {
+	return AuthorizeTransferRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterAuthorizeTransferRequest) Lower(value AuthorizeTransferRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[AuthorizeTransferRequest](c, value)
+}
+
+func (c FfiConverterAuthorizeTransferRequest) LowerExternal(value AuthorizeTransferRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[AuthorizeTransferRequest](c, value))
+}
+
+func (c FfiConverterAuthorizeTransferRequest) Write(writer io.Writer, value AuthorizeTransferRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.TransfereePubkey)
+}
+
+type FfiDestroyerAuthorizeTransferRequest struct{}
+
+func (_ FfiDestroyerAuthorizeTransferRequest) Destroy(value AuthorizeTransferRequest) {
 	value.Destroy()
 }
 
@@ -14107,6 +14974,56 @@ func (_ FfiDestroyerClaimHtlcPaymentResponse) Destroy(value ClaimHtlcPaymentResp
 	value.Destroy()
 }
 
+// Request for [`BreezSdk::claim_lightning_address_transfer`]. Called by the
+// *new owner* to complete the takeover using the authorization produced by
+// the current owner.
+type ClaimTransferRequest struct {
+	// Authorization produced by the current owner via
+	// [`BreezSdk::authorize_lightning_address_transfer`].
+	Authorization TransferAuthorization
+	// Description for the address. Defaults to `"Pay to {username}@{domain}"`.
+	Description *string
+}
+
+func (r *ClaimTransferRequest) Destroy() {
+	FfiDestroyerTransferAuthorization{}.Destroy(r.Authorization)
+	FfiDestroyerOptionalString{}.Destroy(r.Description)
+}
+
+type FfiConverterClaimTransferRequest struct{}
+
+var FfiConverterClaimTransferRequestINSTANCE = FfiConverterClaimTransferRequest{}
+
+func (c FfiConverterClaimTransferRequest) Lift(rb RustBufferI) ClaimTransferRequest {
+	return LiftFromRustBuffer[ClaimTransferRequest](c, rb)
+}
+
+func (c FfiConverterClaimTransferRequest) Read(reader io.Reader) ClaimTransferRequest {
+	return ClaimTransferRequest{
+		FfiConverterTransferAuthorizationINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterClaimTransferRequest) Lower(value ClaimTransferRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ClaimTransferRequest](c, value)
+}
+
+func (c FfiConverterClaimTransferRequest) LowerExternal(value ClaimTransferRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ClaimTransferRequest](c, value))
+}
+
+func (c FfiConverterClaimTransferRequest) Write(writer io.Writer, value ClaimTransferRequest) {
+	FfiConverterTransferAuthorizationINSTANCE.Write(writer, value.Authorization)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Description)
+}
+
+type FfiDestroyerClaimTransferRequest struct{}
+
+func (_ FfiDestroyerClaimTransferRequest) Destroy(value ClaimTransferRequest) {
+	value.Destroy()
+}
+
 type Config struct {
 	ApiKey             *string
 	Network            Network
@@ -14324,18 +15241,133 @@ func (_ FfiDestroyerConnectRequest) Destroy(value ConnectRequest) {
 	value.Destroy()
 }
 
+// Request shape for [`PasskeyClient::connect_with_passkey`].
+type ConnectWithPasskeyRequest struct {
+	// Wallet label. Defaults to the configured default label when
+	// `None`. Used both for the silent sign-in attempt and, if it
+	// fast-fails, for the fallback registration.
+	Label *string
+	// Optional credential IDs to restrict the silent sign-in
+	// attempt to (reauthentication path). See
+	// [`SignInRequest::allow_credentials`]. Ignored on the fallback
+	// registration path.
+	AllowCredentials *[][]byte
+	// Optional already-registered credential IDs to surface
+	// duplicates on the fallback registration path. See
+	// [`RegisterRequest::exclude_credentials`]. Ignored on the
+	// silent sign-in attempt.
+	ExcludeCredentials *[][]byte
+}
+
+func (r *ConnectWithPasskeyRequest) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.Label)
+	FfiDestroyerOptionalSequenceBytes{}.Destroy(r.AllowCredentials)
+	FfiDestroyerOptionalSequenceBytes{}.Destroy(r.ExcludeCredentials)
+}
+
+type FfiConverterConnectWithPasskeyRequest struct{}
+
+var FfiConverterConnectWithPasskeyRequestINSTANCE = FfiConverterConnectWithPasskeyRequest{}
+
+func (c FfiConverterConnectWithPasskeyRequest) Lift(rb RustBufferI) ConnectWithPasskeyRequest {
+	return LiftFromRustBuffer[ConnectWithPasskeyRequest](c, rb)
+}
+
+func (c FfiConverterConnectWithPasskeyRequest) Read(reader io.Reader) ConnectWithPasskeyRequest {
+	return ConnectWithPasskeyRequest{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalSequenceBytesINSTANCE.Read(reader),
+		FfiConverterOptionalSequenceBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterConnectWithPasskeyRequest) Lower(value ConnectWithPasskeyRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ConnectWithPasskeyRequest](c, value)
+}
+
+func (c FfiConverterConnectWithPasskeyRequest) LowerExternal(value ConnectWithPasskeyRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConnectWithPasskeyRequest](c, value))
+}
+
+func (c FfiConverterConnectWithPasskeyRequest) Write(writer io.Writer, value ConnectWithPasskeyRequest) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Label)
+	FfiConverterOptionalSequenceBytesINSTANCE.Write(writer, value.AllowCredentials)
+	FfiConverterOptionalSequenceBytesINSTANCE.Write(writer, value.ExcludeCredentials)
+}
+
+type FfiDestroyerConnectWithPasskeyRequest struct{}
+
+func (_ FfiDestroyerConnectWithPasskeyRequest) Destroy(value ConnectWithPasskeyRequest) {
+	value.Destroy()
+}
+
+// Response from [`PasskeyClient::connect_with_passkey`].
+//
+// `credential` carries whichever credential signed in or was
+// registered, when the provider surfaces it. The register path also
+// populates the attestation fields (`aaguid`, `backup_eligible`); the
+// sign-in path sets only `credential_id`.
+type ConnectWithPasskeyResponse struct {
+	Wallet     Wallet
+	Credential *PasskeyCredential
+}
+
+func (r *ConnectWithPasskeyResponse) Destroy() {
+	FfiDestroyerWallet{}.Destroy(r.Wallet)
+	FfiDestroyerOptionalPasskeyCredential{}.Destroy(r.Credential)
+}
+
+type FfiConverterConnectWithPasskeyResponse struct{}
+
+var FfiConverterConnectWithPasskeyResponseINSTANCE = FfiConverterConnectWithPasskeyResponse{}
+
+func (c FfiConverterConnectWithPasskeyResponse) Lift(rb RustBufferI) ConnectWithPasskeyResponse {
+	return LiftFromRustBuffer[ConnectWithPasskeyResponse](c, rb)
+}
+
+func (c FfiConverterConnectWithPasskeyResponse) Read(reader io.Reader) ConnectWithPasskeyResponse {
+	return ConnectWithPasskeyResponse{
+		FfiConverterWalletINSTANCE.Read(reader),
+		FfiConverterOptionalPasskeyCredentialINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterConnectWithPasskeyResponse) Lower(value ConnectWithPasskeyResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[ConnectWithPasskeyResponse](c, value)
+}
+
+func (c FfiConverterConnectWithPasskeyResponse) LowerExternal(value ConnectWithPasskeyResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConnectWithPasskeyResponse](c, value))
+}
+
+func (c FfiConverterConnectWithPasskeyResponse) Write(writer io.Writer, value ConnectWithPasskeyResponse) {
+	FfiConverterWalletINSTANCE.Write(writer, value.Wallet)
+	FfiConverterOptionalPasskeyCredentialINSTANCE.Write(writer, value.Credential)
+}
+
+type FfiDestroyerConnectWithPasskeyResponse struct{}
+
+func (_ FfiDestroyerConnectWithPasskeyResponse) Destroy(value ConnectWithPasskeyResponse) {
+	value.Destroy()
+}
+
 // Request object for connecting to the Spark network using an external signer.
 //
 // This allows using a custom signer implementation instead of providing a seed directly.
 type ConnectWithSignerRequest struct {
-	Config     Config
-	Signer     ExternalSigner
-	StorageDir string
+	Config Config
+	// External signer for non-Spark SDK signing (LNURL-auth, sync, message
+	// signing, ECIES).
+	BreezSigner ExternalBreezSigner
+	// External high-level Spark signer for the Spark wallet flows.
+	SparkSigner ExternalSparkSigner
+	StorageDir  string
 }
 
 func (r *ConnectWithSignerRequest) Destroy() {
 	FfiDestroyerConfig{}.Destroy(r.Config)
-	FfiDestroyerExternalSigner{}.Destroy(r.Signer)
+	FfiDestroyerExternalBreezSigner{}.Destroy(r.BreezSigner)
+	FfiDestroyerExternalSparkSigner{}.Destroy(r.SparkSigner)
 	FfiDestroyerString{}.Destroy(r.StorageDir)
 }
 
@@ -14350,7 +15382,8 @@ func (c FfiConverterConnectWithSignerRequest) Lift(rb RustBufferI) ConnectWithSi
 func (c FfiConverterConnectWithSignerRequest) Read(reader io.Reader) ConnectWithSignerRequest {
 	return ConnectWithSignerRequest{
 		FfiConverterConfigINSTANCE.Read(reader),
-		FfiConverterExternalSignerINSTANCE.Read(reader),
+		FfiConverterExternalBreezSignerINSTANCE.Read(reader),
+		FfiConverterExternalSparkSignerINSTANCE.Read(reader),
 		FfiConverterStringINSTANCE.Read(reader),
 	}
 }
@@ -14365,7 +15398,8 @@ func (c FfiConverterConnectWithSignerRequest) LowerExternal(value ConnectWithSig
 
 func (c FfiConverterConnectWithSignerRequest) Write(writer io.Writer, value ConnectWithSignerRequest) {
 	FfiConverterConfigINSTANCE.Write(writer, value.Config)
-	FfiConverterExternalSignerINSTANCE.Write(writer, value.Signer)
+	FfiConverterExternalBreezSignerINSTANCE.Write(writer, value.BreezSigner)
+	FfiConverterExternalSparkSignerINSTANCE.Write(writer, value.SparkSigner)
 	FfiConverterStringINSTANCE.Write(writer, value.StorageDir)
 }
 
@@ -14979,6 +16013,116 @@ func (_ FfiDestroyerDepositInfo) Destroy(value DepositInfo) {
 	value.Destroy()
 }
 
+// Derived seeds plus the credential observed in the same assertion.
+type DeriveSeedsOutput struct {
+	Seeds [][]byte
+	// Absent when the provider does not surface it.
+	CredentialId *[]byte
+}
+
+func (r *DeriveSeedsOutput) Destroy() {
+	FfiDestroyerSequenceBytes{}.Destroy(r.Seeds)
+	FfiDestroyerOptionalBytes{}.Destroy(r.CredentialId)
+}
+
+type FfiConverterDeriveSeedsOutput struct{}
+
+var FfiConverterDeriveSeedsOutputINSTANCE = FfiConverterDeriveSeedsOutput{}
+
+func (c FfiConverterDeriveSeedsOutput) Lift(rb RustBufferI) DeriveSeedsOutput {
+	return LiftFromRustBuffer[DeriveSeedsOutput](c, rb)
+}
+
+func (c FfiConverterDeriveSeedsOutput) Read(reader io.Reader) DeriveSeedsOutput {
+	return DeriveSeedsOutput{
+		FfiConverterSequenceBytesINSTANCE.Read(reader),
+		FfiConverterOptionalBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterDeriveSeedsOutput) Lower(value DeriveSeedsOutput) C.RustBuffer {
+	return LowerIntoRustBuffer[DeriveSeedsOutput](c, value)
+}
+
+func (c FfiConverterDeriveSeedsOutput) LowerExternal(value DeriveSeedsOutput) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[DeriveSeedsOutput](c, value))
+}
+
+func (c FfiConverterDeriveSeedsOutput) Write(writer io.Writer, value DeriveSeedsOutput) {
+	FfiConverterSequenceBytesINSTANCE.Write(writer, value.Seeds)
+	FfiConverterOptionalBytesINSTANCE.Write(writer, value.CredentialId)
+}
+
+type FfiDestroyerDeriveSeedsOutput struct{}
+
+func (_ FfiDestroyerDeriveSeedsOutput) Destroy(value DeriveSeedsOutput) {
+	value.Destroy()
+}
+
+// Per-call inputs for [`PrfProvider::derive_seeds`]. Hosts that
+// don't need per-ceremony overrides fall back to [`Default`]
+// (`salts` only, all overrides empty / `None`).
+type DeriveSeedsRequest struct {
+	// Salt strings in caller order. One 32-byte PRF output is
+	// returned per salt, in the same order.
+	Salts []string
+	// Credential IDs the assertion is restricted to. The main use is
+	// reauthenticating a known user: if a listed credential is on the
+	// device the OS unlocks straight away (no account picker); otherwise
+	// it asks for another device (paired phone, security key) holding one.
+	// Empty falls through to the provider's configured default.
+	AllowCredentials [][]byte
+	// Restrict the assertion to credentials already present on this
+	// device. When `true`, the OS skips the cross-device picker (iOS
+	// QR, Android hybrid, web `mediation: undefined`) and surfaces a
+	// missing local credential as `CredentialNotFound` immediately.
+	// When `false`, the OS picker is shown as usual. Unset uses the
+	// provider's default (`true` for built-in providers).
+	PreferImmediatelyAvailableCredentials *bool
+}
+
+func (r *DeriveSeedsRequest) Destroy() {
+	FfiDestroyerSequenceString{}.Destroy(r.Salts)
+	FfiDestroyerSequenceBytes{}.Destroy(r.AllowCredentials)
+	FfiDestroyerOptionalBool{}.Destroy(r.PreferImmediatelyAvailableCredentials)
+}
+
+type FfiConverterDeriveSeedsRequest struct{}
+
+var FfiConverterDeriveSeedsRequestINSTANCE = FfiConverterDeriveSeedsRequest{}
+
+func (c FfiConverterDeriveSeedsRequest) Lift(rb RustBufferI) DeriveSeedsRequest {
+	return LiftFromRustBuffer[DeriveSeedsRequest](c, rb)
+}
+
+func (c FfiConverterDeriveSeedsRequest) Read(reader io.Reader) DeriveSeedsRequest {
+	return DeriveSeedsRequest{
+		FfiConverterSequenceStringINSTANCE.Read(reader),
+		FfiConverterSequenceBytesINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterDeriveSeedsRequest) Lower(value DeriveSeedsRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[DeriveSeedsRequest](c, value)
+}
+
+func (c FfiConverterDeriveSeedsRequest) LowerExternal(value DeriveSeedsRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[DeriveSeedsRequest](c, value))
+}
+
+func (c FfiConverterDeriveSeedsRequest) Write(writer io.Writer, value DeriveSeedsRequest) {
+	FfiConverterSequenceStringINSTANCE.Write(writer, value.Salts)
+	FfiConverterSequenceBytesINSTANCE.Write(writer, value.AllowCredentials)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.PreferImmediatelyAvailableCredentials)
+}
+
+type FfiDestroyerDeriveSeedsRequest struct{}
+
+func (_ FfiDestroyerDeriveSeedsRequest) Destroy(value DeriveSeedsRequest) {
+	value.Destroy()
+}
+
 // FFI-safe representation of an ECDSA signature (64 bytes)
 type EcdsaSignatureBytes struct {
 	Bytes []byte
@@ -15020,127 +16164,52 @@ func (_ FfiDestroyerEcdsaSignatureBytes) Destroy(value EcdsaSignatureBytes) {
 	value.Destroy()
 }
 
-// FFI-safe representation of `spark_wallet::AggregateFrostRequest`
-type ExternalAggregateFrostRequest struct {
-	// The message that was signed
-	Message []byte
-	// Statechain signatures as a list of identifier-signature pairs
-	StatechainSignatures []IdentifierSignaturePair
-	// Statechain public keys as a list of identifier-publickey pairs
-	StatechainPublicKeys []IdentifierPublicKeyPair
-	// The verifying key (33 bytes compressed)
-	VerifyingKey []byte
-	// Statechain commitments as a list of identifier-commitment pairs
-	StatechainCommitments []IdentifierCommitmentPair
-	// The self commitment
-	SelfCommitment ExternalSigningCommitments
-	// The public key (33 bytes compressed)
-	PublicKey []byte
-	// The self signature share
-	SelfSignature ExternalFrostSignatureShare
-	// Optional adaptor public key (33 bytes compressed)
-	AdaptorPublicKey *[]byte
+// FFI-safe representation of `spark_wallet::ClaimLeafInput`.
+type ExternalClaimLeafInput struct {
+	NodeId            ExternalTreeNodeId
+	SenderSignature   []byte
+	LeafKeyCiphertext []byte
 }
 
-func (r *ExternalAggregateFrostRequest) Destroy() {
-	FfiDestroyerBytes{}.Destroy(r.Message)
-	FfiDestroyerSequenceIdentifierSignaturePair{}.Destroy(r.StatechainSignatures)
-	FfiDestroyerSequenceIdentifierPublicKeyPair{}.Destroy(r.StatechainPublicKeys)
-	FfiDestroyerBytes{}.Destroy(r.VerifyingKey)
-	FfiDestroyerSequenceIdentifierCommitmentPair{}.Destroy(r.StatechainCommitments)
-	FfiDestroyerExternalSigningCommitments{}.Destroy(r.SelfCommitment)
-	FfiDestroyerBytes{}.Destroy(r.PublicKey)
-	FfiDestroyerExternalFrostSignatureShare{}.Destroy(r.SelfSignature)
-	FfiDestroyerOptionalBytes{}.Destroy(r.AdaptorPublicKey)
+func (r *ExternalClaimLeafInput) Destroy() {
+	FfiDestroyerExternalTreeNodeId{}.Destroy(r.NodeId)
+	FfiDestroyerBytes{}.Destroy(r.SenderSignature)
+	FfiDestroyerBytes{}.Destroy(r.LeafKeyCiphertext)
 }
 
-type FfiConverterExternalAggregateFrostRequest struct{}
+type FfiConverterExternalClaimLeafInput struct{}
 
-var FfiConverterExternalAggregateFrostRequestINSTANCE = FfiConverterExternalAggregateFrostRequest{}
+var FfiConverterExternalClaimLeafInputINSTANCE = FfiConverterExternalClaimLeafInput{}
 
-func (c FfiConverterExternalAggregateFrostRequest) Lift(rb RustBufferI) ExternalAggregateFrostRequest {
-	return LiftFromRustBuffer[ExternalAggregateFrostRequest](c, rb)
+func (c FfiConverterExternalClaimLeafInput) Lift(rb RustBufferI) ExternalClaimLeafInput {
+	return LiftFromRustBuffer[ExternalClaimLeafInput](c, rb)
 }
 
-func (c FfiConverterExternalAggregateFrostRequest) Read(reader io.Reader) ExternalAggregateFrostRequest {
-	return ExternalAggregateFrostRequest{
+func (c FfiConverterExternalClaimLeafInput) Read(reader io.Reader) ExternalClaimLeafInput {
+	return ExternalClaimLeafInput{
+		FfiConverterExternalTreeNodeIdINSTANCE.Read(reader),
 		FfiConverterBytesINSTANCE.Read(reader),
-		FfiConverterSequenceIdentifierSignaturePairINSTANCE.Read(reader),
-		FfiConverterSequenceIdentifierPublicKeyPairINSTANCE.Read(reader),
-		FfiConverterBytesINSTANCE.Read(reader),
-		FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Read(reader),
-		FfiConverterExternalSigningCommitmentsINSTANCE.Read(reader),
-		FfiConverterBytesINSTANCE.Read(reader),
-		FfiConverterExternalFrostSignatureShareINSTANCE.Read(reader),
-		FfiConverterOptionalBytesINSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterExternalAggregateFrostRequest) Lower(value ExternalAggregateFrostRequest) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalAggregateFrostRequest](c, value)
-}
-
-func (c FfiConverterExternalAggregateFrostRequest) LowerExternal(value ExternalAggregateFrostRequest) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[ExternalAggregateFrostRequest](c, value))
-}
-
-func (c FfiConverterExternalAggregateFrostRequest) Write(writer io.Writer, value ExternalAggregateFrostRequest) {
-	FfiConverterBytesINSTANCE.Write(writer, value.Message)
-	FfiConverterSequenceIdentifierSignaturePairINSTANCE.Write(writer, value.StatechainSignatures)
-	FfiConverterSequenceIdentifierPublicKeyPairINSTANCE.Write(writer, value.StatechainPublicKeys)
-	FfiConverterBytesINSTANCE.Write(writer, value.VerifyingKey)
-	FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Write(writer, value.StatechainCommitments)
-	FfiConverterExternalSigningCommitmentsINSTANCE.Write(writer, value.SelfCommitment)
-	FfiConverterBytesINSTANCE.Write(writer, value.PublicKey)
-	FfiConverterExternalFrostSignatureShareINSTANCE.Write(writer, value.SelfSignature)
-	FfiConverterOptionalBytesINSTANCE.Write(writer, value.AdaptorPublicKey)
-}
-
-type FfiDestroyerExternalAggregateFrostRequest struct{}
-
-func (_ FfiDestroyerExternalAggregateFrostRequest) Destroy(value ExternalAggregateFrostRequest) {
-	value.Destroy()
-}
-
-// FFI-safe representation of `spark_wallet::EncryptedSecret`
-type ExternalEncryptedSecret struct {
-	// The encrypted ciphertext
-	Ciphertext []byte
-}
-
-func (r *ExternalEncryptedSecret) Destroy() {
-	FfiDestroyerBytes{}.Destroy(r.Ciphertext)
-}
-
-type FfiConverterExternalEncryptedSecret struct{}
-
-var FfiConverterExternalEncryptedSecretINSTANCE = FfiConverterExternalEncryptedSecret{}
-
-func (c FfiConverterExternalEncryptedSecret) Lift(rb RustBufferI) ExternalEncryptedSecret {
-	return LiftFromRustBuffer[ExternalEncryptedSecret](c, rb)
-}
-
-func (c FfiConverterExternalEncryptedSecret) Read(reader io.Reader) ExternalEncryptedSecret {
-	return ExternalEncryptedSecret{
 		FfiConverterBytesINSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterExternalEncryptedSecret) Lower(value ExternalEncryptedSecret) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalEncryptedSecret](c, value)
+func (c FfiConverterExternalClaimLeafInput) Lower(value ExternalClaimLeafInput) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalClaimLeafInput](c, value)
 }
 
-func (c FfiConverterExternalEncryptedSecret) LowerExternal(value ExternalEncryptedSecret) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[ExternalEncryptedSecret](c, value))
+func (c FfiConverterExternalClaimLeafInput) LowerExternal(value ExternalClaimLeafInput) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalClaimLeafInput](c, value))
 }
 
-func (c FfiConverterExternalEncryptedSecret) Write(writer io.Writer, value ExternalEncryptedSecret) {
-	FfiConverterBytesINSTANCE.Write(writer, value.Ciphertext)
+func (c FfiConverterExternalClaimLeafInput) Write(writer io.Writer, value ExternalClaimLeafInput) {
+	FfiConverterExternalTreeNodeIdINSTANCE.Write(writer, value.NodeId)
+	FfiConverterBytesINSTANCE.Write(writer, value.SenderSignature)
+	FfiConverterBytesINSTANCE.Write(writer, value.LeafKeyCiphertext)
 }
 
-type FfiDestroyerExternalEncryptedSecret struct{}
+type FfiDestroyerExternalClaimLeafInput struct{}
 
-func (_ FfiDestroyerExternalEncryptedSecret) Destroy(value ExternalEncryptedSecret) {
+func (_ FfiDestroyerExternalClaimLeafInput) Destroy(value ExternalClaimLeafInput) {
 	value.Destroy()
 }
 
@@ -15193,6 +16262,115 @@ func (c FfiConverterExternalFrostCommitments) Write(writer io.Writer, value Exte
 type FfiDestroyerExternalFrostCommitments struct{}
 
 func (_ FfiDestroyerExternalFrostCommitments) Destroy(value ExternalFrostCommitments) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::FrostJob`.
+type ExternalFrostJob struct {
+	// Which key to sign with.
+	Derivation ExternalFrostDerivation
+	// 32-byte BIP-341 sighash to sign.
+	Sighash []byte
+	// FROST group verifying key (33 bytes compressed).
+	VerifyingKey []byte
+	// Per-operator round-1 commitments.
+	OperatorCommitments []IdentifierCommitmentPair
+	// Optional adaptor public key (33 bytes compressed).
+	AdaptorPublicKey *[]byte
+}
+
+func (r *ExternalFrostJob) Destroy() {
+	FfiDestroyerExternalFrostDerivation{}.Destroy(r.Derivation)
+	FfiDestroyerBytes{}.Destroy(r.Sighash)
+	FfiDestroyerBytes{}.Destroy(r.VerifyingKey)
+	FfiDestroyerSequenceIdentifierCommitmentPair{}.Destroy(r.OperatorCommitments)
+	FfiDestroyerOptionalBytes{}.Destroy(r.AdaptorPublicKey)
+}
+
+type FfiConverterExternalFrostJob struct{}
+
+var FfiConverterExternalFrostJobINSTANCE = FfiConverterExternalFrostJob{}
+
+func (c FfiConverterExternalFrostJob) Lift(rb RustBufferI) ExternalFrostJob {
+	return LiftFromRustBuffer[ExternalFrostJob](c, rb)
+}
+
+func (c FfiConverterExternalFrostJob) Read(reader io.Reader) ExternalFrostJob {
+	return ExternalFrostJob{
+		FfiConverterExternalFrostDerivationINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Read(reader),
+		FfiConverterOptionalBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalFrostJob) Lower(value ExternalFrostJob) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalFrostJob](c, value)
+}
+
+func (c FfiConverterExternalFrostJob) LowerExternal(value ExternalFrostJob) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalFrostJob](c, value))
+}
+
+func (c FfiConverterExternalFrostJob) Write(writer io.Writer, value ExternalFrostJob) {
+	FfiConverterExternalFrostDerivationINSTANCE.Write(writer, value.Derivation)
+	FfiConverterBytesINSTANCE.Write(writer, value.Sighash)
+	FfiConverterBytesINSTANCE.Write(writer, value.VerifyingKey)
+	FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Write(writer, value.OperatorCommitments)
+	FfiConverterOptionalBytesINSTANCE.Write(writer, value.AdaptorPublicKey)
+}
+
+type FfiDestroyerExternalFrostJob struct{}
+
+func (_ FfiDestroyerExternalFrostJob) Destroy(value ExternalFrostJob) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::FrostShareResult`.
+type ExternalFrostShareResult struct {
+	// The user's nonce commitment (round-1 output).
+	Commitment ExternalFrostCommitments
+	// The user's signature share (round-2 output).
+	SignatureShare ExternalFrostSignatureShare
+}
+
+func (r *ExternalFrostShareResult) Destroy() {
+	FfiDestroyerExternalFrostCommitments{}.Destroy(r.Commitment)
+	FfiDestroyerExternalFrostSignatureShare{}.Destroy(r.SignatureShare)
+}
+
+type FfiConverterExternalFrostShareResult struct{}
+
+var FfiConverterExternalFrostShareResultINSTANCE = FfiConverterExternalFrostShareResult{}
+
+func (c FfiConverterExternalFrostShareResult) Lift(rb RustBufferI) ExternalFrostShareResult {
+	return LiftFromRustBuffer[ExternalFrostShareResult](c, rb)
+}
+
+func (c FfiConverterExternalFrostShareResult) Read(reader io.Reader) ExternalFrostShareResult {
+	return ExternalFrostShareResult{
+		FfiConverterExternalFrostCommitmentsINSTANCE.Read(reader),
+		FfiConverterExternalFrostSignatureShareINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalFrostShareResult) Lower(value ExternalFrostShareResult) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalFrostShareResult](c, value)
+}
+
+func (c FfiConverterExternalFrostShareResult) LowerExternal(value ExternalFrostShareResult) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalFrostShareResult](c, value))
+}
+
+func (c FfiConverterExternalFrostShareResult) Write(writer io.Writer, value ExternalFrostShareResult) {
+	FfiConverterExternalFrostCommitmentsINSTANCE.Write(writer, value.Commitment)
+	FfiConverterExternalFrostSignatureShareINSTANCE.Write(writer, value.SignatureShare)
+}
+
+type FfiDestroyerExternalFrostShareResult struct{}
+
+func (_ FfiDestroyerExternalFrostShareResult) Destroy(value ExternalFrostShareResult) {
 	value.Destroy()
 }
 
@@ -15375,169 +16553,918 @@ func (_ FfiDestroyerExternalInputParser) Destroy(value ExternalInputParser) {
 	value.Destroy()
 }
 
-// FFI-safe representation of `k256::Scalar` (32 bytes)
-type ExternalScalar struct {
-	// The 32-byte scalar value
-	Bytes []byte
+// FFI-safe representation of `spark_wallet::NewLeafKey`.
+type ExternalNewLeafKey struct {
+	NodeId ExternalTreeNodeId
+	// New signing public key (33 bytes compressed).
+	NewSigningPublicKey []byte
 }
 
-func (r *ExternalScalar) Destroy() {
-	FfiDestroyerBytes{}.Destroy(r.Bytes)
+func (r *ExternalNewLeafKey) Destroy() {
+	FfiDestroyerExternalTreeNodeId{}.Destroy(r.NodeId)
+	FfiDestroyerBytes{}.Destroy(r.NewSigningPublicKey)
 }
 
-type FfiConverterExternalScalar struct{}
+type FfiConverterExternalNewLeafKey struct{}
 
-var FfiConverterExternalScalarINSTANCE = FfiConverterExternalScalar{}
+var FfiConverterExternalNewLeafKeyINSTANCE = FfiConverterExternalNewLeafKey{}
 
-func (c FfiConverterExternalScalar) Lift(rb RustBufferI) ExternalScalar {
-	return LiftFromRustBuffer[ExternalScalar](c, rb)
+func (c FfiConverterExternalNewLeafKey) Lift(rb RustBufferI) ExternalNewLeafKey {
+	return LiftFromRustBuffer[ExternalNewLeafKey](c, rb)
 }
 
-func (c FfiConverterExternalScalar) Read(reader io.Reader) ExternalScalar {
-	return ExternalScalar{
+func (c FfiConverterExternalNewLeafKey) Read(reader io.Reader) ExternalNewLeafKey {
+	return ExternalNewLeafKey{
+		FfiConverterExternalTreeNodeIdINSTANCE.Read(reader),
 		FfiConverterBytesINSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterExternalScalar) Lower(value ExternalScalar) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalScalar](c, value)
+func (c FfiConverterExternalNewLeafKey) Lower(value ExternalNewLeafKey) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalNewLeafKey](c, value)
 }
 
-func (c FfiConverterExternalScalar) LowerExternal(value ExternalScalar) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[ExternalScalar](c, value))
+func (c FfiConverterExternalNewLeafKey) LowerExternal(value ExternalNewLeafKey) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalNewLeafKey](c, value))
 }
 
-func (c FfiConverterExternalScalar) Write(writer io.Writer, value ExternalScalar) {
-	FfiConverterBytesINSTANCE.Write(writer, value.Bytes)
+func (c FfiConverterExternalNewLeafKey) Write(writer io.Writer, value ExternalNewLeafKey) {
+	FfiConverterExternalTreeNodeIdINSTANCE.Write(writer, value.NodeId)
+	FfiConverterBytesINSTANCE.Write(writer, value.NewSigningPublicKey)
 }
 
-type FfiDestroyerExternalScalar struct{}
+type FfiDestroyerExternalNewLeafKey struct{}
 
-func (_ FfiDestroyerExternalScalar) Destroy(value ExternalScalar) {
+func (_ FfiDestroyerExternalNewLeafKey) Destroy(value ExternalNewLeafKey) {
 	value.Destroy()
 }
 
-// FFI-safe representation of `spark_wallet::SecretShare`
-type ExternalSecretShare struct {
-	// Number of shares required to recover the secret
-	Threshold uint32
-	// Index (x-coordinate) of the share as 32 bytes
-	Index ExternalScalar
-	// Share value (y-coordinate) as 32 bytes
-	Share ExternalScalar
+// FFI-safe representation of `spark_wallet::OperatorPackage`.
+type ExternalOperatorPackage struct {
+	// The operator this package is encrypted for.
+	OperatorIdentifier ExternalIdentifier
+	// The ECIES-encrypted package bytes.
+	EncryptedPackage []byte
 }
 
-func (r *ExternalSecretShare) Destroy() {
-	FfiDestroyerUint32{}.Destroy(r.Threshold)
-	FfiDestroyerExternalScalar{}.Destroy(r.Index)
-	FfiDestroyerExternalScalar{}.Destroy(r.Share)
+func (r *ExternalOperatorPackage) Destroy() {
+	FfiDestroyerExternalIdentifier{}.Destroy(r.OperatorIdentifier)
+	FfiDestroyerBytes{}.Destroy(r.EncryptedPackage)
 }
 
-type FfiConverterExternalSecretShare struct{}
+type FfiConverterExternalOperatorPackage struct{}
 
-var FfiConverterExternalSecretShareINSTANCE = FfiConverterExternalSecretShare{}
+var FfiConverterExternalOperatorPackageINSTANCE = FfiConverterExternalOperatorPackage{}
 
-func (c FfiConverterExternalSecretShare) Lift(rb RustBufferI) ExternalSecretShare {
-	return LiftFromRustBuffer[ExternalSecretShare](c, rb)
+func (c FfiConverterExternalOperatorPackage) Lift(rb RustBufferI) ExternalOperatorPackage {
+	return LiftFromRustBuffer[ExternalOperatorPackage](c, rb)
 }
 
-func (c FfiConverterExternalSecretShare) Read(reader io.Reader) ExternalSecretShare {
-	return ExternalSecretShare{
-		FfiConverterUint32INSTANCE.Read(reader),
-		FfiConverterExternalScalarINSTANCE.Read(reader),
-		FfiConverterExternalScalarINSTANCE.Read(reader),
+func (c FfiConverterExternalOperatorPackage) Read(reader io.Reader) ExternalOperatorPackage {
+	return ExternalOperatorPackage{
+		FfiConverterExternalIdentifierINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterExternalSecretShare) Lower(value ExternalSecretShare) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalSecretShare](c, value)
+func (c FfiConverterExternalOperatorPackage) Lower(value ExternalOperatorPackage) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalOperatorPackage](c, value)
 }
 
-func (c FfiConverterExternalSecretShare) LowerExternal(value ExternalSecretShare) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[ExternalSecretShare](c, value))
+func (c FfiConverterExternalOperatorPackage) LowerExternal(value ExternalOperatorPackage) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalOperatorPackage](c, value))
 }
 
-func (c FfiConverterExternalSecretShare) Write(writer io.Writer, value ExternalSecretShare) {
-	FfiConverterUint32INSTANCE.Write(writer, value.Threshold)
-	FfiConverterExternalScalarINSTANCE.Write(writer, value.Index)
-	FfiConverterExternalScalarINSTANCE.Write(writer, value.Share)
+func (c FfiConverterExternalOperatorPackage) Write(writer io.Writer, value ExternalOperatorPackage) {
+	FfiConverterExternalIdentifierINSTANCE.Write(writer, value.OperatorIdentifier)
+	FfiConverterBytesINSTANCE.Write(writer, value.EncryptedPackage)
 }
 
-type FfiDestroyerExternalSecretShare struct{}
+type FfiDestroyerExternalOperatorPackage struct{}
 
-func (_ FfiDestroyerExternalSecretShare) Destroy(value ExternalSecretShare) {
+func (_ FfiDestroyerExternalOperatorPackage) Destroy(value ExternalOperatorPackage) {
 	value.Destroy()
 }
 
-// FFI-safe representation of `spark_wallet::SignFrostRequest`
-type ExternalSignFrostRequest struct {
-	// The message to sign
-	Message []byte
-	// The public key (33 bytes compressed)
+// FFI-safe representation of `spark_wallet::OperatorRecipient`.
+type ExternalOperatorRecipient struct {
+	// Numeric operator id (determines the Feldman share index).
+	Id uint64
+	// FROST identifier.
+	Identifier ExternalIdentifier
+	// The operator's ECIES / identity public key (33 bytes compressed).
 	PublicKey []byte
-	// The private key source
-	Secret ExternalSecretSource
-	// The verifying key (33 bytes compressed)
-	VerifyingKey []byte
-	// The self nonce commitment
-	SelfNonceCommitment ExternalFrostCommitments
-	// Statechain commitments as a list of identifier-commitment pairs
-	StatechainCommitments []IdentifierCommitmentPair
-	// Optional adaptor public key (33 bytes compressed)
-	AdaptorPublicKey *[]byte
 }
 
-func (r *ExternalSignFrostRequest) Destroy() {
-	FfiDestroyerBytes{}.Destroy(r.Message)
+func (r *ExternalOperatorRecipient) Destroy() {
+	FfiDestroyerUint64{}.Destroy(r.Id)
+	FfiDestroyerExternalIdentifier{}.Destroy(r.Identifier)
 	FfiDestroyerBytes{}.Destroy(r.PublicKey)
-	FfiDestroyerExternalSecretSource{}.Destroy(r.Secret)
+}
+
+type FfiConverterExternalOperatorRecipient struct{}
+
+var FfiConverterExternalOperatorRecipientINSTANCE = FfiConverterExternalOperatorRecipient{}
+
+func (c FfiConverterExternalOperatorRecipient) Lift(rb RustBufferI) ExternalOperatorRecipient {
+	return LiftFromRustBuffer[ExternalOperatorRecipient](c, rb)
+}
+
+func (c FfiConverterExternalOperatorRecipient) Read(reader io.Reader) ExternalOperatorRecipient {
+	return ExternalOperatorRecipient{
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterExternalIdentifierINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalOperatorRecipient) Lower(value ExternalOperatorRecipient) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalOperatorRecipient](c, value)
+}
+
+func (c FfiConverterExternalOperatorRecipient) LowerExternal(value ExternalOperatorRecipient) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalOperatorRecipient](c, value))
+}
+
+func (c FfiConverterExternalOperatorRecipient) Write(writer io.Writer, value ExternalOperatorRecipient) {
+	FfiConverterUint64INSTANCE.Write(writer, value.Id)
+	FfiConverterExternalIdentifierINSTANCE.Write(writer, value.Identifier)
+	FfiConverterBytesINSTANCE.Write(writer, value.PublicKey)
+}
+
+type FfiDestroyerExternalOperatorRecipient struct{}
+
+func (_ FfiDestroyerExternalOperatorRecipient) Destroy(value ExternalOperatorRecipient) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PrepareClaimRequest`.
+type ExternalPrepareClaimRequest struct {
+	TransferId string
+	// Sender identity public key (33 bytes compressed).
+	SenderIdentityPublicKey []byte
+	Leaves                  []ExternalClaimLeafInput
+	OperatorRecipients      []ExternalOperatorRecipient
+	Threshold               uint32
+}
+
+func (r *ExternalPrepareClaimRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.TransferId)
+	FfiDestroyerBytes{}.Destroy(r.SenderIdentityPublicKey)
+	FfiDestroyerSequenceExternalClaimLeafInput{}.Destroy(r.Leaves)
+	FfiDestroyerSequenceExternalOperatorRecipient{}.Destroy(r.OperatorRecipients)
+	FfiDestroyerUint32{}.Destroy(r.Threshold)
+}
+
+type FfiConverterExternalPrepareClaimRequest struct{}
+
+var FfiConverterExternalPrepareClaimRequestINSTANCE = FfiConverterExternalPrepareClaimRequest{}
+
+func (c FfiConverterExternalPrepareClaimRequest) Lift(rb RustBufferI) ExternalPrepareClaimRequest {
+	return LiftFromRustBuffer[ExternalPrepareClaimRequest](c, rb)
+}
+
+func (c FfiConverterExternalPrepareClaimRequest) Read(reader io.Reader) ExternalPrepareClaimRequest {
+	return ExternalPrepareClaimRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterSequenceExternalClaimLeafInputINSTANCE.Read(reader),
+		FfiConverterSequenceExternalOperatorRecipientINSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPrepareClaimRequest) Lower(value ExternalPrepareClaimRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPrepareClaimRequest](c, value)
+}
+
+func (c FfiConverterExternalPrepareClaimRequest) LowerExternal(value ExternalPrepareClaimRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPrepareClaimRequest](c, value))
+}
+
+func (c FfiConverterExternalPrepareClaimRequest) Write(writer io.Writer, value ExternalPrepareClaimRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.TransferId)
+	FfiConverterBytesINSTANCE.Write(writer, value.SenderIdentityPublicKey)
+	FfiConverterSequenceExternalClaimLeafInputINSTANCE.Write(writer, value.Leaves)
+	FfiConverterSequenceExternalOperatorRecipientINSTANCE.Write(writer, value.OperatorRecipients)
+	FfiConverterUint32INSTANCE.Write(writer, value.Threshold)
+}
+
+type FfiDestroyerExternalPrepareClaimRequest struct{}
+
+func (_ FfiDestroyerExternalPrepareClaimRequest) Destroy(value ExternalPrepareClaimRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PrepareLightningReceiveRequest`.
+type ExternalPrepareLightningReceiveRequest struct {
+	OperatorRecipients []ExternalOperatorRecipient
+	Threshold          uint32
+}
+
+func (r *ExternalPrepareLightningReceiveRequest) Destroy() {
+	FfiDestroyerSequenceExternalOperatorRecipient{}.Destroy(r.OperatorRecipients)
+	FfiDestroyerUint32{}.Destroy(r.Threshold)
+}
+
+type FfiConverterExternalPrepareLightningReceiveRequest struct{}
+
+var FfiConverterExternalPrepareLightningReceiveRequestINSTANCE = FfiConverterExternalPrepareLightningReceiveRequest{}
+
+func (c FfiConverterExternalPrepareLightningReceiveRequest) Lift(rb RustBufferI) ExternalPrepareLightningReceiveRequest {
+	return LiftFromRustBuffer[ExternalPrepareLightningReceiveRequest](c, rb)
+}
+
+func (c FfiConverterExternalPrepareLightningReceiveRequest) Read(reader io.Reader) ExternalPrepareLightningReceiveRequest {
+	return ExternalPrepareLightningReceiveRequest{
+		FfiConverterSequenceExternalOperatorRecipientINSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPrepareLightningReceiveRequest) Lower(value ExternalPrepareLightningReceiveRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPrepareLightningReceiveRequest](c, value)
+}
+
+func (c FfiConverterExternalPrepareLightningReceiveRequest) LowerExternal(value ExternalPrepareLightningReceiveRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPrepareLightningReceiveRequest](c, value))
+}
+
+func (c FfiConverterExternalPrepareLightningReceiveRequest) Write(writer io.Writer, value ExternalPrepareLightningReceiveRequest) {
+	FfiConverterSequenceExternalOperatorRecipientINSTANCE.Write(writer, value.OperatorRecipients)
+	FfiConverterUint32INSTANCE.Write(writer, value.Threshold)
+}
+
+type FfiDestroyerExternalPrepareLightningReceiveRequest struct{}
+
+func (_ FfiDestroyerExternalPrepareLightningReceiveRequest) Destroy(value ExternalPrepareLightningReceiveRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PrepareStaticDepositClaimRequest`.
+type ExternalPrepareStaticDepositClaimRequest struct {
+	Index         uint32
+	UserStatement []byte
+}
+
+func (r *ExternalPrepareStaticDepositClaimRequest) Destroy() {
+	FfiDestroyerUint32{}.Destroy(r.Index)
+	FfiDestroyerBytes{}.Destroy(r.UserStatement)
+}
+
+type FfiConverterExternalPrepareStaticDepositClaimRequest struct{}
+
+var FfiConverterExternalPrepareStaticDepositClaimRequestINSTANCE = FfiConverterExternalPrepareStaticDepositClaimRequest{}
+
+func (c FfiConverterExternalPrepareStaticDepositClaimRequest) Lift(rb RustBufferI) ExternalPrepareStaticDepositClaimRequest {
+	return LiftFromRustBuffer[ExternalPrepareStaticDepositClaimRequest](c, rb)
+}
+
+func (c FfiConverterExternalPrepareStaticDepositClaimRequest) Read(reader io.Reader) ExternalPrepareStaticDepositClaimRequest {
+	return ExternalPrepareStaticDepositClaimRequest{
+		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPrepareStaticDepositClaimRequest) Lower(value ExternalPrepareStaticDepositClaimRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPrepareStaticDepositClaimRequest](c, value)
+}
+
+func (c FfiConverterExternalPrepareStaticDepositClaimRequest) LowerExternal(value ExternalPrepareStaticDepositClaimRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPrepareStaticDepositClaimRequest](c, value))
+}
+
+func (c FfiConverterExternalPrepareStaticDepositClaimRequest) Write(writer io.Writer, value ExternalPrepareStaticDepositClaimRequest) {
+	FfiConverterUint32INSTANCE.Write(writer, value.Index)
+	FfiConverterBytesINSTANCE.Write(writer, value.UserStatement)
+}
+
+type FfiDestroyerExternalPrepareStaticDepositClaimRequest struct{}
+
+func (_ FfiDestroyerExternalPrepareStaticDepositClaimRequest) Destroy(value ExternalPrepareStaticDepositClaimRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PrepareStaticDepositRequest`.
+type ExternalPrepareStaticDepositRequest struct {
+	Index uint32
+	// SSP public key (33 bytes compressed).
+	SspPublicKey []byte
+	FrostJobs    []ExternalFrostJob
+}
+
+func (r *ExternalPrepareStaticDepositRequest) Destroy() {
+	FfiDestroyerUint32{}.Destroy(r.Index)
+	FfiDestroyerBytes{}.Destroy(r.SspPublicKey)
+	FfiDestroyerSequenceExternalFrostJob{}.Destroy(r.FrostJobs)
+}
+
+type FfiConverterExternalPrepareStaticDepositRequest struct{}
+
+var FfiConverterExternalPrepareStaticDepositRequestINSTANCE = FfiConverterExternalPrepareStaticDepositRequest{}
+
+func (c FfiConverterExternalPrepareStaticDepositRequest) Lift(rb RustBufferI) ExternalPrepareStaticDepositRequest {
+	return LiftFromRustBuffer[ExternalPrepareStaticDepositRequest](c, rb)
+}
+
+func (c FfiConverterExternalPrepareStaticDepositRequest) Read(reader io.Reader) ExternalPrepareStaticDepositRequest {
+	return ExternalPrepareStaticDepositRequest{
+		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterSequenceExternalFrostJobINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPrepareStaticDepositRequest) Lower(value ExternalPrepareStaticDepositRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPrepareStaticDepositRequest](c, value)
+}
+
+func (c FfiConverterExternalPrepareStaticDepositRequest) LowerExternal(value ExternalPrepareStaticDepositRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPrepareStaticDepositRequest](c, value))
+}
+
+func (c FfiConverterExternalPrepareStaticDepositRequest) Write(writer io.Writer, value ExternalPrepareStaticDepositRequest) {
+	FfiConverterUint32INSTANCE.Write(writer, value.Index)
+	FfiConverterBytesINSTANCE.Write(writer, value.SspPublicKey)
+	FfiConverterSequenceExternalFrostJobINSTANCE.Write(writer, value.FrostJobs)
+}
+
+type FfiDestroyerExternalPrepareStaticDepositRequest struct{}
+
+func (_ FfiDestroyerExternalPrepareStaticDepositRequest) Destroy(value ExternalPrepareStaticDepositRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PrepareTokenTransactionRequest`.
+type ExternalPrepareTokenTransactionRequest struct {
+	Kind   ExternalTokenTransactionKind
+	Digest []byte
+}
+
+func (r *ExternalPrepareTokenTransactionRequest) Destroy() {
+	FfiDestroyerExternalTokenTransactionKind{}.Destroy(r.Kind)
+	FfiDestroyerBytes{}.Destroy(r.Digest)
+}
+
+type FfiConverterExternalPrepareTokenTransactionRequest struct{}
+
+var FfiConverterExternalPrepareTokenTransactionRequestINSTANCE = FfiConverterExternalPrepareTokenTransactionRequest{}
+
+func (c FfiConverterExternalPrepareTokenTransactionRequest) Lift(rb RustBufferI) ExternalPrepareTokenTransactionRequest {
+	return LiftFromRustBuffer[ExternalPrepareTokenTransactionRequest](c, rb)
+}
+
+func (c FfiConverterExternalPrepareTokenTransactionRequest) Read(reader io.Reader) ExternalPrepareTokenTransactionRequest {
+	return ExternalPrepareTokenTransactionRequest{
+		FfiConverterExternalTokenTransactionKindINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPrepareTokenTransactionRequest) Lower(value ExternalPrepareTokenTransactionRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPrepareTokenTransactionRequest](c, value)
+}
+
+func (c FfiConverterExternalPrepareTokenTransactionRequest) LowerExternal(value ExternalPrepareTokenTransactionRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPrepareTokenTransactionRequest](c, value))
+}
+
+func (c FfiConverterExternalPrepareTokenTransactionRequest) Write(writer io.Writer, value ExternalPrepareTokenTransactionRequest) {
+	FfiConverterExternalTokenTransactionKindINSTANCE.Write(writer, value.Kind)
+	FfiConverterBytesINSTANCE.Write(writer, value.Digest)
+}
+
+type FfiDestroyerExternalPrepareTokenTransactionRequest struct{}
+
+func (_ FfiDestroyerExternalPrepareTokenTransactionRequest) Destroy(value ExternalPrepareTokenTransactionRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PrepareTransferRequest`.
+type ExternalPrepareTransferRequest struct {
+	TransferId string
+	// Receiver public key (33 bytes compressed).
+	ReceiverPublicKey  []byte
+	Leaves             []ExternalTransferLeafInput
+	OperatorRecipients []ExternalOperatorRecipient
+	Threshold          uint32
+}
+
+func (r *ExternalPrepareTransferRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.TransferId)
+	FfiDestroyerBytes{}.Destroy(r.ReceiverPublicKey)
+	FfiDestroyerSequenceExternalTransferLeafInput{}.Destroy(r.Leaves)
+	FfiDestroyerSequenceExternalOperatorRecipient{}.Destroy(r.OperatorRecipients)
+	FfiDestroyerUint32{}.Destroy(r.Threshold)
+}
+
+type FfiConverterExternalPrepareTransferRequest struct{}
+
+var FfiConverterExternalPrepareTransferRequestINSTANCE = FfiConverterExternalPrepareTransferRequest{}
+
+func (c FfiConverterExternalPrepareTransferRequest) Lift(rb RustBufferI) ExternalPrepareTransferRequest {
+	return LiftFromRustBuffer[ExternalPrepareTransferRequest](c, rb)
+}
+
+func (c FfiConverterExternalPrepareTransferRequest) Read(reader io.Reader) ExternalPrepareTransferRequest {
+	return ExternalPrepareTransferRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterSequenceExternalTransferLeafInputINSTANCE.Read(reader),
+		FfiConverterSequenceExternalOperatorRecipientINSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPrepareTransferRequest) Lower(value ExternalPrepareTransferRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPrepareTransferRequest](c, value)
+}
+
+func (c FfiConverterExternalPrepareTransferRequest) LowerExternal(value ExternalPrepareTransferRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPrepareTransferRequest](c, value))
+}
+
+func (c FfiConverterExternalPrepareTransferRequest) Write(writer io.Writer, value ExternalPrepareTransferRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.TransferId)
+	FfiConverterBytesINSTANCE.Write(writer, value.ReceiverPublicKey)
+	FfiConverterSequenceExternalTransferLeafInputINSTANCE.Write(writer, value.Leaves)
+	FfiConverterSequenceExternalOperatorRecipientINSTANCE.Write(writer, value.OperatorRecipients)
+	FfiConverterUint32INSTANCE.Write(writer, value.Threshold)
+}
+
+type FfiDestroyerExternalPrepareTransferRequest struct{}
+
+func (_ FfiDestroyerExternalPrepareTransferRequest) Destroy(value ExternalPrepareTransferRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PreparedClaim`.
+type ExternalPreparedClaim struct {
+	OperatorPackages []ExternalOperatorPackage
+}
+
+func (r *ExternalPreparedClaim) Destroy() {
+	FfiDestroyerSequenceExternalOperatorPackage{}.Destroy(r.OperatorPackages)
+}
+
+type FfiConverterExternalPreparedClaim struct{}
+
+var FfiConverterExternalPreparedClaimINSTANCE = FfiConverterExternalPreparedClaim{}
+
+func (c FfiConverterExternalPreparedClaim) Lift(rb RustBufferI) ExternalPreparedClaim {
+	return LiftFromRustBuffer[ExternalPreparedClaim](c, rb)
+}
+
+func (c FfiConverterExternalPreparedClaim) Read(reader io.Reader) ExternalPreparedClaim {
+	return ExternalPreparedClaim{
+		FfiConverterSequenceExternalOperatorPackageINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPreparedClaim) Lower(value ExternalPreparedClaim) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPreparedClaim](c, value)
+}
+
+func (c FfiConverterExternalPreparedClaim) LowerExternal(value ExternalPreparedClaim) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPreparedClaim](c, value))
+}
+
+func (c FfiConverterExternalPreparedClaim) Write(writer io.Writer, value ExternalPreparedClaim) {
+	FfiConverterSequenceExternalOperatorPackageINSTANCE.Write(writer, value.OperatorPackages)
+}
+
+type FfiDestroyerExternalPreparedClaim struct{}
+
+func (_ FfiDestroyerExternalPreparedClaim) Destroy(value ExternalPreparedClaim) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PreparedLightningReceive`.
+type ExternalPreparedLightningReceive struct {
+	// SHA256 of the in-enclave preimage (32 bytes).
+	PaymentHash              []byte
+	OperatorPreimagePackages []ExternalOperatorPackage
+}
+
+func (r *ExternalPreparedLightningReceive) Destroy() {
+	FfiDestroyerBytes{}.Destroy(r.PaymentHash)
+	FfiDestroyerSequenceExternalOperatorPackage{}.Destroy(r.OperatorPreimagePackages)
+}
+
+type FfiConverterExternalPreparedLightningReceive struct{}
+
+var FfiConverterExternalPreparedLightningReceiveINSTANCE = FfiConverterExternalPreparedLightningReceive{}
+
+func (c FfiConverterExternalPreparedLightningReceive) Lift(rb RustBufferI) ExternalPreparedLightningReceive {
+	return LiftFromRustBuffer[ExternalPreparedLightningReceive](c, rb)
+}
+
+func (c FfiConverterExternalPreparedLightningReceive) Read(reader io.Reader) ExternalPreparedLightningReceive {
+	return ExternalPreparedLightningReceive{
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterSequenceExternalOperatorPackageINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPreparedLightningReceive) Lower(value ExternalPreparedLightningReceive) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPreparedLightningReceive](c, value)
+}
+
+func (c FfiConverterExternalPreparedLightningReceive) LowerExternal(value ExternalPreparedLightningReceive) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPreparedLightningReceive](c, value))
+}
+
+func (c FfiConverterExternalPreparedLightningReceive) Write(writer io.Writer, value ExternalPreparedLightningReceive) {
+	FfiConverterBytesINSTANCE.Write(writer, value.PaymentHash)
+	FfiConverterSequenceExternalOperatorPackageINSTANCE.Write(writer, value.OperatorPreimagePackages)
+}
+
+type FfiDestroyerExternalPreparedLightningReceive struct{}
+
+func (_ FfiDestroyerExternalPreparedLightningReceive) Destroy(value ExternalPreparedLightningReceive) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PreparedStaticDeposit`.
+type ExternalPreparedStaticDeposit struct {
+	ExportedSecret []byte
+	FrostShares    []ExternalFrostShareResult
+}
+
+func (r *ExternalPreparedStaticDeposit) Destroy() {
+	FfiDestroyerBytes{}.Destroy(r.ExportedSecret)
+	FfiDestroyerSequenceExternalFrostShareResult{}.Destroy(r.FrostShares)
+}
+
+type FfiConverterExternalPreparedStaticDeposit struct{}
+
+var FfiConverterExternalPreparedStaticDepositINSTANCE = FfiConverterExternalPreparedStaticDeposit{}
+
+func (c FfiConverterExternalPreparedStaticDeposit) Lift(rb RustBufferI) ExternalPreparedStaticDeposit {
+	return LiftFromRustBuffer[ExternalPreparedStaticDeposit](c, rb)
+}
+
+func (c FfiConverterExternalPreparedStaticDeposit) Read(reader io.Reader) ExternalPreparedStaticDeposit {
+	return ExternalPreparedStaticDeposit{
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterSequenceExternalFrostShareResultINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPreparedStaticDeposit) Lower(value ExternalPreparedStaticDeposit) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPreparedStaticDeposit](c, value)
+}
+
+func (c FfiConverterExternalPreparedStaticDeposit) LowerExternal(value ExternalPreparedStaticDeposit) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPreparedStaticDeposit](c, value))
+}
+
+func (c FfiConverterExternalPreparedStaticDeposit) Write(writer io.Writer, value ExternalPreparedStaticDeposit) {
+	FfiConverterBytesINSTANCE.Write(writer, value.ExportedSecret)
+	FfiConverterSequenceExternalFrostShareResultINSTANCE.Write(writer, value.FrostShares)
+}
+
+type FfiDestroyerExternalPreparedStaticDeposit struct{}
+
+func (_ FfiDestroyerExternalPreparedStaticDeposit) Destroy(value ExternalPreparedStaticDeposit) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PreparedStaticDepositClaim`.
+type ExternalPreparedStaticDepositClaim struct {
+	// The static-deposit secret key, exported in the clear for the SSP.
+	DepositSecretKey SecretBytes
+	UserSignature    EcdsaSignatureBytes
+}
+
+func (r *ExternalPreparedStaticDepositClaim) Destroy() {
+	FfiDestroyerSecretBytes{}.Destroy(r.DepositSecretKey)
+	FfiDestroyerEcdsaSignatureBytes{}.Destroy(r.UserSignature)
+}
+
+type FfiConverterExternalPreparedStaticDepositClaim struct{}
+
+var FfiConverterExternalPreparedStaticDepositClaimINSTANCE = FfiConverterExternalPreparedStaticDepositClaim{}
+
+func (c FfiConverterExternalPreparedStaticDepositClaim) Lift(rb RustBufferI) ExternalPreparedStaticDepositClaim {
+	return LiftFromRustBuffer[ExternalPreparedStaticDepositClaim](c, rb)
+}
+
+func (c FfiConverterExternalPreparedStaticDepositClaim) Read(reader io.Reader) ExternalPreparedStaticDepositClaim {
+	return ExternalPreparedStaticDepositClaim{
+		FfiConverterSecretBytesINSTANCE.Read(reader),
+		FfiConverterEcdsaSignatureBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPreparedStaticDepositClaim) Lower(value ExternalPreparedStaticDepositClaim) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPreparedStaticDepositClaim](c, value)
+}
+
+func (c FfiConverterExternalPreparedStaticDepositClaim) LowerExternal(value ExternalPreparedStaticDepositClaim) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPreparedStaticDepositClaim](c, value))
+}
+
+func (c FfiConverterExternalPreparedStaticDepositClaim) Write(writer io.Writer, value ExternalPreparedStaticDepositClaim) {
+	FfiConverterSecretBytesINSTANCE.Write(writer, value.DepositSecretKey)
+	FfiConverterEcdsaSignatureBytesINSTANCE.Write(writer, value.UserSignature)
+}
+
+type FfiDestroyerExternalPreparedStaticDepositClaim struct{}
+
+func (_ FfiDestroyerExternalPreparedStaticDepositClaim) Destroy(value ExternalPreparedStaticDepositClaim) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PreparedTokenTransaction`.
+type ExternalPreparedTokenTransaction struct {
+	Signature SchnorrSignatureBytes
+}
+
+func (r *ExternalPreparedTokenTransaction) Destroy() {
+	FfiDestroyerSchnorrSignatureBytes{}.Destroy(r.Signature)
+}
+
+type FfiConverterExternalPreparedTokenTransaction struct{}
+
+var FfiConverterExternalPreparedTokenTransactionINSTANCE = FfiConverterExternalPreparedTokenTransaction{}
+
+func (c FfiConverterExternalPreparedTokenTransaction) Lift(rb RustBufferI) ExternalPreparedTokenTransaction {
+	return LiftFromRustBuffer[ExternalPreparedTokenTransaction](c, rb)
+}
+
+func (c FfiConverterExternalPreparedTokenTransaction) Read(reader io.Reader) ExternalPreparedTokenTransaction {
+	return ExternalPreparedTokenTransaction{
+		FfiConverterSchnorrSignatureBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPreparedTokenTransaction) Lower(value ExternalPreparedTokenTransaction) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPreparedTokenTransaction](c, value)
+}
+
+func (c FfiConverterExternalPreparedTokenTransaction) LowerExternal(value ExternalPreparedTokenTransaction) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPreparedTokenTransaction](c, value))
+}
+
+func (c FfiConverterExternalPreparedTokenTransaction) Write(writer io.Writer, value ExternalPreparedTokenTransaction) {
+	FfiConverterSchnorrSignatureBytesINSTANCE.Write(writer, value.Signature)
+}
+
+type FfiDestroyerExternalPreparedTokenTransaction struct{}
+
+func (_ FfiDestroyerExternalPreparedTokenTransaction) Destroy(value ExternalPreparedTokenTransaction) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::PreparedTransfer`.
+type ExternalPreparedTransfer struct {
+	OperatorPackages      []ExternalOperatorPackage
+	NewLeafKeys           []ExternalNewLeafKey
+	TransferUserSignature EcdsaSignatureBytes
+}
+
+func (r *ExternalPreparedTransfer) Destroy() {
+	FfiDestroyerSequenceExternalOperatorPackage{}.Destroy(r.OperatorPackages)
+	FfiDestroyerSequenceExternalNewLeafKey{}.Destroy(r.NewLeafKeys)
+	FfiDestroyerEcdsaSignatureBytes{}.Destroy(r.TransferUserSignature)
+}
+
+type FfiConverterExternalPreparedTransfer struct{}
+
+var FfiConverterExternalPreparedTransferINSTANCE = FfiConverterExternalPreparedTransfer{}
+
+func (c FfiConverterExternalPreparedTransfer) Lift(rb RustBufferI) ExternalPreparedTransfer {
+	return LiftFromRustBuffer[ExternalPreparedTransfer](c, rb)
+}
+
+func (c FfiConverterExternalPreparedTransfer) Read(reader io.Reader) ExternalPreparedTransfer {
+	return ExternalPreparedTransfer{
+		FfiConverterSequenceExternalOperatorPackageINSTANCE.Read(reader),
+		FfiConverterSequenceExternalNewLeafKeyINSTANCE.Read(reader),
+		FfiConverterEcdsaSignatureBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalPreparedTransfer) Lower(value ExternalPreparedTransfer) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalPreparedTransfer](c, value)
+}
+
+func (c FfiConverterExternalPreparedTransfer) LowerExternal(value ExternalPreparedTransfer) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalPreparedTransfer](c, value))
+}
+
+func (c FfiConverterExternalPreparedTransfer) Write(writer io.Writer, value ExternalPreparedTransfer) {
+	FfiConverterSequenceExternalOperatorPackageINSTANCE.Write(writer, value.OperatorPackages)
+	FfiConverterSequenceExternalNewLeafKeyINSTANCE.Write(writer, value.NewLeafKeys)
+	FfiConverterEcdsaSignatureBytesINSTANCE.Write(writer, value.TransferUserSignature)
+}
+
+type FfiDestroyerExternalPreparedTransfer struct{}
+
+func (_ FfiDestroyerExternalPreparedTransfer) Destroy(value ExternalPreparedTransfer) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::SignSparkInvoiceRequest`.
+type ExternalSignSparkInvoiceRequest struct {
+	Kind        ExternalSparkInvoiceKind
+	InvoiceHash []byte
+}
+
+func (r *ExternalSignSparkInvoiceRequest) Destroy() {
+	FfiDestroyerExternalSparkInvoiceKind{}.Destroy(r.Kind)
+	FfiDestroyerBytes{}.Destroy(r.InvoiceHash)
+}
+
+type FfiConverterExternalSignSparkInvoiceRequest struct{}
+
+var FfiConverterExternalSignSparkInvoiceRequestINSTANCE = FfiConverterExternalSignSparkInvoiceRequest{}
+
+func (c FfiConverterExternalSignSparkInvoiceRequest) Lift(rb RustBufferI) ExternalSignSparkInvoiceRequest {
+	return LiftFromRustBuffer[ExternalSignSparkInvoiceRequest](c, rb)
+}
+
+func (c FfiConverterExternalSignSparkInvoiceRequest) Read(reader io.Reader) ExternalSignSparkInvoiceRequest {
+	return ExternalSignSparkInvoiceRequest{
+		FfiConverterExternalSparkInvoiceKindINSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalSignSparkInvoiceRequest) Lower(value ExternalSignSparkInvoiceRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalSignSparkInvoiceRequest](c, value)
+}
+
+func (c FfiConverterExternalSignSparkInvoiceRequest) LowerExternal(value ExternalSignSparkInvoiceRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSignSparkInvoiceRequest](c, value))
+}
+
+func (c FfiConverterExternalSignSparkInvoiceRequest) Write(writer io.Writer, value ExternalSignSparkInvoiceRequest) {
+	FfiConverterExternalSparkInvoiceKindINSTANCE.Write(writer, value.Kind)
+	FfiConverterBytesINSTANCE.Write(writer, value.InvoiceHash)
+}
+
+type FfiDestroyerExternalSignSparkInvoiceRequest struct{}
+
+func (_ FfiDestroyerExternalSignSparkInvoiceRequest) Destroy(value ExternalSignSparkInvoiceRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::SignStaticDepositRefundRequest`.
+type ExternalSignStaticDepositRefundRequest struct {
+	Index   uint32
+	Sighash []byte
+	// FROST group verifying key (33 bytes compressed).
+	VerifyingKey          []byte
+	NonceCommitment       ExternalFrostCommitments
+	StatechainCommitments []IdentifierCommitmentPair
+	StatechainSignatures  []IdentifierSignaturePair
+	StatechainPublicKeys  []IdentifierPublicKeyPair
+}
+
+func (r *ExternalSignStaticDepositRefundRequest) Destroy() {
+	FfiDestroyerUint32{}.Destroy(r.Index)
+	FfiDestroyerBytes{}.Destroy(r.Sighash)
 	FfiDestroyerBytes{}.Destroy(r.VerifyingKey)
-	FfiDestroyerExternalFrostCommitments{}.Destroy(r.SelfNonceCommitment)
+	FfiDestroyerExternalFrostCommitments{}.Destroy(r.NonceCommitment)
 	FfiDestroyerSequenceIdentifierCommitmentPair{}.Destroy(r.StatechainCommitments)
-	FfiDestroyerOptionalBytes{}.Destroy(r.AdaptorPublicKey)
+	FfiDestroyerSequenceIdentifierSignaturePair{}.Destroy(r.StatechainSignatures)
+	FfiDestroyerSequenceIdentifierPublicKeyPair{}.Destroy(r.StatechainPublicKeys)
 }
 
-type FfiConverterExternalSignFrostRequest struct{}
+type FfiConverterExternalSignStaticDepositRefundRequest struct{}
 
-var FfiConverterExternalSignFrostRequestINSTANCE = FfiConverterExternalSignFrostRequest{}
+var FfiConverterExternalSignStaticDepositRefundRequestINSTANCE = FfiConverterExternalSignStaticDepositRefundRequest{}
 
-func (c FfiConverterExternalSignFrostRequest) Lift(rb RustBufferI) ExternalSignFrostRequest {
-	return LiftFromRustBuffer[ExternalSignFrostRequest](c, rb)
+func (c FfiConverterExternalSignStaticDepositRefundRequest) Lift(rb RustBufferI) ExternalSignStaticDepositRefundRequest {
+	return LiftFromRustBuffer[ExternalSignStaticDepositRefundRequest](c, rb)
 }
 
-func (c FfiConverterExternalSignFrostRequest) Read(reader io.Reader) ExternalSignFrostRequest {
-	return ExternalSignFrostRequest{
+func (c FfiConverterExternalSignStaticDepositRefundRequest) Read(reader io.Reader) ExternalSignStaticDepositRefundRequest {
+	return ExternalSignStaticDepositRefundRequest{
+		FfiConverterUint32INSTANCE.Read(reader),
 		FfiConverterBytesINSTANCE.Read(reader),
-		FfiConverterBytesINSTANCE.Read(reader),
-		FfiConverterExternalSecretSourceINSTANCE.Read(reader),
 		FfiConverterBytesINSTANCE.Read(reader),
 		FfiConverterExternalFrostCommitmentsINSTANCE.Read(reader),
 		FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Read(reader),
-		FfiConverterOptionalBytesINSTANCE.Read(reader),
+		FfiConverterSequenceIdentifierSignaturePairINSTANCE.Read(reader),
+		FfiConverterSequenceIdentifierPublicKeyPairINSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterExternalSignFrostRequest) Lower(value ExternalSignFrostRequest) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalSignFrostRequest](c, value)
+func (c FfiConverterExternalSignStaticDepositRefundRequest) Lower(value ExternalSignStaticDepositRefundRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalSignStaticDepositRefundRequest](c, value)
 }
 
-func (c FfiConverterExternalSignFrostRequest) LowerExternal(value ExternalSignFrostRequest) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[ExternalSignFrostRequest](c, value))
+func (c FfiConverterExternalSignStaticDepositRefundRequest) LowerExternal(value ExternalSignStaticDepositRefundRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSignStaticDepositRefundRequest](c, value))
 }
 
-func (c FfiConverterExternalSignFrostRequest) Write(writer io.Writer, value ExternalSignFrostRequest) {
-	FfiConverterBytesINSTANCE.Write(writer, value.Message)
-	FfiConverterBytesINSTANCE.Write(writer, value.PublicKey)
-	FfiConverterExternalSecretSourceINSTANCE.Write(writer, value.Secret)
+func (c FfiConverterExternalSignStaticDepositRefundRequest) Write(writer io.Writer, value ExternalSignStaticDepositRefundRequest) {
+	FfiConverterUint32INSTANCE.Write(writer, value.Index)
+	FfiConverterBytesINSTANCE.Write(writer, value.Sighash)
 	FfiConverterBytesINSTANCE.Write(writer, value.VerifyingKey)
-	FfiConverterExternalFrostCommitmentsINSTANCE.Write(writer, value.SelfNonceCommitment)
+	FfiConverterExternalFrostCommitmentsINSTANCE.Write(writer, value.NonceCommitment)
 	FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Write(writer, value.StatechainCommitments)
-	FfiConverterOptionalBytesINSTANCE.Write(writer, value.AdaptorPublicKey)
+	FfiConverterSequenceIdentifierSignaturePairINSTANCE.Write(writer, value.StatechainSignatures)
+	FfiConverterSequenceIdentifierPublicKeyPairINSTANCE.Write(writer, value.StatechainPublicKeys)
 }
 
-type FfiDestroyerExternalSignFrostRequest struct{}
+type FfiDestroyerExternalSignStaticDepositRefundRequest struct{}
 
-func (_ FfiDestroyerExternalSignFrostRequest) Destroy(value ExternalSignFrostRequest) {
+func (_ FfiDestroyerExternalSignStaticDepositRefundRequest) Destroy(value ExternalSignStaticDepositRefundRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::SignedSparkInvoice`.
+type ExternalSignedSparkInvoice struct {
+	Signature SchnorrSignatureBytes
+}
+
+func (r *ExternalSignedSparkInvoice) Destroy() {
+	FfiDestroyerSchnorrSignatureBytes{}.Destroy(r.Signature)
+}
+
+type FfiConverterExternalSignedSparkInvoice struct{}
+
+var FfiConverterExternalSignedSparkInvoiceINSTANCE = FfiConverterExternalSignedSparkInvoice{}
+
+func (c FfiConverterExternalSignedSparkInvoice) Lift(rb RustBufferI) ExternalSignedSparkInvoice {
+	return LiftFromRustBuffer[ExternalSignedSparkInvoice](c, rb)
+}
+
+func (c FfiConverterExternalSignedSparkInvoice) Read(reader io.Reader) ExternalSignedSparkInvoice {
+	return ExternalSignedSparkInvoice{
+		FfiConverterSchnorrSignatureBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalSignedSparkInvoice) Lower(value ExternalSignedSparkInvoice) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalSignedSparkInvoice](c, value)
+}
+
+func (c FfiConverterExternalSignedSparkInvoice) LowerExternal(value ExternalSignedSparkInvoice) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSignedSparkInvoice](c, value))
+}
+
+func (c FfiConverterExternalSignedSparkInvoice) Write(writer io.Writer, value ExternalSignedSparkInvoice) {
+	FfiConverterSchnorrSignatureBytesINSTANCE.Write(writer, value.Signature)
+}
+
+type FfiDestroyerExternalSignedSparkInvoice struct{}
+
+func (_ FfiDestroyerExternalSignedSparkInvoice) Destroy(value ExternalSignedSparkInvoice) {
+	value.Destroy()
+}
+
+// The two default external signers created from one mnemonic by
+// [`default_external_signers`].
+type ExternalSigners struct {
+	// External signer for non-Spark SDK signing (LNURL-auth, sync, message
+	// signing, ECIES).
+	BreezSigner ExternalBreezSigner
+	// External high-level Spark signer for the Spark wallet flows.
+	SparkSigner ExternalSparkSigner
+}
+
+func (r *ExternalSigners) Destroy() {
+	FfiDestroyerExternalBreezSigner{}.Destroy(r.BreezSigner)
+	FfiDestroyerExternalSparkSigner{}.Destroy(r.SparkSigner)
+}
+
+type FfiConverterExternalSigners struct{}
+
+var FfiConverterExternalSignersINSTANCE = FfiConverterExternalSigners{}
+
+func (c FfiConverterExternalSigners) Lift(rb RustBufferI) ExternalSigners {
+	return LiftFromRustBuffer[ExternalSigners](c, rb)
+}
+
+func (c FfiConverterExternalSigners) Read(reader io.Reader) ExternalSigners {
+	return ExternalSigners{
+		FfiConverterExternalBreezSignerINSTANCE.Read(reader),
+		FfiConverterExternalSparkSignerINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalSigners) Lower(value ExternalSigners) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalSigners](c, value)
+}
+
+func (c FfiConverterExternalSigners) LowerExternal(value ExternalSigners) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSigners](c, value))
+}
+
+func (c FfiConverterExternalSigners) Write(writer io.Writer, value ExternalSigners) {
+	FfiConverterExternalBreezSignerINSTANCE.Write(writer, value.BreezSigner)
+	FfiConverterExternalSparkSignerINSTANCE.Write(writer, value.SparkSigner)
+}
+
+type FfiDestroyerExternalSigners struct{}
+
+func (_ FfiDestroyerExternalSigners) Destroy(value ExternalSigners) {
 	value.Destroy()
 }
 
@@ -15588,6 +17515,147 @@ func (_ FfiDestroyerExternalSigningCommitments) Destroy(value ExternalSigningCom
 	value.Destroy()
 }
 
+// FFI-safe representation of `spark_wallet::StartStaticDepositRefundRequest`.
+type ExternalStartStaticDepositRefundRequest struct {
+	Index         uint32
+	UserStatement []byte
+}
+
+func (r *ExternalStartStaticDepositRefundRequest) Destroy() {
+	FfiDestroyerUint32{}.Destroy(r.Index)
+	FfiDestroyerBytes{}.Destroy(r.UserStatement)
+}
+
+type FfiConverterExternalStartStaticDepositRefundRequest struct{}
+
+var FfiConverterExternalStartStaticDepositRefundRequestINSTANCE = FfiConverterExternalStartStaticDepositRefundRequest{}
+
+func (c FfiConverterExternalStartStaticDepositRefundRequest) Lift(rb RustBufferI) ExternalStartStaticDepositRefundRequest {
+	return LiftFromRustBuffer[ExternalStartStaticDepositRefundRequest](c, rb)
+}
+
+func (c FfiConverterExternalStartStaticDepositRefundRequest) Read(reader io.Reader) ExternalStartStaticDepositRefundRequest {
+	return ExternalStartStaticDepositRefundRequest{
+		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalStartStaticDepositRefundRequest) Lower(value ExternalStartStaticDepositRefundRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalStartStaticDepositRefundRequest](c, value)
+}
+
+func (c FfiConverterExternalStartStaticDepositRefundRequest) LowerExternal(value ExternalStartStaticDepositRefundRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalStartStaticDepositRefundRequest](c, value))
+}
+
+func (c FfiConverterExternalStartStaticDepositRefundRequest) Write(writer io.Writer, value ExternalStartStaticDepositRefundRequest) {
+	FfiConverterUint32INSTANCE.Write(writer, value.Index)
+	FfiConverterBytesINSTANCE.Write(writer, value.UserStatement)
+}
+
+type FfiDestroyerExternalStartStaticDepositRefundRequest struct{}
+
+func (_ FfiDestroyerExternalStartStaticDepositRefundRequest) Destroy(value ExternalStartStaticDepositRefundRequest) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::StartedStaticDepositRefund`.
+type ExternalStartedStaticDepositRefund struct {
+	// Static-deposit signing public key (33 bytes compressed).
+	SigningPublicKey []byte
+	NonceCommitment  ExternalFrostCommitments
+	UserSignature    EcdsaSignatureBytes
+}
+
+func (r *ExternalStartedStaticDepositRefund) Destroy() {
+	FfiDestroyerBytes{}.Destroy(r.SigningPublicKey)
+	FfiDestroyerExternalFrostCommitments{}.Destroy(r.NonceCommitment)
+	FfiDestroyerEcdsaSignatureBytes{}.Destroy(r.UserSignature)
+}
+
+type FfiConverterExternalStartedStaticDepositRefund struct{}
+
+var FfiConverterExternalStartedStaticDepositRefundINSTANCE = FfiConverterExternalStartedStaticDepositRefund{}
+
+func (c FfiConverterExternalStartedStaticDepositRefund) Lift(rb RustBufferI) ExternalStartedStaticDepositRefund {
+	return LiftFromRustBuffer[ExternalStartedStaticDepositRefund](c, rb)
+}
+
+func (c FfiConverterExternalStartedStaticDepositRefund) Read(reader io.Reader) ExternalStartedStaticDepositRefund {
+	return ExternalStartedStaticDepositRefund{
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterExternalFrostCommitmentsINSTANCE.Read(reader),
+		FfiConverterEcdsaSignatureBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalStartedStaticDepositRefund) Lower(value ExternalStartedStaticDepositRefund) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalStartedStaticDepositRefund](c, value)
+}
+
+func (c FfiConverterExternalStartedStaticDepositRefund) LowerExternal(value ExternalStartedStaticDepositRefund) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalStartedStaticDepositRefund](c, value))
+}
+
+func (c FfiConverterExternalStartedStaticDepositRefund) Write(writer io.Writer, value ExternalStartedStaticDepositRefund) {
+	FfiConverterBytesINSTANCE.Write(writer, value.SigningPublicKey)
+	FfiConverterExternalFrostCommitmentsINSTANCE.Write(writer, value.NonceCommitment)
+	FfiConverterEcdsaSignatureBytesINSTANCE.Write(writer, value.UserSignature)
+}
+
+type FfiDestroyerExternalStartedStaticDepositRefund struct{}
+
+func (_ FfiDestroyerExternalStartedStaticDepositRefund) Destroy(value ExternalStartedStaticDepositRefund) {
+	value.Destroy()
+}
+
+// FFI-safe representation of `spark_wallet::TransferLeafInput`. Conveys the old
+// leaf id and the new (post-transfer) leaf id; the signer derives keys from them.
+type ExternalTransferLeafInput struct {
+	NodeId    ExternalTreeNodeId
+	NewLeafId ExternalTreeNodeId
+}
+
+func (r *ExternalTransferLeafInput) Destroy() {
+	FfiDestroyerExternalTreeNodeId{}.Destroy(r.NodeId)
+	FfiDestroyerExternalTreeNodeId{}.Destroy(r.NewLeafId)
+}
+
+type FfiConverterExternalTransferLeafInput struct{}
+
+var FfiConverterExternalTransferLeafInputINSTANCE = FfiConverterExternalTransferLeafInput{}
+
+func (c FfiConverterExternalTransferLeafInput) Lift(rb RustBufferI) ExternalTransferLeafInput {
+	return LiftFromRustBuffer[ExternalTransferLeafInput](c, rb)
+}
+
+func (c FfiConverterExternalTransferLeafInput) Read(reader io.Reader) ExternalTransferLeafInput {
+	return ExternalTransferLeafInput{
+		FfiConverterExternalTreeNodeIdINSTANCE.Read(reader),
+		FfiConverterExternalTreeNodeIdINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterExternalTransferLeafInput) Lower(value ExternalTransferLeafInput) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalTransferLeafInput](c, value)
+}
+
+func (c FfiConverterExternalTransferLeafInput) LowerExternal(value ExternalTransferLeafInput) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalTransferLeafInput](c, value))
+}
+
+func (c FfiConverterExternalTransferLeafInput) Write(writer io.Writer, value ExternalTransferLeafInput) {
+	FfiConverterExternalTreeNodeIdINSTANCE.Write(writer, value.NodeId)
+	FfiConverterExternalTreeNodeIdINSTANCE.Write(writer, value.NewLeafId)
+}
+
+type FfiDestroyerExternalTransferLeafInput struct{}
+
+func (_ FfiDestroyerExternalTransferLeafInput) Destroy(value ExternalTransferLeafInput) {
+	value.Destroy()
+}
+
 // FFI-safe representation of `spark_wallet::TreeNodeId`
 type ExternalTreeNodeId struct {
 	// The tree node identifier as a string
@@ -15627,53 +17695,6 @@ func (c FfiConverterExternalTreeNodeId) Write(writer io.Writer, value ExternalTr
 type FfiDestroyerExternalTreeNodeId struct{}
 
 func (_ FfiDestroyerExternalTreeNodeId) Destroy(value ExternalTreeNodeId) {
-	value.Destroy()
-}
-
-// FFI-safe representation of `spark_wallet::VerifiableSecretShare`
-type ExternalVerifiableSecretShare struct {
-	// Base secret share containing threshold, index, and share value
-	SecretShare ExternalSecretShare
-	// Cryptographic proofs for share verification (each proof is 33 bytes compressed public key)
-	Proofs [][]byte
-}
-
-func (r *ExternalVerifiableSecretShare) Destroy() {
-	FfiDestroyerExternalSecretShare{}.Destroy(r.SecretShare)
-	FfiDestroyerSequenceBytes{}.Destroy(r.Proofs)
-}
-
-type FfiConverterExternalVerifiableSecretShare struct{}
-
-var FfiConverterExternalVerifiableSecretShareINSTANCE = FfiConverterExternalVerifiableSecretShare{}
-
-func (c FfiConverterExternalVerifiableSecretShare) Lift(rb RustBufferI) ExternalVerifiableSecretShare {
-	return LiftFromRustBuffer[ExternalVerifiableSecretShare](c, rb)
-}
-
-func (c FfiConverterExternalVerifiableSecretShare) Read(reader io.Reader) ExternalVerifiableSecretShare {
-	return ExternalVerifiableSecretShare{
-		FfiConverterExternalSecretShareINSTANCE.Read(reader),
-		FfiConverterSequenceBytesINSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterExternalVerifiableSecretShare) Lower(value ExternalVerifiableSecretShare) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalVerifiableSecretShare](c, value)
-}
-
-func (c FfiConverterExternalVerifiableSecretShare) LowerExternal(value ExternalVerifiableSecretShare) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[ExternalVerifiableSecretShare](c, value))
-}
-
-func (c FfiConverterExternalVerifiableSecretShare) Write(writer io.Writer, value ExternalVerifiableSecretShare) {
-	FfiConverterExternalSecretShareINSTANCE.Write(writer, value.SecretShare)
-	FfiConverterSequenceBytesINSTANCE.Write(writer, value.Proofs)
-}
-
-type FfiDestroyerExternalVerifiableSecretShare struct{}
-
-func (_ FfiDestroyerExternalVerifiableSecretShare) Destroy(value ExternalVerifiableSecretShare) {
 	value.Destroy()
 }
 
@@ -16375,60 +18396,6 @@ func (c FfiConverterIncomingChange) Write(writer io.Writer, value IncomingChange
 type FfiDestroyerIncomingChange struct{}
 
 func (_ FfiDestroyerIncomingChange) Destroy(value IncomingChange) {
-	value.Destroy()
-}
-
-// Configuration for key set derivation.
-//
-// This struct encapsulates the parameters needed for BIP32 key derivation.
-type KeySetConfig struct {
-	// The key set type which determines the derivation path
-	KeySetType KeySetType
-	// Controls the structure of the BIP derivation path
-	UseAddressIndex bool
-	// Optional account number for key derivation
-	AccountNumber *uint32
-}
-
-func (r *KeySetConfig) Destroy() {
-	FfiDestroyerKeySetType{}.Destroy(r.KeySetType)
-	FfiDestroyerBool{}.Destroy(r.UseAddressIndex)
-	FfiDestroyerOptionalUint32{}.Destroy(r.AccountNumber)
-}
-
-type FfiConverterKeySetConfig struct{}
-
-var FfiConverterKeySetConfigINSTANCE = FfiConverterKeySetConfig{}
-
-func (c FfiConverterKeySetConfig) Lift(rb RustBufferI) KeySetConfig {
-	return LiftFromRustBuffer[KeySetConfig](c, rb)
-}
-
-func (c FfiConverterKeySetConfig) Read(reader io.Reader) KeySetConfig {
-	return KeySetConfig{
-		FfiConverterKeySetTypeINSTANCE.Read(reader),
-		FfiConverterBoolINSTANCE.Read(reader),
-		FfiConverterOptionalUint32INSTANCE.Read(reader),
-	}
-}
-
-func (c FfiConverterKeySetConfig) Lower(value KeySetConfig) C.RustBuffer {
-	return LowerIntoRustBuffer[KeySetConfig](c, value)
-}
-
-func (c FfiConverterKeySetConfig) LowerExternal(value KeySetConfig) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[KeySetConfig](c, value))
-}
-
-func (c FfiConverterKeySetConfig) Write(writer io.Writer, value KeySetConfig) {
-	FfiConverterKeySetTypeINSTANCE.Write(writer, value.KeySetType)
-	FfiConverterBoolINSTANCE.Write(writer, value.UseAddressIndex)
-	FfiConverterOptionalUint32INSTANCE.Write(writer, value.AccountNumber)
-}
-
-type FfiDestroyerKeySetConfig struct{}
-
-func (_ FfiDestroyerKeySetConfig) Destroy(value KeySetConfig) {
 	value.Destroy()
 }
 
@@ -17895,103 +19862,88 @@ func (_ FfiDestroyerMysqlStorageConfig) Destroy(value MysqlStorageConfig) {
 	value.Destroy()
 }
 
-// Configuration for Nostr relay connections used in `Passkey`.
-//
-// Relay URLs are managed internally by the client:
-// - Public relays are always included
-// - Breez relay is added when `breez_api_key` is provided (enables NIP-42 auth)
-type NostrRelayConfig struct {
-	// Optional Breez API key for authenticated access to the Breez relay.
-	// When provided, the Breez relay is added and NIP-42 authentication is enabled.
-	BreezApiKey *string
-	// Connection timeout in seconds. Defaults to 30 when `None`.
-	TimeoutSecs *uint32
+// Request for [`BreezSdk::optimize_leaves`]. Defaults to
+// [`OptimizationMode::Full`].
+type OptimizeLeavesRequest struct {
+	// Controls how much work the call performs before returning.
+	Mode OptimizationMode
 }
 
-func (r *NostrRelayConfig) Destroy() {
-	FfiDestroyerOptionalString{}.Destroy(r.BreezApiKey)
-	FfiDestroyerOptionalUint32{}.Destroy(r.TimeoutSecs)
+func (r *OptimizeLeavesRequest) Destroy() {
+	FfiDestroyerOptimizationMode{}.Destroy(r.Mode)
 }
 
-type FfiConverterNostrRelayConfig struct{}
+type FfiConverterOptimizeLeavesRequest struct{}
 
-var FfiConverterNostrRelayConfigINSTANCE = FfiConverterNostrRelayConfig{}
+var FfiConverterOptimizeLeavesRequestINSTANCE = FfiConverterOptimizeLeavesRequest{}
 
-func (c FfiConverterNostrRelayConfig) Lift(rb RustBufferI) NostrRelayConfig {
-	return LiftFromRustBuffer[NostrRelayConfig](c, rb)
+func (c FfiConverterOptimizeLeavesRequest) Lift(rb RustBufferI) OptimizeLeavesRequest {
+	return LiftFromRustBuffer[OptimizeLeavesRequest](c, rb)
 }
 
-func (c FfiConverterNostrRelayConfig) Read(reader io.Reader) NostrRelayConfig {
-	return NostrRelayConfig{
-		FfiConverterOptionalStringINSTANCE.Read(reader),
-		FfiConverterOptionalUint32INSTANCE.Read(reader),
+func (c FfiConverterOptimizeLeavesRequest) Read(reader io.Reader) OptimizeLeavesRequest {
+	return OptimizeLeavesRequest{
+		FfiConverterOptimizationModeINSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterNostrRelayConfig) Lower(value NostrRelayConfig) C.RustBuffer {
-	return LowerIntoRustBuffer[NostrRelayConfig](c, value)
+func (c FfiConverterOptimizeLeavesRequest) Lower(value OptimizeLeavesRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[OptimizeLeavesRequest](c, value)
 }
 
-func (c FfiConverterNostrRelayConfig) LowerExternal(value NostrRelayConfig) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[NostrRelayConfig](c, value))
+func (c FfiConverterOptimizeLeavesRequest) LowerExternal(value OptimizeLeavesRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OptimizeLeavesRequest](c, value))
 }
 
-func (c FfiConverterNostrRelayConfig) Write(writer io.Writer, value NostrRelayConfig) {
-	FfiConverterOptionalStringINSTANCE.Write(writer, value.BreezApiKey)
-	FfiConverterOptionalUint32INSTANCE.Write(writer, value.TimeoutSecs)
+func (c FfiConverterOptimizeLeavesRequest) Write(writer io.Writer, value OptimizeLeavesRequest) {
+	FfiConverterOptimizationModeINSTANCE.Write(writer, value.Mode)
 }
 
-type FfiDestroyerNostrRelayConfig struct{}
+type FfiDestroyerOptimizeLeavesRequest struct{}
 
-func (_ FfiDestroyerNostrRelayConfig) Destroy(value NostrRelayConfig) {
+func (_ FfiDestroyerOptimizeLeavesRequest) Destroy(value OptimizeLeavesRequest) {
 	value.Destroy()
 }
 
-type OptimizationProgress struct {
-	IsRunning    bool
-	CurrentRound uint32
-	TotalRounds  uint32
+// Response from a [`BreezSdk::optimize_leaves`] call.
+type OptimizeLeavesResponse struct {
+	// The outcome of the optimization run.
+	Outcome OptimizationOutcome
 }
 
-func (r *OptimizationProgress) Destroy() {
-	FfiDestroyerBool{}.Destroy(r.IsRunning)
-	FfiDestroyerUint32{}.Destroy(r.CurrentRound)
-	FfiDestroyerUint32{}.Destroy(r.TotalRounds)
+func (r *OptimizeLeavesResponse) Destroy() {
+	FfiDestroyerOptimizationOutcome{}.Destroy(r.Outcome)
 }
 
-type FfiConverterOptimizationProgress struct{}
+type FfiConverterOptimizeLeavesResponse struct{}
 
-var FfiConverterOptimizationProgressINSTANCE = FfiConverterOptimizationProgress{}
+var FfiConverterOptimizeLeavesResponseINSTANCE = FfiConverterOptimizeLeavesResponse{}
 
-func (c FfiConverterOptimizationProgress) Lift(rb RustBufferI) OptimizationProgress {
-	return LiftFromRustBuffer[OptimizationProgress](c, rb)
+func (c FfiConverterOptimizeLeavesResponse) Lift(rb RustBufferI) OptimizeLeavesResponse {
+	return LiftFromRustBuffer[OptimizeLeavesResponse](c, rb)
 }
 
-func (c FfiConverterOptimizationProgress) Read(reader io.Reader) OptimizationProgress {
-	return OptimizationProgress{
-		FfiConverterBoolINSTANCE.Read(reader),
-		FfiConverterUint32INSTANCE.Read(reader),
-		FfiConverterUint32INSTANCE.Read(reader),
+func (c FfiConverterOptimizeLeavesResponse) Read(reader io.Reader) OptimizeLeavesResponse {
+	return OptimizeLeavesResponse{
+		FfiConverterOptimizationOutcomeINSTANCE.Read(reader),
 	}
 }
 
-func (c FfiConverterOptimizationProgress) Lower(value OptimizationProgress) C.RustBuffer {
-	return LowerIntoRustBuffer[OptimizationProgress](c, value)
+func (c FfiConverterOptimizeLeavesResponse) Lower(value OptimizeLeavesResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[OptimizeLeavesResponse](c, value)
 }
 
-func (c FfiConverterOptimizationProgress) LowerExternal(value OptimizationProgress) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[OptimizationProgress](c, value))
+func (c FfiConverterOptimizeLeavesResponse) LowerExternal(value OptimizeLeavesResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OptimizeLeavesResponse](c, value))
 }
 
-func (c FfiConverterOptimizationProgress) Write(writer io.Writer, value OptimizationProgress) {
-	FfiConverterBoolINSTANCE.Write(writer, value.IsRunning)
-	FfiConverterUint32INSTANCE.Write(writer, value.CurrentRound)
-	FfiConverterUint32INSTANCE.Write(writer, value.TotalRounds)
+func (c FfiConverterOptimizeLeavesResponse) Write(writer io.Writer, value OptimizeLeavesResponse) {
+	FfiConverterOptimizationOutcomeINSTANCE.Write(writer, value.Outcome)
 }
 
-type FfiDestroyerOptimizationProgress struct{}
+type FfiDestroyerOptimizeLeavesResponse struct{}
 
-func (_ FfiDestroyerOptimizationProgress) Destroy(value OptimizationProgress) {
+func (_ FfiDestroyerOptimizeLeavesResponse) Destroy(value OptimizeLeavesResponse) {
 	value.Destroy()
 }
 
@@ -18036,6 +19988,187 @@ func (c FfiConverterOutgoingChange) Write(writer io.Writer, value OutgoingChange
 type FfiDestroyerOutgoingChange struct{}
 
 func (_ FfiDestroyerOutgoingChange) Destroy(value OutgoingChange) {
+	value.Destroy()
+}
+
+// Configuration for the passkey client.
+type PasskeyConfig struct {
+	// Default wallet label when a call provides none. Unset uses
+	// `"Default"`.
+	DefaultLabel *string
+	// Relying Party and user identity for the built-in provider, used
+	// on the zero-config path. Ignored when you inject your own
+	// provider.
+	ProviderOptions *PasskeyProviderOptions
+}
+
+func (r *PasskeyConfig) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.DefaultLabel)
+	FfiDestroyerOptionalPasskeyProviderOptions{}.Destroy(r.ProviderOptions)
+}
+
+type FfiConverterPasskeyConfig struct{}
+
+var FfiConverterPasskeyConfigINSTANCE = FfiConverterPasskeyConfig{}
+
+func (c FfiConverterPasskeyConfig) Lift(rb RustBufferI) PasskeyConfig {
+	return LiftFromRustBuffer[PasskeyConfig](c, rb)
+}
+
+func (c FfiConverterPasskeyConfig) Read(reader io.Reader) PasskeyConfig {
+	return PasskeyConfig{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalPasskeyProviderOptionsINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterPasskeyConfig) Lower(value PasskeyConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[PasskeyConfig](c, value)
+}
+
+func (c FfiConverterPasskeyConfig) LowerExternal(value PasskeyConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PasskeyConfig](c, value))
+}
+
+func (c FfiConverterPasskeyConfig) Write(writer io.Writer, value PasskeyConfig) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.DefaultLabel)
+	FfiConverterOptionalPasskeyProviderOptionsINSTANCE.Write(writer, value.ProviderOptions)
+}
+
+type FfiDestroyerPasskeyConfig struct{}
+
+func (_ FfiDestroyerPasskeyConfig) Destroy(value PasskeyConfig) {
+	value.Destroy()
+}
+
+// A passkey credential from a register or sign-in ceremony.
+// `credential_id` is always set; the attestation fields are
+// populated on registration and absent on sign-in (an assertion
+// carries no attestation). Persist `credential_id` to drive
+// `exclude_credentials` / `allow_credentials` on later calls.
+type PasskeyCredential struct {
+	// The credential used on sign-in or created on registration.
+	CredentialId []byte
+	// `WebAuthn` user handle, provider-minted at registration.
+	// Absent on sign-in.
+	UserId *[]byte
+	// Authenticator AAGUID. A display hint only: the attestation is
+	// unverified. Absent on sign-in.
+	Aaguid *[]byte
+	// Whether the credential is eligible for cloud backup / sync.
+	// Absent on sign-in.
+	BackupEligible *bool
+}
+
+func (r *PasskeyCredential) Destroy() {
+	FfiDestroyerBytes{}.Destroy(r.CredentialId)
+	FfiDestroyerOptionalBytes{}.Destroy(r.UserId)
+	FfiDestroyerOptionalBytes{}.Destroy(r.Aaguid)
+	FfiDestroyerOptionalBool{}.Destroy(r.BackupEligible)
+}
+
+type FfiConverterPasskeyCredential struct{}
+
+var FfiConverterPasskeyCredentialINSTANCE = FfiConverterPasskeyCredential{}
+
+func (c FfiConverterPasskeyCredential) Lift(rb RustBufferI) PasskeyCredential {
+	return LiftFromRustBuffer[PasskeyCredential](c, rb)
+}
+
+func (c FfiConverterPasskeyCredential) Read(reader io.Reader) PasskeyCredential {
+	return PasskeyCredential{
+		FfiConverterBytesINSTANCE.Read(reader),
+		FfiConverterOptionalBytesINSTANCE.Read(reader),
+		FfiConverterOptionalBytesINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterPasskeyCredential) Lower(value PasskeyCredential) C.RustBuffer {
+	return LowerIntoRustBuffer[PasskeyCredential](c, value)
+}
+
+func (c FfiConverterPasskeyCredential) LowerExternal(value PasskeyCredential) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PasskeyCredential](c, value))
+}
+
+func (c FfiConverterPasskeyCredential) Write(writer io.Writer, value PasskeyCredential) {
+	FfiConverterBytesINSTANCE.Write(writer, value.CredentialId)
+	FfiConverterOptionalBytesINSTANCE.Write(writer, value.UserId)
+	FfiConverterOptionalBytesINSTANCE.Write(writer, value.Aaguid)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.BackupEligible)
+}
+
+type FfiDestroyerPasskeyCredential struct{}
+
+func (_ FfiDestroyerPasskeyCredential) Destroy(value PasskeyCredential) {
+	value.Destroy()
+}
+
+// Relying Party and user identity for the built-in passkey provider.
+// Applies only when a binding builds the provider for you (the
+// zero-config path); a provider you construct yourself owns these and
+// ignores them.
+type PasskeyProviderOptions struct {
+	// Relying Party ID. Unset uses the Breez shared RP
+	// (`keys.breez.technology`).
+	RpId *string
+	// Relying Party name. Unset uses `"Breez"`.
+	RpName *string
+	// `WebAuthn` `user.name`: the account identifier the OS sign-in
+	// picker shows beneath the display name, typically an email or
+	// handle (e.g. `john@doe.com`). Set a stable per-user
+	// value to keep each registration a distinct entry. Unset uses
+	// `rp_name`.
+	UserName *string
+	// `WebAuthn` `user.display_name`: the human-friendly name the
+	// picker shows most prominently (e.g. `John Doe`). Unset uses
+	// `user_name`.
+	UserDisplayName *string
+}
+
+func (r *PasskeyProviderOptions) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.RpId)
+	FfiDestroyerOptionalString{}.Destroy(r.RpName)
+	FfiDestroyerOptionalString{}.Destroy(r.UserName)
+	FfiDestroyerOptionalString{}.Destroy(r.UserDisplayName)
+}
+
+type FfiConverterPasskeyProviderOptions struct{}
+
+var FfiConverterPasskeyProviderOptionsINSTANCE = FfiConverterPasskeyProviderOptions{}
+
+func (c FfiConverterPasskeyProviderOptions) Lift(rb RustBufferI) PasskeyProviderOptions {
+	return LiftFromRustBuffer[PasskeyProviderOptions](c, rb)
+}
+
+func (c FfiConverterPasskeyProviderOptions) Read(reader io.Reader) PasskeyProviderOptions {
+	return PasskeyProviderOptions{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterPasskeyProviderOptions) Lower(value PasskeyProviderOptions) C.RustBuffer {
+	return LowerIntoRustBuffer[PasskeyProviderOptions](c, value)
+}
+
+func (c FfiConverterPasskeyProviderOptions) LowerExternal(value PasskeyProviderOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PasskeyProviderOptions](c, value))
+}
+
+func (c FfiConverterPasskeyProviderOptions) Write(writer io.Writer, value PasskeyProviderOptions) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.RpId)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.RpName)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.UserName)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.UserDisplayName)
+}
+
+type FfiDestroyerPasskeyProviderOptions struct{}
+
+func (_ FfiDestroyerPasskeyProviderOptions) Destroy(value PasskeyProviderOptions) {
 	value.Destroy()
 }
 
@@ -18119,6 +20252,52 @@ func (c FfiConverterPayment) Write(writer io.Writer, value Payment) {
 type FfiDestroyerPayment struct{}
 
 func (_ FfiDestroyerPayment) Destroy(value Payment) {
+	value.Destroy()
+}
+
+type PaymentIdUpdate struct {
+	// Provisional payment id reported by `before_send`, in the form `{partial_tx_id}:{index}`
+	ProvisionalPaymentId string
+	// Final payment id once the transaction is broadcast, in the form `{final_tx_id}:{vout}`
+	FinalPaymentId string
+}
+
+func (r *PaymentIdUpdate) Destroy() {
+	FfiDestroyerString{}.Destroy(r.ProvisionalPaymentId)
+	FfiDestroyerString{}.Destroy(r.FinalPaymentId)
+}
+
+type FfiConverterPaymentIdUpdate struct{}
+
+var FfiConverterPaymentIdUpdateINSTANCE = FfiConverterPaymentIdUpdate{}
+
+func (c FfiConverterPaymentIdUpdate) Lift(rb RustBufferI) PaymentIdUpdate {
+	return LiftFromRustBuffer[PaymentIdUpdate](c, rb)
+}
+
+func (c FfiConverterPaymentIdUpdate) Read(reader io.Reader) PaymentIdUpdate {
+	return PaymentIdUpdate{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterPaymentIdUpdate) Lower(value PaymentIdUpdate) C.RustBuffer {
+	return LowerIntoRustBuffer[PaymentIdUpdate](c, value)
+}
+
+func (c FfiConverterPaymentIdUpdate) LowerExternal(value PaymentIdUpdate) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentIdUpdate](c, value))
+}
+
+func (c FfiConverterPaymentIdUpdate) Write(writer io.Writer, value PaymentIdUpdate) {
+	FfiConverterStringINSTANCE.Write(writer, value.ProvisionalPaymentId)
+	FfiConverterStringINSTANCE.Write(writer, value.FinalPaymentId)
+}
+
+type FfiDestroyerPaymentIdUpdate struct{}
+
+func (_ FfiDestroyerPaymentIdUpdate) Destroy(value PaymentIdUpdate) {
 	value.Destroy()
 }
 
@@ -19201,6 +21380,110 @@ func (_ FfiDestroyerRegisterLightningAddressRequest) Destroy(value RegisterLight
 	value.Destroy()
 }
 
+// Request shape for [`PasskeyClient::register`].
+type RegisterRequest struct {
+	// User-chosen label for the new wallet. Defaults to the configured
+	// default label when `None`. Always published to the label
+	// store as part of registration.
+	Label *string
+	// Optional list of already-registered credential IDs. Prevents
+	// registering the same device twice: when any entry matches a
+	// credential already on the device, the platform raises
+	// [`crate::passkey::PrfProviderError::CredentialAlreadyExists`]
+	// so the host can flip the user to the sign-in path. Unset is
+	// treated as empty. Forwarded to [`PrfProvider::create_passkey`].
+	ExcludeCredentials *[][]byte
+}
+
+func (r *RegisterRequest) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.Label)
+	FfiDestroyerOptionalSequenceBytes{}.Destroy(r.ExcludeCredentials)
+}
+
+type FfiConverterRegisterRequest struct{}
+
+var FfiConverterRegisterRequestINSTANCE = FfiConverterRegisterRequest{}
+
+func (c FfiConverterRegisterRequest) Lift(rb RustBufferI) RegisterRequest {
+	return LiftFromRustBuffer[RegisterRequest](c, rb)
+}
+
+func (c FfiConverterRegisterRequest) Read(reader io.Reader) RegisterRequest {
+	return RegisterRequest{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalSequenceBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterRegisterRequest) Lower(value RegisterRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[RegisterRequest](c, value)
+}
+
+func (c FfiConverterRegisterRequest) LowerExternal(value RegisterRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RegisterRequest](c, value))
+}
+
+func (c FfiConverterRegisterRequest) Write(writer io.Writer, value RegisterRequest) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Label)
+	FfiConverterOptionalSequenceBytesINSTANCE.Write(writer, value.ExcludeCredentials)
+}
+
+type FfiDestroyerRegisterRequest struct{}
+
+func (_ FfiDestroyerRegisterRequest) Destroy(value RegisterRequest) {
+	value.Destroy()
+}
+
+// Response from [`PasskeyClient::register`].
+type RegisterResponse struct {
+	// The newly-derived wallet for [`RegisterRequest::label`].
+	Wallet Wallet
+	// The credential the platform just registered. Persist
+	// [`PasskeyCredential::credential_id`] to populate
+	// `exclude_credentials` on future [`PasskeyClient::register`]
+	// calls. Always set on the register path.
+	Credential *PasskeyCredential
+}
+
+func (r *RegisterResponse) Destroy() {
+	FfiDestroyerWallet{}.Destroy(r.Wallet)
+	FfiDestroyerOptionalPasskeyCredential{}.Destroy(r.Credential)
+}
+
+type FfiConverterRegisterResponse struct{}
+
+var FfiConverterRegisterResponseINSTANCE = FfiConverterRegisterResponse{}
+
+func (c FfiConverterRegisterResponse) Lift(rb RustBufferI) RegisterResponse {
+	return LiftFromRustBuffer[RegisterResponse](c, rb)
+}
+
+func (c FfiConverterRegisterResponse) Read(reader io.Reader) RegisterResponse {
+	return RegisterResponse{
+		FfiConverterWalletINSTANCE.Read(reader),
+		FfiConverterOptionalPasskeyCredentialINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterRegisterResponse) Lower(value RegisterResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[RegisterResponse](c, value)
+}
+
+func (c FfiConverterRegisterResponse) LowerExternal(value RegisterResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[RegisterResponse](c, value))
+}
+
+func (c FfiConverterRegisterResponse) Write(writer io.Writer, value RegisterResponse) {
+	FfiConverterWalletINSTANCE.Write(writer, value.Wallet)
+	FfiConverterOptionalPasskeyCredentialINSTANCE.Write(writer, value.Credential)
+}
+
+type FfiDestroyerRegisterResponse struct{}
+
+func (_ FfiDestroyerRegisterResponse) Destroy(value RegisterResponse) {
+	value.Destroy()
+}
+
 // Request to register a new webhook.
 type RegisterWebhookRequest struct {
 	// The URL that will receive webhook notifications.
@@ -19396,22 +21679,21 @@ type SdkContextConfig struct {
 	// deployments); `Some(n)` opens `n` channels per operator and balances
 	// requests across them.
 	ConnectionsPerOperator *uint32
-	// `PostgreSQL` backend configuration. When set, the context builds a
-	// shared connection pool and SDKs constructed with this context store
-	// their data in `PostgreSQL`.
-	PostgresConfig *PostgresStorageConfig
-	// `MySQL` backend configuration. When set, the context builds a shared
-	// connection pool and SDKs constructed with this context store their
-	// data in `MySQL`.
-	MysqlConfig *MysqlStorageConfig
+	// Shared storage backend for SDKs built from this context. When set,
+	// every SDK built from the context reuses it (and its database
+	// connection pool). Construct via
+	// [`default_storage`](crate::default_storage),
+	// [`postgres_storage`](crate::postgres_storage),
+	// [`mysql_storage`](crate::mysql_storage) or
+	// [`custom_storage`](crate::custom_storage).
+	Storage **StorageBackend
 }
 
 func (r *SdkContextConfig) Destroy() {
 	FfiDestroyerNetwork{}.Destroy(r.Network)
 	FfiDestroyerOptionalString{}.Destroy(r.ApiKey)
 	FfiDestroyerOptionalUint32{}.Destroy(r.ConnectionsPerOperator)
-	FfiDestroyerOptionalPostgresStorageConfig{}.Destroy(r.PostgresConfig)
-	FfiDestroyerOptionalMysqlStorageConfig{}.Destroy(r.MysqlConfig)
+	FfiDestroyerOptionalStorageBackend{}.Destroy(r.Storage)
 }
 
 type FfiConverterSdkContextConfig struct{}
@@ -19427,8 +21709,7 @@ func (c FfiConverterSdkContextConfig) Read(reader io.Reader) SdkContextConfig {
 		FfiConverterNetworkINSTANCE.Read(reader),
 		FfiConverterOptionalStringINSTANCE.Read(reader),
 		FfiConverterOptionalUint32INSTANCE.Read(reader),
-		FfiConverterOptionalPostgresStorageConfigINSTANCE.Read(reader),
-		FfiConverterOptionalMysqlStorageConfigINSTANCE.Read(reader),
+		FfiConverterOptionalStorageBackendINSTANCE.Read(reader),
 	}
 }
 
@@ -19444,8 +21725,7 @@ func (c FfiConverterSdkContextConfig) Write(writer io.Writer, value SdkContextCo
 	FfiConverterNetworkINSTANCE.Write(writer, value.Network)
 	FfiConverterOptionalStringINSTANCE.Write(writer, value.ApiKey)
 	FfiConverterOptionalUint32INSTANCE.Write(writer, value.ConnectionsPerOperator)
-	FfiConverterOptionalPostgresStorageConfigINSTANCE.Write(writer, value.PostgresConfig)
-	FfiConverterOptionalMysqlStorageConfigINSTANCE.Write(writer, value.MysqlConfig)
+	FfiConverterOptionalStorageBackendINSTANCE.Write(writer, value.Storage)
 }
 
 type FfiDestroyerSdkContextConfig struct{}
@@ -19781,6 +22061,181 @@ func (c FfiConverterSetLnurlMetadataItem) Write(writer io.Writer, value SetLnurl
 type FfiDestroyerSetLnurlMetadataItem struct{}
 
 func (_ FfiDestroyerSetLnurlMetadataItem) Destroy(value SetLnurlMetadataItem) {
+	value.Destroy()
+}
+
+// Request for [`crate::passkey::Passkey::setup_wallet`].
+type SetupWalletRequest struct {
+	// Wallet label. Unset uses the configured default label.
+	Label *string
+	// Publish the label to Nostr after deriving. Leave false for
+	// speculative derivations (cold restore).
+	PublishLabel bool
+	// Restrict the assertion to these credential IDs. Useful for
+	// server-driven flows that resolve the credential set out-of-band.
+	AllowCredentials [][]byte
+	// Prefer credentials already on this device over the cross-device
+	// picker. Unset uses the platform default.
+	PreferImmediatelyAvailableCredentials *bool
+}
+
+func (r *SetupWalletRequest) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.Label)
+	FfiDestroyerBool{}.Destroy(r.PublishLabel)
+	FfiDestroyerSequenceBytes{}.Destroy(r.AllowCredentials)
+	FfiDestroyerOptionalBool{}.Destroy(r.PreferImmediatelyAvailableCredentials)
+}
+
+type FfiConverterSetupWalletRequest struct{}
+
+var FfiConverterSetupWalletRequestINSTANCE = FfiConverterSetupWalletRequest{}
+
+func (c FfiConverterSetupWalletRequest) Lift(rb RustBufferI) SetupWalletRequest {
+	return LiftFromRustBuffer[SetupWalletRequest](c, rb)
+}
+
+func (c FfiConverterSetupWalletRequest) Read(reader io.Reader) SetupWalletRequest {
+	return SetupWalletRequest{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterSequenceBytesINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSetupWalletRequest) Lower(value SetupWalletRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[SetupWalletRequest](c, value)
+}
+
+func (c FfiConverterSetupWalletRequest) LowerExternal(value SetupWalletRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SetupWalletRequest](c, value))
+}
+
+func (c FfiConverterSetupWalletRequest) Write(writer io.Writer, value SetupWalletRequest) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Label)
+	FfiConverterBoolINSTANCE.Write(writer, value.PublishLabel)
+	FfiConverterSequenceBytesINSTANCE.Write(writer, value.AllowCredentials)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.PreferImmediatelyAvailableCredentials)
+}
+
+type FfiDestroyerSetupWalletRequest struct{}
+
+func (_ FfiDestroyerSetupWalletRequest) Destroy(value SetupWalletRequest) {
+	value.Destroy()
+}
+
+// Request shape for [`PasskeyClient::sign_in`].
+type SignInRequest struct {
+	// When present, the fast path: one ceremony, no label-store
+	// query. When absent, triggers discovery: derives the configured
+	// default label and also returns the user's full label set in
+	// [`SignInResponse::labels`].
+	Label *string
+	// Optional credential IDs the assertion is restricted to
+	// (reauthentication of a known user). Unset or empty lets the OS
+	// pick any matching credential for this RP. Forwarded to
+	// [`crate::passkey::DeriveSeedsRequest::allow_credentials`].
+	AllowCredentials *[][]byte
+	// Forwarded to
+	// [`crate::passkey::DeriveSeedsRequest::prefer_immediately_available_credentials`].
+	PreferImmediatelyAvailableCredentials *bool
+}
+
+func (r *SignInRequest) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.Label)
+	FfiDestroyerOptionalSequenceBytes{}.Destroy(r.AllowCredentials)
+	FfiDestroyerOptionalBool{}.Destroy(r.PreferImmediatelyAvailableCredentials)
+}
+
+type FfiConverterSignInRequest struct{}
+
+var FfiConverterSignInRequestINSTANCE = FfiConverterSignInRequest{}
+
+func (c FfiConverterSignInRequest) Lift(rb RustBufferI) SignInRequest {
+	return LiftFromRustBuffer[SignInRequest](c, rb)
+}
+
+func (c FfiConverterSignInRequest) Read(reader io.Reader) SignInRequest {
+	return SignInRequest{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterOptionalSequenceBytesINSTANCE.Read(reader),
+		FfiConverterOptionalBoolINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSignInRequest) Lower(value SignInRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[SignInRequest](c, value)
+}
+
+func (c FfiConverterSignInRequest) LowerExternal(value SignInRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SignInRequest](c, value))
+}
+
+func (c FfiConverterSignInRequest) Write(writer io.Writer, value SignInRequest) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Label)
+	FfiConverterOptionalSequenceBytesINSTANCE.Write(writer, value.AllowCredentials)
+	FfiConverterOptionalBoolINSTANCE.Write(writer, value.PreferImmediatelyAvailableCredentials)
+}
+
+type FfiDestroyerSignInRequest struct{}
+
+func (_ FfiDestroyerSignInRequest) Destroy(value SignInRequest) {
+	value.Destroy()
+}
+
+// Response from [`PasskeyClient::sign_in`].
+type SignInResponse struct {
+	Wallet Wallet
+	// Empty on the fast path. Populated on discovery (or empty if
+	// the label store was unreachable).
+	Labels []string
+	// The credential the user signed in with, when the underlying
+	// [`PrfProvider`] surfaces it. `None` for providers that don't
+	// expose this signal (CLI / file-backed / hardware). Only
+	// `credential_id` is set: a sign-in assertion carries no
+	// attestation.
+	Credential *PasskeyCredential
+}
+
+func (r *SignInResponse) Destroy() {
+	FfiDestroyerWallet{}.Destroy(r.Wallet)
+	FfiDestroyerSequenceString{}.Destroy(r.Labels)
+	FfiDestroyerOptionalPasskeyCredential{}.Destroy(r.Credential)
+}
+
+type FfiConverterSignInResponse struct{}
+
+var FfiConverterSignInResponseINSTANCE = FfiConverterSignInResponse{}
+
+func (c FfiConverterSignInResponse) Lift(rb RustBufferI) SignInResponse {
+	return LiftFromRustBuffer[SignInResponse](c, rb)
+}
+
+func (c FfiConverterSignInResponse) Read(reader io.Reader) SignInResponse {
+	return SignInResponse{
+		FfiConverterWalletINSTANCE.Read(reader),
+		FfiConverterSequenceStringINSTANCE.Read(reader),
+		FfiConverterOptionalPasskeyCredentialINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSignInResponse) Lower(value SignInResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[SignInResponse](c, value)
+}
+
+func (c FfiConverterSignInResponse) LowerExternal(value SignInResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SignInResponse](c, value))
+}
+
+func (c FfiConverterSignInResponse) Write(writer io.Writer, value SignInResponse) {
+	FfiConverterWalletINSTANCE.Write(writer, value.Wallet)
+	FfiConverterSequenceStringINSTANCE.Write(writer, value.Labels)
+	FfiConverterOptionalPasskeyCredentialINSTANCE.Write(writer, value.Credential)
+}
+
+type FfiDestroyerSignInResponse struct{}
+
+func (_ FfiDestroyerSignInResponse) Destroy(value SignInResponse) {
 	value.Destroy()
 }
 
@@ -20942,6 +23397,209 @@ func (_ FfiDestroyerTokenOptimizationConfig) Destroy(value TokenOptimizationConf
 	value.Destroy()
 }
 
+// Authorization from the current owner granting a specific new owner the
+// right to take over a username. Produced by
+// [`BreezSdk::authorize_lightning_address_transfer`] and handed to the new
+// owner, who passes it to [`BreezSdk::claim_lightning_address_transfer`]. It
+// fully describes the transfer, so the new owner needs nothing else to claim.
+type TransferAuthorization struct {
+	// The username being handed over.
+	Username string
+	// The current owner's public key.
+	Pubkey string
+	// The current owner's signature authorizing the transfer.
+	Signature string
+}
+
+func (r *TransferAuthorization) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Username)
+	FfiDestroyerString{}.Destroy(r.Pubkey)
+	FfiDestroyerString{}.Destroy(r.Signature)
+}
+
+type FfiConverterTransferAuthorization struct{}
+
+var FfiConverterTransferAuthorizationINSTANCE = FfiConverterTransferAuthorization{}
+
+func (c FfiConverterTransferAuthorization) Lift(rb RustBufferI) TransferAuthorization {
+	return LiftFromRustBuffer[TransferAuthorization](c, rb)
+}
+
+func (c FfiConverterTransferAuthorization) Read(reader io.Reader) TransferAuthorization {
+	return TransferAuthorization{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterTransferAuthorization) Lower(value TransferAuthorization) C.RustBuffer {
+	return LowerIntoRustBuffer[TransferAuthorization](c, value)
+}
+
+func (c FfiConverterTransferAuthorization) LowerExternal(value TransferAuthorization) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TransferAuthorization](c, value))
+}
+
+func (c FfiConverterTransferAuthorization) Write(writer io.Writer, value TransferAuthorization) {
+	FfiConverterStringINSTANCE.Write(writer, value.Username)
+	FfiConverterStringINSTANCE.Write(writer, value.Pubkey)
+	FfiConverterStringINSTANCE.Write(writer, value.Signature)
+}
+
+type FfiDestroyerTransferAuthorization struct{}
+
+func (_ FfiDestroyerTransferAuthorization) Destroy(value TransferAuthorization) {
+	value.Destroy()
+}
+
+type TurnkeyConfig struct {
+	// Turnkey API base URL. Unset uses `https://api.turnkey.com`.
+	BaseUrl *string
+	// Organization (or sub-organization) id that owns the wallet.
+	OrganizationId string
+	// API public key (compressed, hex), registered with the organization.
+	ApiPublicKey string
+	// API private key (hex) used to stamp requests.
+	ApiPrivateKey string
+	// Id of the Spark wallet to sign with.
+	WalletId string
+	// Network the wallet operates on; selects the Spark address format
+	// (mainnet or regtest) used for Spark-protocol and Schnorr signing.
+	Network Network
+	// Spark account number: the `{account}` in every derivation path
+	// (`m/8797555'/{account}'/...`). Unset uses the network default, matching
+	// the seed-based signer, so the same wallet seed derives the same keys on
+	// either backend.
+	AccountNumber *uint32
+	// Retry policy for Turnkey requests. Unset uses the default policy.
+	Retry *TurnkeyRetryConfig
+}
+
+func (r *TurnkeyConfig) Destroy() {
+	FfiDestroyerOptionalString{}.Destroy(r.BaseUrl)
+	FfiDestroyerString{}.Destroy(r.OrganizationId)
+	FfiDestroyerString{}.Destroy(r.ApiPublicKey)
+	FfiDestroyerString{}.Destroy(r.ApiPrivateKey)
+	FfiDestroyerString{}.Destroy(r.WalletId)
+	FfiDestroyerNetwork{}.Destroy(r.Network)
+	FfiDestroyerOptionalUint32{}.Destroy(r.AccountNumber)
+	FfiDestroyerOptionalTurnkeyRetryConfig{}.Destroy(r.Retry)
+}
+
+type FfiConverterTurnkeyConfig struct{}
+
+var FfiConverterTurnkeyConfigINSTANCE = FfiConverterTurnkeyConfig{}
+
+func (c FfiConverterTurnkeyConfig) Lift(rb RustBufferI) TurnkeyConfig {
+	return LiftFromRustBuffer[TurnkeyConfig](c, rb)
+}
+
+func (c FfiConverterTurnkeyConfig) Read(reader io.Reader) TurnkeyConfig {
+	return TurnkeyConfig{
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterNetworkINSTANCE.Read(reader),
+		FfiConverterOptionalUint32INSTANCE.Read(reader),
+		FfiConverterOptionalTurnkeyRetryConfigINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterTurnkeyConfig) Lower(value TurnkeyConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[TurnkeyConfig](c, value)
+}
+
+func (c FfiConverterTurnkeyConfig) LowerExternal(value TurnkeyConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TurnkeyConfig](c, value))
+}
+
+func (c FfiConverterTurnkeyConfig) Write(writer io.Writer, value TurnkeyConfig) {
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.BaseUrl)
+	FfiConverterStringINSTANCE.Write(writer, value.OrganizationId)
+	FfiConverterStringINSTANCE.Write(writer, value.ApiPublicKey)
+	FfiConverterStringINSTANCE.Write(writer, value.ApiPrivateKey)
+	FfiConverterStringINSTANCE.Write(writer, value.WalletId)
+	FfiConverterNetworkINSTANCE.Write(writer, value.Network)
+	FfiConverterOptionalUint32INSTANCE.Write(writer, value.AccountNumber)
+	FfiConverterOptionalTurnkeyRetryConfigINSTANCE.Write(writer, value.Retry)
+}
+
+type FfiDestroyerTurnkeyConfig struct{}
+
+func (_ FfiDestroyerTurnkeyConfig) Destroy(value TurnkeyConfig) {
+	value.Destroy()
+}
+
+// Retry policy for Turnkey API requests (used while polling a pending
+// activity). Mirrors `turnkey_client`'s `RetryConfig` with FFI-friendly
+// millisecond fields.
+type TurnkeyRetryConfig struct {
+	// Delay before the first retry, in milliseconds.
+	InitialDelayMs uint64
+	// Multiplier applied to the delay after each attempt.
+	Multiplier float64
+	// Upper bound on the delay between retries, in milliseconds.
+	MaxDelayMs uint64
+	// Maximum number of retries (0 disables retrying).
+	MaxRetries uint32
+	// Total time budget for one API request including its retries and waits,
+	// in milliseconds. No retry begins past this deadline: when the next wait
+	// (server-requested or backoff) would end after it, the request fails with
+	// the last error instead of stalling.
+	RequestTimeoutMs uint64
+}
+
+func (r *TurnkeyRetryConfig) Destroy() {
+	FfiDestroyerUint64{}.Destroy(r.InitialDelayMs)
+	FfiDestroyerFloat64{}.Destroy(r.Multiplier)
+	FfiDestroyerUint64{}.Destroy(r.MaxDelayMs)
+	FfiDestroyerUint32{}.Destroy(r.MaxRetries)
+	FfiDestroyerUint64{}.Destroy(r.RequestTimeoutMs)
+}
+
+type FfiConverterTurnkeyRetryConfig struct{}
+
+var FfiConverterTurnkeyRetryConfigINSTANCE = FfiConverterTurnkeyRetryConfig{}
+
+func (c FfiConverterTurnkeyRetryConfig) Lift(rb RustBufferI) TurnkeyRetryConfig {
+	return LiftFromRustBuffer[TurnkeyRetryConfig](c, rb)
+}
+
+func (c FfiConverterTurnkeyRetryConfig) Read(reader io.Reader) TurnkeyRetryConfig {
+	return TurnkeyRetryConfig{
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterFloat64INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterUint64INSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterTurnkeyRetryConfig) Lower(value TurnkeyRetryConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[TurnkeyRetryConfig](c, value)
+}
+
+func (c FfiConverterTurnkeyRetryConfig) LowerExternal(value TurnkeyRetryConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[TurnkeyRetryConfig](c, value))
+}
+
+func (c FfiConverterTurnkeyRetryConfig) Write(writer io.Writer, value TurnkeyRetryConfig) {
+	FfiConverterUint64INSTANCE.Write(writer, value.InitialDelayMs)
+	FfiConverterFloat64INSTANCE.Write(writer, value.Multiplier)
+	FfiConverterUint64INSTANCE.Write(writer, value.MaxDelayMs)
+	FfiConverterUint32INSTANCE.Write(writer, value.MaxRetries)
+	FfiConverterUint64INSTANCE.Write(writer, value.RequestTimeoutMs)
+}
+
+type FfiDestroyerTurnkeyRetryConfig struct{}
+
+func (_ FfiDestroyerTurnkeyRetryConfig) Destroy(value TurnkeyRetryConfig) {
+	value.Destroy()
+}
+
 type TxStatus struct {
 	Confirmed   bool
 	BlockHeight *uint32
@@ -21410,12 +24068,9 @@ func (_ FfiDestroyerUtxo) Destroy(value Utxo) {
 }
 
 // A wallet derived from a passkey.
-//
-// Contains the derived seed and the label used during derivation.
 type Wallet struct {
-	// The derived seed.
 	Seed Seed
-	// The label used for derivation (either user-provided or the default).
+	// Label used for derivation: user-provided or the default.
 	Label string
 }
 
@@ -21455,6 +24110,53 @@ func (c FfiConverterWallet) Write(writer io.Writer, value Wallet) {
 type FfiDestroyerWallet struct{}
 
 func (_ FfiDestroyerWallet) Destroy(value Wallet) {
+	value.Destroy()
+}
+
+// Response from [`crate::passkey::Passkey::setup_wallet`].
+type WalletSetup struct {
+	Wallet Wallet
+	// Credential that derived this wallet. Absent when the provider
+	// does not surface it.
+	CredentialId *[]byte
+}
+
+func (r *WalletSetup) Destroy() {
+	FfiDestroyerWallet{}.Destroy(r.Wallet)
+	FfiDestroyerOptionalBytes{}.Destroy(r.CredentialId)
+}
+
+type FfiConverterWalletSetup struct{}
+
+var FfiConverterWalletSetupINSTANCE = FfiConverterWalletSetup{}
+
+func (c FfiConverterWalletSetup) Lift(rb RustBufferI) WalletSetup {
+	return LiftFromRustBuffer[WalletSetup](c, rb)
+}
+
+func (c FfiConverterWalletSetup) Read(reader io.Reader) WalletSetup {
+	return WalletSetup{
+		FfiConverterWalletINSTANCE.Read(reader),
+		FfiConverterOptionalBytesINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterWalletSetup) Lower(value WalletSetup) C.RustBuffer {
+	return LowerIntoRustBuffer[WalletSetup](c, value)
+}
+
+func (c FfiConverterWalletSetup) LowerExternal(value WalletSetup) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[WalletSetup](c, value))
+}
+
+func (c FfiConverterWalletSetup) Write(writer io.Writer, value WalletSetup) {
+	FfiConverterWalletINSTANCE.Write(writer, value.Wallet)
+	FfiConverterOptionalBytesINSTANCE.Write(writer, value.CredentialId)
+}
+
+type FfiDestroyerWalletSetup struct{}
+
+func (_ FfiDestroyerWalletSetup) Destroy(value WalletSetup) {
 	value.Destroy()
 }
 
@@ -21759,6 +24461,132 @@ func (FfiConverterAssetFilter) Write(writer io.Writer, value AssetFilter) {
 type FfiDestroyerAssetFilter struct{}
 
 func (_ FfiDestroyerAssetFilter) Destroy(value AssetFilter) {
+	value.Destroy()
+}
+
+type AutoOptimizationEvent interface {
+	Destroy()
+}
+
+// Optimization has started with the given number of rounds.
+type AutoOptimizationEventStarted struct {
+	TotalRounds uint32
+}
+
+func (e AutoOptimizationEventStarted) Destroy() {
+	FfiDestroyerUint32{}.Destroy(e.TotalRounds)
+}
+
+// A round has completed.
+type AutoOptimizationEventRoundCompleted struct {
+	CurrentRound uint32
+	TotalRounds  uint32
+}
+
+func (e AutoOptimizationEventRoundCompleted) Destroy() {
+	FfiDestroyerUint32{}.Destroy(e.CurrentRound)
+	FfiDestroyerUint32{}.Destroy(e.TotalRounds)
+}
+
+// Optimization completed successfully.
+type AutoOptimizationEventCompleted struct {
+}
+
+func (e AutoOptimizationEventCompleted) Destroy() {
+}
+
+// Optimization was cancelled.
+type AutoOptimizationEventCancelled struct {
+}
+
+func (e AutoOptimizationEventCancelled) Destroy() {
+}
+
+// Optimization failed with an error.
+type AutoOptimizationEventFailed struct {
+	Error string
+}
+
+func (e AutoOptimizationEventFailed) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Error)
+}
+
+// Optimization was skipped because leaves are already optimal.
+type AutoOptimizationEventSkipped struct {
+}
+
+func (e AutoOptimizationEventSkipped) Destroy() {
+}
+
+type FfiConverterAutoOptimizationEvent struct{}
+
+var FfiConverterAutoOptimizationEventINSTANCE = FfiConverterAutoOptimizationEvent{}
+
+func (c FfiConverterAutoOptimizationEvent) Lift(rb RustBufferI) AutoOptimizationEvent {
+	return LiftFromRustBuffer[AutoOptimizationEvent](c, rb)
+}
+
+func (c FfiConverterAutoOptimizationEvent) Lower(value AutoOptimizationEvent) C.RustBuffer {
+	return LowerIntoRustBuffer[AutoOptimizationEvent](c, value)
+}
+
+func (c FfiConverterAutoOptimizationEvent) LowerExternal(value AutoOptimizationEvent) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[AutoOptimizationEvent](c, value))
+}
+func (FfiConverterAutoOptimizationEvent) Read(reader io.Reader) AutoOptimizationEvent {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return AutoOptimizationEventStarted{
+			FfiConverterUint32INSTANCE.Read(reader),
+		}
+	case 2:
+		return AutoOptimizationEventRoundCompleted{
+			FfiConverterUint32INSTANCE.Read(reader),
+			FfiConverterUint32INSTANCE.Read(reader),
+		}
+	case 3:
+		return AutoOptimizationEventCompleted{}
+	case 4:
+		return AutoOptimizationEventCancelled{}
+	case 5:
+		return AutoOptimizationEventFailed{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 6:
+		return AutoOptimizationEventSkipped{}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterAutoOptimizationEvent.Read()", id))
+	}
+}
+
+func (FfiConverterAutoOptimizationEvent) Write(writer io.Writer, value AutoOptimizationEvent) {
+	switch variant_value := value.(type) {
+	case AutoOptimizationEventStarted:
+		writeInt32(writer, 1)
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.TotalRounds)
+	case AutoOptimizationEventRoundCompleted:
+		writeInt32(writer, 2)
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.CurrentRound)
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.TotalRounds)
+	case AutoOptimizationEventCompleted:
+		writeInt32(writer, 3)
+	case AutoOptimizationEventCancelled:
+		writeInt32(writer, 4)
+	case AutoOptimizationEventFailed:
+		writeInt32(writer, 5)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Error)
+	case AutoOptimizationEventSkipped:
+		writeInt32(writer, 6)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterAutoOptimizationEvent.Write", value))
+	}
+}
+
+type FfiDestroyerAutoOptimizationEvent struct{}
+
+func (_ FfiDestroyerAutoOptimizationEvent) Destroy(value AutoOptimizationEvent) {
 	value.Destroy()
 }
 
@@ -22409,152 +25237,329 @@ func (_ FfiDestroyerDepositClaimError) Destroy(value DepositClaimError) {
 	value.Destroy()
 }
 
-// FFI-safe representation of `spark_wallet::SecretSource`
-type ExternalSecretSource interface {
+// Result of [`PrfProvider::check_domain_association`]. The platform's
+// out-of-band verification (AASA / assetlinks) gates passkey
+// ceremonies but its failures collapse into opaque platform errors;
+// this gives callers a definitive signal they can gate UX on.
+type DomainAssociation interface {
 	Destroy()
 }
 
-// Private key derived from a tree node
-type ExternalSecretSourceDerived struct {
-	NodeId ExternalTreeNodeId
+// Configuration verified; safe to proceed.
+type DomainAssociationAssociated struct {
 }
 
-func (e ExternalSecretSourceDerived) Destroy() {
-	FfiDestroyerExternalTreeNodeId{}.Destroy(e.NodeId)
+func (e DomainAssociationAssociated) Destroy() {
 }
 
-// Encrypted private key
-type ExternalSecretSourceEncrypted struct {
-	Key ExternalEncryptedSecret
+// Configuration is broken; subsequent ceremonies will fail.
+// `source` names the verification origin (e.g. `"Apple AASA CDN"`)
+// for diagnostic UIs; `reason` explains what was missing.
+type DomainAssociationNotAssociated struct {
+	Source string
+	Reason string
 }
 
-func (e ExternalSecretSourceEncrypted) Destroy() {
-	FfiDestroyerExternalEncryptedSecret{}.Destroy(e.Key)
+func (e DomainAssociationNotAssociated) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Source)
+	FfiDestroyerString{}.Destroy(e.Reason)
 }
 
-type FfiConverterExternalSecretSource struct{}
-
-var FfiConverterExternalSecretSourceINSTANCE = FfiConverterExternalSecretSource{}
-
-func (c FfiConverterExternalSecretSource) Lift(rb RustBufferI) ExternalSecretSource {
-	return LiftFromRustBuffer[ExternalSecretSource](c, rb)
+// Check was not performed (provider has no verification source,
+// or the check itself could not complete). Not a negative signal.
+type DomainAssociationSkipped struct {
+	Reason string
 }
 
-func (c FfiConverterExternalSecretSource) Lower(value ExternalSecretSource) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalSecretSource](c, value)
+func (e DomainAssociationSkipped) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Reason)
 }
 
-func (c FfiConverterExternalSecretSource) LowerExternal(value ExternalSecretSource) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[ExternalSecretSource](c, value))
+type FfiConverterDomainAssociation struct{}
+
+var FfiConverterDomainAssociationINSTANCE = FfiConverterDomainAssociation{}
+
+func (c FfiConverterDomainAssociation) Lift(rb RustBufferI) DomainAssociation {
+	return LiftFromRustBuffer[DomainAssociation](c, rb)
 }
-func (FfiConverterExternalSecretSource) Read(reader io.Reader) ExternalSecretSource {
+
+func (c FfiConverterDomainAssociation) Lower(value DomainAssociation) C.RustBuffer {
+	return LowerIntoRustBuffer[DomainAssociation](c, value)
+}
+
+func (c FfiConverterDomainAssociation) LowerExternal(value DomainAssociation) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[DomainAssociation](c, value))
+}
+func (FfiConverterDomainAssociation) Read(reader io.Reader) DomainAssociation {
 	id := readInt32(reader)
 	switch id {
 	case 1:
-		return ExternalSecretSourceDerived{
+		return DomainAssociationAssociated{}
+	case 2:
+		return DomainAssociationNotAssociated{
+			FfiConverterStringINSTANCE.Read(reader),
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 3:
+		return DomainAssociationSkipped{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterDomainAssociation.Read()", id))
+	}
+}
+
+func (FfiConverterDomainAssociation) Write(writer io.Writer, value DomainAssociation) {
+	switch variant_value := value.(type) {
+	case DomainAssociationAssociated:
+		writeInt32(writer, 1)
+	case DomainAssociationNotAssociated:
+		writeInt32(writer, 2)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Source)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Reason)
+	case DomainAssociationSkipped:
+		writeInt32(writer, 3)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Reason)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterDomainAssociation.Write", value))
+	}
+}
+
+type FfiDestroyerDomainAssociation struct{}
+
+func (_ FfiDestroyerDomainAssociation) Destroy(value DomainAssociation) {
+	value.Destroy()
+}
+
+// Coarse classification of a passkey error by the UX reaction it
+// warrants. The variant names the action to take, not the cause.
+type ErrorKind uint
+
+const (
+	// User dismissed the prompt. Do not auto-retry.
+	ErrorKindCancel ErrorKind = 1
+	// No matching credential on this device. Offer to register one.
+	ErrorKindNoCredential ErrorKind = 2
+	// Authenticator lacks the PRF extension. Fall back to a non-passkey
+	// flow or guide the user to another credential provider.
+	ErrorKindPrfUnsupported ErrorKind = 3
+	// PRF is supported but evaluation failed. Often transient: retrying
+	// the ceremony may succeed.
+	ErrorKindPrfFailed ErrorKind = 4
+	// Platform / app setup is wrong (entitlement, assetlinks, rpId
+	// scope). Not retryable until the integrator fixes it.
+	ErrorKindConfiguration ErrorKind = 5
+	// An existing credential matched. Route the user to sign-in.
+	ErrorKindAlreadyExists ErrorKind = 6
+	// The prompt closed on the platform inactivity timeout with no user
+	// action. Unlike `Cancel`, safe to auto-retry or re-prompt.
+	ErrorKindTimeout ErrorKind = 7
+	// The ceremony failed for a security or state reason. Offer a retry;
+	// if it persists, the credential or RP setup may be at fault.
+	ErrorKindAuthFailure ErrorKind = 8
+	// Failure the caller can't act on. Show a generic "try again".
+	ErrorKindInternal ErrorKind = 9
+)
+
+type FfiConverterErrorKind struct{}
+
+var FfiConverterErrorKindINSTANCE = FfiConverterErrorKind{}
+
+func (c FfiConverterErrorKind) Lift(rb RustBufferI) ErrorKind {
+	return LiftFromRustBuffer[ErrorKind](c, rb)
+}
+
+func (c FfiConverterErrorKind) Lower(value ErrorKind) C.RustBuffer {
+	return LowerIntoRustBuffer[ErrorKind](c, value)
+}
+
+func (c FfiConverterErrorKind) LowerExternal(value ErrorKind) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ErrorKind](c, value))
+}
+func (FfiConverterErrorKind) Read(reader io.Reader) ErrorKind {
+	id := readInt32(reader)
+	return ErrorKind(id)
+}
+
+func (FfiConverterErrorKind) Write(writer io.Writer, value ErrorKind) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerErrorKind struct{}
+
+func (_ FfiDestroyerErrorKind) Destroy(value ErrorKind) {
+}
+
+// FFI-safe representation of `spark_wallet::FrostDerivation`.
+type ExternalFrostDerivation interface {
+	Destroy()
+}
+
+// The signing key for a tree leaf.
+type ExternalFrostDerivationSigningLeaf struct {
+	LeafId ExternalTreeNodeId
+}
+
+func (e ExternalFrostDerivationSigningLeaf) Destroy() {
+	FfiDestroyerExternalTreeNodeId{}.Destroy(e.LeafId)
+}
+
+// The static-deposit key at `index`.
+type ExternalFrostDerivationStaticDeposit struct {
+	Index uint32
+}
+
+func (e ExternalFrostDerivationStaticDeposit) Destroy() {
+	FfiDestroyerUint32{}.Destroy(e.Index)
+}
+
+// The HTLC-preimage key.
+type ExternalFrostDerivationHtlcPreimage struct {
+}
+
+func (e ExternalFrostDerivationHtlcPreimage) Destroy() {
+}
+
+// The wallet identity key.
+type ExternalFrostDerivationIdentity struct {
+}
+
+func (e ExternalFrostDerivationIdentity) Destroy() {
+}
+
+type FfiConverterExternalFrostDerivation struct{}
+
+var FfiConverterExternalFrostDerivationINSTANCE = FfiConverterExternalFrostDerivation{}
+
+func (c FfiConverterExternalFrostDerivation) Lift(rb RustBufferI) ExternalFrostDerivation {
+	return LiftFromRustBuffer[ExternalFrostDerivation](c, rb)
+}
+
+func (c FfiConverterExternalFrostDerivation) Lower(value ExternalFrostDerivation) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalFrostDerivation](c, value)
+}
+
+func (c FfiConverterExternalFrostDerivation) LowerExternal(value ExternalFrostDerivation) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalFrostDerivation](c, value))
+}
+func (FfiConverterExternalFrostDerivation) Read(reader io.Reader) ExternalFrostDerivation {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return ExternalFrostDerivationSigningLeaf{
 			FfiConverterExternalTreeNodeIdINSTANCE.Read(reader),
 		}
 	case 2:
-		return ExternalSecretSourceEncrypted{
-			FfiConverterExternalEncryptedSecretINSTANCE.Read(reader),
+		return ExternalFrostDerivationStaticDeposit{
+			FfiConverterUint32INSTANCE.Read(reader),
 		}
+	case 3:
+		return ExternalFrostDerivationHtlcPreimage{}
+	case 4:
+		return ExternalFrostDerivationIdentity{}
 	default:
-		panic(fmt.Sprintf("invalid enum value %v in FfiConverterExternalSecretSource.Read()", id))
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterExternalFrostDerivation.Read()", id))
 	}
 }
 
-func (FfiConverterExternalSecretSource) Write(writer io.Writer, value ExternalSecretSource) {
+func (FfiConverterExternalFrostDerivation) Write(writer io.Writer, value ExternalFrostDerivation) {
 	switch variant_value := value.(type) {
-	case ExternalSecretSourceDerived:
+	case ExternalFrostDerivationSigningLeaf:
 		writeInt32(writer, 1)
-		FfiConverterExternalTreeNodeIdINSTANCE.Write(writer, variant_value.NodeId)
-	case ExternalSecretSourceEncrypted:
+		FfiConverterExternalTreeNodeIdINSTANCE.Write(writer, variant_value.LeafId)
+	case ExternalFrostDerivationStaticDeposit:
 		writeInt32(writer, 2)
-		FfiConverterExternalEncryptedSecretINSTANCE.Write(writer, variant_value.Key)
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.Index)
+	case ExternalFrostDerivationHtlcPreimage:
+		writeInt32(writer, 3)
+	case ExternalFrostDerivationIdentity:
+		writeInt32(writer, 4)
 	default:
 		_ = variant_value
-		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterExternalSecretSource.Write", value))
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterExternalFrostDerivation.Write", value))
 	}
 }
 
-type FfiDestroyerExternalSecretSource struct{}
+type FfiDestroyerExternalFrostDerivation struct{}
 
-func (_ FfiDestroyerExternalSecretSource) Destroy(value ExternalSecretSource) {
+func (_ FfiDestroyerExternalFrostDerivation) Destroy(value ExternalFrostDerivation) {
 	value.Destroy()
 }
 
-// FFI-safe representation of `spark_wallet::SecretToSplit`
-type ExternalSecretToSplit interface {
-	Destroy()
+// FFI-safe representation of `spark_wallet::SparkInvoiceKind`.
+type ExternalSparkInvoiceKind uint
+
+const (
+	ExternalSparkInvoiceKindSats   ExternalSparkInvoiceKind = 1
+	ExternalSparkInvoiceKindTokens ExternalSparkInvoiceKind = 2
+)
+
+type FfiConverterExternalSparkInvoiceKind struct{}
+
+var FfiConverterExternalSparkInvoiceKindINSTANCE = FfiConverterExternalSparkInvoiceKind{}
+
+func (c FfiConverterExternalSparkInvoiceKind) Lift(rb RustBufferI) ExternalSparkInvoiceKind {
+	return LiftFromRustBuffer[ExternalSparkInvoiceKind](c, rb)
 }
 
-// A secret source to split
-type ExternalSecretToSplitSecretSource struct {
-	Source ExternalSecretSource
+func (c FfiConverterExternalSparkInvoiceKind) Lower(value ExternalSparkInvoiceKind) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalSparkInvoiceKind](c, value)
 }
 
-func (e ExternalSecretToSplitSecretSource) Destroy() {
-	FfiDestroyerExternalSecretSource{}.Destroy(e.Source)
+func (c FfiConverterExternalSparkInvoiceKind) LowerExternal(value ExternalSparkInvoiceKind) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalSparkInvoiceKind](c, value))
 }
-
-// A preimage to split (32 bytes)
-type ExternalSecretToSplitPreimage struct {
-	Data []byte
-}
-
-func (e ExternalSecretToSplitPreimage) Destroy() {
-	FfiDestroyerBytes{}.Destroy(e.Data)
-}
-
-type FfiConverterExternalSecretToSplit struct{}
-
-var FfiConverterExternalSecretToSplitINSTANCE = FfiConverterExternalSecretToSplit{}
-
-func (c FfiConverterExternalSecretToSplit) Lift(rb RustBufferI) ExternalSecretToSplit {
-	return LiftFromRustBuffer[ExternalSecretToSplit](c, rb)
-}
-
-func (c FfiConverterExternalSecretToSplit) Lower(value ExternalSecretToSplit) C.RustBuffer {
-	return LowerIntoRustBuffer[ExternalSecretToSplit](c, value)
-}
-
-func (c FfiConverterExternalSecretToSplit) LowerExternal(value ExternalSecretToSplit) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[ExternalSecretToSplit](c, value))
-}
-func (FfiConverterExternalSecretToSplit) Read(reader io.Reader) ExternalSecretToSplit {
+func (FfiConverterExternalSparkInvoiceKind) Read(reader io.Reader) ExternalSparkInvoiceKind {
 	id := readInt32(reader)
-	switch id {
-	case 1:
-		return ExternalSecretToSplitSecretSource{
-			FfiConverterExternalSecretSourceINSTANCE.Read(reader),
-		}
-	case 2:
-		return ExternalSecretToSplitPreimage{
-			FfiConverterBytesINSTANCE.Read(reader),
-		}
-	default:
-		panic(fmt.Sprintf("invalid enum value %v in FfiConverterExternalSecretToSplit.Read()", id))
-	}
+	return ExternalSparkInvoiceKind(id)
 }
 
-func (FfiConverterExternalSecretToSplit) Write(writer io.Writer, value ExternalSecretToSplit) {
-	switch variant_value := value.(type) {
-	case ExternalSecretToSplitSecretSource:
-		writeInt32(writer, 1)
-		FfiConverterExternalSecretSourceINSTANCE.Write(writer, variant_value.Source)
-	case ExternalSecretToSplitPreimage:
-		writeInt32(writer, 2)
-		FfiConverterBytesINSTANCE.Write(writer, variant_value.Data)
-	default:
-		_ = variant_value
-		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterExternalSecretToSplit.Write", value))
-	}
+func (FfiConverterExternalSparkInvoiceKind) Write(writer io.Writer, value ExternalSparkInvoiceKind) {
+	writeInt32(writer, int32(value))
 }
 
-type FfiDestroyerExternalSecretToSplit struct{}
+type FfiDestroyerExternalSparkInvoiceKind struct{}
 
-func (_ FfiDestroyerExternalSecretToSplit) Destroy(value ExternalSecretToSplit) {
-	value.Destroy()
+func (_ FfiDestroyerExternalSparkInvoiceKind) Destroy(value ExternalSparkInvoiceKind) {
+}
+
+// FFI-safe representation of `spark_wallet::TokenTransactionKind`.
+type ExternalTokenTransactionKind uint
+
+const (
+	ExternalTokenTransactionKindFreeze  ExternalTokenTransactionKind = 1
+	ExternalTokenTransactionKindPartial ExternalTokenTransactionKind = 2
+	ExternalTokenTransactionKindFinal   ExternalTokenTransactionKind = 3
+)
+
+type FfiConverterExternalTokenTransactionKind struct{}
+
+var FfiConverterExternalTokenTransactionKindINSTANCE = FfiConverterExternalTokenTransactionKind{}
+
+func (c FfiConverterExternalTokenTransactionKind) Lift(rb RustBufferI) ExternalTokenTransactionKind {
+	return LiftFromRustBuffer[ExternalTokenTransactionKind](c, rb)
+}
+
+func (c FfiConverterExternalTokenTransactionKind) Lower(value ExternalTokenTransactionKind) C.RustBuffer {
+	return LowerIntoRustBuffer[ExternalTokenTransactionKind](c, value)
+}
+
+func (c FfiConverterExternalTokenTransactionKind) LowerExternal(value ExternalTokenTransactionKind) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ExternalTokenTransactionKind](c, value))
+}
+func (FfiConverterExternalTokenTransactionKind) Read(reader io.Reader) ExternalTokenTransactionKind {
+	id := readInt32(reader)
+	return ExternalTokenTransactionKind(id)
+}
+
+func (FfiConverterExternalTokenTransactionKind) Write(writer io.Writer, value ExternalTokenTransactionKind) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerExternalTokenTransactionKind struct{}
+
+func (_ FfiDestroyerExternalTokenTransactionKind) Destroy(value ExternalTokenTransactionKind) {
 }
 
 type Fee interface {
@@ -22918,45 +25923,6 @@ func (_ FfiDestroyerInputType) Destroy(value InputType) {
 	value.Destroy()
 }
 
-type KeySetType uint
-
-const (
-	KeySetTypeDefault       KeySetType = 1
-	KeySetTypeTaproot       KeySetType = 2
-	KeySetTypeNativeSegwit  KeySetType = 3
-	KeySetTypeWrappedSegwit KeySetType = 4
-	KeySetTypeLegacy        KeySetType = 5
-)
-
-type FfiConverterKeySetType struct{}
-
-var FfiConverterKeySetTypeINSTANCE = FfiConverterKeySetType{}
-
-func (c FfiConverterKeySetType) Lift(rb RustBufferI) KeySetType {
-	return LiftFromRustBuffer[KeySetType](c, rb)
-}
-
-func (c FfiConverterKeySetType) Lower(value KeySetType) C.RustBuffer {
-	return LowerIntoRustBuffer[KeySetType](c, value)
-}
-
-func (c FfiConverterKeySetType) LowerExternal(value KeySetType) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[KeySetType](c, value))
-}
-func (FfiConverterKeySetType) Read(reader io.Reader) KeySetType {
-	id := readInt32(reader)
-	return KeySetType(id)
-}
-
-func (FfiConverterKeySetType) Write(writer io.Writer, value KeySetType) {
-	writeInt32(writer, int32(value))
-}
-
-type FfiDestroyerKeySetType struct{}
-
-func (_ FfiDestroyerKeySetType) Destroy(value KeySetType) {
-}
-
 // The response from a LNURL-auth callback, indicating success or failure.
 type LnurlCallbackStatus interface {
 	Destroy()
@@ -23223,129 +26189,250 @@ type FfiDestroyerOnchainConfirmationSpeed struct{}
 func (_ FfiDestroyerOnchainConfirmationSpeed) Destroy(value OnchainConfirmationSpeed) {
 }
 
-type OptimizationEvent interface {
+// Mode of a manually-triggered optimization run.
+type OptimizationMode uint
+
+const (
+	// Run until no further optimization is productive.
+	OptimizationModeFull OptimizationMode = 1
+	// Execute a single round and return so the caller can drive progress.
+	OptimizationModeSingleRound OptimizationMode = 2
+)
+
+type FfiConverterOptimizationMode struct{}
+
+var FfiConverterOptimizationModeINSTANCE = FfiConverterOptimizationMode{}
+
+func (c FfiConverterOptimizationMode) Lift(rb RustBufferI) OptimizationMode {
+	return LiftFromRustBuffer[OptimizationMode](c, rb)
+}
+
+func (c FfiConverterOptimizationMode) Lower(value OptimizationMode) C.RustBuffer {
+	return LowerIntoRustBuffer[OptimizationMode](c, value)
+}
+
+func (c FfiConverterOptimizationMode) LowerExternal(value OptimizationMode) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OptimizationMode](c, value))
+}
+func (FfiConverterOptimizationMode) Read(reader io.Reader) OptimizationMode {
+	id := readInt32(reader)
+	return OptimizationMode(id)
+}
+
+func (FfiConverterOptimizationMode) Write(writer io.Writer, value OptimizationMode) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerOptimizationMode struct{}
+
+func (_ FfiDestroyerOptimizationMode) Destroy(value OptimizationMode) {
+}
+
+// Outcome of a [`BreezSdk::optimize_leaves`] call.
+//
+// `rounds_executed` on `Completed` refers to rounds run by *this call*.
+// The SDK holds no cross-call state — callers driving a `SingleRound`
+// loop maintain their own cumulative counter if they need one.
+//
+// A `Completed { rounds_executed: 0 }` outcome means the wallet was
+// already optimal at call time (no swap was needed).
+//
+// **`SingleRound` loop pattern**: terminate on anything that isn't
+// `InProgress`. `Completed` covers both the final swap of a productive
+// run and the "already optimal" no-op case (the latter as
+// `rounds_executed: 0`).
+//
+// ```ignore
+// loop {
+// let request = OptimizeLeavesRequest { mode: OptimizationMode::SingleRound };
+// match sdk.optimize_leaves(request).await?.outcome {
+// OptimizationOutcome::InProgress => continue,
+// OptimizationOutcome::Completed { .. } => break,
+// }
+// }
+// ```
+type OptimizationOutcome interface {
 	Destroy()
 }
 
-// Optimization has started with the given number of rounds.
-type OptimizationEventStarted struct {
-	TotalRounds uint32
+// All planned optimization work was executed in this call.
+// Returned by `Full` runs on success, and by `SingleRound` runs
+// whose swap was the final one needed (the planner produced a
+// single-swap plan with a convergence guarantee).
+// `rounds_executed == 0` means the wallet was already optimal —
+// no work was performed.
+type OptimizationOutcomeCompleted struct {
+	RoundsExecuted uint32
 }
 
-func (e OptimizationEventStarted) Destroy() {
-	FfiDestroyerUint32{}.Destroy(e.TotalRounds)
+func (e OptimizationOutcomeCompleted) Destroy() {
+	FfiDestroyerUint32{}.Destroy(e.RoundsExecuted)
 }
 
-// A round has completed.
-type OptimizationEventRoundCompleted struct {
-	CurrentRound uint32
-	TotalRounds  uint32
+// `SingleRound` only: a round ran but the planner could not
+// guarantee it was the last. The caller should invoke
+// `optimize_leaves` again.
+type OptimizationOutcomeInProgress struct {
 }
 
-func (e OptimizationEventRoundCompleted) Destroy() {
-	FfiDestroyerUint32{}.Destroy(e.CurrentRound)
-	FfiDestroyerUint32{}.Destroy(e.TotalRounds)
+func (e OptimizationOutcomeInProgress) Destroy() {
 }
 
-// Optimization completed successfully.
-type OptimizationEventCompleted struct {
+type FfiConverterOptimizationOutcome struct{}
+
+var FfiConverterOptimizationOutcomeINSTANCE = FfiConverterOptimizationOutcome{}
+
+func (c FfiConverterOptimizationOutcome) Lift(rb RustBufferI) OptimizationOutcome {
+	return LiftFromRustBuffer[OptimizationOutcome](c, rb)
 }
 
-func (e OptimizationEventCompleted) Destroy() {
+func (c FfiConverterOptimizationOutcome) Lower(value OptimizationOutcome) C.RustBuffer {
+	return LowerIntoRustBuffer[OptimizationOutcome](c, value)
 }
 
-// Optimization was cancelled.
-type OptimizationEventCancelled struct {
+func (c FfiConverterOptimizationOutcome) LowerExternal(value OptimizationOutcome) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[OptimizationOutcome](c, value))
 }
-
-func (e OptimizationEventCancelled) Destroy() {
-}
-
-// Optimization failed with an error.
-type OptimizationEventFailed struct {
-	Error string
-}
-
-func (e OptimizationEventFailed) Destroy() {
-	FfiDestroyerString{}.Destroy(e.Error)
-}
-
-// Optimization was skipped because leaves are already optimal.
-type OptimizationEventSkipped struct {
-}
-
-func (e OptimizationEventSkipped) Destroy() {
-}
-
-type FfiConverterOptimizationEvent struct{}
-
-var FfiConverterOptimizationEventINSTANCE = FfiConverterOptimizationEvent{}
-
-func (c FfiConverterOptimizationEvent) Lift(rb RustBufferI) OptimizationEvent {
-	return LiftFromRustBuffer[OptimizationEvent](c, rb)
-}
-
-func (c FfiConverterOptimizationEvent) Lower(value OptimizationEvent) C.RustBuffer {
-	return LowerIntoRustBuffer[OptimizationEvent](c, value)
-}
-
-func (c FfiConverterOptimizationEvent) LowerExternal(value OptimizationEvent) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[OptimizationEvent](c, value))
-}
-func (FfiConverterOptimizationEvent) Read(reader io.Reader) OptimizationEvent {
+func (FfiConverterOptimizationOutcome) Read(reader io.Reader) OptimizationOutcome {
 	id := readInt32(reader)
 	switch id {
 	case 1:
-		return OptimizationEventStarted{
+		return OptimizationOutcomeCompleted{
 			FfiConverterUint32INSTANCE.Read(reader),
 		}
 	case 2:
-		return OptimizationEventRoundCompleted{
-			FfiConverterUint32INSTANCE.Read(reader),
-			FfiConverterUint32INSTANCE.Read(reader),
-		}
-	case 3:
-		return OptimizationEventCompleted{}
-	case 4:
-		return OptimizationEventCancelled{}
-	case 5:
-		return OptimizationEventFailed{
-			FfiConverterStringINSTANCE.Read(reader),
-		}
-	case 6:
-		return OptimizationEventSkipped{}
+		return OptimizationOutcomeInProgress{}
 	default:
-		panic(fmt.Sprintf("invalid enum value %v in FfiConverterOptimizationEvent.Read()", id))
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterOptimizationOutcome.Read()", id))
 	}
 }
 
-func (FfiConverterOptimizationEvent) Write(writer io.Writer, value OptimizationEvent) {
+func (FfiConverterOptimizationOutcome) Write(writer io.Writer, value OptimizationOutcome) {
 	switch variant_value := value.(type) {
-	case OptimizationEventStarted:
+	case OptimizationOutcomeCompleted:
 		writeInt32(writer, 1)
-		FfiConverterUint32INSTANCE.Write(writer, variant_value.TotalRounds)
-	case OptimizationEventRoundCompleted:
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.RoundsExecuted)
+	case OptimizationOutcomeInProgress:
 		writeInt32(writer, 2)
-		FfiConverterUint32INSTANCE.Write(writer, variant_value.CurrentRound)
-		FfiConverterUint32INSTANCE.Write(writer, variant_value.TotalRounds)
-	case OptimizationEventCompleted:
-		writeInt32(writer, 3)
-	case OptimizationEventCancelled:
-		writeInt32(writer, 4)
-	case OptimizationEventFailed:
-		writeInt32(writer, 5)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.Error)
-	case OptimizationEventSkipped:
-		writeInt32(writer, 6)
 	default:
 		_ = variant_value
-		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterOptimizationEvent.Write", value))
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterOptimizationOutcome.Write", value))
 	}
 }
 
-type FfiDestroyerOptimizationEvent struct{}
+type FfiDestroyerOptimizationOutcome struct{}
 
-func (_ FfiDestroyerOptimizationEvent) Destroy(value OptimizationEvent) {
+func (_ FfiDestroyerOptimizationOutcome) Destroy(value OptimizationOutcome) {
+	value.Destroy()
+}
+
+// Single-value result of [`PasskeyClient::check_availability`].
+// Collapses [`PrfProvider::is_supported`] +
+// [`PrfProvider::check_domain_association`] into one variant per
+// distinct host UX reaction.
+type PasskeyAvailability interface {
+	Destroy()
+}
+
+// PRF is supported and the platform's domain-association check
+// (when present) passed. Safe to proceed with register / sign-in.
+type PasskeyAvailabilityAvailable struct {
+}
+
+func (e PasskeyAvailabilityAvailable) Destroy() {
+}
+
+// The authenticator does not implement the `WebAuthn` PRF
+// extension. Hosts gate the passkey UX path off this value.
+type PasskeyAvailabilityPrfUnsupported struct {
+}
+
+func (e PasskeyAvailabilityPrfUnsupported) Destroy() {
+}
+
+// PRF is supported but the platform's out-of-band verification
+// (iOS AASA / Android assetlinks / browser `rpId` scope) reports a
+// configuration mismatch. The strings carry the verification
+// origin and the concrete reason for diagnostic UI.
+type PasskeyAvailabilityNotAssociated struct {
+	Source string
+	Reason string
+}
+
+func (e PasskeyAvailabilityNotAssociated) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Source)
+	FfiDestroyerString{}.Destroy(e.Reason)
+}
+
+// Domain-association verification was not performed (no source,
+// SSR context, etc.). Not a negative signal; passkey flows are
+// still safe to attempt.
+type PasskeyAvailabilitySkipped struct {
+	Reason string
+}
+
+func (e PasskeyAvailabilitySkipped) Destroy() {
+	FfiDestroyerString{}.Destroy(e.Reason)
+}
+
+type FfiConverterPasskeyAvailability struct{}
+
+var FfiConverterPasskeyAvailabilityINSTANCE = FfiConverterPasskeyAvailability{}
+
+func (c FfiConverterPasskeyAvailability) Lift(rb RustBufferI) PasskeyAvailability {
+	return LiftFromRustBuffer[PasskeyAvailability](c, rb)
+}
+
+func (c FfiConverterPasskeyAvailability) Lower(value PasskeyAvailability) C.RustBuffer {
+	return LowerIntoRustBuffer[PasskeyAvailability](c, value)
+}
+
+func (c FfiConverterPasskeyAvailability) LowerExternal(value PasskeyAvailability) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PasskeyAvailability](c, value))
+}
+func (FfiConverterPasskeyAvailability) Read(reader io.Reader) PasskeyAvailability {
+	id := readInt32(reader)
+	switch id {
+	case 1:
+		return PasskeyAvailabilityAvailable{}
+	case 2:
+		return PasskeyAvailabilityPrfUnsupported{}
+	case 3:
+		return PasskeyAvailabilityNotAssociated{
+			FfiConverterStringINSTANCE.Read(reader),
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	case 4:
+		return PasskeyAvailabilitySkipped{
+			FfiConverterStringINSTANCE.Read(reader),
+		}
+	default:
+		panic(fmt.Sprintf("invalid enum value %v in FfiConverterPasskeyAvailability.Read()", id))
+	}
+}
+
+func (FfiConverterPasskeyAvailability) Write(writer io.Writer, value PasskeyAvailability) {
+	switch variant_value := value.(type) {
+	case PasskeyAvailabilityAvailable:
+		writeInt32(writer, 1)
+	case PasskeyAvailabilityPrfUnsupported:
+		writeInt32(writer, 2)
+	case PasskeyAvailabilityNotAssociated:
+		writeInt32(writer, 3)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Source)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Reason)
+	case PasskeyAvailabilitySkipped:
+		writeInt32(writer, 4)
+		FfiConverterStringINSTANCE.Write(writer, variant_value.Reason)
+	default:
+		_ = variant_value
+		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterPasskeyAvailability.Write", value))
+	}
+}
+
+type FfiDestroyerPasskeyAvailability struct{}
+
+func (_ FfiDestroyerPasskeyAvailability) Destroy(value PasskeyAvailability) {
 	value.Destroy()
 }
 
@@ -23373,7 +26460,7 @@ func (err PasskeyError) Unwrap() error {
 }
 
 // Err* are used for checking error type with `errors.Is`
-var ErrPasskeyErrorPrfError = fmt.Errorf("PasskeyErrorPrfError")
+var ErrPasskeyErrorPrf = fmt.Errorf("PasskeyErrorPrf")
 var ErrPasskeyErrorRelayConnectionFailed = fmt.Errorf("PasskeyErrorRelayConnectionFailed")
 var ErrPasskeyErrorNostrWriteFailed = fmt.Errorf("PasskeyErrorNostrWriteFailed")
 var ErrPasskeyErrorNostrReadFailed = fmt.Errorf("PasskeyErrorNostrReadFailed")
@@ -23384,25 +26471,25 @@ var ErrPasskeyErrorInvalidSalt = fmt.Errorf("PasskeyErrorInvalidSalt")
 var ErrPasskeyErrorGeneric = fmt.Errorf("PasskeyErrorGeneric")
 
 // Variant structs
-// Passkey PRF provider error
-type PasskeyErrorPrfError struct {
-	Field0 *PasskeyPrfError
+// Raised by the underlying [`crate::passkey::PrfProvider`].
+type PasskeyErrorPrf struct {
+	Field0 *PrfProviderError
 }
 
-// Passkey PRF provider error
-func NewPasskeyErrorPrfError(
-	var0 *PasskeyPrfError,
+// Raised by the underlying [`crate::passkey::PrfProvider`].
+func NewPasskeyErrorPrf(
+	var0 *PrfProviderError,
 ) *PasskeyError {
-	return &PasskeyError{err: &PasskeyErrorPrfError{
+	return &PasskeyError{err: &PasskeyErrorPrf{
 		Field0: var0}}
 }
 
-func (e PasskeyErrorPrfError) destroy() {
-	FfiDestroyerPasskeyPrfError{}.Destroy(e.Field0)
+func (e PasskeyErrorPrf) destroy() {
+	FfiDestroyerPrfProviderError{}.Destroy(e.Field0)
 }
 
-func (err PasskeyErrorPrfError) Error() string {
-	return fmt.Sprint("PrfError",
+func (err PasskeyErrorPrf) Error() string {
+	return fmt.Sprint("Prf",
 		": ",
 
 		"Field0=",
@@ -23410,16 +26497,14 @@ func (err PasskeyErrorPrfError) Error() string {
 	)
 }
 
-func (self PasskeyErrorPrfError) Is(target error) bool {
-	return target == ErrPasskeyErrorPrfError
+func (self PasskeyErrorPrf) Is(target error) bool {
+	return target == ErrPasskeyErrorPrf
 }
 
-// Nostr relay connection failed
 type PasskeyErrorRelayConnectionFailed struct {
 	Field0 string
 }
 
-// Nostr relay connection failed
 func NewPasskeyErrorRelayConnectionFailed(
 	var0 string,
 ) *PasskeyError {
@@ -23444,12 +26529,10 @@ func (self PasskeyErrorRelayConnectionFailed) Is(target error) bool {
 	return target == ErrPasskeyErrorRelayConnectionFailed
 }
 
-// Failed to publish to Nostr
 type PasskeyErrorNostrWriteFailed struct {
 	Field0 string
 }
 
-// Failed to publish to Nostr
 func NewPasskeyErrorNostrWriteFailed(
 	var0 string,
 ) *PasskeyError {
@@ -23474,12 +26557,10 @@ func (self PasskeyErrorNostrWriteFailed) Is(target error) bool {
 	return target == ErrPasskeyErrorNostrWriteFailed
 }
 
-// Failed to query from Nostr
 type PasskeyErrorNostrReadFailed struct {
 	Field0 string
 }
 
-// Failed to query from Nostr
 func NewPasskeyErrorNostrReadFailed(
 	var0 string,
 ) *PasskeyError {
@@ -23504,12 +26585,10 @@ func (self PasskeyErrorNostrReadFailed) Is(target error) bool {
 	return target == ErrPasskeyErrorNostrReadFailed
 }
 
-// Key derivation error
 type PasskeyErrorKeyDerivationError struct {
 	Field0 string
 }
 
-// Key derivation error
 func NewPasskeyErrorKeyDerivationError(
 	var0 string,
 ) *PasskeyError {
@@ -23534,12 +26613,12 @@ func (self PasskeyErrorKeyDerivationError) Is(target error) bool {
 	return target == ErrPasskeyErrorKeyDerivationError
 }
 
-// Invalid PRF output (wrong size, etc.)
+// PRF output was unusable (e.g. wrong size).
 type PasskeyErrorInvalidPrfOutput struct {
 	Field0 string
 }
 
-// Invalid PRF output (wrong size, etc.)
+// PRF output was unusable (e.g. wrong size).
 func NewPasskeyErrorInvalidPrfOutput(
 	var0 string,
 ) *PasskeyError {
@@ -23564,12 +26643,10 @@ func (self PasskeyErrorInvalidPrfOutput) Is(target error) bool {
 	return target == ErrPasskeyErrorInvalidPrfOutput
 }
 
-// BIP39 mnemonic generation error
 type PasskeyErrorMnemonicError struct {
 	Field0 string
 }
 
-// BIP39 mnemonic generation error
 func NewPasskeyErrorMnemonicError(
 	var0 string,
 ) *PasskeyError {
@@ -23594,12 +26671,10 @@ func (self PasskeyErrorMnemonicError) Is(target error) bool {
 	return target == ErrPasskeyErrorMnemonicError
 }
 
-// Invalid salt input
 type PasskeyErrorInvalidSalt struct {
 	Field0 string
 }
 
-// Invalid salt input
 func NewPasskeyErrorInvalidSalt(
 	var0 string,
 ) *PasskeyError {
@@ -23624,12 +26699,10 @@ func (self PasskeyErrorInvalidSalt) Is(target error) bool {
 	return target == ErrPasskeyErrorInvalidSalt
 }
 
-// Generic error
 type PasskeyErrorGeneric struct {
 	Field0 string
 }
 
-// Generic error
 func NewPasskeyErrorGeneric(
 	var0 string,
 ) *PasskeyError {
@@ -23675,8 +26748,8 @@ func (c FfiConverterPasskeyError) Read(reader io.Reader) *PasskeyError {
 
 	switch errorID {
 	case 1:
-		return &PasskeyError{&PasskeyErrorPrfError{
-			Field0: FfiConverterPasskeyPrfErrorINSTANCE.Read(reader),
+		return &PasskeyError{&PasskeyErrorPrf{
+			Field0: FfiConverterPrfProviderErrorINSTANCE.Read(reader),
 		}}
 	case 2:
 		return &PasskeyError{&PasskeyErrorRelayConnectionFailed{
@@ -23717,9 +26790,9 @@ func (c FfiConverterPasskeyError) Read(reader io.Reader) *PasskeyError {
 
 func (c FfiConverterPasskeyError) Write(writer io.Writer, value *PasskeyError) {
 	switch variantValue := value.err.(type) {
-	case *PasskeyErrorPrfError:
+	case *PasskeyErrorPrf:
 		writeInt32(writer, 1)
-		FfiConverterPasskeyPrfErrorINSTANCE.Write(writer, variantValue.Field0)
+		FfiConverterPrfProviderErrorINSTANCE.Write(writer, variantValue.Field0)
 	case *PasskeyErrorRelayConnectionFailed:
 		writeInt32(writer, 2)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
@@ -23754,7 +26827,7 @@ type FfiDestroyerPasskeyError struct{}
 
 func (_ FfiDestroyerPasskeyError) Destroy(value *PasskeyError) {
 	switch variantValue := value.err.(type) {
-	case PasskeyErrorPrfError:
+	case PasskeyErrorPrf:
 		variantValue.destroy()
 	case PasskeyErrorRelayConnectionFailed:
 		variantValue.destroy()
@@ -23775,277 +26848,6 @@ func (_ FfiDestroyerPasskeyError) Destroy(value *PasskeyError) {
 	default:
 		_ = variantValue
 		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerPasskeyError.Destroy", value))
-	}
-}
-
-// Error type for passkey PRF operations.
-// Platforms implement `PasskeyPrfProvider` and return this error type.
-type PasskeyPrfError struct {
-	err error
-}
-
-// Convience method to turn *PasskeyPrfError into error
-// Avoiding treating nil pointer as non nil error interface
-func (err *PasskeyPrfError) AsError() error {
-	if err == nil {
-		return nil
-	} else {
-		return err
-	}
-}
-
-func (err PasskeyPrfError) Error() string {
-	return fmt.Sprintf("PasskeyPrfError: %s", err.err.Error())
-}
-
-func (err PasskeyPrfError) Unwrap() error {
-	return err.err
-}
-
-// Err* are used for checking error type with `errors.Is`
-var ErrPasskeyPrfErrorPrfNotSupported = fmt.Errorf("PasskeyPrfErrorPrfNotSupported")
-var ErrPasskeyPrfErrorUserCancelled = fmt.Errorf("PasskeyPrfErrorUserCancelled")
-var ErrPasskeyPrfErrorCredentialNotFound = fmt.Errorf("PasskeyPrfErrorCredentialNotFound")
-var ErrPasskeyPrfErrorAuthenticationFailed = fmt.Errorf("PasskeyPrfErrorAuthenticationFailed")
-var ErrPasskeyPrfErrorPrfEvaluationFailed = fmt.Errorf("PasskeyPrfErrorPrfEvaluationFailed")
-var ErrPasskeyPrfErrorGeneric = fmt.Errorf("PasskeyPrfErrorGeneric")
-
-// Variant structs
-// PRF extension is not supported by the authenticator
-type PasskeyPrfErrorPrfNotSupported struct {
-}
-
-// PRF extension is not supported by the authenticator
-func NewPasskeyPrfErrorPrfNotSupported() *PasskeyPrfError {
-	return &PasskeyPrfError{err: &PasskeyPrfErrorPrfNotSupported{}}
-}
-
-func (e PasskeyPrfErrorPrfNotSupported) destroy() {
-}
-
-func (err PasskeyPrfErrorPrfNotSupported) Error() string {
-	return fmt.Sprint("PrfNotSupported")
-}
-
-func (self PasskeyPrfErrorPrfNotSupported) Is(target error) bool {
-	return target == ErrPasskeyPrfErrorPrfNotSupported
-}
-
-// User cancelled the authentication
-type PasskeyPrfErrorUserCancelled struct {
-}
-
-// User cancelled the authentication
-func NewPasskeyPrfErrorUserCancelled() *PasskeyPrfError {
-	return &PasskeyPrfError{err: &PasskeyPrfErrorUserCancelled{}}
-}
-
-func (e PasskeyPrfErrorUserCancelled) destroy() {
-}
-
-func (err PasskeyPrfErrorUserCancelled) Error() string {
-	return fmt.Sprint("UserCancelled")
-}
-
-func (self PasskeyPrfErrorUserCancelled) Is(target error) bool {
-	return target == ErrPasskeyPrfErrorUserCancelled
-}
-
-// No credential found
-type PasskeyPrfErrorCredentialNotFound struct {
-}
-
-// No credential found
-func NewPasskeyPrfErrorCredentialNotFound() *PasskeyPrfError {
-	return &PasskeyPrfError{err: &PasskeyPrfErrorCredentialNotFound{}}
-}
-
-func (e PasskeyPrfErrorCredentialNotFound) destroy() {
-}
-
-func (err PasskeyPrfErrorCredentialNotFound) Error() string {
-	return fmt.Sprint("CredentialNotFound")
-}
-
-func (self PasskeyPrfErrorCredentialNotFound) Is(target error) bool {
-	return target == ErrPasskeyPrfErrorCredentialNotFound
-}
-
-// Authentication failed
-type PasskeyPrfErrorAuthenticationFailed struct {
-	Field0 string
-}
-
-// Authentication failed
-func NewPasskeyPrfErrorAuthenticationFailed(
-	var0 string,
-) *PasskeyPrfError {
-	return &PasskeyPrfError{err: &PasskeyPrfErrorAuthenticationFailed{
-		Field0: var0}}
-}
-
-func (e PasskeyPrfErrorAuthenticationFailed) destroy() {
-	FfiDestroyerString{}.Destroy(e.Field0)
-}
-
-func (err PasskeyPrfErrorAuthenticationFailed) Error() string {
-	return fmt.Sprint("AuthenticationFailed",
-		": ",
-
-		"Field0=",
-		err.Field0,
-	)
-}
-
-func (self PasskeyPrfErrorAuthenticationFailed) Is(target error) bool {
-	return target == ErrPasskeyPrfErrorAuthenticationFailed
-}
-
-// PRF evaluation failed
-type PasskeyPrfErrorPrfEvaluationFailed struct {
-	Field0 string
-}
-
-// PRF evaluation failed
-func NewPasskeyPrfErrorPrfEvaluationFailed(
-	var0 string,
-) *PasskeyPrfError {
-	return &PasskeyPrfError{err: &PasskeyPrfErrorPrfEvaluationFailed{
-		Field0: var0}}
-}
-
-func (e PasskeyPrfErrorPrfEvaluationFailed) destroy() {
-	FfiDestroyerString{}.Destroy(e.Field0)
-}
-
-func (err PasskeyPrfErrorPrfEvaluationFailed) Error() string {
-	return fmt.Sprint("PrfEvaluationFailed",
-		": ",
-
-		"Field0=",
-		err.Field0,
-	)
-}
-
-func (self PasskeyPrfErrorPrfEvaluationFailed) Is(target error) bool {
-	return target == ErrPasskeyPrfErrorPrfEvaluationFailed
-}
-
-// Generic error
-type PasskeyPrfErrorGeneric struct {
-	Field0 string
-}
-
-// Generic error
-func NewPasskeyPrfErrorGeneric(
-	var0 string,
-) *PasskeyPrfError {
-	return &PasskeyPrfError{err: &PasskeyPrfErrorGeneric{
-		Field0: var0}}
-}
-
-func (e PasskeyPrfErrorGeneric) destroy() {
-	FfiDestroyerString{}.Destroy(e.Field0)
-}
-
-func (err PasskeyPrfErrorGeneric) Error() string {
-	return fmt.Sprint("Generic",
-		": ",
-
-		"Field0=",
-		err.Field0,
-	)
-}
-
-func (self PasskeyPrfErrorGeneric) Is(target error) bool {
-	return target == ErrPasskeyPrfErrorGeneric
-}
-
-type FfiConverterPasskeyPrfError struct{}
-
-var FfiConverterPasskeyPrfErrorINSTANCE = FfiConverterPasskeyPrfError{}
-
-func (c FfiConverterPasskeyPrfError) Lift(eb RustBufferI) *PasskeyPrfError {
-	return LiftFromRustBuffer[*PasskeyPrfError](c, eb)
-}
-
-func (c FfiConverterPasskeyPrfError) Lower(value *PasskeyPrfError) C.RustBuffer {
-	return LowerIntoRustBuffer[*PasskeyPrfError](c, value)
-}
-
-func (c FfiConverterPasskeyPrfError) LowerExternal(value *PasskeyPrfError) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[*PasskeyPrfError](c, value))
-}
-
-func (c FfiConverterPasskeyPrfError) Read(reader io.Reader) *PasskeyPrfError {
-	errorID := readUint32(reader)
-
-	switch errorID {
-	case 1:
-		return &PasskeyPrfError{&PasskeyPrfErrorPrfNotSupported{}}
-	case 2:
-		return &PasskeyPrfError{&PasskeyPrfErrorUserCancelled{}}
-	case 3:
-		return &PasskeyPrfError{&PasskeyPrfErrorCredentialNotFound{}}
-	case 4:
-		return &PasskeyPrfError{&PasskeyPrfErrorAuthenticationFailed{
-			Field0: FfiConverterStringINSTANCE.Read(reader),
-		}}
-	case 5:
-		return &PasskeyPrfError{&PasskeyPrfErrorPrfEvaluationFailed{
-			Field0: FfiConverterStringINSTANCE.Read(reader),
-		}}
-	case 6:
-		return &PasskeyPrfError{&PasskeyPrfErrorGeneric{
-			Field0: FfiConverterStringINSTANCE.Read(reader),
-		}}
-	default:
-		panic(fmt.Sprintf("Unknown error code %d in FfiConverterPasskeyPrfError.Read()", errorID))
-	}
-}
-
-func (c FfiConverterPasskeyPrfError) Write(writer io.Writer, value *PasskeyPrfError) {
-	switch variantValue := value.err.(type) {
-	case *PasskeyPrfErrorPrfNotSupported:
-		writeInt32(writer, 1)
-	case *PasskeyPrfErrorUserCancelled:
-		writeInt32(writer, 2)
-	case *PasskeyPrfErrorCredentialNotFound:
-		writeInt32(writer, 3)
-	case *PasskeyPrfErrorAuthenticationFailed:
-		writeInt32(writer, 4)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
-	case *PasskeyPrfErrorPrfEvaluationFailed:
-		writeInt32(writer, 5)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
-	case *PasskeyPrfErrorGeneric:
-		writeInt32(writer, 6)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
-	default:
-		_ = variantValue
-		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterPasskeyPrfError.Write", value))
-	}
-}
-
-type FfiDestroyerPasskeyPrfError struct{}
-
-func (_ FfiDestroyerPasskeyPrfError) Destroy(value *PasskeyPrfError) {
-	switch variantValue := value.err.(type) {
-	case PasskeyPrfErrorPrfNotSupported:
-		variantValue.destroy()
-	case PasskeyPrfErrorUserCancelled:
-		variantValue.destroy()
-	case PasskeyPrfErrorCredentialNotFound:
-		variantValue.destroy()
-	case PasskeyPrfErrorAuthenticationFailed:
-		variantValue.destroy()
-	case PasskeyPrfErrorPrfEvaluationFailed:
-		variantValue.destroy()
-	case PasskeyPrfErrorGeneric:
-		variantValue.destroy()
-	default:
-		_ = variantValue
-		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerPasskeyPrfError.Destroy", value))
 	}
 }
 
@@ -24110,10 +26912,12 @@ func (e PaymentDetailsWithdraw) Destroy() {
 
 type PaymentDetailsDeposit struct {
 	TxId string
+	Vout uint32
 }
 
 func (e PaymentDetailsDeposit) Destroy() {
 	FfiDestroyerString{}.Destroy(e.TxId)
+	FfiDestroyerUint32{}.Destroy(e.Vout)
 }
 
 type FfiConverterPaymentDetails struct{}
@@ -24165,6 +26969,7 @@ func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 	case 5:
 		return PaymentDetailsDeposit{
 			FfiConverterStringINSTANCE.Read(reader),
+			FfiConverterUint32INSTANCE.Read(reader),
 		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterPaymentDetails.Read()", id))
@@ -24200,6 +27005,7 @@ func (FfiConverterPaymentDetails) Write(writer io.Writer, value PaymentDetails) 
 	case PaymentDetailsDeposit:
 		writeInt32(writer, 5)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.TxId)
+		FfiConverterUint32INSTANCE.Write(writer, variant_value.Vout)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterPaymentDetails.Write", value))
@@ -24618,6 +27424,390 @@ type FfiDestroyerPoolQueueMode struct{}
 func (_ FfiDestroyerPoolQueueMode) Destroy(value PoolQueueMode) {
 }
 
+// Failures from a passkey PRF operation. Each platform normalizes its
+// native errors into these variants so callers match one taxonomy
+// everywhere; anything unclassifiable becomes [`Generic`](Self::Generic).
+type PrfProviderError struct {
+	err error
+}
+
+// Convience method to turn *PrfProviderError into error
+// Avoiding treating nil pointer as non nil error interface
+func (err *PrfProviderError) AsError() error {
+	if err == nil {
+		return nil
+	} else {
+		return err
+	}
+}
+
+func (err PrfProviderError) Error() string {
+	return fmt.Sprintf("PrfProviderError: %s", err.err.Error())
+}
+
+func (err PrfProviderError) Unwrap() error {
+	return err.err
+}
+
+// Err* are used for checking error type with `errors.Is`
+var ErrPrfProviderErrorPrfNotSupported = fmt.Errorf("PrfProviderErrorPrfNotSupported")
+var ErrPrfProviderErrorUserCancelled = fmt.Errorf("PrfProviderErrorUserCancelled")
+var ErrPrfProviderErrorUserTimedOut = fmt.Errorf("PrfProviderErrorUserTimedOut")
+var ErrPrfProviderErrorCredentialNotFound = fmt.Errorf("PrfProviderErrorCredentialNotFound")
+var ErrPrfProviderErrorAuthenticationFailed = fmt.Errorf("PrfProviderErrorAuthenticationFailed")
+var ErrPrfProviderErrorPrfEvaluationFailed = fmt.Errorf("PrfProviderErrorPrfEvaluationFailed")
+var ErrPrfProviderErrorConfiguration = fmt.Errorf("PrfProviderErrorConfiguration")
+var ErrPrfProviderErrorCredentialAlreadyExists = fmt.Errorf("PrfProviderErrorCredentialAlreadyExists")
+var ErrPrfProviderErrorGeneric = fmt.Errorf("PrfProviderErrorGeneric")
+
+// Variant structs
+type PrfProviderErrorPrfNotSupported struct {
+}
+
+func NewPrfProviderErrorPrfNotSupported() *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorPrfNotSupported{}}
+}
+
+func (e PrfProviderErrorPrfNotSupported) destroy() {
+}
+
+func (err PrfProviderErrorPrfNotSupported) Error() string {
+	return fmt.Sprint("PrfNotSupported")
+}
+
+func (self PrfProviderErrorPrfNotSupported) Is(target error) bool {
+	return target == ErrPrfProviderErrorPrfNotSupported
+}
+
+type PrfProviderErrorUserCancelled struct {
+}
+
+func NewPrfProviderErrorUserCancelled() *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorUserCancelled{}}
+}
+
+func (e PrfProviderErrorUserCancelled) destroy() {
+}
+
+func (err PrfProviderErrorUserCancelled) Error() string {
+	return fmt.Sprint("UserCancelled")
+}
+
+func (self PrfProviderErrorUserCancelled) Is(target error) bool {
+	return target == ErrPrfProviderErrorUserCancelled
+}
+
+// The prompt closed on the platform inactivity timeout, with no
+// user action. Unlike `UserCancelled`, safe to auto-retry.
+type PrfProviderErrorUserTimedOut struct {
+}
+
+// The prompt closed on the platform inactivity timeout, with no
+// user action. Unlike `UserCancelled`, safe to auto-retry.
+func NewPrfProviderErrorUserTimedOut() *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorUserTimedOut{}}
+}
+
+func (e PrfProviderErrorUserTimedOut) destroy() {
+}
+
+func (err PrfProviderErrorUserTimedOut) Error() string {
+	return fmt.Sprint("UserTimedOut")
+}
+
+func (self PrfProviderErrorUserTimedOut) Is(target error) bool {
+	return target == ErrPrfProviderErrorUserTimedOut
+}
+
+type PrfProviderErrorCredentialNotFound struct {
+	Field0 string
+}
+
+func NewPrfProviderErrorCredentialNotFound(
+	var0 string,
+) *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorCredentialNotFound{
+		Field0: var0}}
+}
+
+func (e PrfProviderErrorCredentialNotFound) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err PrfProviderErrorCredentialNotFound) Error() string {
+	return fmt.Sprint("CredentialNotFound",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self PrfProviderErrorCredentialNotFound) Is(target error) bool {
+	return target == ErrPrfProviderErrorCredentialNotFound
+}
+
+type PrfProviderErrorAuthenticationFailed struct {
+	Field0 string
+}
+
+func NewPrfProviderErrorAuthenticationFailed(
+	var0 string,
+) *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorAuthenticationFailed{
+		Field0: var0}}
+}
+
+func (e PrfProviderErrorAuthenticationFailed) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err PrfProviderErrorAuthenticationFailed) Error() string {
+	return fmt.Sprint("AuthenticationFailed",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self PrfProviderErrorAuthenticationFailed) Is(target error) bool {
+	return target == ErrPrfProviderErrorAuthenticationFailed
+}
+
+type PrfProviderErrorPrfEvaluationFailed struct {
+	Field0 string
+}
+
+func NewPrfProviderErrorPrfEvaluationFailed(
+	var0 string,
+) *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorPrfEvaluationFailed{
+		Field0: var0}}
+}
+
+func (e PrfProviderErrorPrfEvaluationFailed) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err PrfProviderErrorPrfEvaluationFailed) Error() string {
+	return fmt.Sprint("PrfEvaluationFailed",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self PrfProviderErrorPrfEvaluationFailed) Is(target error) bool {
+	return target == ErrPrfProviderErrorPrfEvaluationFailed
+}
+
+// Platform / app setup is wrong: missing AASA entitlement, invalid
+// assetlinks.json, or misconfigured RP ID.
+type PrfProviderErrorConfiguration struct {
+	Field0 string
+}
+
+// Platform / app setup is wrong: missing AASA entitlement, invalid
+// assetlinks.json, or misconfigured RP ID.
+func NewPrfProviderErrorConfiguration(
+	var0 string,
+) *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorConfiguration{
+		Field0: var0}}
+}
+
+func (e PrfProviderErrorConfiguration) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err PrfProviderErrorConfiguration) Error() string {
+	return fmt.Sprint("Configuration",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self PrfProviderErrorConfiguration) Is(target error) bool {
+	return target == ErrPrfProviderErrorConfiguration
+}
+
+// An existing credential matched. Route the user to sign-in.
+type PrfProviderErrorCredentialAlreadyExists struct {
+	Field0 string
+}
+
+// An existing credential matched. Route the user to sign-in.
+func NewPrfProviderErrorCredentialAlreadyExists(
+	var0 string,
+) *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorCredentialAlreadyExists{
+		Field0: var0}}
+}
+
+func (e PrfProviderErrorCredentialAlreadyExists) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err PrfProviderErrorCredentialAlreadyExists) Error() string {
+	return fmt.Sprint("CredentialAlreadyExists",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self PrfProviderErrorCredentialAlreadyExists) Is(target error) bool {
+	return target == ErrPrfProviderErrorCredentialAlreadyExists
+}
+
+type PrfProviderErrorGeneric struct {
+	Field0 string
+}
+
+func NewPrfProviderErrorGeneric(
+	var0 string,
+) *PrfProviderError {
+	return &PrfProviderError{err: &PrfProviderErrorGeneric{
+		Field0: var0}}
+}
+
+func (e PrfProviderErrorGeneric) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err PrfProviderErrorGeneric) Error() string {
+	return fmt.Sprint("Generic",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self PrfProviderErrorGeneric) Is(target error) bool {
+	return target == ErrPrfProviderErrorGeneric
+}
+
+type FfiConverterPrfProviderError struct{}
+
+var FfiConverterPrfProviderErrorINSTANCE = FfiConverterPrfProviderError{}
+
+func (c FfiConverterPrfProviderError) Lift(eb RustBufferI) *PrfProviderError {
+	return LiftFromRustBuffer[*PrfProviderError](c, eb)
+}
+
+func (c FfiConverterPrfProviderError) Lower(value *PrfProviderError) C.RustBuffer {
+	return LowerIntoRustBuffer[*PrfProviderError](c, value)
+}
+
+func (c FfiConverterPrfProviderError) LowerExternal(value *PrfProviderError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*PrfProviderError](c, value))
+}
+
+func (c FfiConverterPrfProviderError) Read(reader io.Reader) *PrfProviderError {
+	errorID := readUint32(reader)
+
+	switch errorID {
+	case 1:
+		return &PrfProviderError{&PrfProviderErrorPrfNotSupported{}}
+	case 2:
+		return &PrfProviderError{&PrfProviderErrorUserCancelled{}}
+	case 3:
+		return &PrfProviderError{&PrfProviderErrorUserTimedOut{}}
+	case 4:
+		return &PrfProviderError{&PrfProviderErrorCredentialNotFound{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 5:
+		return &PrfProviderError{&PrfProviderErrorAuthenticationFailed{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 6:
+		return &PrfProviderError{&PrfProviderErrorPrfEvaluationFailed{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 7:
+		return &PrfProviderError{&PrfProviderErrorConfiguration{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 8:
+		return &PrfProviderError{&PrfProviderErrorCredentialAlreadyExists{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 9:
+		return &PrfProviderError{&PrfProviderErrorGeneric{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	default:
+		panic(fmt.Sprintf("Unknown error code %d in FfiConverterPrfProviderError.Read()", errorID))
+	}
+}
+
+func (c FfiConverterPrfProviderError) Write(writer io.Writer, value *PrfProviderError) {
+	switch variantValue := value.err.(type) {
+	case *PrfProviderErrorPrfNotSupported:
+		writeInt32(writer, 1)
+	case *PrfProviderErrorUserCancelled:
+		writeInt32(writer, 2)
+	case *PrfProviderErrorUserTimedOut:
+		writeInt32(writer, 3)
+	case *PrfProviderErrorCredentialNotFound:
+		writeInt32(writer, 4)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *PrfProviderErrorAuthenticationFailed:
+		writeInt32(writer, 5)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *PrfProviderErrorPrfEvaluationFailed:
+		writeInt32(writer, 6)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *PrfProviderErrorConfiguration:
+		writeInt32(writer, 7)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *PrfProviderErrorCredentialAlreadyExists:
+		writeInt32(writer, 8)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *PrfProviderErrorGeneric:
+		writeInt32(writer, 9)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterPrfProviderError.Write", value))
+	}
+}
+
+type FfiDestroyerPrfProviderError struct{}
+
+func (_ FfiDestroyerPrfProviderError) Destroy(value *PrfProviderError) {
+	switch variantValue := value.err.(type) {
+	case PrfProviderErrorPrfNotSupported:
+		variantValue.destroy()
+	case PrfProviderErrorUserCancelled:
+		variantValue.destroy()
+	case PrfProviderErrorUserTimedOut:
+		variantValue.destroy()
+	case PrfProviderErrorCredentialNotFound:
+		variantValue.destroy()
+	case PrfProviderErrorAuthenticationFailed:
+		variantValue.destroy()
+	case PrfProviderErrorPrfEvaluationFailed:
+		variantValue.destroy()
+	case PrfProviderErrorConfiguration:
+		variantValue.destroy()
+	case PrfProviderErrorCredentialAlreadyExists:
+		variantValue.destroy()
+	case PrfProviderErrorGeneric:
+		variantValue.destroy()
+	default:
+		_ = variantValue
+		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerPrfProviderError.Destroy", value))
+	}
+}
+
 type ProvisionalPaymentDetails interface {
 	Destroy()
 }
@@ -24880,6 +28070,8 @@ var ErrSdkErrorMaxDepositClaimFeeExceeded = fmt.Errorf("SdkErrorMaxDepositClaimF
 var ErrSdkErrorMissingUtxo = fmt.Errorf("SdkErrorMissingUtxo")
 var ErrSdkErrorLnurlError = fmt.Errorf("SdkErrorLnurlError")
 var ErrSdkErrorSigner = fmt.Errorf("SdkErrorSigner")
+var ErrSdkErrorOptimizationAlreadyRunning = fmt.Errorf("SdkErrorOptimizationAlreadyRunning")
+var ErrSdkErrorOptimizationCancelled = fmt.Errorf("SdkErrorOptimizationCancelled")
 var ErrSdkErrorGeneric = fmt.Errorf("SdkErrorGeneric")
 
 // Variant structs
@@ -25222,6 +28414,50 @@ func (self SdkErrorSigner) Is(target error) bool {
 	return target == ErrSdkErrorSigner
 }
 
+// `optimize_leaves` was called while another optimization run (auto or
+// manual) was already in flight.
+type SdkErrorOptimizationAlreadyRunning struct {
+}
+
+// `optimize_leaves` was called while another optimization run (auto or
+// manual) was already in flight.
+func NewSdkErrorOptimizationAlreadyRunning() *SdkError {
+	return &SdkError{err: &SdkErrorOptimizationAlreadyRunning{}}
+}
+
+func (e SdkErrorOptimizationAlreadyRunning) destroy() {
+}
+
+func (err SdkErrorOptimizationAlreadyRunning) Error() string {
+	return fmt.Sprint("OptimizationAlreadyRunning")
+}
+
+func (self SdkErrorOptimizationAlreadyRunning) Is(target error) bool {
+	return target == ErrSdkErrorOptimizationAlreadyRunning
+}
+
+// `optimize_leaves` was preempted by the SDK to free leaves for a
+// higher-priority operation (typically a payment).
+type SdkErrorOptimizationCancelled struct {
+}
+
+// `optimize_leaves` was preempted by the SDK to free leaves for a
+// higher-priority operation (typically a payment).
+func NewSdkErrorOptimizationCancelled() *SdkError {
+	return &SdkError{err: &SdkErrorOptimizationCancelled{}}
+}
+
+func (e SdkErrorOptimizationCancelled) destroy() {
+}
+
+func (err SdkErrorOptimizationCancelled) Error() string {
+	return fmt.Sprint("OptimizationCancelled")
+}
+
+func (self SdkErrorOptimizationCancelled) Is(target error) bool {
+	return target == ErrSdkErrorOptimizationCancelled
+}
+
 type SdkErrorGeneric struct {
 	Field0 string
 }
@@ -25318,6 +28554,10 @@ func (c FfiConverterSdkError) Read(reader io.Reader) *SdkError {
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	case 12:
+		return &SdkError{&SdkErrorOptimizationAlreadyRunning{}}
+	case 13:
+		return &SdkError{&SdkErrorOptimizationCancelled{}}
+	case 14:
 		return &SdkError{&SdkErrorGeneric{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
@@ -25365,8 +28605,12 @@ func (c FfiConverterSdkError) Write(writer io.Writer, value *SdkError) {
 	case *SdkErrorSigner:
 		writeInt32(writer, 11)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
-	case *SdkErrorGeneric:
+	case *SdkErrorOptimizationAlreadyRunning:
 		writeInt32(writer, 12)
+	case *SdkErrorOptimizationCancelled:
+		writeInt32(writer, 13)
+	case *SdkErrorGeneric:
+		writeInt32(writer, 14)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
 	default:
 		_ = variantValue
@@ -25399,6 +28643,10 @@ func (_ FfiDestroyerSdkError) Destroy(value *SdkError) {
 	case SdkErrorLnurlError:
 		variantValue.destroy()
 	case SdkErrorSigner:
+		variantValue.destroy()
+	case SdkErrorOptimizationAlreadyRunning:
+		variantValue.destroy()
+	case SdkErrorOptimizationCancelled:
 		variantValue.destroy()
 	case SdkErrorGeneric:
 		variantValue.destroy()
@@ -25461,12 +28709,18 @@ func (e SdkEventPaymentFailed) Destroy() {
 	FfiDestroyerPayment{}.Destroy(e.Payment)
 }
 
-type SdkEventOptimization struct {
-	OptimizationEvent OptimizationEvent
+// Emitted while the background auto-optimizer is running.
+//
+// Only fired from the auto path (enabled via
+// `LeafOptimizationConfig::auto_enabled`). Manually-triggered runs
+// via `BreezSdk::optimize_leaves` do not emit events — they return an
+// `OptimizationOutcome` instead.
+type SdkEventAutoOptimization struct {
+	OptimizationEvent AutoOptimizationEvent
 }
 
-func (e SdkEventOptimization) Destroy() {
-	FfiDestroyerOptimizationEvent{}.Destroy(e.OptimizationEvent)
+func (e SdkEventAutoOptimization) Destroy() {
+	FfiDestroyerAutoOptimizationEvent{}.Destroy(e.OptimizationEvent)
 }
 
 type SdkEventLightningAddressChanged struct {
@@ -25526,8 +28780,8 @@ func (FfiConverterSdkEvent) Read(reader io.Reader) SdkEvent {
 			FfiConverterPaymentINSTANCE.Read(reader),
 		}
 	case 7:
-		return SdkEventOptimization{
-			FfiConverterOptimizationEventINSTANCE.Read(reader),
+		return SdkEventAutoOptimization{
+			FfiConverterAutoOptimizationEventINSTANCE.Read(reader),
 		}
 	case 8:
 		return SdkEventLightningAddressChanged{
@@ -25561,9 +28815,9 @@ func (FfiConverterSdkEvent) Write(writer io.Writer, value SdkEvent) {
 	case SdkEventPaymentFailed:
 		writeInt32(writer, 6)
 		FfiConverterPaymentINSTANCE.Write(writer, variant_value.Payment)
-	case SdkEventOptimization:
+	case SdkEventAutoOptimization:
 		writeInt32(writer, 7)
-		FfiConverterOptimizationEventINSTANCE.Write(writer, variant_value.OptimizationEvent)
+		FfiConverterAutoOptimizationEventINSTANCE.Write(writer, variant_value.OptimizationEvent)
 	case SdkEventLightningAddressChanged:
 		writeInt32(writer, 8)
 		FfiConverterOptionalLightningAddressInfoINSTANCE.Write(writer, variant_value.LightningAddress)
@@ -26380,13 +29634,13 @@ type FfiDestroyerServiceStatus struct{}
 func (_ FfiDestroyerServiceStatus) Destroy(value ServiceStatus) {
 }
 
-type SessionManagerError struct {
+type SessionStoreError struct {
 	err error
 }
 
-// Convience method to turn *SessionManagerError into error
+// Convience method to turn *SessionStoreError into error
 // Avoiding treating nil pointer as non nil error interface
-func (err *SessionManagerError) AsError() error {
+func (err *SessionStoreError) AsError() error {
 	if err == nil {
 		return nil
 	} else {
@@ -26394,53 +29648,53 @@ func (err *SessionManagerError) AsError() error {
 	}
 }
 
-func (err SessionManagerError) Error() string {
-	return fmt.Sprintf("SessionManagerError: %s", err.err.Error())
+func (err SessionStoreError) Error() string {
+	return fmt.Sprintf("SessionStoreError: %s", err.err.Error())
 }
 
-func (err SessionManagerError) Unwrap() error {
+func (err SessionStoreError) Unwrap() error {
 	return err.err
 }
 
 // Err* are used for checking error type with `errors.Is`
-var ErrSessionManagerErrorNotFound = fmt.Errorf("SessionManagerErrorNotFound")
-var ErrSessionManagerErrorGeneric = fmt.Errorf("SessionManagerErrorGeneric")
+var ErrSessionStoreErrorNotFound = fmt.Errorf("SessionStoreErrorNotFound")
+var ErrSessionStoreErrorGeneric = fmt.Errorf("SessionStoreErrorGeneric")
 
 // Variant structs
-type SessionManagerErrorNotFound struct {
+type SessionStoreErrorNotFound struct {
 }
 
-func NewSessionManagerErrorNotFound() *SessionManagerError {
-	return &SessionManagerError{err: &SessionManagerErrorNotFound{}}
+func NewSessionStoreErrorNotFound() *SessionStoreError {
+	return &SessionStoreError{err: &SessionStoreErrorNotFound{}}
 }
 
-func (e SessionManagerErrorNotFound) destroy() {
+func (e SessionStoreErrorNotFound) destroy() {
 }
 
-func (err SessionManagerErrorNotFound) Error() string {
+func (err SessionStoreErrorNotFound) Error() string {
 	return fmt.Sprint("NotFound")
 }
 
-func (self SessionManagerErrorNotFound) Is(target error) bool {
-	return target == ErrSessionManagerErrorNotFound
+func (self SessionStoreErrorNotFound) Is(target error) bool {
+	return target == ErrSessionStoreErrorNotFound
 }
 
-type SessionManagerErrorGeneric struct {
+type SessionStoreErrorGeneric struct {
 	Field0 string
 }
 
-func NewSessionManagerErrorGeneric(
+func NewSessionStoreErrorGeneric(
 	var0 string,
-) *SessionManagerError {
-	return &SessionManagerError{err: &SessionManagerErrorGeneric{
+) *SessionStoreError {
+	return &SessionStoreError{err: &SessionStoreErrorGeneric{
 		Field0: var0}}
 }
 
-func (e SessionManagerErrorGeneric) destroy() {
+func (e SessionStoreErrorGeneric) destroy() {
 	FfiDestroyerString{}.Destroy(e.Field0)
 }
 
-func (err SessionManagerErrorGeneric) Error() string {
+func (err SessionStoreErrorGeneric) Error() string {
 	return fmt.Sprint("Generic",
 		": ",
 
@@ -26449,65 +29703,65 @@ func (err SessionManagerErrorGeneric) Error() string {
 	)
 }
 
-func (self SessionManagerErrorGeneric) Is(target error) bool {
-	return target == ErrSessionManagerErrorGeneric
+func (self SessionStoreErrorGeneric) Is(target error) bool {
+	return target == ErrSessionStoreErrorGeneric
 }
 
-type FfiConverterSessionManagerError struct{}
+type FfiConverterSessionStoreError struct{}
 
-var FfiConverterSessionManagerErrorINSTANCE = FfiConverterSessionManagerError{}
+var FfiConverterSessionStoreErrorINSTANCE = FfiConverterSessionStoreError{}
 
-func (c FfiConverterSessionManagerError) Lift(eb RustBufferI) *SessionManagerError {
-	return LiftFromRustBuffer[*SessionManagerError](c, eb)
+func (c FfiConverterSessionStoreError) Lift(eb RustBufferI) *SessionStoreError {
+	return LiftFromRustBuffer[*SessionStoreError](c, eb)
 }
 
-func (c FfiConverterSessionManagerError) Lower(value *SessionManagerError) C.RustBuffer {
-	return LowerIntoRustBuffer[*SessionManagerError](c, value)
+func (c FfiConverterSessionStoreError) Lower(value *SessionStoreError) C.RustBuffer {
+	return LowerIntoRustBuffer[*SessionStoreError](c, value)
 }
 
-func (c FfiConverterSessionManagerError) LowerExternal(value *SessionManagerError) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[*SessionManagerError](c, value))
+func (c FfiConverterSessionStoreError) LowerExternal(value *SessionStoreError) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SessionStoreError](c, value))
 }
 
-func (c FfiConverterSessionManagerError) Read(reader io.Reader) *SessionManagerError {
+func (c FfiConverterSessionStoreError) Read(reader io.Reader) *SessionStoreError {
 	errorID := readUint32(reader)
 
 	switch errorID {
 	case 1:
-		return &SessionManagerError{&SessionManagerErrorNotFound{}}
+		return &SessionStoreError{&SessionStoreErrorNotFound{}}
 	case 2:
-		return &SessionManagerError{&SessionManagerErrorGeneric{
+		return &SessionStoreError{&SessionStoreErrorGeneric{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	default:
-		panic(fmt.Sprintf("Unknown error code %d in FfiConverterSessionManagerError.Read()", errorID))
+		panic(fmt.Sprintf("Unknown error code %d in FfiConverterSessionStoreError.Read()", errorID))
 	}
 }
 
-func (c FfiConverterSessionManagerError) Write(writer io.Writer, value *SessionManagerError) {
+func (c FfiConverterSessionStoreError) Write(writer io.Writer, value *SessionStoreError) {
 	switch variantValue := value.err.(type) {
-	case *SessionManagerErrorNotFound:
+	case *SessionStoreErrorNotFound:
 		writeInt32(writer, 1)
-	case *SessionManagerErrorGeneric:
+	case *SessionStoreErrorGeneric:
 		writeInt32(writer, 2)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
 	default:
 		_ = variantValue
-		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterSessionManagerError.Write", value))
+		panic(fmt.Sprintf("invalid error value `%v` in FfiConverterSessionStoreError.Write", value))
 	}
 }
 
-type FfiDestroyerSessionManagerError struct{}
+type FfiDestroyerSessionStoreError struct{}
 
-func (_ FfiDestroyerSessionManagerError) Destroy(value *SessionManagerError) {
+func (_ FfiDestroyerSessionStoreError) Destroy(value *SessionStoreError) {
 	switch variantValue := value.err.(type) {
-	case SessionManagerErrorNotFound:
+	case SessionStoreErrorNotFound:
 		variantValue.destroy()
-	case SessionManagerErrorGeneric:
+	case SessionStoreErrorGeneric:
 		variantValue.destroy()
 	default:
 		_ = variantValue
-		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerSessionManagerError.Destroy", value))
+		panic(fmt.Sprintf("invalid error value `%v` in FfiDestroyerSessionStoreError.Destroy", value))
 	}
 }
 
@@ -28072,6 +31326,47 @@ func (_ FfiDestroyerOptionalBytes) Destroy(value *[]byte) {
 	}
 }
 
+type FfiConverterOptionalStorageBackend struct{}
+
+var FfiConverterOptionalStorageBackendINSTANCE = FfiConverterOptionalStorageBackend{}
+
+func (c FfiConverterOptionalStorageBackend) Lift(rb RustBufferI) **StorageBackend {
+	return LiftFromRustBuffer[**StorageBackend](c, rb)
+}
+
+func (_ FfiConverterOptionalStorageBackend) Read(reader io.Reader) **StorageBackend {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterStorageBackendINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalStorageBackend) Lower(value **StorageBackend) C.RustBuffer {
+	return LowerIntoRustBuffer[**StorageBackend](c, value)
+}
+
+func (c FfiConverterOptionalStorageBackend) LowerExternal(value **StorageBackend) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[**StorageBackend](c, value))
+}
+
+func (_ FfiConverterOptionalStorageBackend) Write(writer io.Writer, value **StorageBackend) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterStorageBackendINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalStorageBackend struct{}
+
+func (_ FfiDestroyerOptionalStorageBackend) Destroy(value **StorageBackend) {
+	if value != nil {
+		FfiDestroyerStorageBackend{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalConversionDetails struct{}
 
 var FfiConverterOptionalConversionDetailsINSTANCE = FfiConverterOptionalConversionDetails{}
@@ -28318,47 +31613,6 @@ func (_ FfiDestroyerOptionalCredentials) Destroy(value *Credentials) {
 	}
 }
 
-type FfiConverterOptionalKeySetConfig struct{}
-
-var FfiConverterOptionalKeySetConfigINSTANCE = FfiConverterOptionalKeySetConfig{}
-
-func (c FfiConverterOptionalKeySetConfig) Lift(rb RustBufferI) *KeySetConfig {
-	return LiftFromRustBuffer[*KeySetConfig](c, rb)
-}
-
-func (_ FfiConverterOptionalKeySetConfig) Read(reader io.Reader) *KeySetConfig {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterKeySetConfigINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalKeySetConfig) Lower(value *KeySetConfig) C.RustBuffer {
-	return LowerIntoRustBuffer[*KeySetConfig](c, value)
-}
-
-func (c FfiConverterOptionalKeySetConfig) LowerExternal(value *KeySetConfig) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[*KeySetConfig](c, value))
-}
-
-func (_ FfiConverterOptionalKeySetConfig) Write(writer io.Writer, value *KeySetConfig) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterKeySetConfigINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalKeySetConfig struct{}
-
-func (_ FfiDestroyerOptionalKeySetConfig) Destroy(value *KeySetConfig) {
-	if value != nil {
-		FfiDestroyerKeySetConfig{}.Destroy(*value)
-	}
-}
-
 type FfiConverterOptionalLightningAddressInfo struct{}
 
 var FfiConverterOptionalLightningAddressInfoINSTANCE = FfiConverterOptionalLightningAddressInfo{}
@@ -28523,88 +31777,6 @@ func (_ FfiDestroyerOptionalLnurlWithdrawInfo) Destroy(value *LnurlWithdrawInfo)
 	}
 }
 
-type FfiConverterOptionalMysqlStorageConfig struct{}
-
-var FfiConverterOptionalMysqlStorageConfigINSTANCE = FfiConverterOptionalMysqlStorageConfig{}
-
-func (c FfiConverterOptionalMysqlStorageConfig) Lift(rb RustBufferI) *MysqlStorageConfig {
-	return LiftFromRustBuffer[*MysqlStorageConfig](c, rb)
-}
-
-func (_ FfiConverterOptionalMysqlStorageConfig) Read(reader io.Reader) *MysqlStorageConfig {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterMysqlStorageConfigINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalMysqlStorageConfig) Lower(value *MysqlStorageConfig) C.RustBuffer {
-	return LowerIntoRustBuffer[*MysqlStorageConfig](c, value)
-}
-
-func (c FfiConverterOptionalMysqlStorageConfig) LowerExternal(value *MysqlStorageConfig) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[*MysqlStorageConfig](c, value))
-}
-
-func (_ FfiConverterOptionalMysqlStorageConfig) Write(writer io.Writer, value *MysqlStorageConfig) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterMysqlStorageConfigINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalMysqlStorageConfig struct{}
-
-func (_ FfiDestroyerOptionalMysqlStorageConfig) Destroy(value *MysqlStorageConfig) {
-	if value != nil {
-		FfiDestroyerMysqlStorageConfig{}.Destroy(*value)
-	}
-}
-
-type FfiConverterOptionalNostrRelayConfig struct{}
-
-var FfiConverterOptionalNostrRelayConfigINSTANCE = FfiConverterOptionalNostrRelayConfig{}
-
-func (c FfiConverterOptionalNostrRelayConfig) Lift(rb RustBufferI) *NostrRelayConfig {
-	return LiftFromRustBuffer[*NostrRelayConfig](c, rb)
-}
-
-func (_ FfiConverterOptionalNostrRelayConfig) Read(reader io.Reader) *NostrRelayConfig {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterNostrRelayConfigINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalNostrRelayConfig) Lower(value *NostrRelayConfig) C.RustBuffer {
-	return LowerIntoRustBuffer[*NostrRelayConfig](c, value)
-}
-
-func (c FfiConverterOptionalNostrRelayConfig) LowerExternal(value *NostrRelayConfig) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[*NostrRelayConfig](c, value))
-}
-
-func (_ FfiConverterOptionalNostrRelayConfig) Write(writer io.Writer, value *NostrRelayConfig) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterNostrRelayConfigINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalNostrRelayConfig struct{}
-
-func (_ FfiDestroyerOptionalNostrRelayConfig) Destroy(value *NostrRelayConfig) {
-	if value != nil {
-		FfiDestroyerNostrRelayConfig{}.Destroy(*value)
-	}
-}
-
 type FfiConverterOptionalOutgoingChange struct{}
 
 var FfiConverterOptionalOutgoingChangeINSTANCE = FfiConverterOptionalOutgoingChange{}
@@ -28646,6 +31818,129 @@ func (_ FfiDestroyerOptionalOutgoingChange) Destroy(value *OutgoingChange) {
 	}
 }
 
+type FfiConverterOptionalPasskeyConfig struct{}
+
+var FfiConverterOptionalPasskeyConfigINSTANCE = FfiConverterOptionalPasskeyConfig{}
+
+func (c FfiConverterOptionalPasskeyConfig) Lift(rb RustBufferI) *PasskeyConfig {
+	return LiftFromRustBuffer[*PasskeyConfig](c, rb)
+}
+
+func (_ FfiConverterOptionalPasskeyConfig) Read(reader io.Reader) *PasskeyConfig {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterPasskeyConfigINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalPasskeyConfig) Lower(value *PasskeyConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[*PasskeyConfig](c, value)
+}
+
+func (c FfiConverterOptionalPasskeyConfig) LowerExternal(value *PasskeyConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*PasskeyConfig](c, value))
+}
+
+func (_ FfiConverterOptionalPasskeyConfig) Write(writer io.Writer, value *PasskeyConfig) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterPasskeyConfigINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalPasskeyConfig struct{}
+
+func (_ FfiDestroyerOptionalPasskeyConfig) Destroy(value *PasskeyConfig) {
+	if value != nil {
+		FfiDestroyerPasskeyConfig{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalPasskeyCredential struct{}
+
+var FfiConverterOptionalPasskeyCredentialINSTANCE = FfiConverterOptionalPasskeyCredential{}
+
+func (c FfiConverterOptionalPasskeyCredential) Lift(rb RustBufferI) *PasskeyCredential {
+	return LiftFromRustBuffer[*PasskeyCredential](c, rb)
+}
+
+func (_ FfiConverterOptionalPasskeyCredential) Read(reader io.Reader) *PasskeyCredential {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterPasskeyCredentialINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalPasskeyCredential) Lower(value *PasskeyCredential) C.RustBuffer {
+	return LowerIntoRustBuffer[*PasskeyCredential](c, value)
+}
+
+func (c FfiConverterOptionalPasskeyCredential) LowerExternal(value *PasskeyCredential) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*PasskeyCredential](c, value))
+}
+
+func (_ FfiConverterOptionalPasskeyCredential) Write(writer io.Writer, value *PasskeyCredential) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterPasskeyCredentialINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalPasskeyCredential struct{}
+
+func (_ FfiDestroyerOptionalPasskeyCredential) Destroy(value *PasskeyCredential) {
+	if value != nil {
+		FfiDestroyerPasskeyCredential{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalPasskeyProviderOptions struct{}
+
+var FfiConverterOptionalPasskeyProviderOptionsINSTANCE = FfiConverterOptionalPasskeyProviderOptions{}
+
+func (c FfiConverterOptionalPasskeyProviderOptions) Lift(rb RustBufferI) *PasskeyProviderOptions {
+	return LiftFromRustBuffer[*PasskeyProviderOptions](c, rb)
+}
+
+func (_ FfiConverterOptionalPasskeyProviderOptions) Read(reader io.Reader) *PasskeyProviderOptions {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterPasskeyProviderOptionsINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalPasskeyProviderOptions) Lower(value *PasskeyProviderOptions) C.RustBuffer {
+	return LowerIntoRustBuffer[*PasskeyProviderOptions](c, value)
+}
+
+func (c FfiConverterOptionalPasskeyProviderOptions) LowerExternal(value *PasskeyProviderOptions) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*PasskeyProviderOptions](c, value))
+}
+
+func (_ FfiConverterOptionalPasskeyProviderOptions) Write(writer io.Writer, value *PasskeyProviderOptions) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterPasskeyProviderOptionsINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalPasskeyProviderOptions struct{}
+
+func (_ FfiDestroyerOptionalPasskeyProviderOptions) Destroy(value *PasskeyProviderOptions) {
+	if value != nil {
+		FfiDestroyerPasskeyProviderOptions{}.Destroy(*value)
+	}
+}
+
 type FfiConverterOptionalPayment struct{}
 
 var FfiConverterOptionalPaymentINSTANCE = FfiConverterOptionalPayment{}
@@ -28684,47 +31979,6 @@ type FfiDestroyerOptionalPayment struct{}
 func (_ FfiDestroyerOptionalPayment) Destroy(value *Payment) {
 	if value != nil {
 		FfiDestroyerPayment{}.Destroy(*value)
-	}
-}
-
-type FfiConverterOptionalPostgresStorageConfig struct{}
-
-var FfiConverterOptionalPostgresStorageConfigINSTANCE = FfiConverterOptionalPostgresStorageConfig{}
-
-func (c FfiConverterOptionalPostgresStorageConfig) Lift(rb RustBufferI) *PostgresStorageConfig {
-	return LiftFromRustBuffer[*PostgresStorageConfig](c, rb)
-}
-
-func (_ FfiConverterOptionalPostgresStorageConfig) Read(reader io.Reader) *PostgresStorageConfig {
-	if readInt8(reader) == 0 {
-		return nil
-	}
-	temp := FfiConverterPostgresStorageConfigINSTANCE.Read(reader)
-	return &temp
-}
-
-func (c FfiConverterOptionalPostgresStorageConfig) Lower(value *PostgresStorageConfig) C.RustBuffer {
-	return LowerIntoRustBuffer[*PostgresStorageConfig](c, value)
-}
-
-func (c FfiConverterOptionalPostgresStorageConfig) LowerExternal(value *PostgresStorageConfig) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[*PostgresStorageConfig](c, value))
-}
-
-func (_ FfiConverterOptionalPostgresStorageConfig) Write(writer io.Writer, value *PostgresStorageConfig) {
-	if value == nil {
-		writeInt8(writer, 0)
-	} else {
-		writeInt8(writer, 1)
-		FfiConverterPostgresStorageConfigINSTANCE.Write(writer, *value)
-	}
-}
-
-type FfiDestroyerOptionalPostgresStorageConfig struct{}
-
-func (_ FfiDestroyerOptionalPostgresStorageConfig) Destroy(value *PostgresStorageConfig) {
-	if value != nil {
-		FfiDestroyerPostgresStorageConfig{}.Destroy(*value)
 	}
 }
 
@@ -29053,6 +32307,47 @@ type FfiDestroyerOptionalTokenMetadata struct{}
 func (_ FfiDestroyerOptionalTokenMetadata) Destroy(value *TokenMetadata) {
 	if value != nil {
 		FfiDestroyerTokenMetadata{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalTurnkeyRetryConfig struct{}
+
+var FfiConverterOptionalTurnkeyRetryConfigINSTANCE = FfiConverterOptionalTurnkeyRetryConfig{}
+
+func (c FfiConverterOptionalTurnkeyRetryConfig) Lift(rb RustBufferI) *TurnkeyRetryConfig {
+	return LiftFromRustBuffer[*TurnkeyRetryConfig](c, rb)
+}
+
+func (_ FfiConverterOptionalTurnkeyRetryConfig) Read(reader io.Reader) *TurnkeyRetryConfig {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterTurnkeyRetryConfigINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalTurnkeyRetryConfig) Lower(value *TurnkeyRetryConfig) C.RustBuffer {
+	return LowerIntoRustBuffer[*TurnkeyRetryConfig](c, value)
+}
+
+func (c FfiConverterOptionalTurnkeyRetryConfig) LowerExternal(value *TurnkeyRetryConfig) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*TurnkeyRetryConfig](c, value))
+}
+
+func (_ FfiConverterOptionalTurnkeyRetryConfig) Write(writer io.Writer, value *TurnkeyRetryConfig) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterTurnkeyRetryConfigINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalTurnkeyRetryConfig struct{}
+
+func (_ FfiDestroyerOptionalTurnkeyRetryConfig) Destroy(value *TurnkeyRetryConfig) {
+	if value != nil {
+		FfiDestroyerTurnkeyRetryConfig{}.Destroy(*value)
 	}
 }
 
@@ -29709,6 +33004,47 @@ type FfiDestroyerOptionalCallbackInterfaceLogger struct{}
 func (_ FfiDestroyerOptionalCallbackInterfaceLogger) Destroy(value *Logger) {
 	if value != nil {
 		FfiDestroyerCallbackInterfaceLogger{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalSequenceBytes struct{}
+
+var FfiConverterOptionalSequenceBytesINSTANCE = FfiConverterOptionalSequenceBytes{}
+
+func (c FfiConverterOptionalSequenceBytes) Lift(rb RustBufferI) *[][]byte {
+	return LiftFromRustBuffer[*[][]byte](c, rb)
+}
+
+func (_ FfiConverterOptionalSequenceBytes) Read(reader io.Reader) *[][]byte {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterSequenceBytesINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalSequenceBytes) Lower(value *[][]byte) C.RustBuffer {
+	return LowerIntoRustBuffer[*[][]byte](c, value)
+}
+
+func (c FfiConverterOptionalSequenceBytes) LowerExternal(value *[][]byte) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*[][]byte](c, value))
+}
+
+func (_ FfiConverterOptionalSequenceBytes) Write(writer io.Writer, value *[][]byte) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterSequenceBytesINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalSequenceBytes struct{}
+
+func (_ FfiDestroyerOptionalSequenceBytes) Destroy(value *[][]byte) {
+	if value != nil {
+		FfiDestroyerSequenceBytes{}.Destroy(*value)
 	}
 }
 
@@ -30416,6 +33752,147 @@ func (FfiDestroyerSequenceDepositInfo) Destroy(sequence []DepositInfo) {
 	}
 }
 
+type FfiConverterSequenceExternalClaimLeafInput struct{}
+
+var FfiConverterSequenceExternalClaimLeafInputINSTANCE = FfiConverterSequenceExternalClaimLeafInput{}
+
+func (c FfiConverterSequenceExternalClaimLeafInput) Lift(rb RustBufferI) []ExternalClaimLeafInput {
+	return LiftFromRustBuffer[[]ExternalClaimLeafInput](c, rb)
+}
+
+func (c FfiConverterSequenceExternalClaimLeafInput) Read(reader io.Reader) []ExternalClaimLeafInput {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]ExternalClaimLeafInput, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterExternalClaimLeafInputINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceExternalClaimLeafInput) Lower(value []ExternalClaimLeafInput) C.RustBuffer {
+	return LowerIntoRustBuffer[[]ExternalClaimLeafInput](c, value)
+}
+
+func (c FfiConverterSequenceExternalClaimLeafInput) LowerExternal(value []ExternalClaimLeafInput) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalClaimLeafInput](c, value))
+}
+
+func (c FfiConverterSequenceExternalClaimLeafInput) Write(writer io.Writer, value []ExternalClaimLeafInput) {
+	if len(value) > math.MaxInt32 {
+		panic("[]ExternalClaimLeafInput is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterExternalClaimLeafInputINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceExternalClaimLeafInput struct{}
+
+func (FfiDestroyerSequenceExternalClaimLeafInput) Destroy(sequence []ExternalClaimLeafInput) {
+	for _, value := range sequence {
+		FfiDestroyerExternalClaimLeafInput{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceExternalFrostJob struct{}
+
+var FfiConverterSequenceExternalFrostJobINSTANCE = FfiConverterSequenceExternalFrostJob{}
+
+func (c FfiConverterSequenceExternalFrostJob) Lift(rb RustBufferI) []ExternalFrostJob {
+	return LiftFromRustBuffer[[]ExternalFrostJob](c, rb)
+}
+
+func (c FfiConverterSequenceExternalFrostJob) Read(reader io.Reader) []ExternalFrostJob {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]ExternalFrostJob, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterExternalFrostJobINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceExternalFrostJob) Lower(value []ExternalFrostJob) C.RustBuffer {
+	return LowerIntoRustBuffer[[]ExternalFrostJob](c, value)
+}
+
+func (c FfiConverterSequenceExternalFrostJob) LowerExternal(value []ExternalFrostJob) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalFrostJob](c, value))
+}
+
+func (c FfiConverterSequenceExternalFrostJob) Write(writer io.Writer, value []ExternalFrostJob) {
+	if len(value) > math.MaxInt32 {
+		panic("[]ExternalFrostJob is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterExternalFrostJobINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceExternalFrostJob struct{}
+
+func (FfiDestroyerSequenceExternalFrostJob) Destroy(sequence []ExternalFrostJob) {
+	for _, value := range sequence {
+		FfiDestroyerExternalFrostJob{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceExternalFrostShareResult struct{}
+
+var FfiConverterSequenceExternalFrostShareResultINSTANCE = FfiConverterSequenceExternalFrostShareResult{}
+
+func (c FfiConverterSequenceExternalFrostShareResult) Lift(rb RustBufferI) []ExternalFrostShareResult {
+	return LiftFromRustBuffer[[]ExternalFrostShareResult](c, rb)
+}
+
+func (c FfiConverterSequenceExternalFrostShareResult) Read(reader io.Reader) []ExternalFrostShareResult {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]ExternalFrostShareResult, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterExternalFrostShareResultINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceExternalFrostShareResult) Lower(value []ExternalFrostShareResult) C.RustBuffer {
+	return LowerIntoRustBuffer[[]ExternalFrostShareResult](c, value)
+}
+
+func (c FfiConverterSequenceExternalFrostShareResult) LowerExternal(value []ExternalFrostShareResult) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalFrostShareResult](c, value))
+}
+
+func (c FfiConverterSequenceExternalFrostShareResult) Write(writer io.Writer, value []ExternalFrostShareResult) {
+	if len(value) > math.MaxInt32 {
+		panic("[]ExternalFrostShareResult is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterExternalFrostShareResultINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceExternalFrostShareResult struct{}
+
+func (FfiDestroyerSequenceExternalFrostShareResult) Destroy(sequence []ExternalFrostShareResult) {
+	for _, value := range sequence {
+		FfiDestroyerExternalFrostShareResult{}.Destroy(value)
+	}
+}
+
 type FfiConverterSequenceExternalInputParser struct{}
 
 var FfiConverterSequenceExternalInputParserINSTANCE = FfiConverterSequenceExternalInputParser{}
@@ -30463,50 +33940,191 @@ func (FfiDestroyerSequenceExternalInputParser) Destroy(sequence []ExternalInputP
 	}
 }
 
-type FfiConverterSequenceExternalVerifiableSecretShare struct{}
+type FfiConverterSequenceExternalNewLeafKey struct{}
 
-var FfiConverterSequenceExternalVerifiableSecretShareINSTANCE = FfiConverterSequenceExternalVerifiableSecretShare{}
+var FfiConverterSequenceExternalNewLeafKeyINSTANCE = FfiConverterSequenceExternalNewLeafKey{}
 
-func (c FfiConverterSequenceExternalVerifiableSecretShare) Lift(rb RustBufferI) []ExternalVerifiableSecretShare {
-	return LiftFromRustBuffer[[]ExternalVerifiableSecretShare](c, rb)
+func (c FfiConverterSequenceExternalNewLeafKey) Lift(rb RustBufferI) []ExternalNewLeafKey {
+	return LiftFromRustBuffer[[]ExternalNewLeafKey](c, rb)
 }
 
-func (c FfiConverterSequenceExternalVerifiableSecretShare) Read(reader io.Reader) []ExternalVerifiableSecretShare {
+func (c FfiConverterSequenceExternalNewLeafKey) Read(reader io.Reader) []ExternalNewLeafKey {
 	length := readInt32(reader)
 	if length == 0 {
 		return nil
 	}
-	result := make([]ExternalVerifiableSecretShare, 0, length)
+	result := make([]ExternalNewLeafKey, 0, length)
 	for i := int32(0); i < length; i++ {
-		result = append(result, FfiConverterExternalVerifiableSecretShareINSTANCE.Read(reader))
+		result = append(result, FfiConverterExternalNewLeafKeyINSTANCE.Read(reader))
 	}
 	return result
 }
 
-func (c FfiConverterSequenceExternalVerifiableSecretShare) Lower(value []ExternalVerifiableSecretShare) C.RustBuffer {
-	return LowerIntoRustBuffer[[]ExternalVerifiableSecretShare](c, value)
+func (c FfiConverterSequenceExternalNewLeafKey) Lower(value []ExternalNewLeafKey) C.RustBuffer {
+	return LowerIntoRustBuffer[[]ExternalNewLeafKey](c, value)
 }
 
-func (c FfiConverterSequenceExternalVerifiableSecretShare) LowerExternal(value []ExternalVerifiableSecretShare) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalVerifiableSecretShare](c, value))
+func (c FfiConverterSequenceExternalNewLeafKey) LowerExternal(value []ExternalNewLeafKey) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalNewLeafKey](c, value))
 }
 
-func (c FfiConverterSequenceExternalVerifiableSecretShare) Write(writer io.Writer, value []ExternalVerifiableSecretShare) {
+func (c FfiConverterSequenceExternalNewLeafKey) Write(writer io.Writer, value []ExternalNewLeafKey) {
 	if len(value) > math.MaxInt32 {
-		panic("[]ExternalVerifiableSecretShare is too large to fit into Int32")
+		panic("[]ExternalNewLeafKey is too large to fit into Int32")
 	}
 
 	writeInt32(writer, int32(len(value)))
 	for _, item := range value {
-		FfiConverterExternalVerifiableSecretShareINSTANCE.Write(writer, item)
+		FfiConverterExternalNewLeafKeyINSTANCE.Write(writer, item)
 	}
 }
 
-type FfiDestroyerSequenceExternalVerifiableSecretShare struct{}
+type FfiDestroyerSequenceExternalNewLeafKey struct{}
 
-func (FfiDestroyerSequenceExternalVerifiableSecretShare) Destroy(sequence []ExternalVerifiableSecretShare) {
+func (FfiDestroyerSequenceExternalNewLeafKey) Destroy(sequence []ExternalNewLeafKey) {
 	for _, value := range sequence {
-		FfiDestroyerExternalVerifiableSecretShare{}.Destroy(value)
+		FfiDestroyerExternalNewLeafKey{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceExternalOperatorPackage struct{}
+
+var FfiConverterSequenceExternalOperatorPackageINSTANCE = FfiConverterSequenceExternalOperatorPackage{}
+
+func (c FfiConverterSequenceExternalOperatorPackage) Lift(rb RustBufferI) []ExternalOperatorPackage {
+	return LiftFromRustBuffer[[]ExternalOperatorPackage](c, rb)
+}
+
+func (c FfiConverterSequenceExternalOperatorPackage) Read(reader io.Reader) []ExternalOperatorPackage {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]ExternalOperatorPackage, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterExternalOperatorPackageINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceExternalOperatorPackage) Lower(value []ExternalOperatorPackage) C.RustBuffer {
+	return LowerIntoRustBuffer[[]ExternalOperatorPackage](c, value)
+}
+
+func (c FfiConverterSequenceExternalOperatorPackage) LowerExternal(value []ExternalOperatorPackage) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalOperatorPackage](c, value))
+}
+
+func (c FfiConverterSequenceExternalOperatorPackage) Write(writer io.Writer, value []ExternalOperatorPackage) {
+	if len(value) > math.MaxInt32 {
+		panic("[]ExternalOperatorPackage is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterExternalOperatorPackageINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceExternalOperatorPackage struct{}
+
+func (FfiDestroyerSequenceExternalOperatorPackage) Destroy(sequence []ExternalOperatorPackage) {
+	for _, value := range sequence {
+		FfiDestroyerExternalOperatorPackage{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceExternalOperatorRecipient struct{}
+
+var FfiConverterSequenceExternalOperatorRecipientINSTANCE = FfiConverterSequenceExternalOperatorRecipient{}
+
+func (c FfiConverterSequenceExternalOperatorRecipient) Lift(rb RustBufferI) []ExternalOperatorRecipient {
+	return LiftFromRustBuffer[[]ExternalOperatorRecipient](c, rb)
+}
+
+func (c FfiConverterSequenceExternalOperatorRecipient) Read(reader io.Reader) []ExternalOperatorRecipient {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]ExternalOperatorRecipient, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterExternalOperatorRecipientINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceExternalOperatorRecipient) Lower(value []ExternalOperatorRecipient) C.RustBuffer {
+	return LowerIntoRustBuffer[[]ExternalOperatorRecipient](c, value)
+}
+
+func (c FfiConverterSequenceExternalOperatorRecipient) LowerExternal(value []ExternalOperatorRecipient) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalOperatorRecipient](c, value))
+}
+
+func (c FfiConverterSequenceExternalOperatorRecipient) Write(writer io.Writer, value []ExternalOperatorRecipient) {
+	if len(value) > math.MaxInt32 {
+		panic("[]ExternalOperatorRecipient is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterExternalOperatorRecipientINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceExternalOperatorRecipient struct{}
+
+func (FfiDestroyerSequenceExternalOperatorRecipient) Destroy(sequence []ExternalOperatorRecipient) {
+	for _, value := range sequence {
+		FfiDestroyerExternalOperatorRecipient{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequenceExternalTransferLeafInput struct{}
+
+var FfiConverterSequenceExternalTransferLeafInputINSTANCE = FfiConverterSequenceExternalTransferLeafInput{}
+
+func (c FfiConverterSequenceExternalTransferLeafInput) Lift(rb RustBufferI) []ExternalTransferLeafInput {
+	return LiftFromRustBuffer[[]ExternalTransferLeafInput](c, rb)
+}
+
+func (c FfiConverterSequenceExternalTransferLeafInput) Read(reader io.Reader) []ExternalTransferLeafInput {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]ExternalTransferLeafInput, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterExternalTransferLeafInputINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequenceExternalTransferLeafInput) Lower(value []ExternalTransferLeafInput) C.RustBuffer {
+	return LowerIntoRustBuffer[[]ExternalTransferLeafInput](c, value)
+}
+
+func (c FfiConverterSequenceExternalTransferLeafInput) LowerExternal(value []ExternalTransferLeafInput) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]ExternalTransferLeafInput](c, value))
+}
+
+func (c FfiConverterSequenceExternalTransferLeafInput) Write(writer io.Writer, value []ExternalTransferLeafInput) {
+	if len(value) > math.MaxInt32 {
+		panic("[]ExternalTransferLeafInput is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterExternalTransferLeafInputINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequenceExternalTransferLeafInput struct{}
+
+func (FfiDestroyerSequenceExternalTransferLeafInput) Destroy(sequence []ExternalTransferLeafInput) {
+	for _, value := range sequence {
+		FfiDestroyerExternalTransferLeafInput{}.Destroy(value)
 	}
 }
 
@@ -30930,6 +34548,53 @@ type FfiDestroyerSequencePayment struct{}
 func (FfiDestroyerSequencePayment) Destroy(sequence []Payment) {
 	for _, value := range sequence {
 		FfiDestroyerPayment{}.Destroy(value)
+	}
+}
+
+type FfiConverterSequencePaymentIdUpdate struct{}
+
+var FfiConverterSequencePaymentIdUpdateINSTANCE = FfiConverterSequencePaymentIdUpdate{}
+
+func (c FfiConverterSequencePaymentIdUpdate) Lift(rb RustBufferI) []PaymentIdUpdate {
+	return LiftFromRustBuffer[[]PaymentIdUpdate](c, rb)
+}
+
+func (c FfiConverterSequencePaymentIdUpdate) Read(reader io.Reader) []PaymentIdUpdate {
+	length := readInt32(reader)
+	if length == 0 {
+		return nil
+	}
+	result := make([]PaymentIdUpdate, 0, length)
+	for i := int32(0); i < length; i++ {
+		result = append(result, FfiConverterPaymentIdUpdateINSTANCE.Read(reader))
+	}
+	return result
+}
+
+func (c FfiConverterSequencePaymentIdUpdate) Lower(value []PaymentIdUpdate) C.RustBuffer {
+	return LowerIntoRustBuffer[[]PaymentIdUpdate](c, value)
+}
+
+func (c FfiConverterSequencePaymentIdUpdate) LowerExternal(value []PaymentIdUpdate) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[[]PaymentIdUpdate](c, value))
+}
+
+func (c FfiConverterSequencePaymentIdUpdate) Write(writer io.Writer, value []PaymentIdUpdate) {
+	if len(value) > math.MaxInt32 {
+		panic("[]PaymentIdUpdate is too large to fit into Int32")
+	}
+
+	writeInt32(writer, int32(len(value)))
+	for _, item := range value {
+		FfiConverterPaymentIdUpdateINSTANCE.Write(writer, item)
+	}
+}
+
+type FfiDestroyerSequencePaymentIdUpdate struct{}
+
+func (FfiDestroyerSequencePaymentIdUpdate) Destroy(sequence []PaymentIdUpdate) {
+	for _, value := range sequence {
+		FfiDestroyerPaymentIdUpdate{}.Destroy(value)
 	}
 }
 
@@ -32029,36 +35694,52 @@ func ConnectWithSigner(request ConnectWithSignerRequest) (*BreezSdk, error) {
 	return res, err
 }
 
-// Creates a shareable `MySQL` connection pool from the given configuration.
+// Builds the Turnkey-backed Breez and Spark signers from `config`, sharing one
+// Turnkey client.
 //
-// Used internally by [`new_shared_sdk_context`](crate::new_shared_sdk_context). Exposed
-// for advanced use cases where a caller wants the pool itself.
-func CreateMysqlConnectionPool(config MysqlStorageConfig) (*MysqlConnectionPool, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
-		return C.uniffi_breez_sdk_spark_fn_func_create_mysql_connection_pool(FfiConverterMysqlStorageConfigINSTANCE.Lower(config), _uniffiStatus)
-	})
-	if _uniffiErr != nil {
-		var _uniffiDefaultValue *MysqlConnectionPool
-		return _uniffiDefaultValue, _uniffiErr
-	} else {
-		return FfiConverterMysqlConnectionPoolINSTANCE.Lift(_uniffiRV), nil
+// The Spark signer keeps every signing operation in the Turnkey enclave; the
+// Breez signer does too, except ECIES and HMAC, which run locally against a
+// dedicated, non-Spark key exported once here. Exporting a non-Spark key keeps
+// every Spark key (the identity key included) in the enclave; ECIES/HMAC only
+// need a stable key, not a Spark one.
+func CreateTurnkeySigner(config TurnkeyConfig) (ExternalSigners, error) {
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) ExternalSigners {
+			return FfiConverterExternalSignersINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_func_create_turnkey_signer(FfiConverterTurnkeyConfigINSTANCE.Lower(config)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
 	}
+
+	return res, err
 }
 
-// Creates a shareable Postgres connection pool from the given configuration.
-//
-// Used internally by [`new_shared_sdk_context`](crate::new_shared_sdk_context). Exposed
-// for advanced use cases where a caller wants the pool itself.
-func CreatePostgresConnectionPool(config PostgresStorageConfig) (*PostgresConnectionPool, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
-		return C.uniffi_breez_sdk_spark_fn_func_create_postgres_connection_pool(FfiConverterPostgresStorageConfigINSTANCE.Lower(config), _uniffiStatus)
-	})
-	if _uniffiErr != nil {
-		var _uniffiDefaultValue *PostgresConnectionPool
-		return _uniffiDefaultValue, _uniffiErr
-	} else {
-		return FfiConverterPostgresConnectionPoolINSTANCE.Lift(_uniffiRV), nil
-	}
+// Wraps a caller-supplied [`Storage`] implementation as a [`StorageBackend`].
+// The tree, token-output and session stores use the in-memory defaults.
+func CustomStorage(storage Storage) *StorageBackend {
+	return FfiConverterStorageBackendINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_custom_storage(FfiConverterStorageINSTANCE.Lower(storage), _uniffiStatus)
+	}))
 }
 
 func DefaultConfig(network Network) Config {
@@ -32069,30 +35750,31 @@ func DefaultConfig(network Network) Config {
 	}))
 }
 
-// Creates a default external signer from a mnemonic.
+// Creates the default external signers from a mnemonic.
 //
-// This is a convenience factory method for creating a signer that can be used
-// with `connect_with_signer` or `SdkBuilder::new_with_signer`.
+// This is a convenience factory method for creating the two signer halves
+// that can be passed to `connect_with_signer` or `SdkBuilder::new_with_signer`.
+// Key derivation matches the seed-based connect path: an SDK built either way
+// from the same mnemonic is the same wallet.
 //
 // # Arguments
 //
 // * `mnemonic` - BIP39 mnemonic phrase (12 or 24 words)
 // * `passphrase` - Optional passphrase for the mnemonic
 // * `network` - Network to use (Mainnet or Regtest)
-// * `key_set_config` - Optional key set configuration. If None, uses default configuration.
-//
-// # Returns
-//
-// Result containing the signer as `Arc<dyn ExternalSigner>`
-func DefaultExternalSigner(mnemonic string, passphrase *string, network Network, keySetConfig *KeySetConfig) (ExternalSigner, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
-		return C.uniffi_breez_sdk_spark_fn_func_default_external_signer(FfiConverterStringINSTANCE.Lower(mnemonic), FfiConverterOptionalStringINSTANCE.Lower(passphrase), FfiConverterNetworkINSTANCE.Lower(network), FfiConverterOptionalKeySetConfigINSTANCE.Lower(keySetConfig), _uniffiStatus)
+// * `account_number` - Account number in the derivation path. Unset uses the
+// network default: 0 on Regtest, 1 on all other networks.
+func DefaultExternalSigners(mnemonic string, passphrase *string, network Network, accountNumber *uint32) (ExternalSigners, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
+		return GoRustBuffer{
+			inner: C.uniffi_breez_sdk_spark_fn_func_default_external_signers(FfiConverterStringINSTANCE.Lower(mnemonic), FfiConverterOptionalStringINSTANCE.Lower(passphrase), FfiConverterNetworkINSTANCE.Lower(network), FfiConverterOptionalUint32INSTANCE.Lower(accountNumber), _uniffiStatus),
+		}
 	})
 	if _uniffiErr != nil {
-		var _uniffiDefaultValue ExternalSigner
+		var _uniffiDefaultValue ExternalSigners
 		return _uniffiDefaultValue, _uniffiErr
 	} else {
-		return FfiConverterExternalSignerINSTANCE.Lift(_uniffiRV), nil
+		return FfiConverterExternalSignersINSTANCE.Lift(_uniffiRV), nil
 	}
 }
 
@@ -32155,6 +35837,15 @@ func DefaultServerConfig(network Network) Config {
 	}))
 }
 
+// File-based `SQLite` storage rooted at `storage_dir` — the default for
+// mobile and desktop apps. Each tenant gets its own database file under the
+// directory.
+func DefaultStorage(storageDir string) *StorageBackend {
+	return FfiConverterStorageBackendINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_default_storage(FfiConverterStringINSTANCE.Lower(storageDir), _uniffiStatus)
+	}))
+}
+
 // Fetches the current status of Spark network services relevant to the SDK.
 //
 // This function queries the Spark status API and returns the worst status
@@ -32199,6 +35890,20 @@ func InitLogging(logDir *string, appLogger *Logger, logFilter *string) error {
 	return _uniffiErr.AsError()
 }
 
+// `MySQL`-backed storage built from `config`. Opens the connection pool;
+// fails if `config` is invalid.
+func MysqlStorage(config MysqlStorageConfig) (*StorageBackend, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_mysql_storage(FfiConverterMysqlStorageConfigINSTANCE.Lower(config), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *StorageBackend
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterStorageBackendINSTANCE.Lift(_uniffiRV), nil
+	}
+}
+
 // Constructs a shareable REST-based [`BitcoinChainService`].
 //
 // Pass the returned `Arc` to multiple [`SdkBuilder`](crate::SdkBuilder)s via
@@ -32236,10 +35941,8 @@ func NewRestChainService(url string, network Network, apiType ChainApiType, cred
 
 // Constructs an [`SdkContext`] from a `SdkContextConfig`.
 //
-// The returned `Arc` is cheap to clone and can back many SDK instances.
-// `SdkContextConfig::new(network)` yields an in-memory, single-tenant setup;
-// supply a DB config to back the SDKs with a shared `PostgreSQL` or `MySQL`
-// pool.
+// The returned `Arc` is cheap to clone and can back many SDK instances,
+// sharing their HTTP client and operator gRPC channels.
 func NewSharedSdkContext(config SdkContextConfig) (*SdkContext, error) {
 	res, err := uniffiRustCallAsync[SdkError](
 		FfiConverterSdkErrorINSTANCE,
@@ -32268,4 +35971,18 @@ func NewSharedSdkContext(config SdkContextConfig) (*SdkContext, error) {
 	}
 
 	return res, err
+}
+
+// `PostgreSQL`-backed storage built from `config`. Opens the connection pool;
+// fails if `config` is invalid.
+func PostgresStorage(config PostgresStorageConfig) (*StorageBackend, error) {
+	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_func_postgres_storage(FfiConverterPostgresStorageConfigINSTANCE.Lower(config), _uniffiStatus)
+	})
+	if _uniffiErr != nil {
+		var _uniffiDefaultValue *StorageBackend
+		return _uniffiDefaultValue, _uniffiErr
+	} else {
+		return FfiConverterStorageBackendINSTANCE.Lift(_uniffiRV), nil
+	}
 }
