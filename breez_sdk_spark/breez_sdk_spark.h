@@ -1220,112 +1220,112 @@ static void call_UniffiCallbackInterfaceStorageMethod17(
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD18
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD18
-typedef void (*UniffiCallbackInterfaceStorageMethod18)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod18)(uint64_t uniffi_handle, RustBuffer swap, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod18(
-				UniffiCallbackInterfaceStorageMethod18 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod18 cb, uint64_t uniffi_handle, RustBuffer swap, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, record, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, swap, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD19
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD19
-typedef void (*UniffiCallbackInterfaceStorageMethod19)(uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod19)(uint64_t uniffi_handle, RustBuffer provider, RustBuffer id, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod19(
-				UniffiCallbackInterfaceStorageMethod19 cb, uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod19 cb, uint64_t uniffi_handle, RustBuffer provider, RustBuffer id, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, record, local_revision, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, provider, id, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD20
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD20
-typedef void (*UniffiCallbackInterfaceStorageMethod20)(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod20)(uint64_t uniffi_handle, RustBuffer provider, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod20(
-				UniffiCallbackInterfaceStorageMethod20 cb, uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod20 cb, uint64_t uniffi_handle, RustBuffer provider, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, limit, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, provider, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD21
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD21
-typedef void (*UniffiCallbackInterfaceStorageMethod21)(uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod21)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod21(
-				UniffiCallbackInterfaceStorageMethod21 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
-{
-	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
-}
-
-
-#endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD22
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD22
-typedef void (*UniffiCallbackInterfaceStorageMethod22)(uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
-
-// Making function static works arround:
-// https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceStorageMethod22(
-				UniffiCallbackInterfaceStorageMethod22 cb, uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
-{
-	return cb(uniffi_handle, records, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
-}
-
-
-#endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD23
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD23
-typedef void (*UniffiCallbackInterfaceStorageMethod23)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
-
-// Making function static works arround:
-// https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceStorageMethod23(
-				UniffiCallbackInterfaceStorageMethod23 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod21 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, record, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
-#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD24
-#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD24
-typedef void (*UniffiCallbackInterfaceStorageMethod24)(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD22
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD22
+typedef void (*UniffiCallbackInterfaceStorageMethod22)(uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
-static void call_UniffiCallbackInterfaceStorageMethod24(
-				UniffiCallbackInterfaceStorageMethod24 cb, uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+static void call_UniffiCallbackInterfaceStorageMethod22(
+				UniffiCallbackInterfaceStorageMethod22 cb, uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, record, local_revision, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD23
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD23
+typedef void (*UniffiCallbackInterfaceStorageMethod23)(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceStorageMethod23(
+				UniffiCallbackInterfaceStorageMethod23 cb, uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, limit, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD24
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD24
+typedef void (*UniffiCallbackInterfaceStorageMethod24)(uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceStorageMethod24(
+				UniffiCallbackInterfaceStorageMethod24 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD25
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD25
-typedef void (*UniffiCallbackInterfaceStorageMethod25)(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceStorageMethod25)(uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod25(
-				UniffiCallbackInterfaceStorageMethod25 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceStorageMethod25 cb, uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, records, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
@@ -1338,6 +1338,48 @@ typedef void (*UniffiCallbackInterfaceStorageMethod26)(uint64_t uniffi_handle, R
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceStorageMethod26(
 				UniffiCallbackInterfaceStorageMethod26 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, record, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD27
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD27
+typedef void (*UniffiCallbackInterfaceStorageMethod27)(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceStorageMethod27(
+				UniffiCallbackInterfaceStorageMethod27 cb, uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, limit, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD28
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD28
+typedef void (*UniffiCallbackInterfaceStorageMethod28)(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceStorageMethod28(
+				UniffiCallbackInterfaceStorageMethod28 cb, uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD29
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_STORAGE_METHOD29
+typedef void (*UniffiCallbackInterfaceStorageMethod29)(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceStorageMethod29(
+				UniffiCallbackInterfaceStorageMethod29 cb, uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, record, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
@@ -1491,15 +1533,18 @@ typedef struct UniffiVTableCallbackInterfaceStorage {
     UniffiCallbackInterfaceStorageMethod15 getContact;
     UniffiCallbackInterfaceStorageMethod16 insertContact;
     UniffiCallbackInterfaceStorageMethod17 deleteContact;
-    UniffiCallbackInterfaceStorageMethod18 addOutgoingChange;
-    UniffiCallbackInterfaceStorageMethod19 completeOutgoingSync;
-    UniffiCallbackInterfaceStorageMethod20 getPendingOutgoingChanges;
-    UniffiCallbackInterfaceStorageMethod21 getLastRevision;
-    UniffiCallbackInterfaceStorageMethod22 insertIncomingRecords;
-    UniffiCallbackInterfaceStorageMethod23 deleteIncomingRecord;
-    UniffiCallbackInterfaceStorageMethod24 getIncomingRecords;
-    UniffiCallbackInterfaceStorageMethod25 getLatestOutgoingChange;
-    UniffiCallbackInterfaceStorageMethod26 updateRecordFromIncoming;
+    UniffiCallbackInterfaceStorageMethod18 setCrossChainSwap;
+    UniffiCallbackInterfaceStorageMethod19 getCrossChainSwap;
+    UniffiCallbackInterfaceStorageMethod20 listActiveCrossChainSwaps;
+    UniffiCallbackInterfaceStorageMethod21 addOutgoingChange;
+    UniffiCallbackInterfaceStorageMethod22 completeOutgoingSync;
+    UniffiCallbackInterfaceStorageMethod23 getPendingOutgoingChanges;
+    UniffiCallbackInterfaceStorageMethod24 getLastRevision;
+    UniffiCallbackInterfaceStorageMethod25 insertIncomingRecords;
+    UniffiCallbackInterfaceStorageMethod26 deleteIncomingRecord;
+    UniffiCallbackInterfaceStorageMethod27 getIncomingRecords;
+    UniffiCallbackInterfaceStorageMethod28 getLatestOutgoingChange;
+    UniffiCallbackInterfaceStorageMethod29 updateRecordFromIncoming;
     UniffiCallbackInterfaceFree uniffiFree;
 } UniffiVTableCallbackInterfaceStorage;
 
@@ -1625,6 +1670,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_disconnect(void* ptr
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_FETCH_CONVERSION_LIMITS
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_FETCH_CONVERSION_LIMITS
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_fetch_conversion_limits(void* ptr, RustBuffer request
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_GET_CROSS_CHAIN_ROUTES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_GET_CROSS_CHAIN_ROUTES
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_get_cross_chain_routes(void* ptr, RustBuffer filter
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_GET_INFO
@@ -2337,6 +2387,21 @@ uint64_t uniffi_breez_sdk_spark_fn_method_storage_insert_contact(void* ptr, Rust
 uint64_t uniffi_breez_sdk_spark_fn_method_storage_delete_contact(void* ptr, RustBuffer id
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_SET_CROSS_CHAIN_SWAP
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_SET_CROSS_CHAIN_SWAP
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_set_cross_chain_swap(void* ptr, RustBuffer swap
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_CROSS_CHAIN_SWAP
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_GET_CROSS_CHAIN_SWAP
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_get_cross_chain_swap(void* ptr, RustBuffer provider, RustBuffer id
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_LIST_ACTIVE_CROSS_CHAIN_SWAPS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_LIST_ACTIVE_CROSS_CHAIN_SWAPS
+uint64_t uniffi_breez_sdk_spark_fn_method_storage_list_active_cross_chain_swaps(void* ptr, RustBuffer provider
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_ADD_OUTGOING_CHANGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_STORAGE_ADD_OUTGOING_CHANGE
 uint64_t uniffi_breez_sdk_spark_fn_method_storage_add_outgoing_change(void* ptr, RustBuffer record
@@ -3017,6 +3082,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_conversion_limits
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_GET_CROSS_CHAIN_ROUTES
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_GET_CROSS_CHAIN_ROUTES
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_get_cross_chain_routes(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_GET_INFO
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_GET_INFO
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_get_info(void
@@ -3647,6 +3718,24 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_storage_delete_contact(void
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_SET_CROSS_CHAIN_SWAP
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_SET_CROSS_CHAIN_SWAP
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_set_cross_chain_swap(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_CROSS_CHAIN_SWAP
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_GET_CROSS_CHAIN_SWAP
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_get_cross_chain_swap(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_LIST_ACTIVE_CROSS_CHAIN_SWAPS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_LIST_ACTIVE_CROSS_CHAIN_SWAPS
+uint16_t uniffi_breez_sdk_spark_checksum_method_storage_list_active_cross_chain_swaps(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_ADD_OUTGOING_CHANGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_STORAGE_ADD_OUTGOING_CHANGE
 uint16_t uniffi_breez_sdk_spark_checksum_method_storage_add_outgoing_change(void
@@ -3852,15 +3941,18 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod15(uint64_t uniffi_handle, RustBuffer id, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod16(uint64_t uniffi_handle, RustBuffer contact, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod17(uint64_t uniffi_handle, RustBuffer id, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19(uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21(uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22(uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod23(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod24(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod25(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod18(uint64_t uniffi_handle, RustBuffer swap, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod19(uint64_t uniffi_handle, RustBuffer provider, RustBuffer id, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod20(uint64_t uniffi_handle, RustBuffer provider, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod21(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod22(uint64_t uniffi_handle, RustBuffer record, uint64_t local_revision, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod23(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod24(uint64_t uniffi_handle, UniffiForeignFutureCompleteU64 uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod25(uint64_t uniffi_handle, RustBuffer records, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod26(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod27(uint64_t uniffi_handle, uint32_t limit, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod28(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageMethod29(uint64_t uniffi_handle, RustBuffer record, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceStorageFree(uint64_t handle);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerMethod0(uint64_t uniffi_handle, RustBuffer event, UniffiForeignFutureCompleteVoid uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceEventListenerFree(uint64_t handle);
