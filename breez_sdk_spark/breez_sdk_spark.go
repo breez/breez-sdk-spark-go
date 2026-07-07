@@ -360,6 +360,7 @@ func init() {
 
 	FfiConverterBitcoinChainServiceINSTANCE.register()
 	FfiConverterExternalBreezSignerINSTANCE.register()
+	FfiConverterExternalSigningSignerINSTANCE.register()
 	FfiConverterExternalSparkSignerINSTANCE.register()
 	FfiConverterFiatServiceINSTANCE.register()
 	FfiConverterPaymentObserverINSTANCE.register()
@@ -403,11 +404,29 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_connect_with_signing_only_signer()
+		})
+		if checksum != 17952 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_connect_with_signing_only_signer: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_create_turnkey_signer()
 		})
-		if checksum != 31659 {
+		if checksum != 50635 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_create_turnkey_signer: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_func_create_turnkey_signing_only_signer()
+		})
+		if checksum != 37791 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_create_turnkey_signing_only_signer: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1047,6 +1066,42 @@ func uniffiCheckChecksums() {
 		if checksum != 65429 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalbreezsigner_hmac_sha256: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigningsigner_derive_public_key()
+		})
+		if checksum != 28092 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigningsigner_derive_public_key: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigningsigner_sign_ecdsa()
+		})
+		if checksum != 13755 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigningsigner_sign_ecdsa: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigningsigner_sign_ecdsa_recoverable()
+		})
+		if checksum != 34935 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigningsigner_sign_ecdsa_recoverable: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsigningsigner_sign_hash_schnorr()
+		})
+		if checksum != 21395 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsigningsigner_sign_hash_schnorr: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -1848,6 +1903,15 @@ func uniffiCheckChecksums() {
 		if checksum != 28871 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_constructor_sdkbuilder_new_with_signer: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_constructor_sdkbuilder_new_with_signing_only_signer()
+		})
+		if checksum != 27342 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_constructor_sdkbuilder_new_with_signing_only_signer: UniFFI API checksum mismatch")
 		}
 	}
 	{
@@ -5820,6 +5884,579 @@ func (c FfiConverterExternalBreezSigner) register() {
 	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_externalbreezsigner(&UniffiVTableCallbackInterfaceExternalBreezSignerINSTANCE)
 }
 
+// External signer that provides signing only, without the SDK's local
+// ECIES/HMAC operations.
+//
+// Implement this instead of [`ExternalBreezSigner`] for a signer that can't
+// release key material for local encryption (for example a policy-restricted
+// enclave). The capability is declared by the type: the SDK keeps session
+// tokens in plaintext and the features that rely on ECIES/HMAC are unavailable.
+type ExternalSigningSigner interface {
+	// Derives a public key for the given BIP32 derivation path.
+	//
+	// # Arguments
+	// * `path` - BIP32 derivation path as a string (e.g., "m/44'/0'/0'/0/0")
+	//
+	// # Returns
+	// The derived public key as 33 bytes, or a `SignerError`
+	//
+	// See also: [JavaScript `getPublicKeyFromDerivation`](https://docs.spark.money/wallets/spark-signer#get-public-key-from-derivation)
+	DerivePublicKey(path string) (PublicKeyBytes, error)
+	// Signs a message using ECDSA at the given derivation path.
+	//
+	// The message should be a 32-byte digest (typically a hash of the original data).
+	//
+	// # Arguments
+	// * `message` - The 32-byte message digest to sign
+	// * `path` - BIP32 derivation path as a string
+	//
+	// # Returns
+	// 64-byte compact ECDSA signature, or a `SignerError`
+	SignEcdsa(message MessageBytes, path string) (EcdsaSignatureBytes, error)
+	// Signs a message using recoverable ECDSA at the given derivation path.
+	//
+	// The message should be a 32-byte digest (typically a hash of the original data).
+	//
+	// # Arguments
+	// * `message` - The 32-byte message digest to sign
+	// * `path` - BIP32 derivation path as a string
+	//
+	// # Returns
+	// 65 bytes: recovery ID (31 + `recovery_id`) + 64-byte signature, or a `SignerError`
+	SignEcdsaRecoverable(message MessageBytes, path string) (RecoverableEcdsaSignatureBytes, error)
+	// Signs a hash using Schnorr signature at the given derivation path.
+	//
+	// # Arguments
+	// * `hash` - The 32-byte hash to sign (must be 32 bytes)
+	// * `path` - BIP32 derivation path as a string
+	//
+	// # Returns
+	// 64-byte Schnorr signature, or a `SignerError`
+	SignHashSchnorr(hash []byte, path string) (SchnorrSignatureBytes, error)
+}
+
+// External signer that provides signing only, without the SDK's local
+// ECIES/HMAC operations.
+//
+// Implement this instead of [`ExternalBreezSigner`] for a signer that can't
+// release key material for local encryption (for example a policy-restricted
+// enclave). The capability is declared by the type: the SDK keeps session
+// tokens in plaintext and the features that rely on ECIES/HMAC are unavailable.
+type ExternalSigningSignerImpl struct {
+	ffiObject FfiObject
+}
+
+// Derives a public key for the given BIP32 derivation path.
+//
+// # Arguments
+// * `path` - BIP32 derivation path as a string (e.g., "m/44'/0'/0'/0/0")
+//
+// # Returns
+// The derived public key as 33 bytes, or a `SignerError`
+//
+// See also: [JavaScript `getPublicKeyFromDerivation`](https://docs.spark.money/wallets/spark-signer#get-public-key-from-derivation)
+func (_self *ExternalSigningSignerImpl) DerivePublicKey(path string) (PublicKeyBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSigningSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) PublicKeyBytes {
+			return FfiConverterPublicKeyBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsigningsigner_derive_public_key(
+			_pointer, FfiConverterStringINSTANCE.Lower(path)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Signs a message using ECDSA at the given derivation path.
+//
+// The message should be a 32-byte digest (typically a hash of the original data).
+//
+// # Arguments
+// * `message` - The 32-byte message digest to sign
+// * `path` - BIP32 derivation path as a string
+//
+// # Returns
+// 64-byte compact ECDSA signature, or a `SignerError`
+func (_self *ExternalSigningSignerImpl) SignEcdsa(message MessageBytes, path string) (EcdsaSignatureBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSigningSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) EcdsaSignatureBytes {
+			return FfiConverterEcdsaSignatureBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsigningsigner_sign_ecdsa(
+			_pointer, FfiConverterMessageBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Signs a message using recoverable ECDSA at the given derivation path.
+//
+// The message should be a 32-byte digest (typically a hash of the original data).
+//
+// # Arguments
+// * `message` - The 32-byte message digest to sign
+// * `path` - BIP32 derivation path as a string
+//
+// # Returns
+// 65 bytes: recovery ID (31 + `recovery_id`) + 64-byte signature, or a `SignerError`
+func (_self *ExternalSigningSignerImpl) SignEcdsaRecoverable(message MessageBytes, path string) (RecoverableEcdsaSignatureBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSigningSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) RecoverableEcdsaSignatureBytes {
+			return FfiConverterRecoverableEcdsaSignatureBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsigningsigner_sign_ecdsa_recoverable(
+			_pointer, FfiConverterMessageBytesINSTANCE.Lower(message), FfiConverterStringINSTANCE.Lower(path)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Signs a hash using Schnorr signature at the given derivation path.
+//
+// # Arguments
+// * `hash` - The 32-byte hash to sign (must be 32 bytes)
+// * `path` - BIP32 derivation path as a string
+//
+// # Returns
+// 64-byte Schnorr signature, or a `SignerError`
+func (_self *ExternalSigningSignerImpl) SignHashSchnorr(hash []byte, path string) (SchnorrSignatureBytes, error) {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSigningSigner")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) SchnorrSignatureBytes {
+			return FfiConverterSchnorrSignatureBytesINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_externalsigningsigner_sign_hash_schnorr(
+			_pointer, FfiConverterBytesINSTANCE.Lower(hash), FfiConverterStringINSTANCE.Lower(path)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+func (object *ExternalSigningSignerImpl) Destroy() {
+	runtime.SetFinalizer(object, nil)
+	object.ffiObject.destroy()
+}
+
+type FfiConverterExternalSigningSigner struct {
+	handleMap *concurrentHandleMap[ExternalSigningSigner]
+}
+
+var FfiConverterExternalSigningSignerINSTANCE = FfiConverterExternalSigningSigner{
+	handleMap: newConcurrentHandleMap[ExternalSigningSigner](),
+}
+
+func (c FfiConverterExternalSigningSigner) Lift(pointer unsafe.Pointer) ExternalSigningSigner {
+	result := &ExternalSigningSignerImpl{
+		newFfiObject(
+			pointer,
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) unsafe.Pointer {
+				return C.uniffi_breez_sdk_spark_fn_clone_externalsigningsigner(pointer, status)
+			},
+			func(pointer unsafe.Pointer, status *C.RustCallStatus) {
+				C.uniffi_breez_sdk_spark_fn_free_externalsigningsigner(pointer, status)
+			},
+		),
+	}
+	runtime.SetFinalizer(result, (*ExternalSigningSignerImpl).Destroy)
+	return result
+}
+
+func (c FfiConverterExternalSigningSigner) Read(reader io.Reader) ExternalSigningSigner {
+	return c.Lift(unsafe.Pointer(uintptr(readUint64(reader))))
+}
+
+func (c FfiConverterExternalSigningSigner) Lower(value ExternalSigningSigner) unsafe.Pointer {
+	// TODO: this is bad - all synchronization from ObjectRuntime.go is discarded here,
+	// because the pointer will be decremented immediately after this function returns,
+	// and someone will be left holding onto a non-locked pointer.
+	pointer := unsafe.Pointer(uintptr(c.handleMap.insert(value)))
+	return pointer
+
+}
+
+func (c FfiConverterExternalSigningSigner) Write(writer io.Writer, value ExternalSigningSigner) {
+	writeUint64(writer, uint64(uintptr(c.Lower(value))))
+}
+
+type FfiDestroyerExternalSigningSigner struct{}
+
+func (_ FfiDestroyerExternalSigningSigner) Destroy(value ExternalSigningSigner) {
+	if val, ok := value.(*ExternalSigningSignerImpl); ok {
+		val.Destroy()
+	} else {
+		panic("Expected *ExternalSigningSignerImpl")
+	}
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod0
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod0(uniffiHandle C.uint64_t, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSigningSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.DerivePublicKey(
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: path,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterPublicKeyBytesINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod1
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod1(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSigningSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.SignEcdsa(
+				FfiConverterMessageBytesINSTANCE.Lift(GoRustBuffer{
+					inner: message,
+				}),
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: path,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterEcdsaSignatureBytesINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod2
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod2(uniffiHandle C.uint64_t, message C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSigningSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.SignEcdsaRecoverable(
+				FfiConverterMessageBytesINSTANCE.Lift(GoRustBuffer{
+					inner: message,
+				}),
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: path,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterRecoverableEcdsaSignatureBytesINSTANCE.Lower(res)
+	}()
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod3
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod3(uniffiHandle C.uint64_t, hash C.RustBuffer, path C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSigningSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	result := make(chan C.UniffiForeignFutureStructRustBuffer, 1)
+	cancel := make(chan struct{}, 1)
+	guardHandle := cgo.NewHandle(cancel)
+	*uniffiOutReturn = C.UniffiForeignFuture{
+		handle: C.uint64_t(guardHandle),
+		free:   C.UniffiForeignFutureFree(C.breez_sdk_spark_uniffiFreeGorutine),
+	}
+
+	// Wait for compleation or cancel
+	go func() {
+		select {
+		case <-cancel:
+		case res := <-result:
+			C.call_UniffiForeignFutureCompleteRustBuffer(uniffiFutureCallback, uniffiCallbackData, res)
+		}
+	}()
+
+	// Eval callback asynchroniously
+	go func() {
+		asyncResult := &C.UniffiForeignFutureStructRustBuffer{}
+		uniffiOutReturn := &asyncResult.returnValue
+		callStatus := &asyncResult.callStatus
+		defer func() {
+			result <- *asyncResult
+		}()
+
+		res, err :=
+			uniffiObj.SignHashSchnorr(
+				FfiConverterBytesINSTANCE.Lift(GoRustBuffer{
+					inner: hash,
+				}),
+				FfiConverterStringINSTANCE.Lift(GoRustBuffer{
+					inner: path,
+				}),
+			)
+
+		if err != nil {
+			var actualError *SignerError
+			if errors.As(err, &actualError) {
+				if actualError != nil {
+					*callStatus = C.RustCallStatus{
+						code:     C.int8_t(uniffiCallbackResultError),
+						errorBuf: FfiConverterSignerErrorINSTANCE.Lower(actualError),
+					}
+					return
+				}
+			} else {
+				*callStatus = C.RustCallStatus{
+					code: C.int8_t(uniffiCallbackUnexpectedResultError),
+				}
+				return
+			}
+		}
+
+		*uniffiOutReturn = FfiConverterSchnorrSignatureBytesINSTANCE.Lower(res)
+	}()
+}
+
+var UniffiVTableCallbackInterfaceExternalSigningSignerINSTANCE = C.UniffiVTableCallbackInterfaceExternalSigningSigner{
+	derivePublicKey:      (C.UniffiCallbackInterfaceExternalSigningSignerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod0),
+	signEcdsa:            (C.UniffiCallbackInterfaceExternalSigningSignerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod1),
+	signEcdsaRecoverable: (C.UniffiCallbackInterfaceExternalSigningSignerMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod2),
+	signHashSchnorr:      (C.UniffiCallbackInterfaceExternalSigningSignerMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerMethod3),
+
+	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerFree),
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerFree
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSigningSignerFree(handle C.uint64_t) {
+	FfiConverterExternalSigningSignerINSTANCE.handleMap.remove(uint64(handle))
+}
+
+func (c FfiConverterExternalSigningSigner) register() {
+	C.uniffi_breez_sdk_spark_fn_init_callback_vtable_externalsigningsigner(&UniffiVTableCallbackInterfaceExternalSigningSignerINSTANCE)
+}
+
 // FFI-compatible mirror of `spark_wallet::SparkSigner`.
 type ExternalSparkSigner interface {
 	// The wallet identity public key (33 bytes compressed).
@@ -9550,6 +10187,22 @@ func NewSdkBuilder(config Config, seed Seed) *SdkBuilder {
 func SdkBuilderNewWithSigner(config Config, breezSigner ExternalBreezSigner, sparkSigner ExternalSparkSigner) *SdkBuilder {
 	return FfiConverterSdkBuilderINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
 		return C.uniffi_breez_sdk_spark_fn_constructor_sdkbuilder_new_with_signer(FfiConverterConfigINSTANCE.Lower(config), FfiConverterExternalBreezSignerINSTANCE.Lower(breezSigner), FfiConverterExternalSparkSignerINSTANCE.Lower(sparkSigner), _uniffiStatus)
+	}))
+}
+
+// Creates a new `SdkBuilder` with a signing-only external signer.
+//
+// Use this for a signer that can't perform the SDK's local ECIES/HMAC
+// operations (for example a policy-restricted enclave). The SDK keeps
+// session tokens in plaintext and disables the features that rely on
+// ECIES/HMAC.
+// Arguments:
+// - `config`: The configuration to be used.
+// - `breez_signer`: Signing-only external signer for non-Spark SDK signing.
+// - `spark_signer`: External high-level Spark signer for the Spark wallet.
+func SdkBuilderNewWithSigningOnlySigner(config Config, breezSigner ExternalSigningSigner, sparkSigner ExternalSparkSigner) *SdkBuilder {
+	return FfiConverterSdkBuilderINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) unsafe.Pointer {
+		return C.uniffi_breez_sdk_spark_fn_constructor_sdkbuilder_new_with_signing_only_signer(FfiConverterConfigINSTANCE.Lower(config), FfiConverterExternalSigningSignerINSTANCE.Lower(breezSigner), FfiConverterExternalSparkSignerINSTANCE.Lower(sparkSigner), _uniffiStatus)
 	}))
 }
 
@@ -15806,6 +16459,67 @@ func (c FfiConverterConnectWithSignerRequest) Write(writer io.Writer, value Conn
 type FfiDestroyerConnectWithSignerRequest struct{}
 
 func (_ FfiDestroyerConnectWithSignerRequest) Destroy(value ConnectWithSignerRequest) {
+	value.Destroy()
+}
+
+// Request object for connecting to the Spark network using a signing-only
+// external signer.
+//
+// Use this instead of [`ConnectWithSignerRequest`] for a signer that can't
+// perform the SDK's local ECIES/HMAC operations (for example a
+// policy-restricted enclave). The SDK keeps session tokens in plaintext and
+// disables the features that rely on ECIES/HMAC.
+type ConnectWithSigningOnlySignerRequest struct {
+	Config Config
+	// Signing-only external signer for non-Spark SDK signing.
+	BreezSigner ExternalSigningSigner
+	// External high-level Spark signer for the Spark wallet flows.
+	SparkSigner ExternalSparkSigner
+	StorageDir  string
+}
+
+func (r *ConnectWithSigningOnlySignerRequest) Destroy() {
+	FfiDestroyerConfig{}.Destroy(r.Config)
+	FfiDestroyerExternalSigningSigner{}.Destroy(r.BreezSigner)
+	FfiDestroyerExternalSparkSigner{}.Destroy(r.SparkSigner)
+	FfiDestroyerString{}.Destroy(r.StorageDir)
+}
+
+type FfiConverterConnectWithSigningOnlySignerRequest struct{}
+
+var FfiConverterConnectWithSigningOnlySignerRequestINSTANCE = FfiConverterConnectWithSigningOnlySignerRequest{}
+
+func (c FfiConverterConnectWithSigningOnlySignerRequest) Lift(rb RustBufferI) ConnectWithSigningOnlySignerRequest {
+	return LiftFromRustBuffer[ConnectWithSigningOnlySignerRequest](c, rb)
+}
+
+func (c FfiConverterConnectWithSigningOnlySignerRequest) Read(reader io.Reader) ConnectWithSigningOnlySignerRequest {
+	return ConnectWithSigningOnlySignerRequest{
+		FfiConverterConfigINSTANCE.Read(reader),
+		FfiConverterExternalSigningSignerINSTANCE.Read(reader),
+		FfiConverterExternalSparkSignerINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterConnectWithSigningOnlySignerRequest) Lower(value ConnectWithSigningOnlySignerRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[ConnectWithSigningOnlySignerRequest](c, value)
+}
+
+func (c FfiConverterConnectWithSigningOnlySignerRequest) LowerExternal(value ConnectWithSigningOnlySignerRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[ConnectWithSigningOnlySignerRequest](c, value))
+}
+
+func (c FfiConverterConnectWithSigningOnlySignerRequest) Write(writer io.Writer, value ConnectWithSigningOnlySignerRequest) {
+	FfiConverterConfigINSTANCE.Write(writer, value.Config)
+	FfiConverterExternalSigningSignerINSTANCE.Write(writer, value.BreezSigner)
+	FfiConverterExternalSparkSignerINSTANCE.Write(writer, value.SparkSigner)
+	FfiConverterStringINSTANCE.Write(writer, value.StorageDir)
+}
+
+type FfiDestroyerConnectWithSigningOnlySignerRequest struct{}
+
+func (_ FfiDestroyerConnectWithSigningOnlySignerRequest) Destroy(value ConnectWithSigningOnlySignerRequest) {
 	value.Destroy()
 }
 
@@ -22974,6 +23688,55 @@ func (c FfiConverterSignMessageResponse) Write(writer io.Writer, value SignMessa
 type FfiDestroyerSignMessageResponse struct{}
 
 func (_ FfiDestroyerSignMessageResponse) Destroy(value SignMessageResponse) {
+	value.Destroy()
+}
+
+// A signing-only external signer paired with the Spark signer, for wallets that
+// connect via [`connect_with_signing_only_signer`]. The Breez half performs
+// signing only, without the SDK's local ECIES/HMAC operations.
+type SigningOnlyExternalSigners struct {
+	// Signing-only external signer for non-Spark SDK signing.
+	BreezSigner ExternalSigningSigner
+	// External high-level Spark signer for the Spark wallet flows.
+	SparkSigner ExternalSparkSigner
+}
+
+func (r *SigningOnlyExternalSigners) Destroy() {
+	FfiDestroyerExternalSigningSigner{}.Destroy(r.BreezSigner)
+	FfiDestroyerExternalSparkSigner{}.Destroy(r.SparkSigner)
+}
+
+type FfiConverterSigningOnlyExternalSigners struct{}
+
+var FfiConverterSigningOnlyExternalSignersINSTANCE = FfiConverterSigningOnlyExternalSigners{}
+
+func (c FfiConverterSigningOnlyExternalSigners) Lift(rb RustBufferI) SigningOnlyExternalSigners {
+	return LiftFromRustBuffer[SigningOnlyExternalSigners](c, rb)
+}
+
+func (c FfiConverterSigningOnlyExternalSigners) Read(reader io.Reader) SigningOnlyExternalSigners {
+	return SigningOnlyExternalSigners{
+		FfiConverterExternalSigningSignerINSTANCE.Read(reader),
+		FfiConverterExternalSparkSignerINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterSigningOnlyExternalSigners) Lower(value SigningOnlyExternalSigners) C.RustBuffer {
+	return LowerIntoRustBuffer[SigningOnlyExternalSigners](c, value)
+}
+
+func (c FfiConverterSigningOnlyExternalSigners) LowerExternal(value SigningOnlyExternalSigners) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SigningOnlyExternalSigners](c, value))
+}
+
+func (c FfiConverterSigningOnlyExternalSigners) Write(writer io.Writer, value SigningOnlyExternalSigners) {
+	FfiConverterExternalSigningSignerINSTANCE.Write(writer, value.BreezSigner)
+	FfiConverterExternalSparkSignerINSTANCE.Write(writer, value.SparkSigner)
+}
+
+type FfiDestroyerSigningOnlyExternalSigners struct{}
+
+func (_ FfiDestroyerSigningOnlyExternalSigners) Destroy(value SigningOnlyExternalSigners) {
 	value.Destroy()
 }
 
@@ -31407,6 +32170,7 @@ var ErrSignerErrorKeyDerivation = fmt.Errorf("SignerErrorKeyDerivation")
 var ErrSignerErrorSigning = fmt.Errorf("SignerErrorSigning")
 var ErrSignerErrorEncryption = fmt.Errorf("SignerErrorEncryption")
 var ErrSignerErrorDecryption = fmt.Errorf("SignerErrorDecryption")
+var ErrSignerErrorEncryptionUnavailable = fmt.Errorf("SignerErrorEncryptionUnavailable")
 var ErrSignerErrorFrost = fmt.Errorf("SignerErrorFrost")
 var ErrSignerErrorInvalidInput = fmt.Errorf("SignerErrorInvalidInput")
 var ErrSignerErrorGeneric = fmt.Errorf("SignerErrorGeneric")
@@ -31522,6 +32286,34 @@ func (err SignerErrorDecryption) Error() string {
 
 func (self SignerErrorDecryption) Is(target error) bool {
 	return target == ErrSignerErrorDecryption
+}
+
+type SignerErrorEncryptionUnavailable struct {
+	Field0 string
+}
+
+func NewSignerErrorEncryptionUnavailable(
+	var0 string,
+) *SignerError {
+	return &SignerError{err: &SignerErrorEncryptionUnavailable{
+		Field0: var0}}
+}
+
+func (e SignerErrorEncryptionUnavailable) destroy() {
+	FfiDestroyerString{}.Destroy(e.Field0)
+}
+
+func (err SignerErrorEncryptionUnavailable) Error() string {
+	return fmt.Sprint("EncryptionUnavailable",
+		": ",
+
+		"Field0=",
+		err.Field0,
+	)
+}
+
+func (self SignerErrorEncryptionUnavailable) Is(target error) bool {
+	return target == ErrSignerErrorEncryptionUnavailable
 }
 
 type SignerErrorFrost struct {
@@ -31645,14 +32437,18 @@ func (c FfiConverterSignerError) Read(reader io.Reader) *SignerError {
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	case 5:
-		return &SignerError{&SignerErrorFrost{
+		return &SignerError{&SignerErrorEncryptionUnavailable{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	case 6:
-		return &SignerError{&SignerErrorInvalidInput{
+		return &SignerError{&SignerErrorFrost{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
 	case 7:
+		return &SignerError{&SignerErrorInvalidInput{
+			Field0: FfiConverterStringINSTANCE.Read(reader),
+		}}
+	case 8:
 		return &SignerError{&SignerErrorGeneric{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
@@ -31675,14 +32471,17 @@ func (c FfiConverterSignerError) Write(writer io.Writer, value *SignerError) {
 	case *SignerErrorDecryption:
 		writeInt32(writer, 4)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
-	case *SignerErrorFrost:
+	case *SignerErrorEncryptionUnavailable:
 		writeInt32(writer, 5)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
-	case *SignerErrorInvalidInput:
+	case *SignerErrorFrost:
 		writeInt32(writer, 6)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
-	case *SignerErrorGeneric:
+	case *SignerErrorInvalidInput:
 		writeInt32(writer, 7)
+		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
+	case *SignerErrorGeneric:
+		writeInt32(writer, 8)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
 	default:
 		_ = variantValue
@@ -31701,6 +32500,8 @@ func (_ FfiDestroyerSignerError) Destroy(value *SignerError) {
 	case SignerErrorEncryption:
 		variantValue.destroy()
 	case SignerErrorDecryption:
+		variantValue.destroy()
+	case SignerErrorEncryptionUnavailable:
 		variantValue.destroy()
 	case SignerErrorFrost:
 		variantValue.destroy()
@@ -37610,14 +38411,61 @@ func ConnectWithSigner(request ConnectWithSignerRequest) (*BreezSdk, error) {
 	return res, err
 }
 
+// Connects to the Spark network using a signing-only external signer.
+//
+// Use this instead of [`connect_with_signer`] for a signer that can't perform
+// the SDK's local ECIES/HMAC operations (for example a policy-restricted
+// enclave). The SDK keeps session tokens in plaintext and disables the features
+// that rely on ECIES/HMAC.
+//
+// # Arguments
+//
+// * `request` - The connection request object with a signing-only external signer
+//
+// # Returns
+//
+// Result containing either the initialized `BreezSdk` or an `SdkError`
+func ConnectWithSigningOnlySigner(request ConnectWithSigningOnlySignerRequest) (*BreezSdk, error) {
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) unsafe.Pointer {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_pointer(handle, status)
+			return res
+		},
+		// liftFn
+		func(ffi unsafe.Pointer) *BreezSdk {
+			return FfiConverterBreezSdkINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_func_connect_with_signing_only_signer(FfiConverterConnectWithSigningOnlySignerRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_pointer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_pointer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
 // Builds the Turnkey-backed Breez and Spark signers from `config`, sharing one
 // Turnkey client.
 //
 // The Spark signer keeps every signing operation in the Turnkey enclave; the
 // Breez signer does too, except ECIES and HMAC, which run locally against a
-// dedicated, non-Spark key exported once here. Exporting a non-Spark key keeps
-// every Spark key (the identity key included) in the enclave; ECIES/HMAC only
-// need a stable key, not a Spark one.
+// dedicated, non-Spark key exported on first use (see `TurnkeyBreezSigner`).
+// Exporting a non-Spark key keeps every Spark key (the identity key included)
+// in the enclave; ECIES/HMAC only need a stable key, not a Spark one.
+//
+// For a wallet under a deny-export policy, use
+// [`create_turnkey_signing_only_signer`] instead: it never exports a key.
 func CreateTurnkeySigner(config TurnkeyConfig) (ExternalSigners, error) {
 	res, err := uniffiRustCallAsync[SignerError](
 		FfiConverterSignerErrorINSTANCE,
@@ -37633,6 +38481,42 @@ func CreateTurnkeySigner(config TurnkeyConfig) (ExternalSigners, error) {
 			return FfiConverterExternalSignersINSTANCE.Lift(ffi)
 		},
 		C.uniffi_breez_sdk_spark_fn_func_create_turnkey_signer(FfiConverterTurnkeyConfigINSTANCE.Lower(config)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Builds signing-only Turnkey-backed signers from `config`, for a wallet under
+// a deny-export policy. The Breez half performs signing only and never exports
+// a key, so no ECIES/HMAC is attempted. Pair with
+// [`connect_with_signing_only_signer`](crate::connect_with_signing_only_signer).
+func CreateTurnkeySigningOnlySigner(config TurnkeyConfig) (SigningOnlyExternalSigners, error) {
+	res, err := uniffiRustCallAsync[SignerError](
+		FfiConverterSignerErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) SigningOnlyExternalSigners {
+			return FfiConverterSigningOnlyExternalSignersINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_func_create_turnkey_signing_only_signer(FfiConverterTurnkeyConfigINSTANCE.Lower(config)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
