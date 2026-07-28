@@ -1324,7 +1324,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_passkeyclient_connect_with_passkey()
 		})
-		if checksum != 47815 {
+		if checksum != 32814 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_passkeyclient_connect_with_passkey: UniFFI API checksum mismatch")
 		}
@@ -8595,8 +8595,7 @@ type PasskeyClientInterface interface {
 	// hosts can branch on.
 	CheckAvailability() (PasskeyAvailability, error)
 	// Single-CTA onboarding: silent sign-in, falling through to
-	// registration when no credential exists on the device. The returned
-	// [`ConnectFlow`] tells the caller which path ran.
+	// registration when no credential exists on the device.
 	//
 	// The silent sign-in pins `prefer_immediately_available_credentials =
 	// true` regardless of [`SignInRequest`]: the fallback depends on the OS
@@ -8605,11 +8604,12 @@ type PasskeyClientInterface interface {
 	// register path; every other error (`Cancel`, `Timeout`, ...) propagates
 	// unchanged.
 	//
-	// Mobile-only: meant for iOS 18+ / Android 9+ where
-	// `preferImmediatelyAvailableCredentials` is honored. The web
-	// equivalent (`mediation: 'immediate'`) is not yet stable
-	// cross-browser, so this is not surfaced on WASM; web hosts call
-	// [`Self::sign_in`] and catch `CredentialNotFound` themselves.
+	// On WASM the silent sign-in maps to `WebAuthn` `uiMode: 'immediate'`
+	// where the browser advertises it. Web hosts gate on the browser's
+	// immediate-mediation capability (the WASM client surfaces it):
+	// without it the probe shows the standard picker and a dismiss is a
+	// cancel, not `CredentialNotFound`, so it never reaches register.
+	// Present an explicit create / sign-in choice there instead.
 	ConnectWithPasskey(request ConnectWithPasskeyRequest) (ConnectWithPasskeyResponse, error)
 	// Label sub-object. List or publish labels for this passkey's
 	// identity.
@@ -8692,8 +8692,7 @@ func (_self *PasskeyClient) CheckAvailability() (PasskeyAvailability, error) {
 }
 
 // Single-CTA onboarding: silent sign-in, falling through to
-// registration when no credential exists on the device. The returned
-// [`ConnectFlow`] tells the caller which path ran.
+// registration when no credential exists on the device.
 //
 // The silent sign-in pins `prefer_immediately_available_credentials =
 // true` regardless of [`SignInRequest`]: the fallback depends on the OS
@@ -8702,11 +8701,12 @@ func (_self *PasskeyClient) CheckAvailability() (PasskeyAvailability, error) {
 // register path; every other error (`Cancel`, `Timeout`, ...) propagates
 // unchanged.
 //
-// Mobile-only: meant for iOS 18+ / Android 9+ where
-// `preferImmediatelyAvailableCredentials` is honored. The web
-// equivalent (`mediation: 'immediate'`) is not yet stable
-// cross-browser, so this is not surfaced on WASM; web hosts call
-// [`Self::sign_in`] and catch `CredentialNotFound` themselves.
+// On WASM the silent sign-in maps to `WebAuthn` `uiMode: 'immediate'`
+// where the browser advertises it. Web hosts gate on the browser's
+// immediate-mediation capability (the WASM client surfaces it):
+// without it the probe shows the standard picker and a dismiss is a
+// cancel, not `CredentialNotFound`, so it never reaches register.
+// Present an explicit create / sign-in choice there instead.
 func (_self *PasskeyClient) ConnectWithPasskey(request ConnectWithPasskeyRequest) (ConnectWithPasskeyResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*PasskeyClient")
 	defer _self.ffiObject.decrementPointer()
@@ -16665,10 +16665,11 @@ type ConnectWithPasskeyRequest struct {
 	// `None`. Used both for the silent sign-in attempt and, if it
 	// fast-fails, for the fallback registration.
 	Label *string
-	// Optional credential IDs to restrict the silent sign-in
-	// attempt to (reauthentication path). See
-	// [`SignInRequest::allow_credentials`]. Ignored on the fallback
-	// registration path.
+	// Optional credential IDs to restrict the sign-in attempt to
+	// (reauthentication path). A non-empty list runs the modal sign-in
+	// rather than the immediate probe (a pin means a credential is already
+	// known). See [`SignInRequest::allow_credentials`]. Ignored on the
+	// fallback registration path.
 	AllowCredentials *[][]byte
 	// Optional already-registered credential IDs to surface
 	// duplicates on the fallback registration path. See
@@ -16725,14 +16726,22 @@ func (_ FfiDestroyerConnectWithPasskeyRequest) Destroy(value ConnectWithPasskeyR
 // registered, when the provider surfaces it. The register path also
 // populates the attestation fields (`aaguid`, `backup_eligible`); the
 // sign-in path sets only `credential_id`.
+//
+// `labels` is the user's discovered label set when `request.label` was
+// `None` (the returning-user multi-wallet case): `wallet` is the default
+// label, and a host showing more than one entry lets the user pick
+// another via [`PasskeyClient::sign_in`]. Empty on the register path (a
+// new user has no other labels) and when a specific label was requested.
 type ConnectWithPasskeyResponse struct {
 	Wallet     Wallet
 	Credential *PasskeyCredential
+	Labels     []string
 }
 
 func (r *ConnectWithPasskeyResponse) Destroy() {
 	FfiDestroyerWallet{}.Destroy(r.Wallet)
 	FfiDestroyerOptionalPasskeyCredential{}.Destroy(r.Credential)
+	FfiDestroyerSequenceString{}.Destroy(r.Labels)
 }
 
 type FfiConverterConnectWithPasskeyResponse struct{}
@@ -16747,6 +16756,7 @@ func (c FfiConverterConnectWithPasskeyResponse) Read(reader io.Reader) ConnectWi
 	return ConnectWithPasskeyResponse{
 		FfiConverterWalletINSTANCE.Read(reader),
 		FfiConverterOptionalPasskeyCredentialINSTANCE.Read(reader),
+		FfiConverterSequenceStringINSTANCE.Read(reader),
 	}
 }
 
@@ -16761,6 +16771,7 @@ func (c FfiConverterConnectWithPasskeyResponse) LowerExternal(value ConnectWithP
 func (c FfiConverterConnectWithPasskeyResponse) Write(writer io.Writer, value ConnectWithPasskeyResponse) {
 	FfiConverterWalletINSTANCE.Write(writer, value.Wallet)
 	FfiConverterOptionalPasskeyCredentialINSTANCE.Write(writer, value.Credential)
+	FfiConverterSequenceStringINSTANCE.Write(writer, value.Labels)
 }
 
 type FfiDestroyerConnectWithPasskeyResponse struct{}
