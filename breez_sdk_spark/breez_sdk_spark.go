@@ -24562,8 +24562,8 @@ func (_ FfiDestroyerRefundDepositResponse) Destroy(value RefundDepositResponse) 
 type RefundPendingConversionsResponse struct {
 	// Conversions successfully refunded this pass.
 	Refunded uint32
-	// Conversions intentionally deferred (eligible but held back by a
-	// safety window). The next pass will retry them.
+	// Conversions not clawed back this pass: held back by a safety window, or
+	// found to have executed after all. Only the former are retried.
 	Skipped uint32
 	// Conversions whose clawback did not complete this pass (rejected or
 	// errored; funds not returned). The next pass will retry them.
@@ -29143,6 +29143,7 @@ type ConversionInfoAmm struct {
 	Fee              *u128
 	Purpose          *ConversionPurpose
 	AmountAdjustment *AmountAdjustmentReason
+	Degradation      *SwapDegradation
 }
 
 func (e ConversionInfoAmm) Destroy() {
@@ -29152,6 +29153,7 @@ func (e ConversionInfoAmm) Destroy() {
 	FfiDestroyerOptionalTypeu128{}.Destroy(e.Fee)
 	FfiDestroyerOptionalConversionPurpose{}.Destroy(e.Purpose)
 	FfiDestroyerOptionalAmountAdjustmentReason{}.Destroy(e.AmountAdjustment)
+	FfiDestroyerOptionalSwapDegradation{}.Destroy(e.Degradation)
 }
 
 // Orchestra cross-chain conversion via the Flashnet orchestration API.
@@ -29267,6 +29269,7 @@ func (FfiConverterConversionInfo) Read(reader io.Reader) ConversionInfo {
 			FfiConverterOptionalTypeu128INSTANCE.Read(reader),
 			FfiConverterOptionalConversionPurposeINSTANCE.Read(reader),
 			FfiConverterOptionalAmountAdjustmentReasonINSTANCE.Read(reader),
+			FfiConverterOptionalSwapDegradationINSTANCE.Read(reader),
 		}
 	case 2:
 		return ConversionInfoOrchestra{
@@ -29324,6 +29327,7 @@ func (FfiConverterConversionInfo) Write(writer io.Writer, value ConversionInfo) 
 		FfiConverterOptionalTypeu128INSTANCE.Write(writer, variant_value.Fee)
 		FfiConverterOptionalConversionPurposeINSTANCE.Write(writer, variant_value.Purpose)
 		FfiConverterOptionalAmountAdjustmentReasonINSTANCE.Write(writer, variant_value.AmountAdjustment)
+		FfiConverterOptionalSwapDegradationINSTANCE.Write(writer, variant_value.Degradation)
 	case ConversionInfoOrchestra:
 		writeInt32(writer, 2)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.OrderId)
@@ -36562,6 +36566,51 @@ func (_ FfiDestroyerSuccessActionProcessed) Destroy(value SuccessActionProcessed
 	value.Destroy()
 }
 
+// How an executed swap departed from the terms the client signed.
+//
+// The input is spent either way, so the conversion completes rather than being
+// refunded. This records that it did not deliver what was signed for.
+type SwapDegradation uint
+
+const (
+	// Delivered less than the minimum the intent signed.
+	SwapDegradationBelowMinimum SwapDegradation = 1
+	// Delivered an asset other than the one the intent named.
+	SwapDegradationUnexpectedAsset SwapDegradation = 2
+	// Accepted without naming the amount, the asset, or the transfer carrying
+	// it.
+	SwapDegradationMissingInfo SwapDegradation = 3
+)
+
+type FfiConverterSwapDegradation struct{}
+
+var FfiConverterSwapDegradationINSTANCE = FfiConverterSwapDegradation{}
+
+func (c FfiConverterSwapDegradation) Lift(rb RustBufferI) SwapDegradation {
+	return LiftFromRustBuffer[SwapDegradation](c, rb)
+}
+
+func (c FfiConverterSwapDegradation) Lower(value SwapDegradation) C.RustBuffer {
+	return LowerIntoRustBuffer[SwapDegradation](c, value)
+}
+
+func (c FfiConverterSwapDegradation) LowerExternal(value SwapDegradation) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[SwapDegradation](c, value))
+}
+func (FfiConverterSwapDegradation) Read(reader io.Reader) SwapDegradation {
+	id := readInt32(reader)
+	return SwapDegradation(id)
+}
+
+func (FfiConverterSwapDegradation) Write(writer io.Writer, value SwapDegradation) {
+	writeInt32(writer, int32(value))
+}
+
+type FfiDestroyerSwapDegradation struct{}
+
+func (_ FfiDestroyerSwapDegradation) Destroy(value SwapDegradation) {
+}
+
 type TokenTransactionType uint
 
 const (
@@ -39283,6 +39332,47 @@ type FfiDestroyerOptionalSuccessActionProcessed struct{}
 func (_ FfiDestroyerOptionalSuccessActionProcessed) Destroy(value *SuccessActionProcessed) {
 	if value != nil {
 		FfiDestroyerSuccessActionProcessed{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalSwapDegradation struct{}
+
+var FfiConverterOptionalSwapDegradationINSTANCE = FfiConverterOptionalSwapDegradation{}
+
+func (c FfiConverterOptionalSwapDegradation) Lift(rb RustBufferI) *SwapDegradation {
+	return LiftFromRustBuffer[*SwapDegradation](c, rb)
+}
+
+func (_ FfiConverterOptionalSwapDegradation) Read(reader io.Reader) *SwapDegradation {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterSwapDegradationINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalSwapDegradation) Lower(value *SwapDegradation) C.RustBuffer {
+	return LowerIntoRustBuffer[*SwapDegradation](c, value)
+}
+
+func (c FfiConverterOptionalSwapDegradation) LowerExternal(value *SwapDegradation) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*SwapDegradation](c, value))
+}
+
+func (_ FfiConverterOptionalSwapDegradation) Write(writer io.Writer, value *SwapDegradation) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterSwapDegradationINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalSwapDegradation struct{}
+
+func (_ FfiDestroyerOptionalSwapDegradation) Destroy(value *SwapDegradation) {
+	if value != nil {
+		FfiDestroyerSwapDegradation{}.Destroy(*value)
 	}
 }
 
