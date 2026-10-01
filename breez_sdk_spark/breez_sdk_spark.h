@@ -2971,6 +2971,11 @@ uint64_t uniffi_breez_sdk_spark_fn_func_new_rest_chain_service(RustBuffer url, R
 uint64_t uniffi_breez_sdk_spark_fn_func_new_shared_sdk_context(RustBuffer config
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_PARSE_SPARK_CONFIG
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_PARSE_SPARK_CONFIG
+RustBuffer uniffi_breez_sdk_spark_fn_func_parse_spark_config(RustBuffer json, RustCallStatus *out_status
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_POSTGRES_STORAGE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_FUNC_POSTGRES_STORAGE
 void* uniffi_breez_sdk_spark_fn_func_postgres_storage(RustBuffer config, RustCallStatus *out_status
@@ -3366,6 +3371,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_func_new_rest_chain_service(void
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_NEW_SHARED_SDK_CONTEXT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_NEW_SHARED_SDK_CONTEXT
 uint16_t uniffi_breez_sdk_spark_checksum_func_new_shared_sdk_context(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_PARSE_SPARK_CONFIG
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_FUNC_PARSE_SPARK_CONFIG
+uint16_t uniffi_breez_sdk_spark_checksum_func_parse_spark_config(void
     
 );
 #endif
