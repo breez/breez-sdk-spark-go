@@ -549,15 +549,6 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
-			return C.uniffi_breez_sdk_spark_checksum_func_parse_spark_config()
-		})
-		if checksum != 54802 {
-			// If this happens try cleaning and rebuilding your project
-			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_func_parse_spark_config: UniFFI API checksum mismatch")
-		}
-	}
-	{
-		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_func_postgres_storage()
 		})
 		if checksum != 45001 {
@@ -803,7 +794,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_claim_deposit_quote()
 		})
-		if checksum != 39876 {
+		if checksum != 30349 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_claim_deposit_quote: UniFFI API checksum mismatch")
 		}
@@ -1694,7 +1685,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_rest_chain_service()
 		})
-		if checksum != 10546 {
+		if checksum != 63155 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_sdkbuilder_with_rest_chain_service: UniFFI API checksum mismatch")
 		}
@@ -3521,9 +3512,6 @@ type BreezSdkInterface interface {
 	//
 	// The early quote is requested from the provider on each call rather than read
 	// from cache, so call this when a user is deciding, not on a timer.
-	//
-	// Fails with `DepositTooSmall` for a deposit worth too little to claim at the
-	// current fees.
 	FetchClaimDepositQuote(request FetchClaimDepositQuoteRequest) (FetchClaimDepositQuoteResponse, error)
 	FetchConversionLimits(request FetchConversionLimitsRequest) (FetchConversionLimitsResponse, error)
 	// Returns the available cross-chain routes.
@@ -4463,9 +4451,6 @@ func (_self *BreezSdk) ExportUnilateralExitState() (ExportUnilateralExitStateRes
 //
 // The early quote is requested from the provider on each call rather than read
 // from cache, so call this when a user is deciding, not on a timer.
-//
-// Fails with `DepositTooSmall` for a deposit worth too little to claim at the
-// current fees.
 func (_self *BreezSdk) FetchClaimDepositQuote(request FetchClaimDepositQuoteRequest) (FetchClaimDepositQuoteResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -11756,8 +11741,7 @@ type SdkBuilderInterface interface {
 	// **Deprecated.** Use [`with_storage`](SdkBuilder::with_storage) with
 	// [`postgres_storage`](crate::postgres_storage).
 	WithPostgresBackend(config PostgresStorageConfig) error
-	// Adds a REST chain service backend to be used by the SDK. Call it more
-	// than once to add fallbacks, tried in the order they were added.
+	// Sets the REST chain service to be used by the SDK.
 	// Arguments:
 	// - `url`: The base URL of the REST API.
 	// - `api_type`: The API type to be used.
@@ -12118,8 +12102,7 @@ func (_self *SdkBuilder) WithPostgresBackend(config PostgresStorageConfig) error
 	return err
 }
 
-// Adds a REST chain service backend to be used by the SDK. Call it more
-// than once to add fallbacks, tried in the order they were added.
+// Sets the REST chain service to be used by the SDK.
 // Arguments:
 // - `url`: The base URL of the REST API.
 // - `api_type`: The API type to be used.
@@ -32556,19 +32539,6 @@ func (e DepositClaimErrorMissingUtxo) Destroy() {
 	FfiDestroyerUint32{}.Destroy(e.Vout)
 }
 
-// The deposit is worth too little to claim: after the claim fee, what would
-// be credited is below the dust limit. A drop in on-chain fees can make it
-// claimable.
-type DepositClaimErrorDepositTooSmall struct {
-	Tx   string
-	Vout uint32
-}
-
-func (e DepositClaimErrorDepositTooSmall) Destroy() {
-	FfiDestroyerString{}.Destroy(e.Tx)
-	FfiDestroyerUint32{}.Destroy(e.Vout)
-}
-
 type DepositClaimErrorGeneric struct {
 	Message string
 }
@@ -32609,11 +32579,6 @@ func (FfiConverterDepositClaimError) Read(reader io.Reader) DepositClaimError {
 			FfiConverterUint32INSTANCE.Read(reader),
 		}
 	case 3:
-		return DepositClaimErrorDepositTooSmall{
-			FfiConverterStringINSTANCE.Read(reader),
-			FfiConverterUint32INSTANCE.Read(reader),
-		}
-	case 4:
 		return DepositClaimErrorGeneric{
 			FfiConverterStringINSTANCE.Read(reader),
 		}
@@ -32635,12 +32600,8 @@ func (FfiConverterDepositClaimError) Write(writer io.Writer, value DepositClaimE
 		writeInt32(writer, 2)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Tx)
 		FfiConverterUint32INSTANCE.Write(writer, variant_value.Vout)
-	case DepositClaimErrorDepositTooSmall:
-		writeInt32(writer, 3)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.Tx)
-		FfiConverterUint32INSTANCE.Write(writer, variant_value.Vout)
 	case DepositClaimErrorGeneric:
-		writeInt32(writer, 4)
+		writeInt32(writer, 3)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.Message)
 	default:
 		_ = variant_value
@@ -36460,7 +36421,6 @@ var ErrSdkErrorStorageError = fmt.Errorf("SdkErrorStorageError")
 var ErrSdkErrorChainServiceError = fmt.Errorf("SdkErrorChainServiceError")
 var ErrSdkErrorMaxDepositClaimFeeExceeded = fmt.Errorf("SdkErrorMaxDepositClaimFeeExceeded")
 var ErrSdkErrorMissingUtxo = fmt.Errorf("SdkErrorMissingUtxo")
-var ErrSdkErrorDepositTooSmall = fmt.Errorf("SdkErrorDepositTooSmall")
 var ErrSdkErrorDepositClaimInProgress = fmt.Errorf("SdkErrorDepositClaimInProgress")
 var ErrSdkErrorRefundReplacementFeeTooLow = fmt.Errorf("SdkErrorRefundReplacementFeeTooLow")
 var ErrSdkErrorLnurlError = fmt.Errorf("SdkErrorLnurlError")
@@ -36876,47 +36836,6 @@ func (self SdkErrorMissingUtxo) Is(target error) bool {
 	return target == ErrSdkErrorMissingUtxo
 }
 
-// The deposit is worth too little to claim: after the claim fee, what would
-// be credited is below the dust limit. A drop in on-chain fees can make it
-// claimable.
-type SdkErrorDepositTooSmall struct {
-	Tx   string
-	Vout uint32
-}
-
-// The deposit is worth too little to claim: after the claim fee, what would
-// be credited is below the dust limit. A drop in on-chain fees can make it
-// claimable.
-func NewSdkErrorDepositTooSmall(
-	tx string,
-	vout uint32,
-) *SdkError {
-	return &SdkError{err: &SdkErrorDepositTooSmall{
-		Tx:   tx,
-		Vout: vout}}
-}
-
-func (e SdkErrorDepositTooSmall) destroy() {
-	FfiDestroyerString{}.Destroy(e.Tx)
-	FfiDestroyerUint32{}.Destroy(e.Vout)
-}
-
-func (err SdkErrorDepositTooSmall) Error() string {
-	return fmt.Sprint("DepositTooSmall",
-		": ",
-
-		"Tx=",
-		err.Tx,
-		", ",
-		"Vout=",
-		err.Vout,
-	)
-}
-
-func (self SdkErrorDepositTooSmall) Is(target error) bool {
-	return target == ErrSdkErrorDepositTooSmall
-}
-
 // Another claim on this deposit is already running.
 type SdkErrorDepositClaimInProgress struct {
 	Tx   string
@@ -37225,37 +37144,32 @@ func (c FfiConverterSdkError) Read(reader io.Reader) *SdkError {
 			Vout: FfiConverterUint32INSTANCE.Read(reader),
 		}}
 	case 12:
-		return &SdkError{&SdkErrorDepositTooSmall{
-			Tx:   FfiConverterStringINSTANCE.Read(reader),
-			Vout: FfiConverterUint32INSTANCE.Read(reader),
-		}}
-	case 13:
 		return &SdkError{&SdkErrorDepositClaimInProgress{
 			Tx:   FfiConverterStringINSTANCE.Read(reader),
 			Vout: FfiConverterUint32INSTANCE.Read(reader),
 		}}
-	case 14:
+	case 13:
 		return &SdkError{&SdkErrorRefundReplacementFeeTooLow{
 			PendingFeeSats:  FfiConverterUint64INSTANCE.Read(reader),
 			RequiredFeeSats: FfiConverterUint64INSTANCE.Read(reader),
 		}}
-	case 15:
+	case 14:
 		return &SdkError{&SdkErrorLnurlError{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 16:
+	case 15:
 		return &SdkError{&SdkErrorSigner{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
-	case 17:
+	case 16:
 		return &SdkError{&SdkErrorOptimizationAlreadyRunning{}}
-	case 18:
+	case 17:
 		return &SdkError{&SdkErrorOptimizationCancelled{}}
-	case 19:
+	case 18:
 		return &SdkError{&SdkErrorInsufficientCpfpFunds{
 			RequiredSat: FfiConverterUint64INSTANCE.Read(reader),
 		}}
-	case 20:
+	case 19:
 		return &SdkError{&SdkErrorGeneric{
 			Field0: FfiConverterStringINSTANCE.Read(reader),
 		}}
@@ -37308,33 +37222,29 @@ func (c FfiConverterSdkError) Write(writer io.Writer, value *SdkError) {
 		writeInt32(writer, 11)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Tx)
 		FfiConverterUint32INSTANCE.Write(writer, variantValue.Vout)
-	case *SdkErrorDepositTooSmall:
+	case *SdkErrorDepositClaimInProgress:
 		writeInt32(writer, 12)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Tx)
 		FfiConverterUint32INSTANCE.Write(writer, variantValue.Vout)
-	case *SdkErrorDepositClaimInProgress:
-		writeInt32(writer, 13)
-		FfiConverterStringINSTANCE.Write(writer, variantValue.Tx)
-		FfiConverterUint32INSTANCE.Write(writer, variantValue.Vout)
 	case *SdkErrorRefundReplacementFeeTooLow:
-		writeInt32(writer, 14)
+		writeInt32(writer, 13)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.PendingFeeSats)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.RequiredFeeSats)
 	case *SdkErrorLnurlError:
-		writeInt32(writer, 15)
+		writeInt32(writer, 14)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
 	case *SdkErrorSigner:
-		writeInt32(writer, 16)
+		writeInt32(writer, 15)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
 	case *SdkErrorOptimizationAlreadyRunning:
-		writeInt32(writer, 17)
+		writeInt32(writer, 16)
 	case *SdkErrorOptimizationCancelled:
-		writeInt32(writer, 18)
+		writeInt32(writer, 17)
 	case *SdkErrorInsufficientCpfpFunds:
-		writeInt32(writer, 19)
+		writeInt32(writer, 18)
 		FfiConverterUint64INSTANCE.Write(writer, variantValue.RequiredSat)
 	case *SdkErrorGeneric:
-		writeInt32(writer, 20)
+		writeInt32(writer, 19)
 		FfiConverterStringINSTANCE.Write(writer, variantValue.Field0)
 	default:
 		_ = variantValue
@@ -37367,8 +37277,6 @@ func (_ FfiDestroyerSdkError) Destroy(value *SdkError) {
 	case SdkErrorMaxDepositClaimFeeExceeded:
 		variantValue.destroy()
 	case SdkErrorMissingUtxo:
-		variantValue.destroy()
-	case SdkErrorDepositTooSmall:
 		variantValue.destroy()
 	case SdkErrorDepositClaimInProgress:
 		variantValue.destroy()
@@ -37506,24 +37414,6 @@ type SdkEventUnilateralExitStateChanged struct {
 func (e SdkEventUnilateralExitStateChanged) Destroy() {
 }
 
-// Emitted when a Stable Balance conversion failed: sweeping received
-// bitcoin into the stable token, or converting the token back to bitcoin
-// on deactivation. The SDK tries again after a growing delay, and
-// `retry_in_secs` is the soonest it will. It is unset for a received
-// payment's own conversion, which is not retried: its sats go to the next
-// batch conversion, which reports its own failures.
-type SdkEventStableBalanceConversionFailed struct {
-	Conversion  StableBalanceConversionKind
-	Error       string
-	RetryInSecs *uint64
-}
-
-func (e SdkEventStableBalanceConversionFailed) Destroy() {
-	FfiDestroyerStableBalanceConversionKind{}.Destroy(e.Conversion)
-	FfiDestroyerString{}.Destroy(e.Error)
-	FfiDestroyerOptionalUint64{}.Destroy(e.RetryInSecs)
-}
-
 type FfiConverterSdkEvent struct{}
 
 var FfiConverterSdkEventINSTANCE = FfiConverterSdkEvent{}
@@ -37582,12 +37472,6 @@ func (FfiConverterSdkEvent) Read(reader io.Reader) SdkEvent {
 		}
 	case 11:
 		return SdkEventUnilateralExitStateChanged{}
-	case 12:
-		return SdkEventStableBalanceConversionFailed{
-			FfiConverterStableBalanceConversionKindINSTANCE.Read(reader),
-			FfiConverterStringINSTANCE.Read(reader),
-			FfiConverterOptionalUint64INSTANCE.Read(reader),
-		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterSdkEvent.Read()", id))
 	}
@@ -37626,11 +37510,6 @@ func (FfiConverterSdkEvent) Write(writer io.Writer, value SdkEvent) {
 		FfiConverterSequenceDepositInfoINSTANCE.Write(writer, variant_value.NewDeposits)
 	case SdkEventUnilateralExitStateChanged:
 		writeInt32(writer, 11)
-	case SdkEventStableBalanceConversionFailed:
-		writeInt32(writer, 12)
-		FfiConverterStableBalanceConversionKindINSTANCE.Write(writer, variant_value.Conversion)
-		FfiConverterStringINSTANCE.Write(writer, variant_value.Error)
-		FfiConverterOptionalUint64INSTANCE.Write(writer, variant_value.RetryInSecs)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterSdkEvent.Write", value))
@@ -39257,48 +39136,6 @@ type FfiDestroyerStableBalanceActiveLabel struct{}
 
 func (_ FfiDestroyerStableBalanceActiveLabel) Destroy(value StableBalanceActiveLabel) {
 	value.Destroy()
-}
-
-// Which Stable Balance conversion an [`SdkEvent::StableBalanceConversionFailed`]
-// refers to.
-type StableBalanceConversionKind uint
-
-const (
-	// A single received payment being converted to the stable token.
-	StableBalanceConversionKindPerReceive StableBalanceConversionKind = 1
-	// Bitcoin above the threshold being swept into the stable token.
-	StableBalanceConversionKindAutoConvert StableBalanceConversionKind = 2
-	// The stable token being converted back to bitcoin after deactivation.
-	StableBalanceConversionKindDeactivation StableBalanceConversionKind = 3
-)
-
-type FfiConverterStableBalanceConversionKind struct{}
-
-var FfiConverterStableBalanceConversionKindINSTANCE = FfiConverterStableBalanceConversionKind{}
-
-func (c FfiConverterStableBalanceConversionKind) Lift(rb RustBufferI) StableBalanceConversionKind {
-	return LiftFromRustBuffer[StableBalanceConversionKind](c, rb)
-}
-
-func (c FfiConverterStableBalanceConversionKind) Lower(value StableBalanceConversionKind) C.RustBuffer {
-	return LowerIntoRustBuffer[StableBalanceConversionKind](c, value)
-}
-
-func (c FfiConverterStableBalanceConversionKind) LowerExternal(value StableBalanceConversionKind) ExternalCRustBuffer {
-	return RustBufferFromC(LowerIntoRustBuffer[StableBalanceConversionKind](c, value))
-}
-func (FfiConverterStableBalanceConversionKind) Read(reader io.Reader) StableBalanceConversionKind {
-	id := readInt32(reader)
-	return StableBalanceConversionKind(id)
-}
-
-func (FfiConverterStableBalanceConversionKind) Write(writer io.Writer, value StableBalanceConversionKind) {
-	writeInt32(writer, int32(value))
-}
-
-type FfiDestroyerStableBalanceConversionKind struct{}
-
-func (_ FfiDestroyerStableBalanceConversionKind) Destroy(value StableBalanceConversionKind) {
 }
 
 // Errors that can occur during storage operations
@@ -47176,23 +47013,6 @@ func NewSharedSdkContext(config SdkContextConfig) (*SdkContext, error) {
 	}
 
 	return res, err
-}
-
-// Reads a [`SparkConfig`] from JSON, for a deployment that publishes its
-// operators, service provider and certificates as a file. Set it on
-// [`Config::spark_config`] to connect a wallet to that deployment.
-func ParseSparkConfig(json string) (SparkConfig, error) {
-	_uniffiRV, _uniffiErr := rustCallWithError[SdkError](FfiConverterSdkError{}, func(_uniffiStatus *C.RustCallStatus) RustBufferI {
-		return GoRustBuffer{
-			inner: C.uniffi_breez_sdk_spark_fn_func_parse_spark_config(FfiConverterStringINSTANCE.Lower(json), _uniffiStatus),
-		}
-	})
-	if _uniffiErr != nil {
-		var _uniffiDefaultValue SparkConfig
-		return _uniffiDefaultValue, _uniffiErr
-	} else {
-		return FfiConverterSparkConfigINSTANCE.Lift(_uniffiRV), nil
-	}
 }
 
 // `PostgreSQL`-backed storage built from `config`. Opens the connection pool;
