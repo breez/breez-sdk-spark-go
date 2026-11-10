@@ -695,7 +695,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_bridge_from_cash_app()
 		})
-		if checksum != 29767 {
+		if checksum != 8629 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_bridge_from_cash_app: UniFFI API checksum mismatch")
 		}
@@ -1298,7 +1298,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_bridgingclient_bridge_from_cash_app()
 		})
-		if checksum != 63903 {
+		if checksum != 61880 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_bridgingclient_bridge_from_cash_app: UniFFI API checksum mismatch")
 		}
@@ -3636,8 +3636,9 @@ type BreezSdkInterface interface {
 	//
 	// Creates a cross-chain order and returns a `cash.app` deep link the payer
 	// opens. Once paid over Lightning, the provider delivers the stablecoin to
-	// `address`. No funds move through the Spark wallet, and nothing is
-	// tracked. Only available on mainnet.
+	// `address`, or refunds a failure before the swap to this wallet's
+	// Lightning address, when one is registered. Nothing is tracked. Only
+	// available on mainnet.
 	BridgeFromCashApp(request BridgeFromCashAppRequest) (BridgeFromCashAppResponse, error)
 	// **Deprecated.** Use `bridge_to_cash_app` on the client from
 	// [`get_bridging_client`](Self::get_bridging_client), whose bridges can be
@@ -4153,8 +4154,9 @@ func (_self *BreezSdk) AuthorizeLightningAddressTransfer(request AuthorizeTransf
 //
 // Creates a cross-chain order and returns a `cash.app` deep link the payer
 // opens. Once paid over Lightning, the provider delivers the stablecoin to
-// `address`. No funds move through the Spark wallet, and nothing is
-// tracked. Only available on mainnet.
+// `address`, or refunds a failure before the swap to this wallet's
+// Lightning address, when one is registered. Nothing is tracked. Only
+// available on mainnet.
 func (_self *BreezSdk) BridgeFromCashApp(request BridgeFromCashAppRequest) (BridgeFromCashAppResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
 	defer _self.ffiObject.decrementPointer()
@@ -6780,7 +6782,10 @@ func (_ FfiDestroyerBreezSdk) Destroy(value *BreezSdk) {
 type BridgingClientInterface interface {
 	// Pays a recipient on another chain from Cash App. Takes a route for the
 	// address that the payer funds over Lightning, and returns the bridge
-	// with the Cash App link as its `payment_request`.
+	// with the Cash App link as its `payment_request`. The provider allows
+	// these payments 10% slippage when they execute. With fees excluded,
+	// `max_slippage_bps` bounds how far the quoted delivery may fall short of
+	// `amount` when the bridge is created.
 	BridgeFromCashApp(request CreateBridgeRequest) (CreateBridgeResponse, error)
 	// Pays a Cash App user from another chain. The recipient is their
 	// username, as `$alice`, or their `alice@cash.app` Lightning address, as
@@ -6806,7 +6811,10 @@ type BridgingClient struct {
 
 // Pays a recipient on another chain from Cash App. Takes a route for the
 // address that the payer funds over Lightning, and returns the bridge
-// with the Cash App link as its `payment_request`.
+// with the Cash App link as its `payment_request`. The provider allows
+// these payments 10% slippage when they execute. With fees excluded,
+// `max_slippage_bps` bounds how far the quoted delivery may fall short of
+// `amount` when the bridge is created.
 func (_self *BridgingClient) BridgeFromCashApp(request CreateBridgeRequest) (CreateBridgeResponse, error) {
 	_pointer := _self.ffiObject.incrementPointer("*BridgingClient")
 	defer _self.ffiObject.decrementPointer()
@@ -21224,9 +21232,11 @@ type CreateBridgeRequest struct {
 	Amount u128
 	// The payer's address on the source chain, where the deposit is refunded
 	// if the recipient can't be paid. Required to pay a Lightning address,
-	// and recommended whenever the payer pays from another chain: without
-	// one the provider has no address to refund to. Ignored when the payer
-	// pays over Lightning.
+	// and recommended otherwise: without one the provider has no address to
+	// refund to. When the payer pays over Lightning, it is a Lightning
+	// address, a Cash App `$cashtag` or an amountless BOLT11 invoice that
+	// doesn't expire before the bridge, refunded if the payment fails before
+	// the swap. Anything else is rejected.
 	RefundAddress *string
 	// Whether fees are added on top of `amount` (`FeesExcluded`, the default)
 	// or deducted from it (`FeesIncluded`).
@@ -26337,7 +26347,7 @@ type LnurlPayRequest struct {
 	PrepareResponse PrepareLnurlPayResponse
 	// If set, providing the same idempotency key for multiple requests will ensure that only one
 	// payment is made. If an idempotency key is re-used, the same payment will be returned.
-	// The idempotency key must be a valid UUID.
+	// The idempotency key must be a valid UUID. The payment's id is the idempotency key.
 	IdempotencyKey *string
 }
 
@@ -27541,7 +27551,8 @@ func (_ FfiDestroyerPasskeyProviderOptions) Destroy(value PasskeyProviderOptions
 
 // Represents a payment (sent or received)
 type Payment struct {
-	// Unique identifier for the payment
+	// Unique identifier for the payment. A second payment of the same invoice has a
+	// different id.
 	Id string
 	// Type of payment (send or receive)
 	PaymentType PaymentType
@@ -30758,7 +30769,7 @@ type SendPaymentRequest struct {
 	// and cross-chain sends).
 	// If set, providing the same idempotency key for multiple requests will ensure that only one
 	// payment is made. If an idempotency key is re-used, the same payment will be returned.
-	// The idempotency key must be a valid UUID.
+	// The idempotency key must be a valid UUID. The payment's id is the idempotency key.
 	IdempotencyKey *string
 }
 
@@ -34176,9 +34187,10 @@ func (_ FfiDestroyerBitcoinNetwork) Destroy(value BitcoinNetwork) {
 type BridgeStatus uint
 
 const (
-	// The bridge was created, and the payer hasn't paid yet. An unpaid bridge
-	// stays `Created` after its `expires_at`. A late deposit on another chain
-	// may still be accepted at a new price.
+	// The bridge was created, and the payer hasn't paid yet. A bridge from
+	// Cash App becomes `Expired` once it can no longer be paid. Other unpaid
+	// bridges stay `Created` after their `expires_at`, and a late deposit on
+	// another chain may still be accepted at a new price.
 	BridgeStatusCreated BridgeStatus = 1
 	// The provider is processing the payment, from confirming the deposit to
 	// paying the recipient. `provider_status` gives the stage.
@@ -34191,7 +34203,7 @@ const (
 	BridgeStatusRefunded BridgeStatus = 5
 	// The bridge failed. `error_code` gives the reason.
 	BridgeStatusFailed BridgeStatus = 6
-	// The provider's order expired without a payment.
+	// The bridge can no longer be paid, and nobody paid it.
 	BridgeStatusExpired BridgeStatus = 7
 )
 
