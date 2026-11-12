@@ -873,6 +873,15 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_lightning_send_status()
+		})
+		if checksum != 52698 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_lightning_send_status: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_breezsdk_get_bridging_client()
 		})
 		if checksum != 12454 {
@@ -1476,9 +1485,18 @@ func uniffiCheckChecksums() {
 	}
 	{
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
+			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_supports_adaptor_v2()
+		})
+		if checksum != 56510 {
+			// If this happens try cleaning and rebuilding your project
+			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_supports_adaptor_v2: UniFFI API checksum mismatch")
+		}
+	}
+	{
+		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_static_deposit_public_key()
 		})
-		if checksum != 54380 {
+		if checksum != 27896 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_static_deposit_public_key: UniFFI API checksum mismatch")
 		}
@@ -1487,7 +1505,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_authentication_challenge()
 		})
-		if checksum != 53611 {
+		if checksum != 58211 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_authentication_challenge: UniFFI API checksum mismatch")
 		}
@@ -1496,7 +1514,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_message()
 		})
-		if checksum != 1815 {
+		if checksum != 32678 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_message: UniFFI API checksum mismatch")
 		}
@@ -1505,7 +1523,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_leaf_refund_spend()
 		})
-		if checksum != 61127 {
+		if checksum != 47798 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_leaf_refund_spend: UniFFI API checksum mismatch")
 		}
@@ -1514,7 +1532,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_frost()
 		})
-		if checksum != 58732 {
+		if checksum != 36320 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_frost: UniFFI API checksum mismatch")
 		}
@@ -1523,7 +1541,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_transfer()
 		})
-		if checksum != 29829 {
+		if checksum != 39309 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_transfer: UniFFI API checksum mismatch")
 		}
@@ -1532,7 +1550,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_claim()
 		})
-		if checksum != 17684 {
+		if checksum != 7759 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_claim: UniFFI API checksum mismatch")
 		}
@@ -1541,7 +1559,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_lightning_receive()
 		})
-		if checksum != 25306 {
+		if checksum != 6460 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_lightning_receive: UniFFI API checksum mismatch")
 		}
@@ -1550,7 +1568,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_static_deposit()
 		})
-		if checksum != 3348 {
+		if checksum != 37233 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_static_deposit: UniFFI API checksum mismatch")
 		}
@@ -1559,7 +1577,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_start_static_deposit_refund()
 		})
-		if checksum != 24696 {
+		if checksum != 59292 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_start_static_deposit_refund: UniFFI API checksum mismatch")
 		}
@@ -1568,7 +1586,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_static_deposit_refund()
 		})
-		if checksum != 52719 {
+		if checksum != 45794 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_static_deposit_refund: UniFFI API checksum mismatch")
 		}
@@ -1577,7 +1595,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_start_watchtower_exit_recovery()
 		})
-		if checksum != 4407 {
+		if checksum != 65328 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_start_watchtower_exit_recovery: UniFFI API checksum mismatch")
 		}
@@ -1586,7 +1604,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_watchtower_exit_recovery()
 		})
-		if checksum != 31640 {
+		if checksum != 32035 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_watchtower_exit_recovery: UniFFI API checksum mismatch")
 		}
@@ -1595,7 +1613,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_spark_invoice()
 		})
-		if checksum != 10640 {
+		if checksum != 31691 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_sign_spark_invoice: UniFFI API checksum mismatch")
 		}
@@ -1604,7 +1622,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_token_transaction()
 		})
-		if checksum != 40168 {
+		if checksum != 18619 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_token_transaction: UniFFI API checksum mismatch")
 		}
@@ -1613,7 +1631,7 @@ func uniffiCheckChecksums() {
 		checksum := rustCall(func(_uniffiStatus *C.RustCallStatus) C.uint16_t {
 			return C.uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_static_deposit_claim()
 		})
-		if checksum != 29840 {
+		if checksum != 44445 {
 			// If this happens try cleaning and rebuilding your project
 			panic("breez_sdk_spark: uniffi_breez_sdk_spark_checksum_method_externalsparksigner_prepare_static_deposit_claim: UniFFI API checksum mismatch")
 		}
@@ -3740,6 +3758,10 @@ type BreezSdkInterface interface {
 	// current fees.
 	FetchClaimDepositQuote(request FetchClaimDepositQuoteRequest) (FetchClaimDepositQuoteResponse, error)
 	FetchConversionLimits(request FetchConversionLimitsRequest) (FetchConversionLimitsResponse, error)
+	// Fetches the status of this wallet's Lightning payment of a Bolt11 invoice from the Spark
+	// operators, without reading the local payment history. A payment made by a direct Spark
+	// transfer to the invoice's Spark address is not covered.
+	FetchLightningSendStatus(request FetchLightningSendStatusRequest) (FetchLightningSendStatusResponse, error)
 	// Returns a client for bridges: orders in which a payer on another chain
 	// or on Lightning pays a recipient, with no funds moving through the
 	// SDK. It shares this SDK's API key, and its cross-chain settings when
@@ -4907,6 +4929,44 @@ func (_self *BreezSdk) FetchConversionLimits(request FetchConversionLimitsReques
 		},
 		C.uniffi_breez_sdk_spark_fn_method_breezsdk_fetch_conversion_limits(
 			_pointer, FfiConverterFetchConversionLimitsRequestINSTANCE.Lower(request)),
+		// pollFn
+		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
+		},
+		// freeFn
+		func(handle C.uint64_t) {
+			C.ffi_breez_sdk_spark_rust_future_free_rust_buffer(handle)
+		},
+	)
+
+	if err == nil {
+		return res, nil
+	}
+
+	return res, err
+}
+
+// Fetches the status of this wallet's Lightning payment of a Bolt11 invoice from the Spark
+// operators, without reading the local payment history. A payment made by a direct Spark
+// transfer to the invoice's Spark address is not covered.
+func (_self *BreezSdk) FetchLightningSendStatus(request FetchLightningSendStatusRequest) (FetchLightningSendStatusResponse, error) {
+	_pointer := _self.ffiObject.incrementPointer("*BreezSdk")
+	defer _self.ffiObject.decrementPointer()
+	res, err := uniffiRustCallAsync[SdkError](
+		FfiConverterSdkErrorINSTANCE,
+		// completeFn
+		func(handle C.uint64_t, status *C.RustCallStatus) RustBufferI {
+			res := C.ffi_breez_sdk_spark_rust_future_complete_rust_buffer(handle, status)
+			return GoRustBuffer{
+				inner: res,
+			}
+		},
+		// liftFn
+		func(ffi RustBufferI) FetchLightningSendStatusResponse {
+			return FfiConverterFetchLightningSendStatusResponseINSTANCE.Lift(ffi)
+		},
+		C.uniffi_breez_sdk_spark_fn_method_breezsdk_fetch_lightning_send_status(
+			_pointer, FfiConverterFetchLightningSendStatusRequestINSTANCE.Lower(request)),
 		// pollFn
 		func(handle C.uint64_t, continuation C.UniffiRustFutureContinuationCallback, data C.uint64_t) {
 			C.ffi_breez_sdk_spark_rust_future_poll_rust_buffer(handle, continuation, data)
@@ -8761,6 +8821,10 @@ type ExternalSparkSigner interface {
 	// SDK skips redundant calls, e.g. re-deriving keys for leaves it has already
 	// verified, and does not support the watchtower fee ladder.
 	IsRemote() bool
+	// Whether [`sign_frost`](Self::sign_frost) can sign jobs whose
+	// `adaptor_v2` is set, with version 2 adaptor signing. The SDK only sets it
+	// for a signer that returns true.
+	SupportsAdaptorV2() bool
 	// The static-deposit signing public key at `index`.
 	GetStaticDepositPublicKey(index uint32) (PublicKeyBytes, error)
 	// ECDSA-sign a server authentication challenge with the identity key.
@@ -8899,6 +8963,18 @@ func (_self *ExternalSparkSignerImpl) IsRemote() bool {
 	defer _self.ffiObject.decrementPointer()
 	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
 		return C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_is_remote(
+			_pointer, _uniffiStatus)
+	}))
+}
+
+// Whether [`sign_frost`](Self::sign_frost) can sign jobs whose
+// `adaptor_v2` is set, with version 2 adaptor signing. The SDK only sets it
+// for a signer that returns true.
+func (_self *ExternalSparkSignerImpl) SupportsAdaptorV2() bool {
+	_pointer := _self.ffiObject.incrementPointer("ExternalSparkSigner")
+	defer _self.ffiObject.decrementPointer()
+	return FfiConverterBoolINSTANCE.Lift(rustCall(func(_uniffiStatus *C.RustCallStatus) C.int8_t {
+		return C.uniffi_breez_sdk_spark_fn_method_externalsparksigner_supports_adaptor_v2(
 			_pointer, _uniffiStatus)
 	}))
 }
@@ -9688,7 +9764,21 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod2(uni
 }
 
 //export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3(uniffiHandle C.uint64_t, uniffiOutReturn *C.int8_t, callStatus *C.RustCallStatus) {
+	handle := uint64(uniffiHandle)
+	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
+	if !ok {
+		panic(fmt.Errorf("no callback in handle map: %d", handle))
+	}
+
+	res :=
+		uniffiObj.SupportsAdaptorV2()
+
+	*uniffiOutReturn = FfiConverterBoolINSTANCE.Lower(res)
+}
+
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4(uniffiHandle C.uint64_t, index C.uint32_t, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9748,8 +9838,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3(uni
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4(uniffiHandle C.uint64_t, challenge C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5(uniffiHandle C.uint64_t, challenge C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9811,8 +9901,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4(uni
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5(uniffiHandle C.uint64_t, message C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6(uniffiHandle C.uint64_t, message C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9874,8 +9964,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5(uni
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6(uniffiHandle C.uint64_t, leafId C.RustBuffer, sighash C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7(uniffiHandle C.uint64_t, leafId C.RustBuffer, sighash C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -9940,8 +10030,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6(uni
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7(uniffiHandle C.uint64_t, jobs C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8(uniffiHandle C.uint64_t, jobs C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10003,8 +10093,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7(uni
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10066,8 +10156,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8(uni
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10129,8 +10219,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9(uni
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10192,8 +10282,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10(un
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10255,8 +10345,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11(un
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10318,8 +10408,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12(un
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10381,8 +10471,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13(un
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod15
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod15(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10444,8 +10534,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14(un
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod15
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod15(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod16
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod16(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10507,8 +10597,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod15(un
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod16
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod16(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod17
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod17(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10570,8 +10660,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod16(un
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod17
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod17(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod18
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod18(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10633,8 +10723,8 @@ func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod17(un
 	}()
 }
 
-//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod18
-func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod18(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
+//export breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod19
+func breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod19(uniffiHandle C.uint64_t, request C.RustBuffer, uniffiFutureCallback C.UniffiForeignFutureCompleteRustBuffer, uniffiCallbackData C.uint64_t, uniffiOutReturn *C.UniffiForeignFuture) {
 	handle := uint64(uniffiHandle)
 	uniffiObj, ok := FfiConverterExternalSparkSignerINSTANCE.handleMap.tryGet(handle)
 	if !ok {
@@ -10700,22 +10790,23 @@ var UniffiVTableCallbackInterfaceExternalSparkSignerINSTANCE = C.UniffiVTableCal
 	getIdentityPublicKey:        (C.UniffiCallbackInterfaceExternalSparkSignerMethod0)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod0),
 	getPublicKeyForLeaf:         (C.UniffiCallbackInterfaceExternalSparkSignerMethod1)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod1),
 	isRemote:                    (C.UniffiCallbackInterfaceExternalSparkSignerMethod2)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod2),
-	getStaticDepositPublicKey:   (C.UniffiCallbackInterfaceExternalSparkSignerMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3),
-	signAuthenticationChallenge: (C.UniffiCallbackInterfaceExternalSparkSignerMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4),
-	signMessage:                 (C.UniffiCallbackInterfaceExternalSparkSignerMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5),
-	signLeafRefundSpend:         (C.UniffiCallbackInterfaceExternalSparkSignerMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6),
-	signFrost:                   (C.UniffiCallbackInterfaceExternalSparkSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7),
-	prepareTransfer:             (C.UniffiCallbackInterfaceExternalSparkSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8),
-	prepareClaim:                (C.UniffiCallbackInterfaceExternalSparkSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9),
-	prepareLightningReceive:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10),
-	prepareStaticDeposit:        (C.UniffiCallbackInterfaceExternalSparkSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11),
-	startStaticDepositRefund:    (C.UniffiCallbackInterfaceExternalSparkSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12),
-	signStaticDepositRefund:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13),
-	startWatchtowerExitRecovery: (C.UniffiCallbackInterfaceExternalSparkSignerMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14),
-	signWatchtowerExitRecovery:  (C.UniffiCallbackInterfaceExternalSparkSignerMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod15),
-	signSparkInvoice:            (C.UniffiCallbackInterfaceExternalSparkSignerMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod16),
-	prepareTokenTransaction:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod17),
-	prepareStaticDepositClaim:   (C.UniffiCallbackInterfaceExternalSparkSignerMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod18),
+	supportsAdaptorV2:           (C.UniffiCallbackInterfaceExternalSparkSignerMethod3)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3),
+	getStaticDepositPublicKey:   (C.UniffiCallbackInterfaceExternalSparkSignerMethod4)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4),
+	signAuthenticationChallenge: (C.UniffiCallbackInterfaceExternalSparkSignerMethod5)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5),
+	signMessage:                 (C.UniffiCallbackInterfaceExternalSparkSignerMethod6)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6),
+	signLeafRefundSpend:         (C.UniffiCallbackInterfaceExternalSparkSignerMethod7)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7),
+	signFrost:                   (C.UniffiCallbackInterfaceExternalSparkSignerMethod8)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8),
+	prepareTransfer:             (C.UniffiCallbackInterfaceExternalSparkSignerMethod9)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9),
+	prepareClaim:                (C.UniffiCallbackInterfaceExternalSparkSignerMethod10)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10),
+	prepareLightningReceive:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod11)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11),
+	prepareStaticDeposit:        (C.UniffiCallbackInterfaceExternalSparkSignerMethod12)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod12),
+	startStaticDepositRefund:    (C.UniffiCallbackInterfaceExternalSparkSignerMethod13)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod13),
+	signStaticDepositRefund:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod14)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod14),
+	startWatchtowerExitRecovery: (C.UniffiCallbackInterfaceExternalSparkSignerMethod15)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod15),
+	signWatchtowerExitRecovery:  (C.UniffiCallbackInterfaceExternalSparkSignerMethod16)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod16),
+	signSparkInvoice:            (C.UniffiCallbackInterfaceExternalSparkSignerMethod17)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod17),
+	prepareTokenTransaction:     (C.UniffiCallbackInterfaceExternalSparkSignerMethod18)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod18),
+	prepareStaticDepositClaim:   (C.UniffiCallbackInterfaceExternalSparkSignerMethod19)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod19),
 
 	uniffiFree: (C.UniffiCallbackInterfaceFree)(C.breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerFree),
 }
@@ -21362,6 +21453,9 @@ type CreateIssuerTokenRequest struct {
 	Decimals    uint32
 	IsFreezable bool
 	MaxSupply   u128
+	// Arbitrary data to attach to the token, such as an icon or a JSON description, of at most
+	// 1024 bytes. It is part of the token identifier, so it cannot be changed after creation.
+	ExtraMetadata *[]byte
 }
 
 func (r *CreateIssuerTokenRequest) Destroy() {
@@ -21370,6 +21464,7 @@ func (r *CreateIssuerTokenRequest) Destroy() {
 	FfiDestroyerUint32{}.Destroy(r.Decimals)
 	FfiDestroyerBool{}.Destroy(r.IsFreezable)
 	FfiDestroyerTypeu128{}.Destroy(r.MaxSupply)
+	FfiDestroyerOptionalBytes{}.Destroy(r.ExtraMetadata)
 }
 
 type FfiConverterCreateIssuerTokenRequest struct{}
@@ -21387,6 +21482,7 @@ func (c FfiConverterCreateIssuerTokenRequest) Read(reader io.Reader) CreateIssue
 		FfiConverterUint32INSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
 		FfiConverterTypeu128INSTANCE.Read(reader),
+		FfiConverterOptionalBytesINSTANCE.Read(reader),
 	}
 }
 
@@ -21404,6 +21500,7 @@ func (c FfiConverterCreateIssuerTokenRequest) Write(writer io.Writer, value Crea
 	FfiConverterUint32INSTANCE.Write(writer, value.Decimals)
 	FfiConverterBoolINSTANCE.Write(writer, value.IsFreezable)
 	FfiConverterTypeu128INSTANCE.Write(writer, value.MaxSupply)
+	FfiConverterOptionalBytesINSTANCE.Write(writer, value.ExtraMetadata)
 }
 
 type FfiDestroyerCreateIssuerTokenRequest struct{}
@@ -22609,6 +22706,10 @@ type ExternalFrostJob struct {
 	OperatorCommitments []IdentifierCommitmentPair
 	// Optional adaptor public key (33 bytes compressed).
 	AdaptorPublicKey *[]byte
+	// Sign the adaptor signature with version 2 adaptor signing, whose FROST
+	// binding factors include the adaptor point. Only set when the signer's
+	// `supports_adaptor_v2` returns true.
+	AdaptorV2 bool
 }
 
 func (r *ExternalFrostJob) Destroy() {
@@ -22617,6 +22718,7 @@ func (r *ExternalFrostJob) Destroy() {
 	FfiDestroyerBytes{}.Destroy(r.VerifyingKey)
 	FfiDestroyerSequenceIdentifierCommitmentPair{}.Destroy(r.OperatorCommitments)
 	FfiDestroyerOptionalBytes{}.Destroy(r.AdaptorPublicKey)
+	FfiDestroyerBool{}.Destroy(r.AdaptorV2)
 }
 
 type FfiConverterExternalFrostJob struct{}
@@ -22634,6 +22736,7 @@ func (c FfiConverterExternalFrostJob) Read(reader io.Reader) ExternalFrostJob {
 		FfiConverterBytesINSTANCE.Read(reader),
 		FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Read(reader),
 		FfiConverterOptionalBytesINSTANCE.Read(reader),
+		FfiConverterBoolINSTANCE.Read(reader),
 	}
 }
 
@@ -22651,6 +22754,7 @@ func (c FfiConverterExternalFrostJob) Write(writer io.Writer, value ExternalFros
 	FfiConverterBytesINSTANCE.Write(writer, value.VerifyingKey)
 	FfiConverterSequenceIdentifierCommitmentPairINSTANCE.Write(writer, value.OperatorCommitments)
 	FfiConverterOptionalBytesINSTANCE.Write(writer, value.AdaptorPublicKey)
+	FfiConverterBoolINSTANCE.Write(writer, value.AdaptorV2)
 }
 
 type FfiDestroyerExternalFrostJob struct{}
@@ -24441,6 +24545,96 @@ func (c FfiConverterFetchConversionLimitsResponse) Write(writer io.Writer, value
 type FfiDestroyerFetchConversionLimitsResponse struct{}
 
 func (_ FfiDestroyerFetchConversionLimitsResponse) Destroy(value FetchConversionLimitsResponse) {
+	value.Destroy()
+}
+
+type FetchLightningSendStatusRequest struct {
+	// The Bolt11 invoice to look up
+	Invoice string
+}
+
+func (r *FetchLightningSendStatusRequest) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Invoice)
+}
+
+type FfiConverterFetchLightningSendStatusRequest struct{}
+
+var FfiConverterFetchLightningSendStatusRequestINSTANCE = FfiConverterFetchLightningSendStatusRequest{}
+
+func (c FfiConverterFetchLightningSendStatusRequest) Lift(rb RustBufferI) FetchLightningSendStatusRequest {
+	return LiftFromRustBuffer[FetchLightningSendStatusRequest](c, rb)
+}
+
+func (c FfiConverterFetchLightningSendStatusRequest) Read(reader io.Reader) FetchLightningSendStatusRequest {
+	return FetchLightningSendStatusRequest{
+		FfiConverterStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterFetchLightningSendStatusRequest) Lower(value FetchLightningSendStatusRequest) C.RustBuffer {
+	return LowerIntoRustBuffer[FetchLightningSendStatusRequest](c, value)
+}
+
+func (c FfiConverterFetchLightningSendStatusRequest) LowerExternal(value FetchLightningSendStatusRequest) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FetchLightningSendStatusRequest](c, value))
+}
+
+func (c FfiConverterFetchLightningSendStatusRequest) Write(writer io.Writer, value FetchLightningSendStatusRequest) {
+	FfiConverterStringINSTANCE.Write(writer, value.Invoice)
+}
+
+type FfiDestroyerFetchLightningSendStatusRequest struct{}
+
+func (_ FfiDestroyerFetchLightningSendStatusRequest) Destroy(value FetchLightningSendStatusRequest) {
+	value.Destroy()
+}
+
+type FetchLightningSendStatusResponse struct {
+	// The status of this wallet's Lightning payments of the invoice: completed if one completed,
+	// pending if one is in flight, failed if every one was returned. Unset when there is none.
+	// A payment made by a direct Spark transfer to the invoice's Spark address is not found, so
+	// unset does not mean the invoice is unpaid.
+	Status *PaymentStatus
+	// The hex-encoded preimage that proves the payment, set when the status is completed
+	Preimage *string
+}
+
+func (r *FetchLightningSendStatusResponse) Destroy() {
+	FfiDestroyerOptionalPaymentStatus{}.Destroy(r.Status)
+	FfiDestroyerOptionalString{}.Destroy(r.Preimage)
+}
+
+type FfiConverterFetchLightningSendStatusResponse struct{}
+
+var FfiConverterFetchLightningSendStatusResponseINSTANCE = FfiConverterFetchLightningSendStatusResponse{}
+
+func (c FfiConverterFetchLightningSendStatusResponse) Lift(rb RustBufferI) FetchLightningSendStatusResponse {
+	return LiftFromRustBuffer[FetchLightningSendStatusResponse](c, rb)
+}
+
+func (c FfiConverterFetchLightningSendStatusResponse) Read(reader io.Reader) FetchLightningSendStatusResponse {
+	return FetchLightningSendStatusResponse{
+		FfiConverterOptionalPaymentStatusINSTANCE.Read(reader),
+		FfiConverterOptionalStringINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterFetchLightningSendStatusResponse) Lower(value FetchLightningSendStatusResponse) C.RustBuffer {
+	return LowerIntoRustBuffer[FetchLightningSendStatusResponse](c, value)
+}
+
+func (c FfiConverterFetchLightningSendStatusResponse) LowerExternal(value FetchLightningSendStatusResponse) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[FetchLightningSendStatusResponse](c, value))
+}
+
+func (c FfiConverterFetchLightningSendStatusResponse) Write(writer io.Writer, value FetchLightningSendStatusResponse) {
+	FfiConverterOptionalPaymentStatusINSTANCE.Write(writer, value.Status)
+	FfiConverterOptionalStringINSTANCE.Write(writer, value.Preimage)
+}
+
+type FfiDestroyerFetchLightningSendStatusResponse struct{}
+
+func (_ FfiDestroyerFetchLightningSendStatusResponse) Destroy(value FetchLightningSendStatusResponse) {
 	value.Destroy()
 }
 
@@ -27783,6 +27977,74 @@ func (c FfiConverterPaymentRequestSource) Write(writer io.Writer, value PaymentR
 type FfiDestroyerPaymentRequestSource struct{}
 
 func (_ FfiDestroyerPaymentRequestSource) Destroy(value PaymentRequestSource) {
+	value.Destroy()
+}
+
+// Metadata of the token a payment moved. The token's extra metadata is available from
+// `get_tokens_metadata`.
+type PaymentTokenMetadata struct {
+	Identifier string
+	// Hex representation of the issuer public key
+	IssuerPublicKey string
+	Name            string
+	Ticker          string
+	// Number of decimals the token uses
+	Decimals    uint32
+	MaxSupply   u128
+	IsFreezable bool
+}
+
+func (r *PaymentTokenMetadata) Destroy() {
+	FfiDestroyerString{}.Destroy(r.Identifier)
+	FfiDestroyerString{}.Destroy(r.IssuerPublicKey)
+	FfiDestroyerString{}.Destroy(r.Name)
+	FfiDestroyerString{}.Destroy(r.Ticker)
+	FfiDestroyerUint32{}.Destroy(r.Decimals)
+	FfiDestroyerTypeu128{}.Destroy(r.MaxSupply)
+	FfiDestroyerBool{}.Destroy(r.IsFreezable)
+}
+
+type FfiConverterPaymentTokenMetadata struct{}
+
+var FfiConverterPaymentTokenMetadataINSTANCE = FfiConverterPaymentTokenMetadata{}
+
+func (c FfiConverterPaymentTokenMetadata) Lift(rb RustBufferI) PaymentTokenMetadata {
+	return LiftFromRustBuffer[PaymentTokenMetadata](c, rb)
+}
+
+func (c FfiConverterPaymentTokenMetadata) Read(reader io.Reader) PaymentTokenMetadata {
+	return PaymentTokenMetadata{
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterStringINSTANCE.Read(reader),
+		FfiConverterUint32INSTANCE.Read(reader),
+		FfiConverterTypeu128INSTANCE.Read(reader),
+		FfiConverterBoolINSTANCE.Read(reader),
+	}
+}
+
+func (c FfiConverterPaymentTokenMetadata) Lower(value PaymentTokenMetadata) C.RustBuffer {
+	return LowerIntoRustBuffer[PaymentTokenMetadata](c, value)
+}
+
+func (c FfiConverterPaymentTokenMetadata) LowerExternal(value PaymentTokenMetadata) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[PaymentTokenMetadata](c, value))
+}
+
+func (c FfiConverterPaymentTokenMetadata) Write(writer io.Writer, value PaymentTokenMetadata) {
+	FfiConverterStringINSTANCE.Write(writer, value.Identifier)
+	FfiConverterStringINSTANCE.Write(writer, value.IssuerPublicKey)
+	FfiConverterStringINSTANCE.Write(writer, value.Name)
+	FfiConverterStringINSTANCE.Write(writer, value.Ticker)
+	FfiConverterUint32INSTANCE.Write(writer, value.Decimals)
+	FfiConverterTypeu128INSTANCE.Write(writer, value.MaxSupply)
+	FfiConverterBoolINSTANCE.Write(writer, value.IsFreezable)
+}
+
+type FfiDestroyerPaymentTokenMetadata struct{}
+
+func (_ FfiDestroyerPaymentTokenMetadata) Destroy(value PaymentTokenMetadata) {
 	value.Destroy()
 }
 
@@ -32512,6 +32774,9 @@ type TokenMetadata struct {
 	Decimals    uint32
 	MaxSupply   u128
 	IsFreezable bool
+	// Arbitrary data the issuer attached when creating the token, such as an icon or a JSON
+	// description. Unset when the issuer attached none.
+	ExtraMetadata *[]byte
 }
 
 func (r *TokenMetadata) Destroy() {
@@ -32522,6 +32787,7 @@ func (r *TokenMetadata) Destroy() {
 	FfiDestroyerUint32{}.Destroy(r.Decimals)
 	FfiDestroyerTypeu128{}.Destroy(r.MaxSupply)
 	FfiDestroyerBool{}.Destroy(r.IsFreezable)
+	FfiDestroyerOptionalBytes{}.Destroy(r.ExtraMetadata)
 }
 
 type FfiConverterTokenMetadata struct{}
@@ -32541,6 +32807,7 @@ func (c FfiConverterTokenMetadata) Read(reader io.Reader) TokenMetadata {
 		FfiConverterUint32INSTANCE.Read(reader),
 		FfiConverterTypeu128INSTANCE.Read(reader),
 		FfiConverterBoolINSTANCE.Read(reader),
+		FfiConverterOptionalBytesINSTANCE.Read(reader),
 	}
 }
 
@@ -32560,6 +32827,7 @@ func (c FfiConverterTokenMetadata) Write(writer io.Writer, value TokenMetadata) 
 	FfiConverterUint32INSTANCE.Write(writer, value.Decimals)
 	FfiConverterTypeu128INSTANCE.Write(writer, value.MaxSupply)
 	FfiConverterBoolINSTANCE.Write(writer, value.IsFreezable)
+	FfiConverterOptionalBytesINSTANCE.Write(writer, value.ExtraMetadata)
 }
 
 type FfiDestroyerTokenMetadata struct{}
@@ -38693,7 +38961,7 @@ func (e PaymentDetailsSpark) Destroy() {
 }
 
 type PaymentDetailsToken struct {
-	Metadata       TokenMetadata
+	Metadata       PaymentTokenMetadata
 	TxHash         string
 	TxType         TokenTransactionType
 	InvoiceDetails *SparkInvoicePaymentDetails
@@ -38701,7 +38969,7 @@ type PaymentDetailsToken struct {
 }
 
 func (e PaymentDetailsToken) Destroy() {
-	FfiDestroyerTokenMetadata{}.Destroy(e.Metadata)
+	FfiDestroyerPaymentTokenMetadata{}.Destroy(e.Metadata)
 	FfiDestroyerString{}.Destroy(e.TxHash)
 	FfiDestroyerTokenTransactionType{}.Destroy(e.TxType)
 	FfiDestroyerOptionalSparkInvoicePaymentDetails{}.Destroy(e.InvoiceDetails)
@@ -38778,7 +39046,7 @@ func (FfiConverterPaymentDetails) Read(reader io.Reader) PaymentDetails {
 		}
 	case 2:
 		return PaymentDetailsToken{
-			FfiConverterTokenMetadataINSTANCE.Read(reader),
+			FfiConverterPaymentTokenMetadataINSTANCE.Read(reader),
 			FfiConverterStringINSTANCE.Read(reader),
 			FfiConverterTokenTransactionTypeINSTANCE.Read(reader),
 			FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Read(reader),
@@ -38820,7 +39088,7 @@ func (FfiConverterPaymentDetails) Write(writer io.Writer, value PaymentDetails) 
 		FfiConverterOptionalConversionInfoINSTANCE.Write(writer, variant_value.ConversionInfo)
 	case PaymentDetailsToken:
 		writeInt32(writer, 2)
-		FfiConverterTokenMetadataINSTANCE.Write(writer, variant_value.Metadata)
+		FfiConverterPaymentTokenMetadataINSTANCE.Write(writer, variant_value.Metadata)
 		FfiConverterStringINSTANCE.Write(writer, variant_value.TxHash)
 		FfiConverterTokenTransactionTypeINSTANCE.Write(writer, variant_value.TxType)
 		FfiConverterOptionalSparkInvoicePaymentDetailsINSTANCE.Write(writer, variant_value.InvoiceDetails)
@@ -47670,6 +47938,47 @@ type FfiDestroyerOptionalPaymentDetails struct{}
 func (_ FfiDestroyerOptionalPaymentDetails) Destroy(value *PaymentDetails) {
 	if value != nil {
 		FfiDestroyerPaymentDetails{}.Destroy(*value)
+	}
+}
+
+type FfiConverterOptionalPaymentStatus struct{}
+
+var FfiConverterOptionalPaymentStatusINSTANCE = FfiConverterOptionalPaymentStatus{}
+
+func (c FfiConverterOptionalPaymentStatus) Lift(rb RustBufferI) *PaymentStatus {
+	return LiftFromRustBuffer[*PaymentStatus](c, rb)
+}
+
+func (_ FfiConverterOptionalPaymentStatus) Read(reader io.Reader) *PaymentStatus {
+	if readInt8(reader) == 0 {
+		return nil
+	}
+	temp := FfiConverterPaymentStatusINSTANCE.Read(reader)
+	return &temp
+}
+
+func (c FfiConverterOptionalPaymentStatus) Lower(value *PaymentStatus) C.RustBuffer {
+	return LowerIntoRustBuffer[*PaymentStatus](c, value)
+}
+
+func (c FfiConverterOptionalPaymentStatus) LowerExternal(value *PaymentStatus) ExternalCRustBuffer {
+	return RustBufferFromC(LowerIntoRustBuffer[*PaymentStatus](c, value))
+}
+
+func (_ FfiConverterOptionalPaymentStatus) Write(writer io.Writer, value *PaymentStatus) {
+	if value == nil {
+		writeInt8(writer, 0)
+	} else {
+		writeInt8(writer, 1)
+		FfiConverterPaymentStatusINSTANCE.Write(writer, *value)
+	}
+}
+
+type FfiDestroyerOptionalPaymentStatus struct{}
+
+func (_ FfiDestroyerOptionalPaymentStatus) Destroy(value *PaymentStatus) {
+	if value != nil {
+		FfiDestroyerPaymentStatus{}.Destroy(*value)
 	}
 }
 

@@ -730,84 +730,84 @@ static void call_UniffiCallbackInterfaceExternalSparkSignerMethod2(
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD3
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD3
-typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod3)(uint64_t uniffi_handle, uint32_t index, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod3)(uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus );
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceExternalSparkSignerMethod3(
-				UniffiCallbackInterfaceExternalSparkSignerMethod3 cb, uint64_t uniffi_handle, uint32_t index, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceExternalSparkSignerMethod3 cb, uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus )
 {
-	return cb(uniffi_handle, index, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, uniffi_out_return, callStatus );
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD4
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD4
-typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod4)(uint64_t uniffi_handle, RustBuffer challenge, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod4)(uint64_t uniffi_handle, uint32_t index, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceExternalSparkSignerMethod4(
-				UniffiCallbackInterfaceExternalSparkSignerMethod4 cb, uint64_t uniffi_handle, RustBuffer challenge, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceExternalSparkSignerMethod4 cb, uint64_t uniffi_handle, uint32_t index, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, challenge, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, index, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD5
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD5
-typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod5)(uint64_t uniffi_handle, RustBuffer message, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod5)(uint64_t uniffi_handle, RustBuffer challenge, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceExternalSparkSignerMethod5(
-				UniffiCallbackInterfaceExternalSparkSignerMethod5 cb, uint64_t uniffi_handle, RustBuffer message, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceExternalSparkSignerMethod5 cb, uint64_t uniffi_handle, RustBuffer challenge, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, message, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, challenge, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD6
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD6
-typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod6)(uint64_t uniffi_handle, RustBuffer leaf_id, RustBuffer sighash, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod6)(uint64_t uniffi_handle, RustBuffer message, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceExternalSparkSignerMethod6(
-				UniffiCallbackInterfaceExternalSparkSignerMethod6 cb, uint64_t uniffi_handle, RustBuffer leaf_id, RustBuffer sighash, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceExternalSparkSignerMethod6 cb, uint64_t uniffi_handle, RustBuffer message, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, leaf_id, sighash, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, message, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD7
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD7
-typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod7)(uint64_t uniffi_handle, RustBuffer jobs, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod7)(uint64_t uniffi_handle, RustBuffer leaf_id, RustBuffer sighash, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceExternalSparkSignerMethod7(
-				UniffiCallbackInterfaceExternalSparkSignerMethod7 cb, uint64_t uniffi_handle, RustBuffer jobs, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceExternalSparkSignerMethod7 cb, uint64_t uniffi_handle, RustBuffer leaf_id, RustBuffer sighash, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, jobs, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, leaf_id, sighash, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
 #endif
 #ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD8
 #define UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD8
-typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod8)(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod8)(uint64_t uniffi_handle, RustBuffer jobs, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
 
 // Making function static works arround:
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceExternalSparkSignerMethod8(
-				UniffiCallbackInterfaceExternalSparkSignerMethod8 cb, uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+				UniffiCallbackInterfaceExternalSparkSignerMethod8 cb, uint64_t uniffi_handle, RustBuffer jobs, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
-	return cb(uniffi_handle, request, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+	return cb(uniffi_handle, jobs, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
 
 
@@ -946,6 +946,20 @@ typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod18)(uint64_t unif
 // https://github.com/golang/go/issues/11263
 static void call_UniffiCallbackInterfaceExternalSparkSignerMethod18(
 				UniffiCallbackInterfaceExternalSparkSignerMethod18 cb, uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
+{
+	return cb(uniffi_handle, request, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
+}
+
+
+#endif
+#ifndef UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD19
+#define UNIFFI_FFIDEF_CALLBACK_INTERFACE_EXTERNAL_SPARK_SIGNER_METHOD19
+typedef void (*UniffiCallbackInterfaceExternalSparkSignerMethod19)(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+
+// Making function static works arround:
+// https://github.com/golang/go/issues/11263
+static void call_UniffiCallbackInterfaceExternalSparkSignerMethod19(
+				UniffiCallbackInterfaceExternalSparkSignerMethod19 cb, uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return)
 {
 	return cb(uniffi_handle, request, uniffi_future_callback, uniffi_callback_data, uniffi_out_return);
 }
@@ -1694,22 +1708,23 @@ typedef struct UniffiVTableCallbackInterfaceExternalSparkSigner {
     UniffiCallbackInterfaceExternalSparkSignerMethod0 getIdentityPublicKey;
     UniffiCallbackInterfaceExternalSparkSignerMethod1 getPublicKeyForLeaf;
     UniffiCallbackInterfaceExternalSparkSignerMethod2 isRemote;
-    UniffiCallbackInterfaceExternalSparkSignerMethod3 getStaticDepositPublicKey;
-    UniffiCallbackInterfaceExternalSparkSignerMethod4 signAuthenticationChallenge;
-    UniffiCallbackInterfaceExternalSparkSignerMethod5 signMessage;
-    UniffiCallbackInterfaceExternalSparkSignerMethod6 signLeafRefundSpend;
-    UniffiCallbackInterfaceExternalSparkSignerMethod7 signFrost;
-    UniffiCallbackInterfaceExternalSparkSignerMethod8 prepareTransfer;
-    UniffiCallbackInterfaceExternalSparkSignerMethod9 prepareClaim;
-    UniffiCallbackInterfaceExternalSparkSignerMethod10 prepareLightningReceive;
-    UniffiCallbackInterfaceExternalSparkSignerMethod11 prepareStaticDeposit;
-    UniffiCallbackInterfaceExternalSparkSignerMethod12 startStaticDepositRefund;
-    UniffiCallbackInterfaceExternalSparkSignerMethod13 signStaticDepositRefund;
-    UniffiCallbackInterfaceExternalSparkSignerMethod14 startWatchtowerExitRecovery;
-    UniffiCallbackInterfaceExternalSparkSignerMethod15 signWatchtowerExitRecovery;
-    UniffiCallbackInterfaceExternalSparkSignerMethod16 signSparkInvoice;
-    UniffiCallbackInterfaceExternalSparkSignerMethod17 prepareTokenTransaction;
-    UniffiCallbackInterfaceExternalSparkSignerMethod18 prepareStaticDepositClaim;
+    UniffiCallbackInterfaceExternalSparkSignerMethod3 supportsAdaptorV2;
+    UniffiCallbackInterfaceExternalSparkSignerMethod4 getStaticDepositPublicKey;
+    UniffiCallbackInterfaceExternalSparkSignerMethod5 signAuthenticationChallenge;
+    UniffiCallbackInterfaceExternalSparkSignerMethod6 signMessage;
+    UniffiCallbackInterfaceExternalSparkSignerMethod7 signLeafRefundSpend;
+    UniffiCallbackInterfaceExternalSparkSignerMethod8 signFrost;
+    UniffiCallbackInterfaceExternalSparkSignerMethod9 prepareTransfer;
+    UniffiCallbackInterfaceExternalSparkSignerMethod10 prepareClaim;
+    UniffiCallbackInterfaceExternalSparkSignerMethod11 prepareLightningReceive;
+    UniffiCallbackInterfaceExternalSparkSignerMethod12 prepareStaticDeposit;
+    UniffiCallbackInterfaceExternalSparkSignerMethod13 startStaticDepositRefund;
+    UniffiCallbackInterfaceExternalSparkSignerMethod14 signStaticDepositRefund;
+    UniffiCallbackInterfaceExternalSparkSignerMethod15 startWatchtowerExitRecovery;
+    UniffiCallbackInterfaceExternalSparkSignerMethod16 signWatchtowerExitRecovery;
+    UniffiCallbackInterfaceExternalSparkSignerMethod17 signSparkInvoice;
+    UniffiCallbackInterfaceExternalSparkSignerMethod18 prepareTokenTransaction;
+    UniffiCallbackInterfaceExternalSparkSignerMethod19 prepareStaticDepositClaim;
     UniffiCallbackInterfaceFree uniffiFree;
 } UniffiVTableCallbackInterfaceExternalSparkSigner;
 
@@ -1989,6 +2004,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_fetch_claim_deposit_quote(voi
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_FETCH_CONVERSION_LIMITS
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_FETCH_CONVERSION_LIMITS
 uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_fetch_conversion_limits(void* ptr, RustBuffer request
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_FETCH_LIGHTNING_SEND_STATUS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_FETCH_LIGHTNING_SEND_STATUS
+uint64_t uniffi_breez_sdk_spark_fn_method_breezsdk_fetch_lightning_send_status(void* ptr, RustBuffer request
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_BREEZSDK_GET_BRIDGING_CLIENT
@@ -2394,6 +2414,11 @@ uint64_t uniffi_breez_sdk_spark_fn_method_externalsparksigner_get_public_key_for
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_EXTERNALSPARKSIGNER_IS_REMOTE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_EXTERNALSPARKSIGNER_IS_REMOTE
 int8_t uniffi_breez_sdk_spark_fn_method_externalsparksigner_is_remote(void* ptr, RustCallStatus *out_status
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_EXTERNALSPARKSIGNER_SUPPORTS_ADAPTOR_V2
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_EXTERNALSPARKSIGNER_SUPPORTS_ADAPTOR_V2
+int8_t uniffi_breez_sdk_spark_fn_method_externalsparksigner_supports_adaptor_v2(void* ptr, RustCallStatus *out_status
 );
 #endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_FN_METHOD_EXTERNALSPARKSIGNER_GET_STATIC_DEPOSIT_PUBLIC_KEY
@@ -3765,6 +3790,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_conversion_limits
     
 );
 #endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_FETCH_LIGHTNING_SEND_STATUS
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_FETCH_LIGHTNING_SEND_STATUS
+uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_fetch_lightning_send_status(void
+    
+);
+#endif
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_GET_BRIDGING_CLIENT
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_BREEZSDK_GET_BRIDGING_CLIENT
 uint16_t uniffi_breez_sdk_spark_checksum_method_breezsdk_get_bridging_client(void
@@ -4164,6 +4195,12 @@ uint16_t uniffi_breez_sdk_spark_checksum_method_externalsparksigner_get_public_k
 #ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_EXTERNALSPARKSIGNER_IS_REMOTE
 #define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_EXTERNALSPARKSIGNER_IS_REMOTE
 uint16_t uniffi_breez_sdk_spark_checksum_method_externalsparksigner_is_remote(void
+    
+);
+#endif
+#ifndef UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_EXTERNALSPARKSIGNER_SUPPORTS_ADAPTOR_V2
+#define UNIFFI_FFIDEF_UNIFFI_BREEZ_SDK_SPARK_CHECKSUM_METHOD_EXTERNALSPARKSIGNER_SUPPORTS_ADAPTOR_V2
+uint16_t uniffi_breez_sdk_spark_checksum_method_externalsparksigner_supports_adaptor_v2(void
     
 );
 #endif
@@ -4789,12 +4826,12 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod0(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod1(uint64_t uniffi_handle, RustBuffer leaf_id, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod2(uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus );
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3(uint64_t uniffi_handle, uint32_t index, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4(uint64_t uniffi_handle, RustBuffer challenge, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5(uint64_t uniffi_handle, RustBuffer message, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6(uint64_t uniffi_handle, RustBuffer leaf_id, RustBuffer sighash, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7(uint64_t uniffi_handle, RustBuffer jobs, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
- void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod3(uint64_t uniffi_handle, int8_t* uniffi_out_return, RustCallStatus* callStatus );
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod4(uint64_t uniffi_handle, uint32_t index, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod5(uint64_t uniffi_handle, RustBuffer challenge, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod6(uint64_t uniffi_handle, RustBuffer message, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod7(uint64_t uniffi_handle, RustBuffer leaf_id, RustBuffer sighash, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod8(uint64_t uniffi_handle, RustBuffer jobs, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod9(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod10(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod11(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
@@ -4805,6 +4842,7 @@ uint32_t ffi_breez_sdk_spark_uniffi_contract_version(void
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod16(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod17(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod18(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
+ void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerMethod19(uint64_t uniffi_handle, RustBuffer request, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceExternalSparkSignerFree(uint64_t handle);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceFiatServiceMethod0(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
  void breez_sdk_spark_cgo_dispatchCallbackInterfaceFiatServiceMethod1(uint64_t uniffi_handle, UniffiForeignFutureCompleteRustBuffer uniffi_future_callback, uint64_t uniffi_callback_data, UniffiForeignFuture* uniffi_out_return);
