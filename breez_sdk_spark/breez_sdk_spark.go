@@ -21322,9 +21322,10 @@ type CreateBridgeRequest struct {
 	// USDC at 6 decimals.
 	Amount u128
 	// The payer's address on the source chain, where the deposit is refunded
-	// if the recipient can't be paid. Required to pay a Lightning address,
-	// and recommended otherwise: without one the provider has no address to
-	// refund to. When the payer pays over Lightning, it is a Lightning
+	// if the recipient can't be paid. Required to pay a Lightning address or
+	// when the payer sends from an exchange, and advised for BSC and Tron:
+	// unset, the provider refunds the sending address only when that is
+	// safe. When the payer pays over Lightning, it is a Lightning
 	// address, a Cash App `$cashtag` or an amountless BOLT11 invoice that
 	// doesn't expire before the bridge, refunded if the payment fails before
 	// the swap. Anything else is rejected.
@@ -34467,7 +34468,8 @@ const (
 	BridgeStatusRefunding BridgeStatus = 3
 	// The recipient was paid.
 	BridgeStatusCompleted BridgeStatus = 4
-	// The payment was refunded to the payer's refund address.
+	// The payment was refunded to the payer's refund address, or without one
+	// to the address it came from.
 	BridgeStatusRefunded BridgeStatus = 5
 	// The bridge failed. `error_code` gives the reason.
 	BridgeStatusFailed BridgeStatus = 6
@@ -35302,6 +35304,7 @@ type ConversionInfoOrchestra struct {
 	EstimatedOut            u128
 	DeliveredAmount         *u128
 	ExternalTxHash          *string
+	RefundTxHash            *string
 	Status                  ConversionStatus
 	FeeAmount               *u128
 	ServiceFeeAmount        *u128
@@ -35323,6 +35326,7 @@ func (e ConversionInfoOrchestra) Destroy() {
 	FfiDestroyerTypeu128{}.Destroy(e.EstimatedOut)
 	FfiDestroyerOptionalTypeu128{}.Destroy(e.DeliveredAmount)
 	FfiDestroyerOptionalString{}.Destroy(e.ExternalTxHash)
+	FfiDestroyerOptionalString{}.Destroy(e.RefundTxHash)
 	FfiDestroyerConversionStatus{}.Destroy(e.Status)
 	FfiDestroyerOptionalTypeu128{}.Destroy(e.FeeAmount)
 	FfiDestroyerOptionalTypeu128{}.Destroy(e.ServiceFeeAmount)
@@ -35421,6 +35425,7 @@ func (FfiConverterConversionInfo) Read(reader io.Reader) ConversionInfo {
 			FfiConverterTypeu128INSTANCE.Read(reader),
 			FfiConverterOptionalTypeu128INSTANCE.Read(reader),
 			FfiConverterOptionalStringINSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
 			FfiConverterConversionStatusINSTANCE.Read(reader),
 			FfiConverterOptionalTypeu128INSTANCE.Read(reader),
 			FfiConverterOptionalTypeu128INSTANCE.Read(reader),
@@ -35480,6 +35485,7 @@ func (FfiConverterConversionInfo) Write(writer io.Writer, value ConversionInfo) 
 		FfiConverterTypeu128INSTANCE.Write(writer, variant_value.EstimatedOut)
 		FfiConverterOptionalTypeu128INSTANCE.Write(writer, variant_value.DeliveredAmount)
 		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.ExternalTxHash)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.RefundTxHash)
 		FfiConverterConversionStatusINSTANCE.Write(writer, variant_value.Status)
 		FfiConverterOptionalTypeu128INSTANCE.Write(writer, variant_value.FeeAmount)
 		FfiConverterOptionalTypeu128INSTANCE.Write(writer, variant_value.ServiceFeeAmount)
@@ -40312,6 +40318,7 @@ type ReceivePaymentMethodCrossChain struct {
 	FeeMode          *CrossChainFeeMode
 	MaxSlippageBps   *uint32
 	TargetOverpayBps *uint32
+	RefundAddress    *string
 }
 
 func (e ReceivePaymentMethodCrossChain) Destroy() {
@@ -40321,6 +40328,7 @@ func (e ReceivePaymentMethodCrossChain) Destroy() {
 	FfiDestroyerOptionalCrossChainFeeMode{}.Destroy(e.FeeMode)
 	FfiDestroyerOptionalUint32{}.Destroy(e.MaxSlippageBps)
 	FfiDestroyerOptionalUint32{}.Destroy(e.TargetOverpayBps)
+	FfiDestroyerOptionalString{}.Destroy(e.RefundAddress)
 }
 
 type FfiConverterReceivePaymentMethod struct{}
@@ -40372,6 +40380,7 @@ func (FfiConverterReceivePaymentMethod) Read(reader io.Reader) ReceivePaymentMet
 			FfiConverterOptionalCrossChainFeeModeINSTANCE.Read(reader),
 			FfiConverterOptionalUint32INSTANCE.Read(reader),
 			FfiConverterOptionalUint32INSTANCE.Read(reader),
+			FfiConverterOptionalStringINSTANCE.Read(reader),
 		}
 	default:
 		panic(fmt.Sprintf("invalid enum value %v in FfiConverterReceivePaymentMethod.Read()", id))
@@ -40408,6 +40417,7 @@ func (FfiConverterReceivePaymentMethod) Write(writer io.Writer, value ReceivePay
 		FfiConverterOptionalCrossChainFeeModeINSTANCE.Write(writer, variant_value.FeeMode)
 		FfiConverterOptionalUint32INSTANCE.Write(writer, variant_value.MaxSlippageBps)
 		FfiConverterOptionalUint32INSTANCE.Write(writer, variant_value.TargetOverpayBps)
+		FfiConverterOptionalStringINSTANCE.Write(writer, variant_value.RefundAddress)
 	default:
 		_ = variant_value
 		panic(fmt.Sprintf("invalid enum value `%v` in FfiConverterReceivePaymentMethod.Write", value))
